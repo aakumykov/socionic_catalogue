@@ -4,16 +4,16 @@ import android.widget.Filter;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 
-public class ItemsList_DataAdapter_Stub
+public class TemplateOfList_DataAdapter_Stub
         extends SelectableAdapter_Stub
-        implements iItemsList.iDataAdapter
+        implements iTemplateOfList.iDataAdapter
 {
     @Override
-    public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
+    public void bindBottomReachedListener(iTemplateOfList.ListEdgeReachedListener listener) {
 
     }
 
@@ -68,17 +68,17 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void sortByName(iItemsList.SortingListener sortingListener) {
+    public void sortByName(iTemplateOfList.SortingListener sortingListener) {
 
     }
 
     @Override
-    public void sortByCount(iItemsList.SortingListener sortingListener) {
+    public void sortByCount(iTemplateOfList.SortingListener sortingListener) {
 
     }
 
     @Override
-    public iItemsList.SortingMode getSortingMode() {
+    public iTemplateOfList.SortingMode getSortingMode() {
         return null;
     }
 
@@ -118,7 +118,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void setLayoutMode(iItemsList.LayoutMode layoutMode) {
+    public void setLayoutMode(iTemplateOfList.LayoutMode layoutMode) {
 
     }
 

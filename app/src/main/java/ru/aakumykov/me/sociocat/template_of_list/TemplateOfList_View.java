@@ -20,13 +20,13 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
-import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.template_of_list.view_model.TemplateOfList_ViewModel;
+import ru.aakumykov.me.sociocat.template_of_list.view_model.TemplateOfList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_View
+public class TemplateOfList_View
         extends BaseView
-        implements iItemsList.iPageView, iItemsList.ListEdgeReachedListener
+        implements iTemplateOfList.iPageView, iTemplateOfList.ListEdgeReachedListener
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -36,8 +36,8 @@ public class ItemsList_View
     private boolean viewIsFresh = true;
     private boolean isFilterActive = false;
 
-    private iItemsList.iPresenter presenter;
-    private iItemsList.iDataAdapter dataAdapter;
+    private iTemplateOfList.iPresenter presenter;
+    private iTemplateOfList.iDataAdapter dataAdapter;
 
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
@@ -135,7 +135,7 @@ public class ItemsList_View
 
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
-                dataAdapter.sortByName(new iItemsList.SortingListener() {
+                dataAdapter.sortByName(new iTemplateOfList.SortingListener() {
                     @Override
                     public void onSortingComplete() {
                         refreshMenu();
@@ -145,7 +145,7 @@ public class ItemsList_View
 
             case R.id.actionSortByCount:
             case R.id.actionSortByCountReverse:
-                dataAdapter.sortByCount(new iItemsList.SortingListener() {
+                dataAdapter.sortByCount(new iTemplateOfList.SortingListener() {
                     @Override
                     public void onSortingComplete() {
                         refreshMenu();
@@ -200,9 +200,9 @@ public class ItemsList_View
     }
 
     @Override
-    public void changeLayout(@Nullable iItemsList.LayoutMode layoutMode) {
+    public void changeLayout(@Nullable iTemplateOfList.LayoutMode layoutMode) {
 
-        if (null == layoutMode || iItemsList.LayoutMode.GRID == layoutMode)
+        if (null == layoutMode || iTemplateOfList.LayoutMode.GRID == layoutMode)
             currentLayoutManager = staggeredGridLayoutManager;
         else
             currentLayoutManager = linearLayoutManager;
@@ -215,7 +215,7 @@ public class ItemsList_View
     }
 
     @Override
-    public void setViewState(@Nullable iItemsList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(@Nullable iTemplateOfList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
@@ -255,7 +255,7 @@ public class ItemsList_View
     }
 
 
-    // iItemsList.ListEdgeReachedListener
+    // iTemplateOfList.ListEdgeReachedListener
     @Override
     public void onTopReached(int position) {
 
@@ -269,14 +269,14 @@ public class ItemsList_View
     // Внутренние методы
     private void configurePresenterAndAdapter() {
 
-        ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
-                .get(ItemsList_ViewModel.class);
+        TemplateOfList_ViewModel viewModel = new ViewModelProvider(this, new TemplateOfList_ViewModelFactory())
+                .get(TemplateOfList_ViewModel.class);
 
         // Презентер (должен создаваться перед Адаптером)
         if (viewModel.hasPresenter()) {
             this.presenter = viewModel.getPresenter();
         } else {
-            this.presenter = new ItemsList_Presenter();
+            this.presenter = new TemplateOfList_Presenter();
             viewModel.storePresenter(this.presenter);
         }
 
@@ -284,7 +284,7 @@ public class ItemsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new ItemsList_DataAdapter(presenter);
+            this.dataAdapter = new TemplateOfList_DataAdapter(presenter);
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }
@@ -455,7 +455,7 @@ public class ItemsList_View
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            ItemsList_View.this.actionMode = null;
+            TemplateOfList_View.this.actionMode = null;
             presenter.onActionModeDestroyed();
         }
     }

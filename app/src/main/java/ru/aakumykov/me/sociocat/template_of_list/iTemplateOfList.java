@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.template_of_list.selectable_adapter.iSelectableAdapter;
 
-public interface iItemsList {
+public interface iTemplateOfList {
 
     int DATA_ITEM_TYPE = 10;
     int LOADMORE_ITEM_TYPE = 20;

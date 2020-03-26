@@ -11,33 +11,33 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
-import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
+import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_Presenter implements iItemsList.iPresenter {
+public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
-    private iItemsList.iPageView pageView;
-    private iItemsList.iDataAdapter dataAdapter;
+    private iTemplateOfList.iPageView pageView;
+    private iTemplateOfList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
-    private iItemsList.ViewState currentViewState;
+    private iTemplateOfList.ViewState currentViewState;
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
-    private iItemsList.LayoutMode currentLayoutMode;
+    private iTemplateOfList.LayoutMode currentLayoutMode;
 
 
-    // iItemsList.iPresenter
+    // iTemplateOfList.iPresenter
     @Override
-    public void linkViewAndAdapter(iItemsList.iPageView pageView, iItemsList.iDataAdapter dataAdapter) {
+    public void linkViewAndAdapter(iTemplateOfList.iPageView pageView, iTemplateOfList.iDataAdapter dataAdapter) {
         this.pageView = pageView;
         this.dataAdapter = dataAdapter;
     }
 
     @Override
     public void unlinkViewAndAdapter() {
-        this.pageView = new ItemsList_ViewStub();
-        this.dataAdapter = new ItemsList_DataAdapter_Stub();
+        this.pageView = new TemplateOfList_ViewStub();
+        this.dataAdapter = new TemplateOfList_DataAdapter_Stub();
     }
 
     @Override
@@ -62,12 +62,12 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public iItemsList.LayoutMode getCurrentLayoutMode() {
+    public iTemplateOfList.LayoutMode getCurrentLayoutMode() {
         return currentLayoutMode;
     }
 
     @Override
-    public void storeViewState(iItemsList.ViewState viewState, Integer messageId, Object messageDetails) {
+    public void storeViewState(iTemplateOfList.ViewState viewState, Integer messageId, Object messageDetails) {
         this.currentViewState = viewState;
         this.currentViewMessageId = messageId;
         this.currentViewMessageDetails = messageDetails;
@@ -83,7 +83,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
             return;
         }
 
-        pageView.setViewState(iItemsList.ViewState.REFRESHING, null, null);
+        pageView.setViewState(iTemplateOfList.ViewState.REFRESHING, null, null);
 
         loadList();
     }
@@ -98,7 +98,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onDataItemLongClicked(DataItem dataItem) {
-        pageView.setViewState(iItemsList.ViewState.SELECTION, null, null);
+        pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, null);
         toggleItemSelection(dataItem);
     }
 
@@ -153,7 +153,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectAll(dataAdapter.getListSize());
-        pageView.setViewState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
+        pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
     }
 
     @Override
@@ -185,10 +185,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onChangeLayoutClicked() {
-        if (null == currentLayoutMode || iItemsList.LayoutMode.GRID.equals(currentLayoutMode))
-            currentLayoutMode = iItemsList.LayoutMode.LIST;
+        if (null == currentLayoutMode || iTemplateOfList.LayoutMode.GRID.equals(currentLayoutMode))
+            currentLayoutMode = iTemplateOfList.LayoutMode.LIST;
         else
-            currentLayoutMode = iItemsList.LayoutMode.GRID;
+            currentLayoutMode = iTemplateOfList.LayoutMode.GRID;
 
         pageView.changeLayout(currentLayoutMode);
         pageView.refreshMenu();
@@ -273,15 +273,15 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         if (0 == selectedItemsCount) {
             showSuccessState();
         } else {
-            pageView.setViewState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
+            pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
     private void showSuccessState() {
-        pageView.setViewState(iItemsList.ViewState.SUCCESS, null, null);
+        pageView.setViewState(iTemplateOfList.ViewState.SUCCESS, null, null);
     }
 
     private void showErrorState(int messageId, String errorMessage) {
-        pageView.setViewState(iItemsList.ViewState.ERROR, messageId, errorMessage);
+        pageView.setViewState(iTemplateOfList.ViewState.ERROR, messageId, errorMessage);
     }
 }

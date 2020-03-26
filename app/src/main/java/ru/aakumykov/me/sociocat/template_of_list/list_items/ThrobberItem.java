@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 
 public class ThrobberItem extends ListItem {
 
@@ -13,7 +13,7 @@ public class ThrobberItem extends ListItem {
     }
 
     @Override
-    public iItemsList.ItemType getItemType() {
-        return iItemsList.ItemType.THROBBER_ITEM;
+    public iTemplateOfList.ItemType getItemType() {
+        return iTemplateOfList.ItemType.THROBBER_ITEM;
     }
 }

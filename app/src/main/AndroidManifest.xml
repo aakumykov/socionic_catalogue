@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name=".template_of_list.ItemsList_View"
+            android:name=".template_of_list.TemplateOfList_View"
             android:exported="true">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
