@@ -114,6 +114,7 @@ public interface iTemplateOfList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
+        boolean canStartSelection();
         boolean canSelectAll();
         boolean canEditSelectedItem();
         boolean canDeleteSelectedItem();

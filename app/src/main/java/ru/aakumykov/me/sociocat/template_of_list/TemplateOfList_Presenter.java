@@ -98,8 +98,10 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
     @Override
     public void onDataItemLongClicked(DataItem dataItem) {
-        pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, null);
-        toggleItemSelection(dataItem);
+        if (canStartSelection()) {
+            pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, null);
+            toggleItemSelection(dataItem);
+        }
     }
 
     @Override
@@ -131,6 +133,11 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
     @Override
     public CharSequence getFilterText() {
         return filterText;
+    }
+
+    @Override
+    public boolean canStartSelection() {
+        return true;
     }
 
     @Override
