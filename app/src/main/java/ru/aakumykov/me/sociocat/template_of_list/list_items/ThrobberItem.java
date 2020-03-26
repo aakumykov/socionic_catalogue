@@ -16,4 +16,14 @@ public class ThrobberItem extends ListItem {
     public iTemplateOfList.ItemType getItemType() {
         return iTemplateOfList.ItemType.THROBBER_ITEM;
     }
+
+    @Override
+    public void setIsNowDeleting(boolean value) {
+
+    }
+
+    @Override
+    public boolean isNowDeleting() {
+        return false;
+    }
 }

@@ -195,6 +195,14 @@ public class TemplateOfList_View
     }
 
     @Override
+    public void finishActionMode() {
+        if (null != actionMode) {
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+    @Override
     public void scrollToPosition(int position) {
         recyclerView.scrollToPosition(position);
     }
@@ -374,13 +382,6 @@ public class TemplateOfList_View
     private void startActionMode() {
         if (actionMode == null)
             actionMode = startSupportActionMode(actionModeCallback);
-    }
-
-    private void finishActionMode() {
-        if (null != actionMode) {
-            actionMode.finish();
-            actionMode = null;
-        }
     }
 
 

@@ -247,7 +247,7 @@ public class TemplateOfList_DataAdapter
     @Override
     public boolean allItemsAreSelected() {
         int itemsCount = getItemCount();
-        int selectedItemsCount = getSelectedItemCount();
+        int selectedItemsCount = getSelectedItemsCount();
         return itemsCount > 0 && itemsCount == selectedItemsCount;
     }
 
@@ -306,6 +306,12 @@ public class TemplateOfList_DataAdapter
     public void setLayoutMode(iTemplateOfList.LayoutMode layoutMode) {
         this.currentLayoutMode = layoutMode;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void setItemIsNowDeleting(DataItem dataItem, boolean value) {
+        dataItem.setIsNowDeleting(value);
+        notifyItemChanged(itemsList.indexOf(dataItem));
     }
 
 

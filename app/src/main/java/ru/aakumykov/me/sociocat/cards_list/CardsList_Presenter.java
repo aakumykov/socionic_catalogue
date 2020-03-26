@@ -204,6 +204,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         MyDialogs.deleteSelectedCardsDialog(
                 pageView.getActivity(),
+                R.plurals.CARDS_GRID_delete_selected_cards_title,
                 dataAdapter.getSelectedItemsCount(),
                 new iMyDialogs.DeleteCallbacks() {
                     @Override
@@ -227,15 +228,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
                     }
                 }
         );
-    }
-
-    private void onDeleteSelectedCardsConfirmed() {
-        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
-
-        for (DataItem dataItem : selectedItems)
-            deleteCard(dataItem);
-
-        pageView.finishActionMode();
     }
 
     @Override
@@ -364,6 +356,15 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private boolean isAdmin() {
         return usersSingleton.currentUserIsAdmin();
+    }
+
+    private void onDeleteSelectedCardsConfirmed() {
+        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
+
+        for (DataItem dataItem : selectedItems)
+            deleteCard(dataItem);
+
+        pageView.finishActionMode();
     }
 
     private void deleteCard(@NonNull DataItem dataItem) {

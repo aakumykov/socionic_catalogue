@@ -2,7 +2,9 @@ package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -13,10 +15,14 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_ViewStub;
+import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 
 public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
+    private static final String TAG = TemplateOfList_Presenter.class.getSimpleName();
     private iTemplateOfList.iPageView pageView;
     private iTemplateOfList.iDataAdapter dataAdapter;
     private CharSequence filterText;
@@ -147,9 +153,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
     @Override
     public boolean canEditSelectedItem() {
-        Integer index = dataAdapter.getSingleSelectedItemIndex();
-
-        return null != index;
+        return dataAdapter.isSingleItemSelected();
     }
 
     @Override
@@ -160,7 +164,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectAll(dataAdapter.getListSize());
-        pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
+        pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
     @Override
@@ -176,12 +180,33 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
     @Override
     public void onDeleteSelectedItemsClicked() {
-        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
 
-        for (DataItem item : selectedItems)
-            dataAdapter.removeItem(item);
+        MyDialogs.deleteSelectedCardsDialog(
+                pageView.getActivity(),
+                R.plurals.LIST_TEMPLATE_delete_selected_items_dialog_title,
+                dataAdapter.getSelectedItemsCount(),
+                new iMyDialogs.DeleteCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
 
-        showSuccessState();
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteSelectedCardsConfirmed();
+                    }
+                }
+        );
     }
 
     @Override
@@ -275,7 +300,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
     private void toggleItemSelection(DataItem dataItem) {
         dataAdapter.toggleSelection(dataAdapter.getPositionOf(dataItem));
 
-        int selectedItemsCount = dataAdapter.getSelectedItemCount();
+        int selectedItemsCount = dataAdapter.getSelectedItemsCount();
 
         if (0 == selectedItemsCount) {
             showSuccessState();
@@ -291,4 +316,18 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
     private void showErrorState(int messageId, String errorMessage) {
         pageView.setViewState(iTemplateOfList.ViewState.ERROR, messageId, errorMessage);
     }
+
+    private void onDeleteSelectedCardsConfirmed() {
+        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
+
+        for (DataItem dataItem : selectedItems)
+            deleteCard(dataItem);
+
+        pageView.finishActionMode();
+    }
+
+    private void deleteCard(@NonNull DataItem dataItem) {
+        dataAdapter.removeItem(dataItem);
+    }
+
 }
