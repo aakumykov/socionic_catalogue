@@ -669,8 +669,6 @@
     <string name="LIST_TEMPLATE_loading_list">Загружаем список</string>
     <string name="card_deleted_long">Карточка «%1$s» удалена</string>
     <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
-    <string name="CARDS_GRID_delete_selected_cards_title">Удалить выбранные карточки?</string>
-    <string name="CARDS_GRID_delete_selected_cards_subtitle">%1$d штук</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->
