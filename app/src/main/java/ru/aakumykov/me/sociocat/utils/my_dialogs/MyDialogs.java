@@ -92,7 +92,7 @@ public class MyDialogs {
     }
 
     // Удаление нескольких выбранных карточек
-    public static void selectedCardsDeleteDialog(Activity activity, int count, iMyDialogs.DeleteCallbacks callbacls) {
+    public static void deleteSelectedCardsDialog(Activity activity, int count, iMyDialogs.DeleteCallbacks callbacls) {
         String title = MyUtils.getString(
                 activity,
                 R.string.CARDS_GRID_delete_selected_cards_title

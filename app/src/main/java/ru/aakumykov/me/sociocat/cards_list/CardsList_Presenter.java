@@ -195,12 +195,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onDeleteSelectedItemsClicked() {
 
-        String questionText = pageView.getString(
+        for (int i=0; i<=30; i++) {
+            String text = pageView.getAppContext().getResources().getQuantityString(R.plurals.cards_count, i, i);
+            Log.d("plurals", text);
+        }
+
+        /*String questionText = pageView.getString(
                 R.string.CARDS_GRID_delete_selected_cards_title,
                 dataAdapter.getSelectedItemsCount()
         );
 
-        MyDialogs.selectedCardsDeleteDialog(
+        MyDialogs.deleteSelectedCardsDialog(
                 pageView.getActivity(),
                 dataAdapter.getSelectedItemsCount(),
                 new iMyDialogs.DeleteCallbacks() {
@@ -224,7 +229,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
                         onDeleteSelectedCardsConfirmed();
                     }
                 }
-        );
+        );*/
     }
 
     private void onDeleteSelectedCardsConfirmed() {

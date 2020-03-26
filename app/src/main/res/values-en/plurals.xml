@@ -2,6 +2,6 @@
 <resources>
     <plurals name="cards_count">
         <item quantity="one">%1$d card</item>
-        <item quantity="other">%1$d cardsList</item>
+        <item quantity="other">%1$d cards</item>
     </plurals>
 </resources>
