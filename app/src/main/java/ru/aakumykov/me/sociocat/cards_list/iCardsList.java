@@ -113,8 +113,8 @@ public interface iCardsList {
 
         void onRefreshRequested();
 
-        void onDataItemClicked(DataItem dataItem);
-        void onDataItemLongClicked(DataItem dataItem);
+        void onItemClicked(DataItem dataItem);
+        void onItemLongClicked(DataItem dataItem);
 
         void onLoadMoreClicked();
 

@@ -46,12 +46,12 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     // Нажатия
     @OnClick(R.id.elementView)
     void onItemClicked() {
-        presenter.onDataItemClicked(this.dataItem);
+        presenter.onItemClicked(this.dataItem);
     }
 
     @OnLongClick(R.id.elementView)
     void onItemLongClicked() {
-        presenter.onDataItemLongClicked(this.dataItem);
+        presenter.onItemLongClicked(this.dataItem);
     }
 
 

@@ -114,7 +114,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onDataItemClicked(DataItem dataItem) {
+    public void onItemClicked(DataItem dataItem) {
         if (pageView.actionModeIsActive())
             toggleItemSelection(dataItem);
         else {
@@ -124,7 +124,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onDataItemLongClicked(DataItem dataItem) {
+    public void onItemLongClicked(DataItem dataItem) {
         pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
         toggleItemSelection(dataItem);
     }
