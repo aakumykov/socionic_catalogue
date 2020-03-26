@@ -125,8 +125,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onItemLongClicked(DataItem dataItem) {
-        pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
-        toggleItemSelection(dataItem);
+        if (canStartSelection()) {
+            pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
+            toggleItemSelection(dataItem);
+        }
     }
 
     @Override
@@ -158,6 +160,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public CharSequence getFilterText() {
         return filterText;
+    }
+
+    @Override
+    public boolean canStartSelection() {
+        return isAdmin();
     }
 
     @Override
