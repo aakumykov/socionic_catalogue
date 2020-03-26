@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,6 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.TemplateOfList_ViewStub;
-import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
@@ -112,7 +110,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-        int scrollPosition = dataAdapter.getListSize() + 1;
+        int scrollPosition = dataAdapter.getDataItemsCount() + 1;
 
         DataItem lastDataItem = dataAdapter.getLastDataItem();
 
@@ -163,7 +161,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
 
     @Override
     public void onSelectAllClicked() {
-        dataAdapter.selectAll(dataAdapter.getListSize());
+        dataAdapter.selectAll(dataAdapter.getDataItemsCount());
         pageView.setViewState(iTemplateOfList.ViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
@@ -270,7 +268,7 @@ public class TemplateOfList_Presenter implements iTemplateOfList.iPresenter {
     }
 
     private void updatePageTitle() {
-        int count = dataAdapter.getListSize();
+        int count = dataAdapter.getDataItemsCount();
         pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
     }
 

@@ -12,6 +12,7 @@ public class TemplateOfList_DataAdapter_Stub
         extends SelectableAdapter_Stub
         implements iTemplateOfList.iDataAdapter
 {
+
     @Override
     public void bindBottomReachedListener(iTemplateOfList.ListEdgeReachedListener listener) {
 
@@ -48,7 +49,7 @@ public class TemplateOfList_DataAdapter_Stub
     }
 
     @Override
-    public List<ListItem> getAllItems() {
+    public List<DataItem> getAllDataItems() {
         return null;
     }
 
@@ -63,7 +64,7 @@ public class TemplateOfList_DataAdapter_Stub
     }
 
     @Override
-    public int getListSize() {
+    public int getDataItemsCount() {
         return 0;
     }
 
@@ -98,12 +99,12 @@ public class TemplateOfList_DataAdapter_Stub
     }
 
     @Override
-    public void hideLoadmoreItem() {
+    public void showThrobberItem() {
 
     }
 
     @Override
-    public void showThrobberItem() {
+    public void hideLoadmoreItem() {
 
     }
 
@@ -118,7 +119,7 @@ public class TemplateOfList_DataAdapter_Stub
     }
 
     @Override
-    public void setLayoutMode(iTemplateOfList.LayoutMode layoutMode) {
+    public void setLayoutMode(iTemplateOfList.LayoutMode currentLayoutMode) {
 
     }
 

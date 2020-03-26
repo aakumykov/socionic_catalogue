@@ -48,8 +48,9 @@ public interface iTemplateOfList {
 
 
     interface iPageView extends iBaseView {
-        void changeLayout(LayoutMode layoutMode);
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+
+        void changeLayout(LayoutMode layoutMode);
 
         boolean actionModeIsActive();
         void finishActionMode();
@@ -69,12 +70,12 @@ public interface iTemplateOfList {
         void appendList(List<DataItem> inputList);
 
         DataItem getDataItem(int position);
-        List<ListItem> getAllItems();
+        List<DataItem> getAllDataItems();
         DataItem getLastDataItem();
 
         void removeItem(ListItem listItem);
 
-        int getListSize();
+        int getDataItemsCount();
 
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
@@ -92,7 +93,7 @@ public interface iTemplateOfList {
 
         List<DataItem> getSelectedItems();
 
-        void setLayoutMode(LayoutMode layoutMode);
+        void setLayoutMode(LayoutMode currentLayoutMode);
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
     }
@@ -104,14 +105,15 @@ public interface iTemplateOfList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-        LayoutMode getCurrentLayoutMode();
+	void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);        
 
-        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+	LayoutMode getCurrentLayoutMode();
 
         void onRefreshRequested();
 
         void onDataItemClicked(DataItem dataItem);
         void onDataItemLongClicked(DataItem dataItem);
+
         void onLoadMoreClicked();
 
         void onListFiltered(CharSequence filterText, List<DataItem> filteredList);

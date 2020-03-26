@@ -107,14 +107,14 @@ public interface iCardsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+	void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
-        LayoutMode getCurrentLayoutMode();
+	LayoutMode getCurrentLayoutMode();
 
         void onRefreshRequested();
 
-        void onItemClicked(DataItem dataItem);
-        void onItemLongClicked(DataItem dataItem);
+        void onDataItemClicked(DataItem dataItem);
+        void onDataItemLongClicked(DataItem dataItem);
 
         void onLoadMoreClicked();
 
