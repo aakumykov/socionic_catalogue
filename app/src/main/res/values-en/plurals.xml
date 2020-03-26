@@ -4,4 +4,9 @@
         <item quantity="one">Delete %1$d selected card?</item>
         <item quantity="other">Delete selected %1$d cards?</item>
     </plurals>
+
+    <plurals name="LIST_TEMPLATE_delete_selected_items_dialog_title">
+        <item quantity="one">Delete %1$d selected element?</item>
+        <item quantity="other">Delete selected %1$d elements?</item>
+    </plurals>
 </resources>

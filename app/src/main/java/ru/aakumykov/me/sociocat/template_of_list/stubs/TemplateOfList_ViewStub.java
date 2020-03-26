@@ -29,6 +29,11 @@ public class TemplateOfList_ViewStub
     }
 
     @Override
+    public void finishActionMode() {
+
+    }
+
+    @Override
     public void scrollToPosition(int position) {
 
     }

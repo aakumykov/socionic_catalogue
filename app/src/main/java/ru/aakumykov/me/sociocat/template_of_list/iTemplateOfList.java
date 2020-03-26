@@ -50,7 +50,10 @@ public interface iTemplateOfList {
     interface iPageView extends iBaseView {
         void changeLayout(LayoutMode layoutMode);
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+
         boolean actionModeIsActive();
+        void finishActionMode();
+
         void scrollToPosition(int position);
     }
 
@@ -90,6 +93,8 @@ public interface iTemplateOfList {
         List<DataItem> getSelectedItems();
 
         void setLayoutMode(LayoutMode layoutMode);
+
+        void setItemIsNowDeleting(DataItem dataItem, boolean value);
     }
 
     interface iPresenter {

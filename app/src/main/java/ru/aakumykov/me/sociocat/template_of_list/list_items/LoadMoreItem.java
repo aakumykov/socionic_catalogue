@@ -16,4 +16,14 @@ public class LoadMoreItem extends ListItem {
     public iTemplateOfList.ItemType getItemType() {
         return iTemplateOfList.ItemType.LOADMORE_ITEM;
     }
+
+    @Override
+    public void setIsNowDeleting(boolean value) {
+
+    }
+
+    @Override
+    public boolean isNowDeleting() {
+        return false;
+    }
 }

@@ -20,7 +20,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
-    public int getSelectedItemCount() {
+    public int getSelectedItemsCount() {
         return selectedItemsIndexes.size();
     }
 
@@ -67,14 +67,8 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
-    public Integer getSingleSelectedItemIndex() {
-        if (isMultipleItemsSelected())
-            return null;
-
-        if (0 == selectedItemsIndexes.size())
-            return null;
-
-        return selectedItemsIndexes.iterator().next();
+    public boolean isSingleItemSelected() {
+        return 1 == selectedItemsIndexes.size();
     }
 
 }
