@@ -22,6 +22,7 @@ import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
@@ -222,6 +223,14 @@ public class CardsList_View
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
+    }
+
+    @Override
+    public void goEditCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        intent.setAction(Constants.ACTION_EDIT);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
     @Override

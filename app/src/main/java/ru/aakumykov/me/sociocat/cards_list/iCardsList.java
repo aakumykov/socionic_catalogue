@@ -58,6 +58,8 @@ public interface iCardsList {
         void scrollToPosition(int position);
 
         void goShowCard(Card card);
+
+        void goEditCard(Card card);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

@@ -42,4 +42,9 @@ public class CardsList_ViewStub
     public void goShowCard(Card card) {
 
     }
+
+    @Override
+    public void goEditCard(Card card) {
+
+    }
 }
