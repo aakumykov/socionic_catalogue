@@ -69,6 +69,17 @@ public class CardsList_View
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case Constants.CODE_EDIT_CARD:
+                processCardCreationResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -410,6 +421,17 @@ public class CardsList_View
             actionMode = startSupportActionMode(actionModeCallback);
     }
 
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_CANCELED:
+                finishActionMode();
+                break;
+            case RESULT_OK:
+                break;
+            default:
+                break;
+        }
+    }
 
 
 
