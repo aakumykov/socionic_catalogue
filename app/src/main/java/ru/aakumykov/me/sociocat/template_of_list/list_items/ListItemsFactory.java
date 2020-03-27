@@ -34,21 +34,6 @@ public class ListItemsFactory {
         }
     }
 
-    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
-        return new Unknown_ViewHolder(itemView);
-    }
-
-    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
-        return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
-    }
-
-    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
-        return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
-    }
-
     private static BasicViewHolder dataItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
         int layoutResourceId = (iTemplateOfList.LayoutMode.LIST.equals(layoutMode)) ?
                 R.layout.template_of_list_data_item_list_mode :
@@ -57,6 +42,21 @@ public class ListItemsFactory {
         View itemView = createItemView(parent, layoutResourceId);
 
         return new DataItem_ViewHolder(itemView);
+    }
+
+    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
+        return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
+    }
+
+    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
+        return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
+    }
+
+    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
+        return new Unknown_ViewHolder(itemView);
     }
 
     private static View createItemView(ViewGroup parent, int layoutResourceId) {
