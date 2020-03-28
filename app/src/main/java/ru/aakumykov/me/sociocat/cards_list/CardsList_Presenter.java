@@ -196,7 +196,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onEditSelectedItemClicked() {
-        pageView.showToast(R.string.not_implemented_yet);
+        Card card = (Card) dataAdapter.getSelectedItems().get(0).getPayload();
+        pageView.goEditCard(card);
     }
 
     @Override
