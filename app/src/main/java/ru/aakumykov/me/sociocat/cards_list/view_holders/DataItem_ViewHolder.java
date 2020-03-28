@@ -64,7 +64,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
             if (isSelected)
                 elementView.setBackgroundColor(selectedStateColor);
             else
-                elementView.setBackgroundColor(neutralStateColor);
+                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
         }
         else {
             if (null != selectedOverlay)
@@ -80,7 +80,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
             if (isNowDeleting)
                 elementView.setBackgroundColor(deletingStateColor);
             else
-                elementView.setBackgroundColor(neutralStateColor);
+                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
         }
         else {
             if (isNowDeleting)
