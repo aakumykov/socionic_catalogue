@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.cards_list.view_holders;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -57,9 +56,9 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         presenter.onDataItemLongClicked(this.dataItem);
     }
 
-
+    @Override
     public void setSelected(boolean isSelected) {
-        int selectedStateColor = elementView.getResources().getColor(R.color.card_is_selected);
+        int selectedStateColor = elementView.getResources().getColor(R.color.element_is_selected);
 
         if (isListMode()) {
             if (isSelected)
@@ -75,7 +74,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     @Override
     public void setIsNowDeleting(boolean isNowDeleting) {
-        int deletingStateColor = elementView.getResources().getColor(R.color.card_is_now_deleting);
+        int deletingStateColor = elementView.getResources().getColor(R.color.element_is_now_deleting);
 
         if (isListMode()) {
             if (isNowDeleting)

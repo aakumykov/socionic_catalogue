@@ -27,6 +27,11 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
 
     }
 
+    @Override
+    public void setIsNowDeleting(boolean isNowDeleting) {
+
+    }
+
     // Нажатия
     @OnClick(R.id.elementView)
     void onItemClicked() {

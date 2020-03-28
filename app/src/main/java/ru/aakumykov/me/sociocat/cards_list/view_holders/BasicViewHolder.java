@@ -19,9 +19,9 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
     public abstract void setSelected(boolean isSelected);
 
+    public abstract void setIsNowDeleting(boolean isNowDeleting);
+
     public void setPresenter(iCardsList.iPresenter presenter) {
         this.presenter = presenter;
     }
-
-    public abstract void setIsNowDeleting(boolean isNowDeleting);
 }
