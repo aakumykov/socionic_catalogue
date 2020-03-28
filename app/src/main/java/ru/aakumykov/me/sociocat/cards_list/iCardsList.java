@@ -27,6 +27,7 @@ public interface iCardsList {
     }
 
     enum LayoutMode {
+        FEED,
         LIST,
         GRID
     }

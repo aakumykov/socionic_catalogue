@@ -18,7 +18,11 @@ import ru.aakumykov.me.sociocat.cards_list.view_holders.Unknown_ViewHolder;
 public class ListItemsFactory {
 
     @NonNull
-    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent, iCardsList.LayoutMode layoutMode) {
+    public static BasicViewHolder createViewHolder(
+            int viewType,
+            ViewGroup parent,
+            iCardsList.LayoutMode layoutMode
+    ) {
         switch (viewType) {
             case iCardsList.DATA_ITEM_TYPE:
                 return dataItemViewHolder(parent, layoutMode);
@@ -56,7 +60,7 @@ public class ListItemsFactory {
 
         View itemView = createItemView(parent, layoutResourceId);
 
-        return new DataItem_ViewHolder(itemView);
+        return new DataItem_ViewHolder(itemView, layoutMode);
     }
 
     private static View createItemView(ViewGroup parent, int layoutResourceId) {

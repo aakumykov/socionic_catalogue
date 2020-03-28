@@ -77,8 +77,9 @@
     <!-- Элемент "Есть новые карточки" -->
     <color name="new_cards_notification_background">#FFF176</color>
 
-    <!--  Цвет выделенного элемента списка  -->
+    <!--  Цвет выделенного элемента recyclerview  -->
     <color name="template_of_list_selected_item_overlay">#799575CD</color>
+    <color name="card_is_selected">#799575CD</color>
 
     <!--  Цвет удаляемого элемента RecyclerView  -->
     <color name="card_is_now_deleting">#8DF48FB1</color>
