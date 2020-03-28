@@ -58,18 +58,8 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     @Override
     public void setSelected(boolean isSelected) {
-        int selectedStateColor = elementView.getResources().getColor(R.color.element_is_selected);
-
-        if (isListMode()) {
-            if (isSelected)
-                elementView.setBackgroundColor(selectedStateColor);
-            else
-                elementView.setBackgroundColor(neutralStateColor);
-        }
-        else {
-            if (null != selectedOverlay)
-                selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
-        }
+        if (null != selectedOverlay)
+            selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
