@@ -641,7 +641,7 @@
     <string name="DEBUG_backup_service_already_running">Backup service already running</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
-    <string name="CARDS_GRID_load_more">Load more</string>
+    <string name="CARDS_GRID_load_more">More</string>
     <string name="CARDS_GRID_new_cards_available">New cards available (%1$d)</string>
     <string name="PREFERENCE_category_notifications">Notifications</string>
     <string name="PREFERENCE_notify_about_new_cards_title">New cards</string>

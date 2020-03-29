@@ -646,7 +646,7 @@
     <string name="DEBUG_backup_service_already_running">Служба резервного копирования уже запущена</string>
     <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Ошибка данных</string>
-    <string name="CARDS_GRID_load_more">Загрузить ещё</string>
+    <string name="CARDS_GRID_load_more">Ещё</string>
     <string name="CARDS_GRID_new_cards_available">Есть новые карточки (%1$d)</string>
     <string name="PREFERENCE_category_notifications">Уведомления</string>
     <string name="PREFERENCE_notify_about_new_cards_title">Новые карточки</string>
