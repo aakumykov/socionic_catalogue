@@ -17,9 +17,9 @@ import ru.aakumykov.me.sociocat.cards_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.cards_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
-import ru.aakumykov.me.sociocat.cards_list.list_items.ListItemsFactory;
 import ru.aakumykov.me.sociocat.cards_list.list_items.LoadMoreItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ThrobberItem;
+import ru.aakumykov.me.sociocat.cards_list.view_holders.eViewHolderState;
 import ru.aakumykov.me.sociocat.utils.selectable_adapter.SelectableAdapter;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.DataItem_ViewHolder;
@@ -41,16 +41,17 @@ public class CardsList_DataAdapter
 
     private ItemsFilter itemsFilter;
     private iCardsList.SortingMode currentSortingMode = iCardsList.SortingMode.ORDER_NAME_DIRECT;
-    private iCardsList.LayoutMode currentLayoutMode;
+    private iCardsList.LayoutMode currentLayoutMode = iCardsList.LayoutMode.GRID;
 
 
     // Конструктор
-    public CardsList_DataAdapter(iCardsList.iPresenter presenter) {
+    public CardsList_DataAdapter(iCardsList.iPresenter presenter, iCardsList.LayoutMode layoutMode) {
 
         if (null == presenter)
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
 
         this.presenter = presenter;
+//        this.currentLayoutMode = layoutMode;
     }
 
 
@@ -72,7 +73,7 @@ public class CardsList_DataAdapter
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent, currentLayoutMode);
+        BasicViewHolder basicViewHolder = CardsList_ItemFactory.createViewHolder(viewType, parent, this.currentLayoutMode);
 
         basicViewHolder.setPresenter(presenter);
 
@@ -87,9 +88,12 @@ public class CardsList_DataAdapter
         if (listItem instanceof DataItem) {
             viewHolder = (DataItem_ViewHolder) holder;
 
-            viewHolder.setIsNowDeleting(listItem.isNowDeleting());
-
-            viewHolder.setSelected(isSelected(position));
+            if (isSelected(position))
+                viewHolder.setViewState(eViewHolderState.SELECTED);
+            else if (listItem.isNowDeleting())
+                viewHolder.setViewState(eViewHolderState.DELETING);
+            else
+                viewHolder.setViewState(eViewHolderState.NAUTRAL);
         }
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;

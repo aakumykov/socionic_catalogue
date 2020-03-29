@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list.list_items;
+package ru.aakumykov.me.sociocat.cards_list;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,7 @@ import ru.aakumykov.me.sociocat.cards_list.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.Unknown_ViewHolder;
 
-public class ListItemsFactory {
+public class CardsList_ItemFactory {
 
     @NonNull
     public static BasicViewHolder createViewHolder(

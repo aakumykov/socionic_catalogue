@@ -32,7 +32,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
-    private iCardsList.ViewState currentViewState;
+    private iCardsList.PageViewState currentPageViewState;
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
     private iCardsList.LayoutMode currentLayoutMode;
@@ -69,12 +69,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         pageView.changeLayout(currentLayoutMode);
-        pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
+        pageView.setViewState(currentPageViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
     @Override
-    public void storeViewState(iCardsList.ViewState viewState, Integer messageId, Object messageDetails) {
-        this.currentViewState = viewState;
+    public void storeViewState(iCardsList.PageViewState pageViewState, Integer messageId, Object messageDetails) {
+        this.currentPageViewState = pageViewState;
         this.currentViewMessageId = messageId;
         this.currentViewMessageDetails = messageDetails;
     }
@@ -96,7 +96,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         Card card = (Card) lastDataItem.getPayload();
 
-        pageView.setViewState(iCardsList.ViewState.REFRESHING, null, null);
+        pageView.setViewState(iCardsList.PageViewState.REFRESHING, null, null);
 
         cardsSingleton.loadCardsFromNewestTo(card, new iCardsSingleton.ListCallbacks() {
             @Override
@@ -126,7 +126,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onDataItemLongClicked(DataItem dataItem) {
         if (canStartSelection()) {
-            pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
+            pageView.setViewState(iCardsList.PageViewState.SELECTION, null, null);
             toggleItemSelection(dataItem);
         }
     }
@@ -185,7 +185,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectAll(dataAdapter.getDataItemsCount());
-        pageView.setViewState(iCardsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
+        pageView.setViewState(iCardsList.PageViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
     @Override
@@ -251,7 +251,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     // Внутренние методы
     private void loadList() {
-        //pageView.setViewState(iCardsList.ViewState.PROGRESS, null, null);
+        //pageView.setViewState(iCardsList.PageViewState.PROGRESS, null, null);
         dataAdapter.showThrobberItem();
 
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
@@ -343,16 +343,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         if (0 == selectedItemsCount) {
             showSuccessViewState();
         } else {
-            pageView.setViewState(iCardsList.ViewState.SELECTION, null, selectedItemsCount);
+            pageView.setViewState(iCardsList.PageViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
     private void showSuccessViewState() {
-        pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
+        pageView.setViewState(iCardsList.PageViewState.SUCCESS, null, null);
     }
 
     private void showErrorViewState(int messageId, String errorMessage) {
-        pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
+        pageView.setViewState(iCardsList.PageViewState.ERROR, messageId, errorMessage);
     }
 
     private boolean isAdmin() {

@@ -47,11 +47,4 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/selectedOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/template_of_list_selected_item_overlay"
-        android:visibility="invisible" />
-
 </androidx.cardview.widget.CardView>

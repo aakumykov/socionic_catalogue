@@ -32,7 +32,7 @@ public interface iCardsList {
         GRID
     }
 
-    enum ViewState {
+    enum PageViewState {
         SUCCESS,
         PROGRESS,
         REFRESHING,
@@ -49,7 +49,7 @@ public interface iCardsList {
 
 
     interface iPageView extends iBaseView {
-        void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+        void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
         void changeLayout(LayoutMode layoutMode);
 
@@ -110,7 +110,7 @@ public interface iCardsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-	void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+	void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
 
 	LayoutMode getCurrentLayoutMode();
 

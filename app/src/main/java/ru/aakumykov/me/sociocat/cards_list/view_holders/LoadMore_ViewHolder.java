@@ -23,12 +23,7 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
     }
 
     @Override
-    public void setSelected(boolean isSelected) {
-
-    }
-
-    @Override
-    public void setIsNowDeleting(boolean isNowDeleting) {
+    public void setViewState(eViewHolderState eViewHolderState) {
 
     }
 

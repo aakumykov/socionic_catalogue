@@ -260,14 +260,14 @@ public class CardsList_View
     }
 
     @Override
-    public void setViewState(@Nullable iCardsList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(@Nullable iCardsList.PageViewState pageViewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
 
-        presenter.storeViewState(viewState, messageId, messageDetails);
+        presenter.storeViewState(pageViewState, messageId, messageDetails);
 
-        if (null == viewState)
+        if (null == pageViewState)
             return;
 
-        switch (viewState) {
+        switch (pageViewState) {
             case SUCCESS:
                 finishActionMode();
                 hideProgressMessage();
@@ -329,7 +329,7 @@ public class CardsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new CardsList_DataAdapter(presenter);
+            this.dataAdapter = new CardsList_DataAdapter(presenter, iCardsList.LayoutMode.GRID);
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }

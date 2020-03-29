@@ -20,7 +20,6 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     @BindView(R.id.elementView) ViewGroup elementView;
     @BindView(R.id.nameView) TextView nameView;
     @Nullable @BindView(R.id.countView) TextView countView;
-    @Nullable @BindView(R.id.selectedOverlay) View selectedOverlay;
 
     private DataItem dataItem;
     private iTemplateOfList.LayoutMode currentLayoutMode;
@@ -67,8 +66,8 @@ public class DataItem_ViewHolder extends BasicViewHolder {
                 elementView.setBackgroundResource(R.drawable.shape_bottom_line);
         }
         else {
-            if (null != selectedOverlay)
-                selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
+//            if (null != selectedOverlay)
+//                selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
         }
     }
 

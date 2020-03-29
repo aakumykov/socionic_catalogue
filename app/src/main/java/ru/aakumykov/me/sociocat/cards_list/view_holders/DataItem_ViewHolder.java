@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_list.view_holders;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,8 +21,8 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     @BindView(R.id.elementView) ViewGroup elementView;
     @BindView(R.id.nameView) TextView nameView;
     @Nullable @BindView(R.id.countView) TextView countView;
-    @Nullable @BindView(R.id.selectedOverlay) View selectedOverlay;
 
+    private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
     private iCardsList.LayoutMode currentLayoutMode;
     private int neutralStateColor = -1;
@@ -34,6 +35,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         currentLayoutMode = layoutMode;
     }
 
+
     // Заполнение данными
     public void initialize(Object payload) {
         this.dataItem = (DataItem) payload;
@@ -44,6 +46,24 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         if (countView != null)
             countView.setText(String.valueOf(dataItem.getCount()));
     }
+
+    @Override
+    public void setViewState(eViewHolderState eViewHolderState) {
+        switch (eViewHolderState) {
+            case NAUTRAL:
+                setNeutralState();
+                break;
+            case SELECTED:
+                setSelectedState();
+                break;
+            case DELETING:
+                setDeletingState();
+                break;
+            default:
+                Log.e(TAG, "Unknown eViewHolderState: "+ eViewHolderState);
+        }
+    }
+
 
     // Нажатия
     @OnClick(R.id.elementView)
@@ -56,47 +76,46 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         presenter.onDataItemLongClicked(this.dataItem);
     }
 
-    @Override
-    public void setSelected(boolean isSelected) {
-        int selectedStateColor = elementView.getResources().getColor(R.color.element_is_selected);
 
-        if (isListMode()) {
-            // Режим списка
-            if (isSelected)
-                elementView.setBackgroundColor(selectedStateColor);
-            else
-                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
-        }
-        else {
-            // Режим сетки
-            if (null != selectedOverlay)
-                selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
+    // Внутренние
+    private void setSelectedState() {
+        int selectedColor = elementView.getResources().getColor(R.color.element_is_selected);
+
+        switch (currentLayoutMode) {
+            case LIST:
+                elementView.setBackgroundColor(selectedColor);
+                break;
+
+            default:
+                ((CardView) elementView).setCardBackgroundColor(selectedColor);
+                break;
         }
     }
 
-    @Override
-    public void setIsNowDeleting(boolean isNowDeleting) {
+    private void setDeletingState() {
         int deletingStateColor = elementView.getResources().getColor(R.color.element_is_now_deleting);
 
-        if (isListMode()) {
-            // Режим списка
-            if (isNowDeleting)
+        switch (currentLayoutMode) {
+            case LIST:
                 elementView.setBackgroundColor(deletingStateColor);
-            else
-                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
-        }
-        else {
-            // Режим сетки
-            if (isNowDeleting)
+                break;
+
+            default:
                 ((CardView)elementView).setCardBackgroundColor(deletingStateColor);
-            else
-                ((CardView)elementView).setCardBackgroundColor(neutralStateColor);
+                break;
         }
     }
 
+    private void setNeutralState() {
+        switch (currentLayoutMode) {
+            case LIST:
+                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
+                break;
 
-    // Внутренние методы
-    private boolean isListMode() {
-        return iCardsList.LayoutMode.LIST.equals(currentLayoutMode);
+            default:
+                ((CardView)elementView).setCardBackgroundColor(neutralStateColor);
+                break;
+        }
     }
+
 }
