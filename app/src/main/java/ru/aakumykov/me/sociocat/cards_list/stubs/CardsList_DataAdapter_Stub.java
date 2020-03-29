@@ -123,7 +123,7 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
-    public void setLayoutMode(iCardsList.LayoutMode currentLayoutMode) {
+    public void setLayoutMode(iCardsList.LayoutMode layoutMode) {
 
     }
 

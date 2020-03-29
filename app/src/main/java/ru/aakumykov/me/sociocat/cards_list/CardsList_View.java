@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
@@ -242,20 +243,27 @@ public class CardsList_View
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
-    /*@Override
-    public void changeLayout(@Nullable iCardsList.LayoutMode layoutMode) {
+    @Override
+    public void changeLayout(@NonNull iCardsList.LayoutMode layoutMode) {
 
-        if (null == layoutMode || iCardsList.LayoutMode.GRID == layoutMode)
-            currentLayoutManager = staggeredGridLayoutManager;
-        else
-            currentLayoutManager = linearLayoutManager;
+        switch (layoutMode) {
+            case LIST:
+                currentLayoutManager = staggeredGridLayoutManager;
+                break;
+
+            case GRID:
+                currentLayoutManager = linearLayoutManager;
+                break;
+
+            default:
+                throw new RuntimeException("Unknown layout mode");
+        }
 
         recyclerView.setLayoutManager(currentLayoutManager);
 
         recyclerView.setAdapter(null);
-        dataAdapter.setLayoutMode(presenter.getCurrentLayoutMode());
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
-    }*/
+    }
 
     @Override
     public void setViewState(@Nullable iCardsList.PageViewState pageViewState, @Nullable Integer messageId, @Nullable Object messageDetails) {

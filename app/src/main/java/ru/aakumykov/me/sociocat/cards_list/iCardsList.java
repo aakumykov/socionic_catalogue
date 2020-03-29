@@ -56,6 +56,8 @@ public interface iCardsList {
 
     interface iPageView extends iBaseView {
 
+        void changeLayout(@Nullable LayoutMode layoutMode);
+
         void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
         boolean actionModeIsActive();
@@ -104,7 +106,7 @@ public interface iCardsList {
 
         List<DataItem> getSelectedItems();
 
-        void setLayoutMode(LayoutMode currentLayoutMode);
+        void setLayoutMode(LayoutMode layoutMode);
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
     }

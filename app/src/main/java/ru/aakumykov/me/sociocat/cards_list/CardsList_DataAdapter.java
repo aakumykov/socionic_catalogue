@@ -319,8 +319,8 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void setLayoutMode(iCardsList.LayoutMode currentLayoutMode) {
-        this.currentLayoutMode = currentLayoutMode;
+    public void setLayoutMode(iCardsList.LayoutMode layoutMode) {
+        this.currentLayoutMode = layoutMode;
         notifyDataSetChanged();
     }
 

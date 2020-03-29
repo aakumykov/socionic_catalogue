@@ -239,13 +239,24 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onChangeLayoutClicked() {
-        /*if (null == currentLayoutMode || iCardsList.LayoutMode.GRID.equals(currentLayoutMode))
-            currentLayoutMode = iCardsList.LayoutMode.LIST;
-        else
-            currentLayoutMode = iCardsList.LayoutMode.GRID;
 
-        pageView.changeLayout(currentLayoutMode);*/
-//        pageView.refreshMenu();
+        iCardsList.LayoutMode layoutMode = dataAdapter.getLayoutMode();
+
+        switch (layoutMode) {
+            case LIST:
+                dataAdapter.setLayoutMode(iCardsList.LayoutMode.GRID);
+                break;
+
+            case GRID:
+                dataAdapter.setLayoutMode(iCardsList.LayoutMode.LIST);
+                break;
+
+            default:
+                throw new RuntimeException("Unknown layout mode");
+        }
+
+        pageView.changeLayout(layoutMode);
+        pageView.refreshMenu();
     }
 
 
