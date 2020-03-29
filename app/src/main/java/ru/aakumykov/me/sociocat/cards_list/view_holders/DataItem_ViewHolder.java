@@ -83,7 +83,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
         switch (currentLayoutMode) {
             case LIST:
-                elementView.setBackgroundColor(selectedColor);
+                elementView.setBackgroundResource(R.drawable.list_item_selected);
                 break;
 
             default:
@@ -97,7 +97,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
         switch (currentLayoutMode) {
             case LIST:
-                elementView.setBackgroundColor(deletingStateColor);
+                elementView.setBackgroundResource(R.drawable.list_item_deleting);
                 break;
 
             default:
@@ -109,7 +109,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     private void applyNeutralState() {
         switch (currentLayoutMode) {
             case LIST:
-                elementView.setBackgroundResource(R.drawable.shape_bottom_line);
+                elementView.setBackgroundResource(R.drawable.list_item_neutral);
                 break;
 
             default:

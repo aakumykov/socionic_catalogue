@@ -78,9 +78,13 @@
     <color name="new_cards_notification_background">#FFF176</color>
 
     <!--  Цвет выделенного элемента RecyclerView  -->
-    <color name="element_is_selected">#799575CD</color>
+    <color name="element_is_selected">#459575CD</color>
 
     <!--  Цвет удаляемого элемента RecyclerView  -->
-    <color name="element_is_now_deleting">#8DF48FB1</color>
+    <color name="element_is_now_deleting">#6BF48FB1</color>
+
+    <!--    -->
+    <color name="neutral_list_item_divider_color">#DADADA</color>
+    <color name="colored_list_item_divider_color">#B5B5B5</color>
 
 </resources>
