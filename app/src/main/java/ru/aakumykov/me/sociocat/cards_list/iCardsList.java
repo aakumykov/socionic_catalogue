@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_list;
 import android.content.Intent;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public interface iCardsList {
 
     interface iPageView extends iBaseView {
 
-        void changeLayout(@Nullable LayoutMode layoutMode);
+        void changeLayout(@NonNull LayoutMode layoutMode);
 
         void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
