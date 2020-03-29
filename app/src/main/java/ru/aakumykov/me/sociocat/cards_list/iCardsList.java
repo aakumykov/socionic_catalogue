@@ -26,6 +26,12 @@ public interface iCardsList {
         THROBBER_ITEM
     }
 
+    enum ItemState {
+        SELECTED,
+        DELETING,
+        NEUTRAL
+    }
+
     enum LayoutMode {
         FEED,
         LIST,
@@ -49,9 +55,8 @@ public interface iCardsList {
 
 
     interface iPageView extends iBaseView {
-        void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
-        void changeLayout(LayoutMode layoutMode);
+        void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
         boolean actionModeIsActive();
         void finishActionMode();
@@ -59,7 +64,6 @@ public interface iCardsList {
         void scrollToPosition(int position);
 
         void goShowCard(Card card);
-
         void goEditCard(Card card);
     }
 
@@ -81,6 +85,8 @@ public interface iCardsList {
         void removeItem(ListItem listItem);
 
         int getDataItemsCount();
+
+        LayoutMode getLayoutMode();
 
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
@@ -110,9 +116,9 @@ public interface iCardsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-	void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
+	    void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
 
-	LayoutMode getCurrentLayoutMode();
+	    LayoutMode getCurrentLayoutMode();
 
         void onRefreshRequested();
 

@@ -48,19 +48,19 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     }
 
     @Override
-    public void setViewState(eViewHolderState eViewHolderState) {
-        switch (eViewHolderState) {
+    public void setViewState(iCardsList.ItemState itemState) {
+        switch (itemState) {
             case NEUTRAL:
-                setNeutralState();
+                applyNeutralState();
                 break;
             case SELECTED:
-                setSelectedState();
+                applySelectedState();
                 break;
             case DELETING:
-                setDeletingState();
+                applyDeletingState();
                 break;
             default:
-                Log.e(TAG, "Unknown eViewHolderState: "+ eViewHolderState);
+                Log.e(TAG, "Unknown eViewHolderState: "+ itemState);
         }
     }
 
@@ -78,7 +78,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
 
     // Внутренние
-    private void setSelectedState() {
+    private void applySelectedState() {
         int selectedColor = elementView.getResources().getColor(R.color.element_is_selected);
 
         switch (currentLayoutMode) {
@@ -92,7 +92,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         }
     }
 
-    private void setDeletingState() {
+    private void applyDeletingState() {
         int deletingStateColor = elementView.getResources().getColor(R.color.element_is_now_deleting);
 
         switch (currentLayoutMode) {
@@ -106,7 +106,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         }
     }
 
-    private void setNeutralState() {
+    private void applyNeutralState() {
         switch (currentLayoutMode) {
             case LIST:
                 elementView.setBackgroundResource(R.drawable.shape_bottom_line);

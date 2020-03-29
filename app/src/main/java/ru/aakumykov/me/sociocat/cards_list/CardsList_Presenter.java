@@ -61,14 +61,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        pageView.changeLayout(currentLayoutMode);
+//        pageView.changeLayout(currentLayoutMode);
 
         loadList();
     }
 
     @Override
     public void onConfigurationChanged() {
-        pageView.changeLayout(currentLayoutMode);
+        //pageView.changeLayout(currentLayoutMode);
         pageView.setViewState(currentPageViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
@@ -239,13 +239,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onChangeLayoutClicked() {
-        if (null == currentLayoutMode || iCardsList.LayoutMode.GRID.equals(currentLayoutMode))
+        /*if (null == currentLayoutMode || iCardsList.LayoutMode.GRID.equals(currentLayoutMode))
             currentLayoutMode = iCardsList.LayoutMode.LIST;
         else
             currentLayoutMode = iCardsList.LayoutMode.GRID;
 
-        pageView.changeLayout(currentLayoutMode);
-        pageView.refreshMenu();
+        pageView.changeLayout(currentLayoutMode);*/
+//        pageView.refreshMenu();
     }
 
 

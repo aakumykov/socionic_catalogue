@@ -14,11 +14,6 @@ public class CardsList_ViewStub
         implements iCardsList.iPageView
 {
     @Override
-    public void changeLayout(iCardsList.LayoutMode layoutMode) {
-
-    }
-
-    @Override
     public void setViewState(iCardsList.PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails) {
 
     }

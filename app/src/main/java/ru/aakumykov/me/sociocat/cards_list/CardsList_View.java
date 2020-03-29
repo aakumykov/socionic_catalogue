@@ -63,8 +63,10 @@ public class CardsList_View
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         configureSwipeRefresh();
-        configurePresenterAndAdapter();
+
+        configurePresenter();
         configureLayoutManagers();
+        configureAdapter();
         configureRecyclerView();
     }
 
@@ -91,13 +93,9 @@ public class CardsList_View
             viewIsFresh = false;
 
             if (dataAdapter.isVirgin())
-            {
                 presenter.onFirstOpen(getIntent());
-            }
             else
-            {
                 presenter.onConfigurationChanged();
-            }
         }
     }
 
@@ -244,7 +242,7 @@ public class CardsList_View
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
-    @Override
+    /*@Override
     public void changeLayout(@Nullable iCardsList.LayoutMode layoutMode) {
 
         if (null == layoutMode || iCardsList.LayoutMode.GRID == layoutMode)
@@ -257,7 +255,7 @@ public class CardsList_View
         recyclerView.setAdapter(null);
         dataAdapter.setLayoutMode(presenter.getCurrentLayoutMode());
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
-    }
+    }*/
 
     @Override
     public void setViewState(@Nullable iCardsList.PageViewState pageViewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
@@ -312,20 +310,27 @@ public class CardsList_View
     }
 
     // Внутренние методы
-    private void configurePresenterAndAdapter() {
+    private void configurePresenter() {
 
         CardsList_ViewModel viewModel = new ViewModelProvider(this, new CardsList_ViewModelFactory())
                 .get(CardsList_ViewModel.class);
 
-        // Презентер (должен создаваться перед Адаптером)
         if (viewModel.hasPresenter()) {
             this.presenter = viewModel.getPresenter();
         } else {
             this.presenter = new CardsList_Presenter();
             viewModel.storePresenter(this.presenter);
         }
+    }
 
-        // Адаптер данных
+    private void configureAdapter() {
+
+        if (null == this.presenter)
+            throw new RuntimeException("Presenter must be created first");
+
+        CardsList_ViewModel viewModel = new ViewModelProvider(this, new CardsList_ViewModelFactory())
+                .get(CardsList_ViewModel.class);
+
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
@@ -344,9 +349,18 @@ public class CardsList_View
 
         this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
         this.linearLayoutManager = new LinearLayoutManager(this);
+
+        currentLayoutManager = staggeredGridLayoutManager;
     }
 
     private void configureRecyclerView() {
+
+        if (null == currentLayoutManager)
+            throw new RuntimeException("Layout manager must be configured before RecyclerView");
+
+        if (null == dataAdapter)
+            throw new RuntimeException("Data adapter must be configured before RecyclerView");
+
         recyclerView.setLayoutManager(currentLayoutManager);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }

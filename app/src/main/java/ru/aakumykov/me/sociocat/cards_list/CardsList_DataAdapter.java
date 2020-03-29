@@ -19,7 +19,6 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.LoadMoreItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ThrobberItem;
-import ru.aakumykov.me.sociocat.cards_list.view_holders.eViewHolderState;
 import ru.aakumykov.me.sociocat.utils.selectable_adapter.SelectableAdapter;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.DataItem_ViewHolder;
@@ -40,23 +39,23 @@ public class CardsList_DataAdapter
     private volatile List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-    private iCardsList.SortingMode currentSortingMode;
     private iCardsList.LayoutMode currentLayoutMode;
+    private iCardsList.SortingMode currentSortingMode;
 
 
     // Конструктор
     public CardsList_DataAdapter(
             iCardsList.iPresenter presenter,
-            iCardsList.LayoutMode initialLayoutMode,
-            iCardsList.SortingMode initialSortingMode
+            iCardsList.LayoutMode layoutMode,
+            iCardsList.SortingMode sortingMode
     ) {
 
         if (null == presenter)
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
 
         this.presenter = presenter;
-        this.currentLayoutMode = initialLayoutMode;
-        this.currentSortingMode = initialSortingMode;
+        this.currentLayoutMode = layoutMode;
+        this.currentSortingMode = sortingMode;
     }
 
 
@@ -78,7 +77,8 @@ public class CardsList_DataAdapter
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        BasicViewHolder basicViewHolder = CardsList_ItemFactory.createViewHolder(viewType, parent, this.currentLayoutMode);
+        BasicViewHolder basicViewHolder =
+                CardsList_ItemFactory.createViewHolder(viewType, parent, currentLayoutMode);
 
         basicViewHolder.setPresenter(presenter);
 
@@ -92,13 +92,7 @@ public class CardsList_DataAdapter
 
         if (listItem instanceof DataItem) {
             viewHolder = (DataItem_ViewHolder) holder;
-
-            if (isSelected(position))
-                viewHolder.setViewState(eViewHolderState.SELECTED);
-            else if (listItem.isNowDeleting())
-                viewHolder.setViewState(eViewHolderState.DELETING);
-            else
-                viewHolder.setViewState(eViewHolderState.NEUTRAL);
+            setViewHolderViewState(viewHolder, position, listItem);
         }
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;
@@ -223,6 +217,11 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public iCardsList.LayoutMode getLayoutMode() {
+        return currentLayoutMode;
+    }
+
+    @Override
     public void sortByName(iCardsList.SortingListener sortingListener) {
         switch (currentSortingMode) {
             case ORDER_NAME_DIRECT:
@@ -342,6 +341,18 @@ public class CardsList_DataAdapter
 
 
     // Внутренние методы
+    private void setViewHolderViewState(BasicViewHolder dataItemViewHolder, int position, ListItem listItem) {
+
+        if (isSelected(position))
+            dataItemViewHolder.setViewState(iCardsList.ItemState.SELECTED);
+
+        else if (listItem.isNowDeleting())
+            dataItemViewHolder.setViewState(iCardsList.ItemState.DELETING);
+
+        else
+            dataItemViewHolder.setViewState(iCardsList.ItemState.NEUTRAL);
+    }
+
     private int getMaxIndex() {
         int size = itemsList.size();
 

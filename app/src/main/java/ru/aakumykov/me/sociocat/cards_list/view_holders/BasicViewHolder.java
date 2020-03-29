@@ -21,5 +21,5 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
     public abstract void initialize(Object payload);
 
-    public abstract void setViewState(eViewHolderState eViewHolderState);
+    public abstract void setViewState(iCardsList.ItemState eItemState);
 }

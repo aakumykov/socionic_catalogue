@@ -68,6 +68,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public iCardsList.LayoutMode getLayoutMode() {
+        return null;
+    }
+
+    @Override
     public void sortByName(iCardsList.SortingListener sortingListener) {
 
     }

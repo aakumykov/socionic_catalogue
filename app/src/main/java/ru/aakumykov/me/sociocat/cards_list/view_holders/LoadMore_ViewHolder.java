@@ -6,6 +6,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 
 public class LoadMore_ViewHolder extends BasicViewHolder {
 
@@ -23,7 +24,7 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
     }
 
     @Override
-    public void setViewState(eViewHolderState eViewHolderState) {
+    public void setViewState(iCardsList.ItemState eItemState) {
 
     }
 
