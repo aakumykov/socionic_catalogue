@@ -61,12 +61,14 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         int selectedStateColor = elementView.getResources().getColor(R.color.element_is_selected);
 
         if (isListMode()) {
+            // Режим списка
             if (isSelected)
                 elementView.setBackgroundColor(selectedStateColor);
             else
                 elementView.setBackgroundResource(R.drawable.shape_bottom_line);
         }
         else {
+            // Режим сетки
             if (null != selectedOverlay)
                 selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
         }
@@ -77,12 +79,14 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         int deletingStateColor = elementView.getResources().getColor(R.color.element_is_now_deleting);
 
         if (isListMode()) {
+            // Режим списка
             if (isNowDeleting)
                 elementView.setBackgroundColor(deletingStateColor);
             else
                 elementView.setBackgroundResource(R.drawable.shape_bottom_line);
         }
         else {
+            // Режим сетки
             if (isNowDeleting)
                 ((CardView)elementView).setCardBackgroundColor(deletingStateColor);
             else

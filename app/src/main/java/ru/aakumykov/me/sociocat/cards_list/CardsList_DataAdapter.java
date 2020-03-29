@@ -88,6 +88,8 @@ public class CardsList_DataAdapter
             viewHolder = (DataItem_ViewHolder) holder;
 
             viewHolder.setIsNowDeleting(listItem.isNowDeleting());
+
+            viewHolder.setSelected(isSelected(position));
         }
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;
@@ -100,7 +102,6 @@ public class CardsList_DataAdapter
         }
 
         viewHolder.initialize(listItem);
-        viewHolder.setSelected(isSelected(position));
 
         // Достигнут конец списка
         if (position == (itemsList.size() - 1)) {
