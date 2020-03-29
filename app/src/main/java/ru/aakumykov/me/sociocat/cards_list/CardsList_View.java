@@ -329,7 +329,11 @@ public class CardsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new CardsList_DataAdapter(presenter, iCardsList.LayoutMode.GRID);
+            this.dataAdapter = new CardsList_DataAdapter(
+                    presenter,
+                    iCardsList.LayoutMode.GRID,
+                    iCardsList.SortingMode.ORDER_NAME_DIRECT
+            );
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }

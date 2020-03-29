@@ -40,18 +40,23 @@ public class CardsList_DataAdapter
     private volatile List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-    private iCardsList.SortingMode currentSortingMode = iCardsList.SortingMode.ORDER_NAME_DIRECT;
-    private iCardsList.LayoutMode currentLayoutMode = iCardsList.LayoutMode.GRID;
+    private iCardsList.SortingMode currentSortingMode;
+    private iCardsList.LayoutMode currentLayoutMode;
 
 
     // Конструктор
-    public CardsList_DataAdapter(iCardsList.iPresenter presenter, iCardsList.LayoutMode layoutMode) {
+    public CardsList_DataAdapter(
+            iCardsList.iPresenter presenter,
+            iCardsList.LayoutMode initialLayoutMode,
+            iCardsList.SortingMode initialSortingMode
+    ) {
 
         if (null == presenter)
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
 
         this.presenter = presenter;
-//        this.currentLayoutMode = layoutMode;
+        this.currentLayoutMode = initialLayoutMode;
+        this.currentSortingMode = initialSortingMode;
     }
 
 
