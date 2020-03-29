@@ -50,7 +50,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     @Override
     public void setViewState(eViewHolderState eViewHolderState) {
         switch (eViewHolderState) {
-            case NAUTRAL:
+            case NEUTRAL:
                 setNeutralState();
                 break;
             case SELECTED:

@@ -93,7 +93,7 @@ public class CardsList_DataAdapter
             else if (listItem.isNowDeleting())
                 viewHolder.setViewState(eViewHolderState.DELETING);
             else
-                viewHolder.setViewState(eViewHolderState.NAUTRAL);
+                viewHolder.setViewState(eViewHolderState.NEUTRAL);
         }
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;
