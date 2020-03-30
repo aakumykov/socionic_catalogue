@@ -8,13 +8,46 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyBottomSheetMenuStyle" parent="@style/Theme.BottomSheetMenuDialog">
-        <item name="bottom_sheet_menu_list_text_appearance">@style/ListAppearance</item>
+    <!--  Меню внизу страницы, для тёмного фона -->
+    <style name="MyBottomSheetMenuStyleForDark" parent="@style/Theme.BottomSheetMenuDialog">
+        <item name="bottom_sheet_menu_title_text_appearance">@style/TitleAppearanceOnDark</item>
+        <item name="bottom_sheet_menu_list_text_appearance">@style/ListAppearanceOnDark</item>
+        <item name="bottom_sheet_menu_grid_text_appearance">@style/GridAppearanceOnDark</item>
     </style>
 
-    <style name="ListAppearance" parent="BottomSheetMenu.ListItem.TextAppearance">
-<!--        <item name="android:textColor">@android:color/holo_red_light</item>-->
+    <style name="TitleAppearanceOnDark" parent="BottomSheetMenu.Title.TextAppearance">
+        <item name="android:textColor">@color/lightest_grey</item>
+    </style>
+
+    <style name="ListAppearanceOnDark" parent="BottomSheetMenu.ListItem.TextAppearance">
+<!--        <item name="android:textColor">@color/lightest_grey</item>-->
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="GridAppearanceOnDark" parent="BottomSheetMenu.GridItem.TextAppearance">
+<!--        <item name="android:textColor">@color/lightest_grey</item>-->
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--  Меню внизу страницы, для светлого фона -->
+    <style name="MyBottomSheetMenuStyleForLight" parent="@style/Theme.BottomSheetMenuDialog.Light">
+        <item name="bottom_sheet_menu_title_text_appearance">@style/TitleAppearanceOnLight</item>
+        <item name="bottom_sheet_menu_list_text_appearance">@style/ListAppearanceOnLight</item>
+        <item name="bottom_sheet_menu_grid_text_appearance">@style/GridAppearanceOnLight</item>
+    </style>
+
+    <style name="TitleAppearanceOnLight" parent="BottomSheetMenu.Title.TextAppearance.Light">
+<!--        <item name="android:textColor">@color/lightest_grey</item>-->
+    </style>
+
+    <style name="ListAppearanceOnLight" parent="BottomSheetMenu.ListItem.TextAppearance.Light">
+<!--        <item name="android:textColor">@color/lightest_grey</item>-->
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="GridAppearanceOnLight" parent="BottomSheetMenu.GridItem.TextAppearance.Light">
+<!--        <item name="android:textColor">@color/lightest_grey</item>-->
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

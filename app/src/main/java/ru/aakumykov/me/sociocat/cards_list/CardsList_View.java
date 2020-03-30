@@ -263,7 +263,7 @@ public class CardsList_View
 
     @Override
     public void showAddNewCardMenu() {
-        new BottomSheetMenuDialogFragment.Builder(this, R.style.MyBottomSheetMenuStyle)
+        new BottomSheetMenuDialogFragment.Builder(this, R.style.MyBottomSheetMenuStyleForLight)
                 .setSheet(R.menu.add_new_card_bottom_shet_menu)
                 .setTitle(R.string.add_new_card_bottom_menu_title)
                 .setListener(bottomSheetListener)
