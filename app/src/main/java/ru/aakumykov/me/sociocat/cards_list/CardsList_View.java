@@ -209,11 +209,7 @@ public class CardsList_View
                 });
                 break;
 
-            case R.id.actionListView:
-                presenter.onChangeLayoutClicked();
-                break;
-
-            case R.id.actionGridView:
+            case R.id.actionViewMode:
                 presenter.onChangeLayoutClicked();
                 break;
 
@@ -299,12 +295,16 @@ public class CardsList_View
     public void changeViewMode(@NonNull iCardsList.ViewMode viewMode) {
 
         switch (viewMode) {
+            case FEED:
+                currentLayoutManager = feedLayoutManager;
+                break;
+
             case LIST:
-                currentLayoutManager = gridLayoutManager;
+                currentLayoutManager = listLayoutManager;
                 break;
 
             case GRID:
-                currentLayoutManager = listLayoutManager;
+                currentLayoutManager = gridLayoutManager;
                 break;
 
             default:
@@ -312,9 +312,6 @@ public class CardsList_View
         }
 
         recyclerView.setLayoutManager(currentLayoutManager);
-
-//        recyclerView.swapAdapter();
-
         recyclerView.setAdapter(null);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
