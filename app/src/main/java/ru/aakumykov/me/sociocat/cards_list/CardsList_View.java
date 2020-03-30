@@ -17,9 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
+
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
@@ -53,6 +60,8 @@ public class CardsList_View
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionModeCallback();
 
+    private BottomSheetListener bottomSheetListener;
+
 
     // Activity
     @Override
@@ -69,6 +78,8 @@ public class CardsList_View
         configureLayoutManagers();
         configureAdapter();
         configureRecyclerView();
+
+        configureBottomSheetListener();
     }
 
     @Override
@@ -244,6 +255,23 @@ public class CardsList_View
     }
 
     @Override
+    public void showAddNewCardMenu() {
+        new BottomSheetMenuDialogFragment.Builder(getActivity())
+                .setSheet(R.menu.add_new_card_bottom_shet_menu)
+                .setTitle(R.string.add_new_card_bottom_menu_title)
+                .setListener(bottomSheetListener)
+                .show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void goCreateCard(CardType cardType) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Constants.CARD_TYPE, cardType.name());
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    @Override
     public void changeLayout(@NonNull iCardsList.LayoutMode layoutMode) {
 
         switch (layoutMode) {
@@ -373,6 +401,45 @@ public class CardsList_View
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
+    private void configureBottomSheetListener() {
+        bottomSheetListener = new BottomSheetListener() {
+            @Override
+            public void onSheetShown(@NotNull BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, @org.jetbrains.annotations.Nullable Object o) {
+
+            }
+
+            @Override
+            public void onSheetItemSelected(@NotNull BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment,
+                                            @NotNull MenuItem menuItem, @org.jetbrains.annotations.Nullable Object o) {
+                switch (menuItem.getItemId()) {
+                    case R.id.actionAddTextCard:
+                        presenter.onAddNewCardItemSelected(CardType.TEXT_CARD);
+                        break;
+
+                    case R.id.actionAddImageCard:
+                        presenter.onAddNewCardItemSelected(CardType.IMAGE_CARD);
+                        break;
+
+                    case R.id.actionAddAudioCard:
+                        presenter.onAddNewCardItemSelected(CardType.AUDIO_CARD);
+                        break;
+
+                    case R.id.actionAddVideoCard:
+                        presenter.onAddNewCardItemSelected(CardType.VIDEO_CARD);
+                        break;
+
+                    default:
+                        throw new RuntimeException("Unknown item id");
+                }
+            }
+
+            @Override
+            public void onSheetDismissed(@NotNull BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, @org.jetbrains.annotations.Nullable Object o, int i) {
+
+            }
+        };
+    }
+
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
@@ -460,6 +527,11 @@ public class CardsList_View
     }
 
 
+    // Нажатия
+    @OnClick(R.id.floatingActionButton)
+    void onFABClicked() {
+        presenter.onAddNewCardMenuClicked();
+    }
 
     // Внутренние классы
     private class ActionModeCallback implements ActionMode.Callback {

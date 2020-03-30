@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
@@ -226,7 +227,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onCreateCardClicked(Constants.CardType cardType) {
+    public void onCreateCardClicked(CardType cardType) {
         pageView.goCreateCard(cardType);
     }
 

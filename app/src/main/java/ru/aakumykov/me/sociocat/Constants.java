@@ -4,13 +4,6 @@ public final class Constants
 {
     private Constants() {}
 
-    public enum CardType {
-        TEXT_CARD,
-        IMAGE_CARD,
-        AUDIO_CARD,
-        VIDEO_CARD
-    }
-
     public final static String CARDS_PATH = "cards";
     public final static String TAGS_PATH = "tags";
     public final static String COMMENTS_PATH = "comments";

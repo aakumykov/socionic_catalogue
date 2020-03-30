@@ -10,6 +10,7 @@
     <color name="light_grey">#dadada</color>
     <color name="lightest_grey">#F3F3F3</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="undefined">#a4a4a4</color>
     <color name="debug">#a4a4a4</color>
@@ -88,8 +89,8 @@
     <color name="colored_list_item_divider_color">#B5B5B5</color>
 
     <!--  Цвета BottomSheetMenu  -->
-    <color name="bottom_sheet_list_item_color_dark">@color/grey</color>
-    <color name="bottom_sheet_list_item_color_light">@color/light_grey</color>
+    <color name="bottom_sheet_list_item_color_light">@color/black</color>
+    <color name="bottom_sheet_list_item_color_dark">@color/lightest_grey</color>
 
     <!--  Цвет иконок меню, вызываемого плавающей кнопкой  -->
     <color name="bottom_sheet_menu_icon_color">@color/light_grey</color>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionAddTextCard"
+        android:icon="@drawable/ic_fab_text"
+        android:title="@string/FAB_subitem_text" />
+
+    <item
+        android:id="@+id/actionAddImageCard"
+        android:icon="@drawable/ic_fab_image"
+        android:title="@string/FAB_subitem_image" />
+
+    <item
+        android:id="@+id/actionAddAudioCard"
+        android:icon="@drawable/ic_fab_audio"
+        android:title="@string/FAB_subitem_audio" />
+
+    <item
+        android:id="@+id/actionAddVideoCard"
+        android:icon="@drawable/ic_fab_video"
+        android:title="@string/FAB_subitem_video" />
+</menu>

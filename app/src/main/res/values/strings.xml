@@ -403,7 +403,7 @@
     <string name="DRAFT_RESTORE_DIALOG_title">Найдена несохранённая карточка</string>
     <string name="DRAFT_RESTORE_DIALOG_remind_later">Напомнить позже</string>
     <string name="FAB_subitem_audio">Аудио</string>
-    <string name="FAB_subitem_image">Картинка</string>
+    <string name="FAB_subitem_image">Картинку</string>
     <string name="FAB_subitem_video">Видео</string>
     <string name="FAB_subitem_text">Текст</string>
     <string name="USER_SHOW_cards_of_user">Карточки пользователя</string>
@@ -669,6 +669,7 @@
     <string name="LIST_TEMPLATE_loading_list">Загружаем список</string>
     <string name="card_deleted_long">Карточка «%1$s» удалена</string>
     <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
+    <string name="add_new_card_bottom_menu_title">Добавить</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
@@ -68,6 +69,10 @@ public interface iCardsList {
 
         void goShowCard(Card card);
         void goEditCard(Card card);
+
+        void showAddNewCardMenu();
+
+        void goCreateCard(CardType cardType);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
@@ -148,6 +153,9 @@ public interface iCardsList {
         void onActionModeDestroyed();
 
         void onChangeLayoutClicked();
+
+        void onAddNewCardMenuClicked();
+        void onAddNewCardItemSelected(CardType cardType);
     }
 
 

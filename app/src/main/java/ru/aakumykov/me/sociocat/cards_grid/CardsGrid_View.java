@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -43,6 +42,7 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
@@ -326,7 +326,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void goCreateCard(Constants.CardType cardType) {
+    public void goCreateCard(CardType cardType) {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType.name());
@@ -458,19 +458,19 @@ public class CardsGrid_View extends BaseView implements
         switch (actionItem.getId()) {
 
             case R.id.fab_quote:
-                presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                presenter.onCreateCardClicked(CardType.TEXT_CARD);
                 return false;
 
             case R.id.fab_image:
-                presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
+                presenter.onCreateCardClicked(CardType.IMAGE_CARD);
                 return false;
 
             case R.id.fab_audio:
-                presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
+                presenter.onCreateCardClicked(CardType.AUDIO_CARD);
                 return false;
 
             case R.id.fab_video:
-                presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
+                presenter.onCreateCardClicked(CardType.VIDEO_CARD);
                 return false;
 
             default:

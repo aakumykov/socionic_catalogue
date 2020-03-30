@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_DataAdapter_Stub;
@@ -257,6 +258,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         pageView.changeLayout(layoutMode);
         pageView.refreshMenu();
+    }
+
+    @Override
+    public void onAddNewCardMenuClicked() {
+        pageView.showAddNewCardMenu();
+    }
+
+    @Override
+    public void onAddNewCardItemSelected(CardType cardType) {
+        pageView.goCreateCard(cardType);
     }
 
 
