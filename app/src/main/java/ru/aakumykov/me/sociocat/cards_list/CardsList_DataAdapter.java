@@ -330,9 +330,10 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void addDataItem(DataItem dataItem) {
+    public int addJustCreatedItem(DataItem dataItem) {
         itemsList.add(0, dataItem);
         notifyItemInserted(0);
+        return 0;
     }
 
 
@@ -358,6 +359,11 @@ public class CardsList_DataAdapter
             dataItemViewHolder.setViewState(iCardsList.ItemState.NEUTRAL);
     }
 
+    private void addItem(ListItem listItem) {
+        itemsList.add(listItem);
+        notifyItemInserted(itemsList.indexOf(listItem));
+    }
+
     private int getMaxIndex() {
         int size = itemsList.size();
 
@@ -365,12 +371,6 @@ public class CardsList_DataAdapter
             return -1;
 
         return size - 1;
-    }
-
-    private void addItem(ListItem listItem) {
-        itemsList.add(listItem);
-        int index = itemsList.indexOf(listItem);
-        notifyItemInserted(index);
     }
 
     private ListItem getEndingItem() {

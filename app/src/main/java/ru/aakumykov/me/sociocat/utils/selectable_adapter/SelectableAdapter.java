@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.utils.selectable_adapter;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;

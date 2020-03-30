@@ -118,7 +118,7 @@ public interface iCardsList {
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
 
-        void addDataItem(DataItem dataItem);
+        int addJustCreatedItem(DataItem dataItem);
     }
 
     interface iPresenter {
@@ -160,10 +160,10 @@ public interface iCardsList {
 
         void onChangeLayoutClicked();
 
-        void onAddNewCardMenuClicked();
-        void onAddNewCardItemSelected(CardType cardType);
+        void onNewCardMenuClicked();
+        void onNewCardTypeSelected(CardType cardType);
 
-        void onCardCreated(@Nullable Intent data);
+        void onNewCardCreated(@Nullable Intent data);
         void onCardEdited(@Nullable Intent data);
     }
 

@@ -264,17 +264,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onAddNewCardMenuClicked() {
+    public void onNewCardMenuClicked() {
         pageView.showAddNewCardMenu();
     }
 
     @Override
-    public void onAddNewCardItemSelected(CardType cardType) {
+    public void onNewCardTypeSelected(CardType cardType) {
         pageView.goCreateCard(cardType);
     }
 
     @Override
-    public void onCardCreated(@Nullable Intent intent) {
+    public void onNewCardCreated(@Nullable Intent intent) {
         if (null == intent) {
             setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Intent is null");
             return;
@@ -292,7 +292,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             dataItem.setCount(card.getTitle().length());
             dataItem.setPayload(card);
 
-        dataAdapter.addDataItem(dataItem);
+        int position = dataAdapter.addJustCreatedItem(dataItem);
+        pageView.scrollToPosition(position);
     }
 
     @Override

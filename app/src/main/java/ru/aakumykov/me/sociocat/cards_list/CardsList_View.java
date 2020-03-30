@@ -296,6 +296,8 @@ public class CardsList_View
 
         recyclerView.setLayoutManager(currentLayoutManager);
 
+//        recyclerView.swapAdapter();
+
         recyclerView.setAdapter(null);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
@@ -424,19 +426,19 @@ public class CardsList_View
                                             @NotNull MenuItem menuItem, @org.jetbrains.annotations.Nullable Object o) {
                 switch (menuItem.getItemId()) {
                     case R.id.actionAddTextCard:
-                        presenter.onAddNewCardItemSelected(CardType.TEXT_CARD);
+                        presenter.onNewCardTypeSelected(CardType.TEXT_CARD);
                         break;
 
                     case R.id.actionAddImageCard:
-                        presenter.onAddNewCardItemSelected(CardType.IMAGE_CARD);
+                        presenter.onNewCardTypeSelected(CardType.IMAGE_CARD);
                         break;
 
                     case R.id.actionAddAudioCard:
-                        presenter.onAddNewCardItemSelected(CardType.AUDIO_CARD);
+                        presenter.onNewCardTypeSelected(CardType.AUDIO_CARD);
                         break;
 
                     case R.id.actionAddVideoCard:
-                        presenter.onAddNewCardItemSelected(CardType.VIDEO_CARD);
+                        presenter.onNewCardTypeSelected(CardType.VIDEO_CARD);
                         break;
 
                     default:
@@ -529,7 +531,7 @@ public class CardsList_View
         if (RESULT_OK != resultCode)
             return;
 
-        presenter.onCardCreated(data);
+        presenter.onNewCardCreated(data);
     }
 
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
@@ -540,7 +542,7 @@ public class CardsList_View
     // Нажатия
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
-        presenter.onAddNewCardMenuClicked();
+        presenter.onNewCardMenuClicked();
     }
 
     // Внутренние классы

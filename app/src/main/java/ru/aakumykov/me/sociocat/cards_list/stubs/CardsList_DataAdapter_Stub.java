@@ -12,6 +12,7 @@ public class CardsList_DataAdapter_Stub
         extends SelectableAdapter_Stub
         implements iCardsList.iDataAdapter
 {
+
     @Override
     public void setPresenter(iCardsList.iPresenter presenter) {
 
@@ -138,8 +139,8 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
-    public void addDataItem(DataItem dataItem) {
-
+    public int addJustCreatedItem(DataItem dataItem) {
+        return 0;
     }
 
     @Override
