@@ -67,14 +67,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-//        pageView.changeLayout(currentViewMode);
+//        pageView.changeViewMode(currentViewMode);
 
         loadList();
     }
 
     @Override
     public void onConfigurationChanged() {
-        //pageView.changeLayout(currentViewMode);
+        //pageView.changeViewMode(currentViewMode);
         pageView.setViewState(currentPageViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
@@ -258,7 +258,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
                 throw new RuntimeException("Unknown layout mode");
         }
 
-        pageView.changeLayout(viewMode);
+        pageView.changeViewMode(viewMode);
         pageView.refreshMenu();
     }
 

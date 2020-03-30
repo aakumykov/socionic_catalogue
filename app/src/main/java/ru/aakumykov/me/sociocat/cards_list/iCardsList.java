@@ -58,7 +58,7 @@ public interface iCardsList {
 
     interface iPageView extends iBaseView {
 
-        void changeLayout(@NonNull ViewMode viewMode);
+        void changeViewMode(@NonNull ViewMode viewMode);
 
         void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 

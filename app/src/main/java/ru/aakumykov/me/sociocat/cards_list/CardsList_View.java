@@ -279,7 +279,7 @@ public class CardsList_View
     }
 
     @Override
-    public void changeLayout(@NonNull iCardsList.ViewMode viewMode) {
+    public void changeViewMode(@NonNull iCardsList.ViewMode viewMode) {
 
         switch (viewMode) {
             case LIST:
