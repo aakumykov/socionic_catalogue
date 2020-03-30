@@ -36,7 +36,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.PageViewState currentPageViewState;
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
-    private iCardsList.LayoutMode currentLayoutMode;
+    private iCardsList.ViewMode currentViewMode;
 
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -67,14 +67,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-//        pageView.changeLayout(currentLayoutMode);
+//        pageView.changeLayout(currentViewMode);
 
         loadList();
     }
 
     @Override
     public void onConfigurationChanged() {
-        //pageView.changeLayout(currentLayoutMode);
+        //pageView.changeLayout(currentViewMode);
         pageView.setViewState(currentPageViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
@@ -243,22 +243,22 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onChangeLayoutClicked() {
 
-        iCardsList.LayoutMode layoutMode = dataAdapter.getLayoutMode();
+        iCardsList.ViewMode viewMode = dataAdapter.getLayoutMode();
 
-        switch (layoutMode) {
+        switch (viewMode) {
             case LIST:
-                dataAdapter.setLayoutMode(iCardsList.LayoutMode.GRID);
+                dataAdapter.setLayoutMode(iCardsList.ViewMode.GRID);
                 break;
 
             case GRID:
-                dataAdapter.setLayoutMode(iCardsList.LayoutMode.LIST);
+                dataAdapter.setLayoutMode(iCardsList.ViewMode.LIST);
                 break;
 
             default:
                 throw new RuntimeException("Unknown layout mode");
         }
 
-        pageView.changeLayout(layoutMode);
+        pageView.changeLayout(viewMode);
         pageView.refreshMenu();
     }
 

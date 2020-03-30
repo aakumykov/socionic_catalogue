@@ -24,15 +24,15 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
-    private iCardsList.LayoutMode currentLayoutMode;
+    private iCardsList.ViewMode currentViewMode;
     private int neutralStateColor = -1;
 
 
     // Конструктор
-    public DataItem_ViewHolder(View itemView, iCardsList.LayoutMode layoutMode) {
+    public DataItem_ViewHolder(View itemView, iCardsList.ViewMode viewMode) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        currentLayoutMode = layoutMode;
+        currentViewMode = viewMode;
     }
 
 
@@ -81,7 +81,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     private void applySelectedState() {
         int selectedColor = elementView.getResources().getColor(R.color.element_is_selected);
 
-        switch (currentLayoutMode) {
+        switch (currentViewMode) {
             case LIST:
                 elementView.setBackgroundResource(R.drawable.list_item_selected);
                 break;
@@ -95,7 +95,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     private void applyDeletingState() {
         int deletingStateColor = elementView.getResources().getColor(R.color.element_is_now_deleting);
 
-        switch (currentLayoutMode) {
+        switch (currentViewMode) {
             case LIST:
                 elementView.setBackgroundResource(R.drawable.list_item_deleting);
                 break;
@@ -107,7 +107,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     }
 
     private void applyNeutralState() {
-        switch (currentLayoutMode) {
+        switch (currentViewMode) {
             case LIST:
                 elementView.setBackgroundResource(R.drawable.list_item_neutral);
                 break;

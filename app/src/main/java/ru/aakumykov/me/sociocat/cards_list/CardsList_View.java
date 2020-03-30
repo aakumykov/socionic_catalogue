@@ -279,9 +279,9 @@ public class CardsList_View
     }
 
     @Override
-    public void changeLayout(@NonNull iCardsList.LayoutMode layoutMode) {
+    public void changeLayout(@NonNull iCardsList.ViewMode viewMode) {
 
-        switch (layoutMode) {
+        switch (viewMode) {
             case LIST:
                 currentLayoutManager = staggeredGridLayoutManager;
                 break;
@@ -390,7 +390,7 @@ public class CardsList_View
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
             this.dataAdapter = new CardsList_DataAdapter(
-                    iCardsList.LayoutMode.GRID,
+                    iCardsList.ViewMode.GRID,
                     iCardsList.SortingMode.ORDER_NAME_DIRECT
                 );
             viewModel.storeDataAdapter(this.dataAdapter);

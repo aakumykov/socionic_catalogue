@@ -34,7 +34,7 @@ public interface iCardsList {
         NEUTRAL
     }
 
-    enum LayoutMode {
+    enum ViewMode {
         FEED,
         LIST,
         GRID
@@ -58,7 +58,7 @@ public interface iCardsList {
 
     interface iPageView extends iBaseView {
 
-        void changeLayout(@NonNull LayoutMode layoutMode);
+        void changeLayout(@NonNull ViewMode viewMode);
 
         void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
 
@@ -96,7 +96,7 @@ public interface iCardsList {
 
         int getDataItemsCount();
 
-        LayoutMode getLayoutMode();
+        ViewMode getLayoutMode();
 
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
@@ -114,7 +114,7 @@ public interface iCardsList {
 
         List<DataItem> getSelectedItems();
 
-        void setLayoutMode(LayoutMode layoutMode);
+        void setLayoutMode(ViewMode viewMode);
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
 
