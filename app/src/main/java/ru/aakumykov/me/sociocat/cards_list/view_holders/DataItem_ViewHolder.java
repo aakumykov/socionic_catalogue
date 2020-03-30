@@ -27,7 +27,6 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.elementView) ViewGroup elementView;
     @BindView(R.id.titleView) TextView titleView;
-    @Nullable @BindView(R.id.countView) TextView countView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
 
@@ -48,31 +47,62 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     // Заполнение данными
     public void initialize(ListItem listItem) {
         this.dataItem = (DataItem) listItem;
-
         Card card = (Card) dataItem.getPayload();
 
         titleView.setText(card.getTitle());
 
-        if (null != imageView) {
-            if (card.isImageCard()) {
-                MyUtils.show(imageView);
-
-                Glide.with(imageView).load(card.getImageURL())
-                        .error(R.drawable.ic_image_error)
-                        .into(imageView);
-            }
-            else {
-                MyUtils.hide(imageView);
-            }
+        switch (currentViewMode) {
+            case FEED:
+                initializeInFeedMode(card);
+                break;
+            case LIST:
+                initializeInListMode(card);
+                break;
+            case GRID:
+                initializeInGridMode(card);
+                break;
+            default:
+                throw new RuntimeException("Unknown view mode: "+currentViewMode);
         }
+    }
 
-        if (null != quoteView) {
-            if (card.isTextCard()) {
-                quoteView.setText(card.getQuote());
-            }
-            else {
-                MyUtils.hide(quoteView);
-            }
+    private void initializeInFeedMode(Card card) {
+        if (card.isImageCard()) {
+            MyUtils.show(imageView);
+
+            Glide.with(imageView).load(card.getImageURL())
+                    .error(R.drawable.ic_image_error)
+                    .into(imageView);
+        }
+        else
+            MyUtils.hide(imageView);
+
+        if (card.isTextCard()) {
+            quoteView.setText(card.getQuote());
+        }
+        else
+            MyUtils.hide(quoteView);
+    }
+
+    private void initializeInListMode(Card card) {
+        titleView.setText(card.getTitle());
+    }
+
+    private void initializeInGridMode(Card card) {
+        if (card.isImageCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_image);
+        }
+        else if (card.isTextCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_text);
+        }
+        else if (card.isAudioCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_audio);
+        }
+        else if (card.isVideoCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_video);
+        }
+        else {
+            imageView.setImageResource(R.drawable.ic_card_type_unknown);
         }
     }
 
