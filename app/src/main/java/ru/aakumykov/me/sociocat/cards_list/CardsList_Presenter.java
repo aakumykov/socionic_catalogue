@@ -296,7 +296,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             dataItem.setCount(card.getTitle().length());
             dataItem.setPayload(card);
 
-        dataAdapter.addJustCreatedItem(dataItem);
+        dataAdapter.addItem(dataItem);
     }
 
     @Override
@@ -313,7 +313,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         }
 
         currentlyEditedItem.setPayload(card);
-        dataAdapter.updateJustEditedItem(currentlyEditedItem);
+        dataAdapter.updateItem(currentlyEditedItem);
     }
 
 

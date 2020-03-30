@@ -275,7 +275,7 @@ public class CardsList_DataAdapter
         if (endingItem instanceof ThrobberItem) {
             replaceEndingItem(new LoadMoreItem());
         } else {
-            addItem(new LoadMoreItem());
+            appendItem(new LoadMoreItem());
         }
     }
 
@@ -289,7 +289,7 @@ public class CardsList_DataAdapter
         if (endingItem instanceof LoadMoreItem)
             replaceEndingItem(new ThrobberItem());
         else
-            addItem(new ThrobberItem());
+            appendItem(new ThrobberItem());
     }
 
     @Override
@@ -330,14 +330,14 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public int addJustCreatedItem(@NonNull DataItem dataItem) {
+    public int addItem(@NonNull DataItem dataItem) {
         itemsList.add(0, dataItem);
         notifyItemInserted(0);
         return 0;
     }
 
     @Override
-    public void updateJustEditedItem(@NonNull DataItem dataItem) {
+    public void updateItem(@NonNull DataItem dataItem) {
         int index = itemsList.indexOf(dataItem);
         itemsList.set(index, dataItem);
         notifyItemChanged(index);
@@ -366,7 +366,7 @@ public class CardsList_DataAdapter
             dataItemViewHolder.setViewState(iCardsList.ItemState.NEUTRAL);
     }
 
-    private void addItem(ListItem listItem) {
+    private void appendItem(ListItem listItem) {
         itemsList.add(listItem);
         notifyItemInserted(itemsList.indexOf(listItem));
     }
