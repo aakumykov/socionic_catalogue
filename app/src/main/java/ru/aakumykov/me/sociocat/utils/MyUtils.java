@@ -54,36 +54,45 @@ public final class MyUtils {
 
     private MyUtils() {}
 
-    public static void show(View view) {
-        view.setVisibility(View.VISIBLE);
+    public static void show(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.VISIBLE);
     }
 
-    public static void hide(View view) {
-        view.setVisibility(View.GONE);
+    public static void hide(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.GONE);
     }
 
-    public static void hide(View view, boolean makeInvisibleInsteadOfGone) {
-        if (makeInvisibleInsteadOfGone)
-            view.setVisibility(View.INVISIBLE);
-        else
-            MyUtils.hide(view);
-    }
-
-    public static void toggleVisibility(View view) {
-        if (View.VISIBLE == view.getVisibility()) {
-            MyUtils.show(view);
-        }
-        else {
-            MyUtils.hide(view);
+    public static void hide(@Nullable View view, boolean makeInvisibleInsteadOfGone) {
+        if (null != view) {
+            if (makeInvisibleInsteadOfGone)
+                view.setVisibility(View.INVISIBLE);
+            else
+                MyUtils.hide(view);
         }
     }
 
-    public static void enable(View view) {
-        view.setEnabled(true);
+    public static void toggleVisibility(@Nullable View view) {
+        if (null != view) {
+            if (View.VISIBLE == view.getVisibility()) {
+                MyUtils.show(view);
+            } else {
+                MyUtils.hide(view);
+            }
+        }
     }
 
-    public static void disable(View view) {
-        view.setEnabled(false);
+    public static void enable(@Nullable View view) {
+        if (null != view) {
+            view.setEnabled(true);
+        }
+    }
+
+    public static void disable(@Nullable View view) {
+        if (null != view) {
+            view.setEnabled(false);
+        }
     }
 
     public static String mime2ext(String mimeType) {
