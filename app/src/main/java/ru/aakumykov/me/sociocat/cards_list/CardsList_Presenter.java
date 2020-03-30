@@ -296,8 +296,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             dataItem.setCount(card.getTitle().length());
             dataItem.setPayload(card);
 
-        int position = dataAdapter.addJustCreatedItem(dataItem);
-        pageView.scrollToPosition(position);
+        dataAdapter.addJustCreatedItem(dataItem);
     }
 
     @Override
