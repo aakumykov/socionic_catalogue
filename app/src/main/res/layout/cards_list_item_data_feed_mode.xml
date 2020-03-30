@@ -20,7 +20,7 @@
         >
 
         <TextView
-            android:id="@+id/nameView"
+            android:id="@+id/titleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/tag_name"

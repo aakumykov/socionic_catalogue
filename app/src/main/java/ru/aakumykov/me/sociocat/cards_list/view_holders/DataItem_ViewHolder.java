@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 public class DataItem_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.elementView) ViewGroup elementView;
-    @BindView(R.id.nameView) TextView titleView;
+    @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.countView) TextView countView;
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
