@@ -73,13 +73,15 @@ public class CardsList_View
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         configureSwipeRefresh();
+        configureBottomSheetListener();
+
+        configureLayoutManagers();
 
         configurePresenter();
-        configureLayoutManagers();
         configureAdapter();
-        configureRecyclerView();
+        bindPresenterAndAdapter();
 
-        configureBottomSheetListener();
+        configureRecyclerView();
     }
 
     @Override
@@ -102,7 +104,7 @@ public class CardsList_View
     protected void onStart() {
         super.onStart();
 
-        presenter.linkViewAndAdapter(this, dataAdapter);
+        presenter.linkView(this);
         dataAdapter.bindBottomReachedListener(this);
 
         if (viewIsFresh)
@@ -120,7 +122,7 @@ public class CardsList_View
     protected void onStop() {
         super.onStop();
         dataAdapter.unbindBottomReachedListener();
-        presenter.unlinkViewAndAdapter();
+        presenter.unlinkView();
     }
 
     @Override
@@ -364,6 +366,16 @@ public class CardsList_View
         }
     }
 
+    private void configureLayoutManagers() {
+        int colsNum = MyUtils.isPortraitOrientation(this) ?
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+
+        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
+        this.linearLayoutManager = new LinearLayoutManager(this);
+
+        currentLayoutManager = staggeredGridLayoutManager;
+    }
+
     private void configureAdapter() {
 
         if (null == this.presenter)
@@ -376,22 +388,16 @@ public class CardsList_View
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
             this.dataAdapter = new CardsList_DataAdapter(
-                    presenter,
                     iCardsList.LayoutMode.GRID,
                     iCardsList.SortingMode.ORDER_NAME_DIRECT
-            );
+                );
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }
 
-    private void configureLayoutManagers() {
-        int colsNum = MyUtils.isPortraitOrientation(this) ?
-                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
-
-        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
-        this.linearLayoutManager = new LinearLayoutManager(this);
-
-        currentLayoutManager = staggeredGridLayoutManager;
+    private void bindPresenterAndAdapter() {
+        dataAdapter.setPresenter(presenter);
+        presenter.setDataAdapter(dataAdapter);
     }
 
     private void configureRecyclerView() {

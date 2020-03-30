@@ -45,15 +45,9 @@ public class CardsList_DataAdapter
 
     // Конструктор
     public CardsList_DataAdapter(
-            iCardsList.iPresenter presenter,
             iCardsList.LayoutMode layoutMode,
             iCardsList.SortingMode sortingMode
     ) {
-
-        if (null == presenter)
-            throw new IllegalArgumentException("Presenter passed as argument cannot be null");
-
-        this.presenter = presenter;
         this.currentLayoutMode = layoutMode;
         this.currentSortingMode = sortingMode;
     }
@@ -125,6 +119,11 @@ public class CardsList_DataAdapter
     @Override
     public boolean isVirgin() {
         return this.isVirgin;
+    }
+
+    @Override
+    public void setPresenter(iCardsList.iPresenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
@@ -332,8 +331,8 @@ public class CardsList_DataAdapter
 
     @Override
     public void addDataItem(DataItem dataItem) {
-        itemsList.add(dataItem);
-        notifyItemInserted(getMaxIndex());
+        itemsList.add(0, dataItem);
+        notifyItemInserted(0);
     }
 
 

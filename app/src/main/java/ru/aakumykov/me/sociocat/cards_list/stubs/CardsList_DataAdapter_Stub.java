@@ -13,6 +13,11 @@ public class CardsList_DataAdapter_Stub
         implements iCardsList.iDataAdapter
 {
     @Override
+    public void setPresenter(iCardsList.iPresenter presenter) {
+
+    }
+
+    @Override
     public void bindBottomReachedListener(iCardsList.ListEdgeReachedListener listener) {
 
     }

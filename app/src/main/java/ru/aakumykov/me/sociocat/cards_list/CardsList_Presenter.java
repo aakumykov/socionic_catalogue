@@ -13,7 +13,6 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
-import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -43,17 +42,20 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
-    // iCardsList.iPresenter
     @Override
-    public void linkViewAndAdapter(iCardsList.iPageView pageView, iCardsList.iDataAdapter dataAdapter) {
-        this.pageView = pageView;
+    public void setDataAdapter(iCardsList.iDataAdapter dataAdapter) {
         this.dataAdapter = dataAdapter;
     }
 
+    // iCardsList.iPresenter
     @Override
-    public void unlinkViewAndAdapter() {
+    public void linkView(iCardsList.iPageView pageView) {
+        this.pageView = pageView;
+    }
+
+    @Override
+    public void unlinkView() {
         this.pageView = new CardsList_ViewStub();
-//        this.dataAdapter = new CardsList_DataAdapter_Stub();
     }
 
     @Override

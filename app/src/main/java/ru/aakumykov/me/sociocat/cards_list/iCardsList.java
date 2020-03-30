@@ -77,6 +77,8 @@ public interface iCardsList {
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
 
+        void setPresenter(iPresenter presenter);
+
         void bindBottomReachedListener(ListEdgeReachedListener listener);
         void unbindBottomReachedListener();
 
@@ -120,8 +122,10 @@ public interface iCardsList {
     }
 
     interface iPresenter {
-        void linkViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
-        void unlinkViewAndAdapter();
+        void setDataAdapter(iDataAdapter dataAdapter);
+
+        void linkView(iPageView pageView);
+        void unlinkView();
 
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
