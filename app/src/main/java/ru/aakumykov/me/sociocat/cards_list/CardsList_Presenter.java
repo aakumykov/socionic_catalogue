@@ -441,7 +441,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 dataAdapter.removeItem(dataItem);
-                pageView.showToast(pageView.getString(R.string.card_deleted_long, card.getTitle()));
+//                pageView.showToast(pageView.getString(R.string.card_deleted_long, card.getTitle()));
             }
 
             @Override
