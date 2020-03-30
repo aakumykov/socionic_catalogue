@@ -216,7 +216,7 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public iCardsList.ViewMode getLayoutMode() {
+    public iCardsList.ViewMode getViewMode() {
         return currentViewMode;
     }
 

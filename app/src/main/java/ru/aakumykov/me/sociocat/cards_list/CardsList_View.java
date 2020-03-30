@@ -134,10 +134,23 @@ public class CardsList_View
         configureSearchView(menu);
 
         // Изменение вида список/плитки
-        /*if (currentLayoutManager instanceof StaggeredGridLayoutManager)
-            menuInflater.inflate(R.menu.view_mode_list, menu);
-        else menuInflater.inflate(R.menu.view_mode_grid, menu);*/
         menuInflater.inflate(R.menu.view_mode, menu);
+        MenuItem menuItem = menu.findItem(R.id.actionViewMode);
+        if (null != menuItem) {
+            switch (dataAdapter.getViewMode()) {
+                case FEED:
+                    menuItem.setIcon(R.drawable.ic_list_view);
+                    break;
+
+                case LIST:
+                    menuItem.setIcon(R.drawable.ic_grid_view);
+                    break;
+
+                case GRID:
+                    menuItem.setIcon(R.drawable.ic_feed_view);
+                    break;
+            }
+        }
 
         // Сортировка
         switch (dataAdapter.getSortingMode()) {

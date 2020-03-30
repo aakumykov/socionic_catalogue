@@ -243,7 +243,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onChangeLayoutClicked() {
 
-        iCardsList.ViewMode viewMode = dataAdapter.getLayoutMode();
+        iCardsList.ViewMode viewMode = dataAdapter.getViewMode();
 
         switch (viewMode) {
             case LIST:

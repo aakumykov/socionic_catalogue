@@ -96,7 +96,7 @@ public interface iCardsList {
 
         int getDataItemsCount();
 
-        ViewMode getLayoutMode();
+        ViewMode getViewMode();
 
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
