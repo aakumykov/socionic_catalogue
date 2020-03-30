@@ -41,6 +41,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
+    private DataItem currentlyEditedItem;
+
 
     @Override
     public void setDataAdapter(iCardsList.iDataAdapter dataAdapter) {
@@ -200,8 +202,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onEditSelectedItemClicked() {
-        Card card = (Card) dataAdapter.getSelectedItems().get(0).getPayload();
+        currentlyEditedItem = dataAdapter.getSelectedItems().get(0);
+        Card card = (Card) currentlyEditedItem.getPayload();
         pageView.goEditCard(card);
+        pageView.finishActionMode();
     }
 
     @Override
@@ -276,14 +280,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onNewCardCreated(@Nullable Intent intent) {
         if (null == intent) {
-            setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Intent is null");
+            setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Intent is null");
             return;
         }
 
         Card card = IntentUtils.extractCard(intent);
 
         if (null == card) {
-            setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Card is null");
+            setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Card is null");
             return;
         }
 
@@ -298,7 +302,19 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onCardEdited(@Nullable Intent data) {
+        if (null == data) {
+            setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Intent is null");
+            return;
+        }
 
+        Card card = IntentUtils.extractCard(data);
+        if (null == card) {
+            setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Card is null");
+            return;
+        }
+
+        currentlyEditedItem.setPayload(card);
+        dataAdapter.updateJustEditedItem(currentlyEditedItem);
     }
 
 

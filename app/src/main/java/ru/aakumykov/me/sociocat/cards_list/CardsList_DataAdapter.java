@@ -330,10 +330,17 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public int addJustCreatedItem(DataItem dataItem) {
+    public int addJustCreatedItem(@NonNull DataItem dataItem) {
         itemsList.add(0, dataItem);
         notifyItemInserted(0);
         return 0;
+    }
+
+    @Override
+    public void updateJustEditedItem(@NonNull DataItem dataItem) {
+        int index = itemsList.indexOf(dataItem);
+        itemsList.set(index, dataItem);
+        notifyItemChanged(index);
     }
 
 

@@ -92,7 +92,7 @@ public class CardsList_View
                 break;
 
             case Constants.CODE_EDIT_CARD:
-                processCardCreationResult(resultCode, data);
+                processCardEditionResult(resultCode, data);
                 break;
 
             default:
@@ -256,8 +256,8 @@ public class CardsList_View
     @Override
     public void goEditCard(Card card) {
         Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
         intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
@@ -535,7 +535,10 @@ public class CardsList_View
     }
 
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode)
+            return;
 
+        presenter.onCardEdited(data);
     }
 
 

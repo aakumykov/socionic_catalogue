@@ -670,6 +670,7 @@
     <string name="card_deleted_long">Карточка «%1$s» удалена</string>
     <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
     <string name="add_new_card_bottom_menu_title">Добавить</string>
+    <string name="CARDS_GRID_error_displaying_card">Ошибка отображения карточки</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

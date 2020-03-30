@@ -118,7 +118,8 @@ public interface iCardsList {
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
 
-        int addJustCreatedItem(DataItem dataItem);
+        int addJustCreatedItem(@NonNull DataItem dataItem);
+        void updateJustEditedItem(@NonNull DataItem currentlyEditedItem);
     }
 
     interface iPresenter {
