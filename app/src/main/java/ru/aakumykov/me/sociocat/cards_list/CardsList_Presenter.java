@@ -86,11 +86,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public iCardsList.LayoutMode getCurrentLayoutMode() {
-        return currentLayoutMode;
-    }
-
-    @Override
     public void onRefreshRequested() {
 
         DataItem lastDataItem = dataAdapter.getLastDataItem();

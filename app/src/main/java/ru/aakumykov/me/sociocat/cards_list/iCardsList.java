@@ -133,8 +133,6 @@ public interface iCardsList {
 
 	    void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
 
-	    LayoutMode getCurrentLayoutMode();
-
         void onRefreshRequested();
 
         void onDataItemClicked(DataItem dataItem);
