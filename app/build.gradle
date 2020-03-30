@@ -110,4 +110,7 @@ dependencies {
 
     // Dropbox Java SDK
     implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
+
+    // BottomSheetMenu
+    implementation 'com.github.Kennyc1012:BottomSheetMenu:3.1.1'
 }
