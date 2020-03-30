@@ -53,14 +53,17 @@ public class CardsList_View
     private iCardsList.iPresenter presenter;
     private iCardsList.iDataAdapter dataAdapter;
 
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private LinearLayoutManager linearLayoutManager;
+    private LinearLayoutManager feedLayoutManager;
+    private LinearLayoutManager listLayoutManager;
+    private StaggeredGridLayoutManager gridLayoutManager;
     private RecyclerView.LayoutManager currentLayoutManager;
 
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionModeCallback();
 
     private BottomSheetListener bottomSheetListener;
+
+    private iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.FEED;
 
 
     // Activity
@@ -297,11 +300,11 @@ public class CardsList_View
 
         switch (viewMode) {
             case LIST:
-                currentLayoutManager = staggeredGridLayoutManager;
+                currentLayoutManager = gridLayoutManager;
                 break;
 
             case GRID:
-                currentLayoutManager = linearLayoutManager;
+                currentLayoutManager = listLayoutManager;
                 break;
 
             default:
@@ -386,10 +389,11 @@ public class CardsList_View
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
 
-        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
-        this.linearLayoutManager = new LinearLayoutManager(this);
+        this.feedLayoutManager = new LinearLayoutManager(this);
+        this.listLayoutManager = this.feedLayoutManager;
+        this.gridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
-        currentLayoutManager = staggeredGridLayoutManager;
+        currentLayoutManager = feedLayoutManager;
     }
 
     private void configureAdapter() {
@@ -404,7 +408,7 @@ public class CardsList_View
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
             this.dataAdapter = new CardsList_DataAdapter(
-                    iCardsList.ViewMode.GRID,
+                    initialViewMode,
                     iCardsList.SortingMode.ORDER_NAME_DIRECT
                 );
             viewModel.storeDataAdapter(this.dataAdapter);
