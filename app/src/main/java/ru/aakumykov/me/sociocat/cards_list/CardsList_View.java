@@ -78,12 +78,11 @@ public class CardsList_View
         configureSwipeRefresh();
         configureBottomSheetListener();
 
-        configureLayoutManagers();
-
         configurePresenter();
         configureAdapter();
         bindPresenterAndAdapter();
 
+        configureLayoutManagers();
         configureRecyclerView();
     }
 
@@ -390,7 +389,16 @@ public class CardsList_View
         this.listLayoutManager = this.feedLayoutManager;
         this.gridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
-        currentLayoutManager = feedLayoutManager;
+        switch (dataAdapter.getViewMode()) {
+            case LIST:
+                currentLayoutManager = listLayoutManager;
+                break;
+            case GRID:
+                currentLayoutManager = gridLayoutManager;
+                break;
+            default:
+                currentLayoutManager = feedLayoutManager;
+        }
     }
 
     private void configureAdapter() {
