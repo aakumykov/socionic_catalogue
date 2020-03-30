@@ -83,8 +83,11 @@
     <!--  Цвет удаляемого элемента RecyclerView  -->
     <color name="element_is_now_deleting">#6BF48FB1</color>
 
-    <!--    -->
+    <!--  Цвета нижней границы фона элементов списка (визуальный разделитель)  -->
     <color name="neutral_list_item_divider_color">#DADADA</color>
     <color name="colored_list_item_divider_color">#B5B5B5</color>
 
+    <!--  Цвета BottomSheetMenu  -->
+    <color name="bottom_sheet_list_item_color_dark">@color/grey</color>
+    <color name="bottom_sheet_list_item_color_light">@color/light_grey</color>
 </resources>
