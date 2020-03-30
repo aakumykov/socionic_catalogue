@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
@@ -52,13 +53,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void unlinkViewAndAdapter() {
         this.pageView = new CardsList_ViewStub();
-        this.dataAdapter = new CardsList_DataAdapter_Stub();
+//        this.dataAdapter = new CardsList_DataAdapter_Stub();
     }
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            showErrorViewState(R.string.data_error, "Intent is null");
+            setErrorViewState(R.string.data_error, "Intent is null");
             return;
         }
 
@@ -91,7 +92,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         DataItem lastDataItem = dataAdapter.getLastDataItem();
 
         if (null == lastDataItem) {
-            showSuccessViewState();
+            setSuccessViewState();
             return;
         }
 
@@ -102,14 +103,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsFromNewestTo(card, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                showSuccessViewState();
+                setSuccessViewState();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
     }
@@ -192,7 +193,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        showSuccessViewState();
+        setSuccessViewState();
     }
 
     @Override
@@ -235,7 +236,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        showSuccessViewState();
+        setSuccessViewState();
     }
 
     @Override
@@ -270,6 +271,33 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         pageView.goCreateCard(cardType);
     }
 
+    @Override
+    public void onCardCreated(@Nullable Intent intent) {
+        if (null == intent) {
+            setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Intent is null");
+            return;
+        }
+
+        Card card = MVPUtils.extractCardFromIntent(intent);
+
+        if (null == card) {
+            setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Card is null");
+            return;
+        }
+
+        DataItem dataItem = new DataItem<>();
+            dataItem.setName(card.getTitle());
+            dataItem.setCount(card.getTitle().length());
+            dataItem.setPayload(card);
+
+        dataAdapter.addDataItem(dataItem);
+    }
+
+    @Override
+    public void onCardEdited(@Nullable Intent data) {
+
+    }
+
 
     // Внутренние методы
     private void loadList() {
@@ -279,7 +307,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                showSuccessViewState();
+                setSuccessViewState();
                 dataAdapter.hideThrobberItem();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
@@ -287,7 +315,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -306,7 +334,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -363,17 +391,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemsCount();
 
         if (0 == selectedItemsCount) {
-            showSuccessViewState();
+            setSuccessViewState();
         } else {
             pageView.setViewState(iCardsList.PageViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
-    private void showSuccessViewState() {
+    private void setSuccessViewState() {
         pageView.setViewState(iCardsList.PageViewState.SUCCESS, null, null);
     }
 
-    private void showErrorViewState(int messageId, String errorMessage) {
+    private void setErrorViewState(int messageId, String errorMessage) {
         pageView.setViewState(iCardsList.PageViewState.ERROR, messageId, errorMessage);
     }
 

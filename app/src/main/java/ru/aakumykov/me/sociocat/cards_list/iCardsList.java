@@ -115,6 +115,8 @@ public interface iCardsList {
         void setLayoutMode(LayoutMode layoutMode);
 
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
+
+        void addDataItem(DataItem dataItem);
     }
 
     interface iPresenter {
@@ -156,6 +158,9 @@ public interface iCardsList {
 
         void onAddNewCardMenuClicked();
         void onAddNewCardItemSelected(CardType cardType);
+
+        void onCardCreated(@Nullable Intent data);
+        void onCardEdited(@Nullable Intent data);
     }
 
 

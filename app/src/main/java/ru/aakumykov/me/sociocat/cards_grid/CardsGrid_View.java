@@ -659,7 +659,7 @@ public class CardsGrid_View extends BaseView implements
             }
         }
         catch (Exception e) {
-            showErrorMsg(R.string.CARDS_GRID_card_creation_error, e.getMessage());
+            showErrorMsg(R.string.CARDS_GRID_error_creating_card, e.getMessage());
             e.printStackTrace();
         }
     }

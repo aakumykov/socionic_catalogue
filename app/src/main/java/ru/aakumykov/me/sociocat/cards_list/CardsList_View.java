@@ -85,9 +85,14 @@ public class CardsList_View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                processCardCreationResult(resultCode, data);
+                break;
+
             case Constants.CODE_EDIT_CARD:
                 processCardCreationResult(resultCode, data);
                 break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -515,15 +520,14 @@ public class CardsList_View
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        switch (resultCode) {
-            case RESULT_CANCELED:
-                finishActionMode();
-                break;
-            case RESULT_OK:
-                break;
-            default:
-                break;
-        }
+        if (RESULT_OK != resultCode)
+            return;
+
+        presenter.onCardCreated(data);
+    }
+
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+
     }
 
 

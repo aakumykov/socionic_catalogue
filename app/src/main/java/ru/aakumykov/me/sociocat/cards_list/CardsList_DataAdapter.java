@@ -330,6 +330,12 @@ public class CardsList_DataAdapter
         notifyItemChanged(itemsList.indexOf(dataItem));
     }
 
+    @Override
+    public void addDataItem(DataItem dataItem) {
+        itemsList.add(dataItem);
+        notifyItemInserted(getMaxIndex());
+    }
+
 
     // Filterable
     @Override

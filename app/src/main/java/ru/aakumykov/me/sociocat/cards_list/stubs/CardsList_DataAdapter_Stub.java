@@ -133,6 +133,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public void addDataItem(DataItem dataItem) {
+
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
     }
