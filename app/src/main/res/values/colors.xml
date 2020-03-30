@@ -90,4 +90,7 @@
     <!--  Цвета BottomSheetMenu  -->
     <color name="bottom_sheet_list_item_color_dark">@color/grey</color>
     <color name="bottom_sheet_list_item_color_light">@color/light_grey</color>
+
+    <!--  Цвет иконок меню, вызываемого плавающей кнопкой  -->
+    <color name="bottom_sheet_menu_icon_color">@color/light_grey</color>
 </resources>
