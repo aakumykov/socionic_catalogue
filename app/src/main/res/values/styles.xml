@@ -8,5 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyBottomSheetMenuStyle" parent="@style/Theme.BottomSheetMenuDialog">
+        <item name="bottom_sheet_menu_list_text_appearance">@style/ListAppearance</item>
+    </style>
+
+    <style name="ListAppearance" parent="BottomSheetMenu.ListItem.TextAppearance">
+<!--        <item name="android:textColor">@android:color/holo_red_light</item>-->
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>
