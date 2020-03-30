@@ -3,24 +3,33 @@ package ru.aakumykov.me.sociocat.cards_list.view_holders;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import ru.aakumykov.me.sociocat.MyApp;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
+import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataItem_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.elementView) ViewGroup elementView;
     @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.countView) TextView countView;
+    @Nullable @BindView(R.id.imageView) ImageView imageView;
+    @Nullable @BindView(R.id.quoteView) TextView quoteView;
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
@@ -37,14 +46,34 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
 
     // Заполнение данными
-    public void initialize(Object payload) {
-        this.dataItem = (DataItem) payload;
+    public void initialize(ListItem listItem) {
+        this.dataItem = (DataItem) listItem;
 
-        if (titleView != null)
-            titleView.setText(dataItem.getName());
+        Card card = (Card) dataItem.getPayload();
 
-        if (countView != null)
-            countView.setText(String.valueOf(dataItem.getCount()));
+        titleView.setText(card.getTitle());
+
+        if (null != imageView) {
+            if (card.isImageCard()) {
+                MyUtils.show(imageView);
+
+                Glide.with(imageView).load(card.getImageURL())
+                        .error(R.drawable.ic_image_error)
+                        .into(imageView);
+            }
+            else {
+                MyUtils.hide(imageView);
+            }
+        }
+
+        if (null != quoteView) {
+            if (card.isTextCard()) {
+                quoteView.setText(card.getQuote());
+            }
+            else {
+                MyUtils.hide(quoteView);
+            }
+        }
     }
 
     @Override

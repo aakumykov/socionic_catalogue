@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
+import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 
 public class Unknown_ViewHolder extends BasicViewHolder {
 
@@ -12,7 +13,7 @@ public class Unknown_ViewHolder extends BasicViewHolder {
         super(itemView);
     }
 
-    public void initialize(Object payload) {
+    public void initialize(ListItem listItem) {
 
     }
 

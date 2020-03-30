@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
+import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 
 public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
@@ -19,7 +20,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         this.presenter = presenter;
     }
 
-    public abstract void initialize(Object payload);
+    public abstract void initialize(ListItem listItem);
 
     public abstract void setViewState(iCardsList.ItemState eItemState);
 }

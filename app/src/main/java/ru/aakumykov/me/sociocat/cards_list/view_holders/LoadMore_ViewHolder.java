@@ -7,6 +7,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
+import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 
 public class LoadMore_ViewHolder extends BasicViewHolder {
 
@@ -19,7 +20,7 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
     }
 
     // Заполнение данными
-    public void initialize(Object payload) {
+    public void initialize(ListItem listItem) {
 
     }
 
