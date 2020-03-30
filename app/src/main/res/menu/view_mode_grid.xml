@@ -3,9 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionViewMode"
-        android:icon="@drawable/ic_feed_view"
-        android:title="@string/MENU_view_mode"
+        android:id="@+id/actionGridView"
+        android:icon="@drawable/ic_grid_view"
+        android:title="@string/MENU_grid_view"
         app:showAsAction="always" />
-
 </menu>

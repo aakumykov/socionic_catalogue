@@ -666,7 +666,8 @@
     <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
     <string name="add_new_card_bottom_menu_title">Add</string>
     <string name="CARDS_GRID_error_displaying_card">Error displaying card</string>
-    <string name="MENU_layout_mode">Режим просмотра</string>
+    <string name="MENU_view_mode">View mode</string>
+    <string name="MENU_feed_view">Feed view</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

@@ -134,9 +134,10 @@ public class CardsList_View
         configureSearchView(menu);
 
         // Изменение вида список/плитки
-        if (currentLayoutManager instanceof StaggeredGridLayoutManager)
-            menuInflater.inflate(R.menu.list_view, menu);
-        else menuInflater.inflate(R.menu.grid_view, menu);
+        /*if (currentLayoutManager instanceof StaggeredGridLayoutManager)
+            menuInflater.inflate(R.menu.view_mode_list, menu);
+        else menuInflater.inflate(R.menu.view_mode_grid, menu);*/
+        menuInflater.inflate(R.menu.view_mode, menu);
 
         // Сортировка
         switch (dataAdapter.getSortingMode()) {
