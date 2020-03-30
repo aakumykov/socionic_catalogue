@@ -402,10 +402,4 @@ public class MVPUtils {
         return text;
     }
 
-    public static Card extractCardFromIntent(@NonNull Intent data) {
-        if (data.hasExtra(Constants.CARD))
-            return data.getParcelableExtra(Constants.CARD);
-        else
-            return null;
-    }
 }

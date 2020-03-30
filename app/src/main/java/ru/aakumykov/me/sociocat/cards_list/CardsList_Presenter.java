@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
@@ -280,7 +280,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        Card card = MVPUtils.extractCardFromIntent(intent);
+        Card card = IntentUtils.extractCard(intent);
 
         if (null == card) {
             setErrorViewState(R.string.CARDS_GRID_error_creating_card, "Card is null");
