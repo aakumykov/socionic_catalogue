@@ -141,15 +141,15 @@ public class CardsList_View
         if (null != menuItem) {
             switch (dataAdapter.getViewMode()) {
                 case FEED:
-                    menuItem.setIcon(R.drawable.ic_list_view);
+                    menuItem.setIcon(R.drawable.ic_view_mode_list);
                     break;
 
                 case LIST:
-                    menuItem.setIcon(R.drawable.ic_grid_view);
+                    menuItem.setIcon(R.drawable.ic_view_mode_grid);
                     break;
 
                 case GRID:
-                    menuItem.setIcon(R.drawable.ic_feed_view);
+                    menuItem.setIcon(R.drawable.ic_view_mode_feed);
                     break;
             }
         }

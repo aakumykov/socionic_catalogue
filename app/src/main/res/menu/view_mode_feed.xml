@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/actionFeedView"
-        android:icon="@drawable/ic_feed_view"
+        android:icon="@drawable/ic_view_mode_feed"
         android:title="@string/MENU_feed_view"
         app:showAsAction="always" />
 </menu>

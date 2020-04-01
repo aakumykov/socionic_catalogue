@@ -145,9 +145,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_feed_view_comments" />
-                            <entry key="sourceFile" value="$USER_HOME$/Рабочий стол/question.svg" />
+                            <entry key="outputName" value="ic_view_mode_feed_2" />
+                            <entry key="sourceFile" value="$USER_HOME$/Рабочий стол/feed-view-mode-solid-3.svg" />
                           </map>
                         </option>
                       </PersistentState>

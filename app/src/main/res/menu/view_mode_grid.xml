@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/actionGridView"
-        android:icon="@drawable/ic_grid_view"
+        android:icon="@drawable/ic_view_mode_grid"
         android:title="@string/MENU_grid_view"
         app:showAsAction="always" />
 </menu>
