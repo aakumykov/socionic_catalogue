@@ -11,11 +11,12 @@ import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import ru.aakumykov.me.sociocat.MyApp;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
@@ -29,6 +30,9 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
+    @Nullable @BindView(R.id.authorView) TextView authorView;
+    @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
+    @Nullable @BindView(R.id.dateView) TextView dateView;
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
@@ -82,6 +86,14 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         }
         else
             MyUtils.hide(quoteView);
+
+        authorView.setText(card.getUserName());
+        commentsCountView.setText( String.valueOf(card.getCommentsKeys().size()) );
+
+        Long cTime = card.getCTime();
+        Long mTime = card.getMTime();
+        String formatterDate = SimpleDateFormat.getDateInstance().format((cTime > 0) ? cTime : mTime);
+        dateView.setText(formatterDate);
     }
 
     private void initializeInListMode(Card card) {
