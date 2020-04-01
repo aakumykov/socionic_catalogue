@@ -83,9 +83,12 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
         if (card.isTextCard()) {
             quoteView.setText(card.getQuote());
+            MyUtils.show(quoteView);
+            MyUtils.hide(titleView);
         }
         else
             MyUtils.hide(quoteView);
+
 
         authorView.setText(card.getUserName());
         commentsCountView.setText( String.valueOf(card.getCommentsKeys().size()) );
