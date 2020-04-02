@@ -11,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class PushSubscriptionHelper {
+public class PushSubscription_Helper {
 
     public interface SubscriptionCallbacks {
         void onSubscribeSuccess();

@@ -14,7 +14,7 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
-public class NewComment_NotificationHelper {
+public class NewCommentNotification_Helper {
 
     public static void processNotification(Context context, NewCommentEvent newCommentEvent) {
 

@@ -14,12 +14,7 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
-public class NewCard_NotificationHelper {
-
-    public interface NewCardsNotificationCallbacks {
-        void onNewCardCreatedByOtherUser();
-    }
-
+public class NewCardNotification_Helper {
 
     public static void processNotification(Context context, NewCardEvent newCardEvent) {
 
