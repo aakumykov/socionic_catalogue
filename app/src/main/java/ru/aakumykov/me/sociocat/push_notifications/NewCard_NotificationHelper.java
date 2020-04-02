@@ -12,7 +12,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
-import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class NewCard_NotificationHelper {
@@ -22,7 +21,7 @@ public class NewCard_NotificationHelper {
     }
 
 
-    public static void processNotification(Context context, NewCardEvent newCardEvent, iNewCardEventCallbacks newCardEventCallbacks) {
+    public static void processNotification(Context context, NewCardEvent newCardEvent) {
 
         String currentUserId = AuthSingleton.currentUserId();
         if (null == currentUserId)
@@ -30,8 +29,6 @@ public class NewCard_NotificationHelper {
 
         if (currentUserId.equals(newCardEvent.getUserId()))
             return;
-
-        newCardEventCallbacks.onNewCardCreatedByOtherUserReceived();
 
         int notificationId = newCardEvent.getKey().hashCode();
 

@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
@@ -44,7 +41,6 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -71,7 +67,6 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
-    private static final int NEW_CARDS_AVAILABLE = 10;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -168,15 +163,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        scheduleNewCardsChecking();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
-        unScheduleNewCardsChecking();
     }
 
     @Override
@@ -751,44 +739,8 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void scheduleNewCardsChecking() {
-        Handler newCardsCheckingHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case NEW_CARDS_AVAILABLE:
-                        presenter.onNewCardsAvailable((Integer) msg.obj);
-                        break;
-                    default:
-                        super.handleMessage(msg);
-                }
-            }
-        };
-
-        newCardsCheckingTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                checkForNewCards(newCardsCheckingHandler);
-            }
-        };
-
-        new Timer().schedule(
-                newCardsCheckingTimerTask,
-                AppConfig.NEW_CARDS_CHECK_DELAY,
-                AppConfig.NEW_CARDS_CHECK_INTERVAL
-        );
-    }
-
     private void unScheduleNewCardsChecking() {
         newCardsCheckingTimerTask.cancel();
-    }
-
-    private void checkForNewCards(Handler handler) {
-        int newCardsCount = NewCardsCounter.getCount();
-        if (newCardsCount > 0) {
-            Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
-            handler.sendMessage(message);
-        }
     }
 
 

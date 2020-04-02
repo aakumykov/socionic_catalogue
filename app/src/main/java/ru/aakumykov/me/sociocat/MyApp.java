@@ -22,9 +22,7 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.push_notifications.NewCard_NotificationHelper;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.push_notifications.NewComment_NotificationHelper;
-import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -93,12 +91,7 @@ public class MyApp extends Application {
     // Подписки на события EventBus
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCard_NotificationHelper.processNotification(this, newCardEvent, new iNewCardEventCallbacks() {
-            @Override
-            public void onNewCardCreatedByOtherUserReceived() {
-                NewCardsCounter.incrementCounter();
-            }
-        });
+        NewCard_NotificationHelper.processNotification(this, newCardEvent);
     }
 
     @Subscribe
