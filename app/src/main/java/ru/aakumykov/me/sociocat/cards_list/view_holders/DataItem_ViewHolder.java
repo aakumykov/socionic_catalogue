@@ -31,8 +31,9 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     @Nullable @BindView(R.id.imageView) ImageView imageView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
     @Nullable @BindView(R.id.authorView) TextView authorView;
-    @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
     @Nullable @BindView(R.id.dateView) TextView dateView;
+    @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
+    @Nullable @BindView(R.id.ratingView) TextView ratingView;
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
@@ -97,6 +98,8 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         Long mTime = card.getMTime();
         String formatterDate = SimpleDateFormat.getDateInstance().format((cTime > 0) ? cTime : mTime);
         dateView.setText(formatterDate);
+
+        ratingView.setText(String.valueOf(card.getRating()));
     }
 
     private void initializeInListMode(Card card) {
