@@ -117,8 +117,8 @@ public class DeepLinksReceiver extends BaseView {
             return;
         }
 
-        boolean iprl = AuthSingleton.isPasswordResetLink(deepLink);
-        if (iprl) {
+        boolean isPasswordResetLink = AuthSingleton.isPasswordResetLink(deepLink);
+        if (isPasswordResetLink) {
             continueToLogin();
             return;
         }
