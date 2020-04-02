@@ -66,6 +66,7 @@ public class FCMService extends FirebaseMessagingService {
 
     // Внутренние методы
     private void processNewCardNotification(Map<String, String> data) {
+
         NewCardEvent newCardEvent = new NewCardEvent();
             newCardEvent.setKey(data.get(Card.KEY_KEY));
             newCardEvent.setTitle(data.get(Card.KEY_TITLE));

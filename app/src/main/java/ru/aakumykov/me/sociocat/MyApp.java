@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,9 +21,9 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardNotificationHelper;
+import ru.aakumykov.me.sociocat.push_notifications.NewCard_NotificationHelper;
 import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
-import ru.aakumykov.me.sociocat.push_notifications.NewCommentNotificationHelper;
+import ru.aakumykov.me.sociocat.push_notifications.NewComment_NotificationHelper;
 import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -94,7 +93,7 @@ public class MyApp extends Application {
     // Подписки на события EventBus
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCardNotificationHelper.processNotification(this, newCardEvent, new iNewCardEventCallbacks() {
+        NewCard_NotificationHelper.processNotification(this, newCardEvent, new iNewCardEventCallbacks() {
             @Override
             public void onNewCardCreatedByOtherUserReceived() {
                 NewCardsCounter.incrementCounter();
@@ -104,7 +103,7 @@ public class MyApp extends Application {
 
     @Subscribe
     public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        NewCommentNotificationHelper.processNotification(this, newCommentEvent);
+        NewComment_NotificationHelper.processNotification(this, newCommentEvent);
     }
 
 

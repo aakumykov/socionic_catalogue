@@ -15,7 +15,7 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
-public class NewCardNotificationHelper {
+public class NewCard_NotificationHelper {
 
     public interface NewCardsNotificationCallbacks {
         void onNewCardCreatedByOtherUser();
