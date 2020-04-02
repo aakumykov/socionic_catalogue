@@ -39,6 +39,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     private DataItem dataItem;
     private iCardsList.ViewMode currentViewMode;
     private int neutralStateColor = -1;
+    private Card currentCard;
 
 
     // Конструктор
@@ -52,19 +53,19 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     // Заполнение данными
     public void initialize(ListItem listItem) {
         this.dataItem = (DataItem) listItem;
-        Card card = (Card) dataItem.getPayload();
+        this.currentCard = (Card) dataItem.getPayload();
 
-        titleView.setText(card.getTitle());
+        titleView.setText(currentCard.getTitle());
 
         switch (currentViewMode) {
             case FEED:
-                initializeInFeedMode(card);
+                initializeInFeedMode(currentCard);
                 break;
             case LIST:
-                initializeInListMode(card);
+                initializeInListMode(currentCard);
                 break;
             case GRID:
-                initializeInGridMode(card);
+                initializeInGridMode(currentCard);
                 break;
             default:
                 throw new RuntimeException("Unknown view mode: "+currentViewMode);
@@ -143,9 +144,14 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
 
     // Нажатия
-    @OnClick(R.id.elementView)
+    @OnClick({R.id.titleView, R.id.imageView, R.id.quoteView})
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
+    }
+
+    @OnClick({R.id.authorView, R.id.dateView})
+    void onAuthorClicked() {
+        presenter.onCardAuthorClicked(currentCard.getUserId());
     }
 
     @OnLongClick(R.id.elementView)

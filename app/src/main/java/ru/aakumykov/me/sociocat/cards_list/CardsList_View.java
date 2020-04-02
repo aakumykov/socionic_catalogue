@@ -11,6 +11,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,7 @@ import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsList_View
@@ -288,6 +290,13 @@ public class CardsList_View
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType.name());
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    @Override
+    public void goUserProfile(String userId) {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivity(intent);
     }
 
     @Override

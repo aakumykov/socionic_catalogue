@@ -58,4 +58,10 @@ public class CardsList_ViewStub
     public void goCreateCard(CardType cardType) {
 
     }
+
+    @Override
+    public void goUserProfile(String userId) {
+
+    }
+
 }

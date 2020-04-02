@@ -133,6 +133,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
+    public void onCardAuthorClicked(String userId) {
+        pageView.goUserProfile(userId);
+    }
+
+    @Override
     public void onLoadMoreClicked() {
         //int scrollPosition = dataAdapter.getDataItemsCount() + 1;
 
