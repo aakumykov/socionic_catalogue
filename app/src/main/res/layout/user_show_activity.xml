@@ -167,8 +167,10 @@
             android:text="@string/USER_EDIT_change_password"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
+            android:background="@drawable/shape_change_password_button_background"
             android:textSize="16sp"
             android:visibility="gone"
+            android:padding="8dp"
             tools:visibility="visible" />
 
     </LinearLayout>
