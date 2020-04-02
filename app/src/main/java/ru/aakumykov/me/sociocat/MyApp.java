@@ -83,8 +83,6 @@ public class MyApp extends Application {
             }
         });
 
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
         prepareDefaultPreferences();
 
         logFCMRegistrationToken();
