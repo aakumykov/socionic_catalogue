@@ -75,6 +75,8 @@ public interface iCardsList {
         void goCreateCard(CardType cardType);
 
         void goUserProfile(String userId);
+
+        void go2cardComments(Card card);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
@@ -141,6 +143,8 @@ public interface iCardsList {
         void onDataItemLongClicked(DataItem dataItem);
 
         void onCardAuthorClicked(String userId);
+        void onCardCommentsClicked(Card card);
+        void onRatingWidgetClicked(Card card);
 
         void onLoadMoreClicked();
 

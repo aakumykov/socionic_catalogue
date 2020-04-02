@@ -154,6 +154,16 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         presenter.onCardAuthorClicked(currentCard.getUserId());
     }
 
+    @OnClick(R.id.commentsInfoContainer)
+    void onCommentsClicked() {
+        presenter.onCardCommentsClicked(currentCard);
+    }
+
+    @OnClick({R.id.rateUpWidget, R.id.rateDownWidget})
+    void onRatingWidgetClicked() {
+        presenter.onRatingWidgetClicked(currentCard);
+    }
+
     @OnLongClick(R.id.elementView)
     void onItemLongClicked() {
         presenter.onDataItemLongClicked(this.dataItem);

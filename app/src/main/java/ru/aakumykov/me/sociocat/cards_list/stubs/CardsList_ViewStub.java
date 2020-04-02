@@ -64,4 +64,9 @@ public class CardsList_ViewStub
 
     }
 
+    @Override
+    public void go2cardComments(Card card) {
+
+    }
+
 }

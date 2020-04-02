@@ -138,6 +138,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
+    public void onCardCommentsClicked(Card card) {
+        pageView.go2cardComments(card);
+    }
+
+    @Override
+    public void onRatingWidgetClicked(Card card) {
+        pageView.goShowCard(card);
+    }
+
+    @Override
     public void onLoadMoreClicked() {
         //int scrollPosition = dataAdapter.getDataItemsCount() + 1;
 

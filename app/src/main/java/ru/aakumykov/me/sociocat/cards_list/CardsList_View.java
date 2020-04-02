@@ -300,6 +300,14 @@ public class CardsList_View
     }
 
     @Override
+    public void go2cardComments(Card card) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.setAction(Constants.ACTION_SHOW_CARD_COMMENTS);
+        intent.putExtra(Constants.CARD, card);
+        startActivity(intent);
+    }
+
+    @Override
     public void changeViewMode(@NonNull iCardsList.ViewMode viewMode) {
 
         switch (viewMode) {
