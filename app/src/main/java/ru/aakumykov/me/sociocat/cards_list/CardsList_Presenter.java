@@ -165,7 +165,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public boolean canStartSelection() {
-        return isAdmin();
+        return isAdmin() &&
+                (
+                        iCardsList.ViewMode.LIST.equals(dataAdapter.getViewMode())
+                        ||
+                        iCardsList.ViewMode.GRID.equals(dataAdapter.getViewMode())
+                );
     }
 
     @Override
