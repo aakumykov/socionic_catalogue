@@ -80,8 +80,6 @@ public class MyApp extends Application {
             }
         });
 
-        prepareDefaultPreferences();
-
         logFCMRegistrationToken();
     }
 
@@ -96,27 +94,6 @@ public class MyApp extends Application {
         Log.d(TAG, "deauthorizeUser()");
         EventBus.getDefault().post(new UserUnauthorizedEvent());
         usersSingleton.clearCurrentUser();
-    }
-
-    private void prepareDefaultPreferences() {
-
-        // Подготавливаю необходимые компоненты
-//        Context appContext = getApplicationContext();
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Проверяю, первый ли это запуск программы?
-        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_is_first_run, true);
-
-        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
-        if (isFirstRun) {
-            PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-            //PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
-
-            // Помечаю, что теперь это не первый запуск
-            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            editor.putBoolean(Constants.PREFERENCE_KEY_is_first_run, false);
-            editor.apply();
-        }
     }
 
     private void logFCMRegistrationToken() {
