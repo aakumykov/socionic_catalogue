@@ -80,7 +80,7 @@ public class MyApp extends Application {
             }
         });
 
-        logFCMRegistrationToken();
+        //logFCMRegistrationToken();
     }
 
 
