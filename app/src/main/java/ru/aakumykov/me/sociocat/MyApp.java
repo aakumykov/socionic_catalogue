@@ -88,18 +88,6 @@ public class MyApp extends Application {
     }
 
 
-    // Подписки на события EventBus
-    @Subscribe
-    public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCardNotification_Helper.processNotification(this, newCardEvent);
-    }
-
-    @Subscribe
-    public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        NewCommentNotification_Helper.processNotification(this, newCommentEvent);
-    }
-
-
     // Внутренние методы
     private void authorizeUser(User user) {
         Log.d(TAG, "authorizeUser(), "+user.getName());
@@ -132,82 +120,6 @@ public class MyApp extends Application {
             editor.apply();
         }
     }
-
-//    private void registerPushToken(User user) {
-//        Log.d(TAG, "registerPushToken()");
-//
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-//                    @Override public void onSuccess(InstanceIdResult instanceIdResult) {
-//                        String devId = instanceIdResult.getId();
-//
-//                        usersSingleton.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
-//                            @Override public void onStoreDeviceIdSuccess() {
-//                                Log.d(TAG, "device id saved: "+devId);
-//                            }
-//
-//                            @Override public void onStoreDeviceIdFailed(String errorMSg) {
-//                                Log.e(TAG, errorMSg);
-//                            }
-//                        });
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override public void onFailure(@NonNull Exception e) {
-//
-//                    }
-//                });
-//    }
-
-//    private void checkPushToken(User user) {
-//
-//        if (null == user.getPushToken()) {
-//
-//            FirebaseInstanceId.getInstance().getInstanceId()
-//                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//
-//                        @Override
-//                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//
-//                            if (!task.isSuccessful()) {
-//                                Exception exception = task.getException();
-//                                if (null != exception) {
-//                                    Log.e(TAG, exception.getMessage());
-//                                    exception.printStackTrace();
-//                                }
-//
-//                            } else {
-//
-//                                InstanceIdResult instanceIdResult = task.getResult();
-//
-//                                if (null != instanceIdResult) {
-//
-//                                    String token = instanceIdResult.getToken();
-//
-//                                    usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
-//                                        @Override
-//                                        public void onPushTokenUpdateSuccess(String token) {
-//                                            User user = usersSingleton.getCurrentUser();
-//                                            user.setPushToken(token);
-//                                            usersSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
-//                                        }
-//
-//                                        @Override
-//                                        public void onPushTokenUpdateError(String errorMsg) {
-//                                            Log.e(TAG, errorMsg);
-//                                        }
-//                                    });
-//
-//                                } else {
-//                                    Log.e(TAG, "InstanceIdResult is NULL");
-//                                }
-//                            }
-//                        }
-//                    });
-//
-//        }
-//    }
 
     private void logFCMRegistrationToken() {
 

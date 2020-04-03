@@ -19,18 +19,17 @@ public class NewCardNotification_Helper {
     public static void processNotification(Context context, NewCardEvent newCardEvent) {
 
         String currentUserId = AuthSingleton.currentUserId();
-        if (null == currentUserId)
-            return;
 
-        if (currentUserId.equals(newCardEvent.getUserId()))
-            return;
+        if (null != currentUserId && !currentUserId.equals(newCardEvent.getUserId()))
+        {
+            int notificationId = newCardEvent.getKey().hashCode();
 
-        int notificationId = newCardEvent.getKey().hashCode();
+            Notification notification = prepareNotification(context, newCardEvent);
 
-        Notification notification = prepareNotification(context, newCardEvent);
-
-        NotificationManagerCompat.from(context).notify(notificationId, notification);
+            NotificationManagerCompat.from(context).notify(notificationId, notification);
+        }
     }
+
 
     private static Notification prepareNotification(Context context, NewCardEvent newCardEvent) {
 

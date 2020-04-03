@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.push_notifications;
 
-import android.app.NotificationManager;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;

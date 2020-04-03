@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
@@ -73,7 +71,7 @@ public class FCMService extends FirebaseMessagingService {
             newCardEvent.setUserId(data.get(Card.KEY_USER_ID));
             newCardEvent.setUserName(data.get(Card.KEY_USER_NAME));
 
-        EventBus.getDefault().post(newCardEvent);
+        NewCardNotification_Helper.processNotification(this, newCardEvent);
     }
 
     private void processNewCommentNotification(Map<String, String> data) {
@@ -85,7 +83,9 @@ public class FCMService extends FirebaseMessagingService {
             newCommentEvent.setCardId(data.get(Comment.KEY_CARD_ID));
             newCommentEvent.setCardTitle(data.get(Comment.KEY_CARD_TITLE));
 
-        EventBus.getDefault().post(newCommentEvent);
+        //EventBus.getDefault().post(newCommentEvent);
+
+        NewCommentNotification_Helper.processNotification(this, newCommentEvent);
     }
 
 }
