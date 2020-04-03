@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ActionBarPolicy;
 import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -156,7 +158,7 @@ public class CardsList_View
         }
 
         // Сортировка
-        switch (dataAdapter.getSortingMode()) {
+        /*switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
                 menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
                 menuInflater.inflate(R.menu.sort_by_count, menu);
@@ -174,7 +176,8 @@ public class CardsList_View
                 menuInflater.inflate(R.menu.sort_by_count, menu);
             default:
                 break;
-        }
+        }*/
+        menuInflater.inflate(R.menu.sorting_menu, menu);
 
         // Профиль пользователя
         if (AuthSingleton.isLoggedIn())
@@ -186,8 +189,12 @@ public class CardsList_View
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionSort:
+                onSortMenuClicked();
+                break;
 
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
@@ -214,7 +221,7 @@ public class CardsList_View
                 break;
 
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(menuItem);
         }
         return true;
     }
@@ -580,12 +587,17 @@ public class CardsList_View
         presenter.onCardEdited(data);
     }
 
+    private void onSortMenuClicked() {
+
+    }
+
 
     // Нажатия
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
         presenter.onNewCardMenuClicked();
     }
+
 
     // Внутренние классы
     private class ActionModeCallback implements ActionMode.Callback {
