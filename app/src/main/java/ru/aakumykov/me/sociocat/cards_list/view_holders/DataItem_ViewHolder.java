@@ -85,12 +85,15 @@ public class DataItem_ViewHolder extends BasicViewHolder {
             MyUtils.hide(imageView);
 
         if (card.isTextCard()) {
+            MyUtils.hide(titleView);
+
             quoteView.setText(card.getQuote());
             MyUtils.show(quoteView);
-            MyUtils.hide(titleView);
         }
-        else
+        else {
+            MyUtils.show(titleView);
             MyUtils.hide(quoteView);
+        }
 
 
         authorView.setText(card.getUserName());
