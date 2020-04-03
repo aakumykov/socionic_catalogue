@@ -20,14 +20,14 @@ public class NewCardNotification_Helper {
 
         String currentUserId = AuthSingleton.currentUserId();
 
-        if (null != currentUserId && !currentUserId.equals(newCardEvent.getUserId()))
-        {
+//        if (null != currentUserId && !currentUserId.equals(newCardEvent.getUserId()))
+//        {
             int notificationId = newCardEvent.getKey().hashCode();
 
             Notification notification = prepareNotification(context, newCardEvent);
 
             NotificationManagerCompat.from(context).notify(notificationId, notification);
-        }
+//        }
     }
 
 

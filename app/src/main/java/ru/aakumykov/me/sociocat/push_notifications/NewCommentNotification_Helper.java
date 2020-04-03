@@ -20,14 +20,14 @@ public class NewCommentNotification_Helper {
 
         String currentUserId = AuthSingleton.currentUserId();
 
-        if (null != currentUserId && !currentUserId.equals(newCommentEvent.getUserId()))
-        {
+//        if (null != currentUserId && !currentUserId.equals(newCommentEvent.getUserId()))
+//        {
             int notificationId = newCommentEvent.getCommentKey().hashCode();
 
             Notification notification = prepareNotification(context, newCommentEvent);
 
             NotificationManagerCompat.from(context).notify(notificationId, notification);
-        }
+//        }
     }
 
     private static Notification prepareNotification(Context context, NewCommentEvent newCommentEvent) {
