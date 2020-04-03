@@ -92,6 +92,10 @@ public class CardsList_View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(resultCode, data);
+                break;
+
             case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
                 break;
@@ -571,6 +575,39 @@ public class CardsList_View
     private void startActionMode() {
         if (actionMode == null)
             actionMode = startSupportActionMode(actionModeCallback);
+    }
+
+    private void processCardShowResult(int resultCode, @Nullable Intent data) {
+
+        showToast(R.string.not_implemented_yet);
+
+        /*if (RESULT_OK == resultCode) {
+            if (null != data) {
+
+                String action = data.getAction();
+                if (null == action) action = "";
+
+                Card card = data.getParcelableExtra(Constants.CARD);
+
+                switch (action) {
+                    case Constants.ACTION_DELETE:
+                        dataAdapter.removeItem();
+                        positionInWork = -1;
+                        break;
+
+                *//*case Constants.ACTION_EDIT:
+                    dataAdapter.updateItem(positionInWork, card);
+                    positionInWork = -1;
+                    break;*//*
+
+                    default:
+                        dataAdapter.updateItem(positionInWork, card);
+                        positionInWork = -1;
+                        break;
+                }
+
+            }
+        }*/
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
