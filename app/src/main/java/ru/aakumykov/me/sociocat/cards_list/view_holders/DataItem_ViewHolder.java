@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.Optional;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
@@ -144,27 +145,31 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
 
     // Нажатия
+    @Optional
     @OnClick({R.id.titleView, R.id.imageView, R.id.quoteView})
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
 
+    @Optional
     @OnClick({R.id.authorView, R.id.dateView})
     void onAuthorClicked() {
         presenter.onCardAuthorClicked(currentCard.getUserId());
     }
 
+    @Optional
     @OnClick(R.id.commentsInfoContainer)
     void onCommentsClicked() {
         presenter.onCardCommentsClicked(currentCard);
     }
 
+    @Optional
     @OnClick({R.id.rateUpWidget, R.id.rateDownWidget})
     void onRatingWidgetClicked() {
         presenter.onRatingWidgetClicked(currentCard);
     }
 
-    @OnLongClick(R.id.elementView)
+    @OnLongClick({R.id.elementView, R.id.titleView})
     void onItemLongClicked() {
         presenter.onDataItemLongClicked(this.dataItem);
     }
