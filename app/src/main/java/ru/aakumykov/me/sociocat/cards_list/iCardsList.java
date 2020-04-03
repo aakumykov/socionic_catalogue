@@ -153,8 +153,7 @@ public interface iCardsList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
-        boolean canStartSelection();
-        boolean canSelectAll();
+        boolean canSelectItem();
         boolean canEditSelectedItem();
         boolean canDeleteSelectedItem();
 

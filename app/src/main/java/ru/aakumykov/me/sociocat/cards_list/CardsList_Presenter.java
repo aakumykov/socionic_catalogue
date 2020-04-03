@@ -126,7 +126,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onDataItemLongClicked(DataItem dataItem) {
-        if (canStartSelection()) {
+        if (canSelectItem()) {
             pageView.setViewState(iCardsList.PageViewState.SELECTION, null, null);
             toggleItemSelection(dataItem);
         }
@@ -179,18 +179,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public boolean canStartSelection() {
+    public boolean canSelectItem() {
         return isAdmin() &&
                 (
                         iCardsList.ViewMode.LIST.equals(dataAdapter.getViewMode())
                         ||
                         iCardsList.ViewMode.GRID.equals(dataAdapter.getViewMode())
                 );
-    }
-
-    @Override
-    public boolean canSelectAll() {
-        return isAdmin();
     }
 
     @Override

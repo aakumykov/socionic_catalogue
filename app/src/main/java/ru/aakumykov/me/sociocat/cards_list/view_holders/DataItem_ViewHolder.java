@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 import butterknife.Optional;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
@@ -25,8 +24,10 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class DataItem_ViewHolder extends BasicViewHolder {
-
+public class DataItem_ViewHolder
+        extends BasicViewHolder
+        implements View.OnLongClickListener
+{
     @BindView(R.id.elementView) ViewGroup elementView;
     @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
@@ -51,82 +52,17 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     }
 
 
-    // Заполнение данными
+    // BasicViewHolder
+    @Override
     public void initialize(ListItem listItem) {
         this.dataItem = (DataItem) listItem;
         this.currentCard = (Card) dataItem.getPayload();
 
-        titleView.setText(currentCard.getTitle());
+        elementView.setOnLongClickListener(this);
+        titleView.setOnLongClickListener(this);
 
-        switch (currentViewMode) {
-            case FEED:
-                initializeInFeedMode(currentCard);
-                break;
-            case LIST:
-                initializeInListMode(currentCard);
-                break;
-            case GRID:
-                initializeInGridMode(currentCard);
-                break;
-            default:
-                throw new RuntimeException("Unknown view mode: "+currentViewMode);
-        }
-    }
-
-    private void initializeInFeedMode(Card card) {
-        if (card.isImageCard()) {
-            MyUtils.show(imageView);
-
-            Glide.with(imageView).load(card.getImageURL())
-                    .error(R.drawable.ic_image_error)
-                    .into(imageView);
-        }
-        else
-            MyUtils.hide(imageView);
-
-        if (card.isTextCard()) {
-            MyUtils.hide(titleView);
-
-            quoteView.setText(card.getQuote());
-            MyUtils.show(quoteView);
-        }
-        else {
-            MyUtils.show(titleView);
-            MyUtils.hide(quoteView);
-        }
-
-
-        authorView.setText(card.getUserName());
-        commentsCountView.setText( String.valueOf(card.getCommentsKeys().size()) );
-
-        Long cTime = card.getCTime();
-        Long mTime = card.getMTime();
-        String formatterDate = SimpleDateFormat.getDateInstance().format((cTime > 0) ? cTime : mTime);
-        dateView.setText(formatterDate);
-
-        ratingView.setText(String.valueOf(card.getRating()));
-    }
-
-    private void initializeInListMode(Card card) {
-        titleView.setText(card.getTitle());
-    }
-
-    private void initializeInGridMode(Card card) {
-        if (card.isImageCard()) {
-            imageView.setImageResource(R.drawable.ic_card_type_image);
-        }
-        else if (card.isTextCard()) {
-            imageView.setImageResource(R.drawable.ic_card_type_text);
-        }
-        else if (card.isAudioCard()) {
-            imageView.setImageResource(R.drawable.ic_card_type_audio);
-        }
-        else if (card.isVideoCard()) {
-            imageView.setImageResource(R.drawable.ic_card_type_video);
-        }
-        else {
-            imageView.setImageResource(R.drawable.ic_card_type_unknown);
-        }
+        initializeCommonParts();
+        initializeSpecificParts();
     }
 
     @Override
@@ -144,6 +80,16 @@ public class DataItem_ViewHolder extends BasicViewHolder {
             default:
                 Log.e(TAG, "Unknown eViewHolderState: "+ itemState);
         }
+    }
+
+
+    // View.OnLongClickListener
+    @Override
+    public boolean onLongClick(View view) {
+        if (presenter.canSelectItem()) {
+            presenter.onDataItemLongClicked(dataItem);
+        }
+        return presenter.canSelectItem();
     }
 
 
@@ -172,13 +118,86 @@ public class DataItem_ViewHolder extends BasicViewHolder {
         presenter.onRatingWidgetClicked(currentCard);
     }
 
-    @OnLongClick({R.id.elementView, R.id.titleView})
-    void onItemLongClicked() {
-        presenter.onDataItemLongClicked(this.dataItem);
-    }
 
 
     // Внутренние
+    private void initializeCommonParts() {
+        titleView.setText(currentCard.getTitle());
+    }
+
+    private void initializeSpecificParts() {
+        switch (currentViewMode) {
+            case FEED:
+                initializeInFeedMode();
+                break;
+            case LIST:
+                initializeInListMode();
+                break;
+            case GRID:
+                initializeInGridMode();
+                break;
+            default:
+                throw new RuntimeException("Unknown view mode: "+currentViewMode);
+        }
+    }
+
+    private void initializeInFeedMode() {
+        if (currentCard.isImageCard()) {
+            MyUtils.show(imageView);
+
+            Glide.with(imageView).load(currentCard.getImageURL())
+                    .error(R.drawable.ic_image_error)
+                    .into(imageView);
+        }
+        else
+            MyUtils.hide(imageView);
+
+        if (currentCard.isTextCard()) {
+            MyUtils.hide(titleView);
+
+            quoteView.setText(currentCard.getQuote());
+            MyUtils.show(quoteView);
+        }
+        else {
+            MyUtils.show(titleView);
+            MyUtils.hide(quoteView);
+        }
+
+
+        authorView.setText(currentCard.getUserName());
+        commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
+
+        Long cTime = currentCard.getCTime();
+        Long mTime = currentCard.getMTime();
+        String formatterDate = SimpleDateFormat.getDateInstance().format((cTime > 0) ? cTime : mTime);
+        dateView.setText(formatterDate);
+
+        ratingView.setText(String.valueOf(currentCard.getRating()));
+    }
+
+    private void initializeInListMode() {
+        // Заголовок уже установлен
+    }
+
+    private void initializeInGridMode() {
+        if (currentCard.isImageCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_image);
+        }
+        else if (currentCard.isTextCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_text);
+        }
+        else if (currentCard.isAudioCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_audio);
+        }
+        else if (currentCard.isVideoCard()) {
+            imageView.setImageResource(R.drawable.ic_card_type_video);
+        }
+        else {
+            imageView.setImageResource(R.drawable.ic_card_type_unknown);
+        }
+    }
+
+
     private void applySelectedState() {
         int selectedColor = elementView.getResources().getColor(R.color.element_is_selected);
 

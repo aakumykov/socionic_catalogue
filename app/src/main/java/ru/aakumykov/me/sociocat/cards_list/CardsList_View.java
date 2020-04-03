@@ -11,7 +11,6 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -605,7 +604,7 @@ public class CardsList_View
             MenuItem menuItemSelectAll = menu.findItem(R.id.actionSelectAll);
             MenuItem menuItemClearSelection = menu.findItem(R.id.actionClearSelection);
 
-            if (presenter.canSelectAll()) {
+            if (presenter.canSelectItem()) {
                 if (dataAdapter.allItemsAreSelected()) {
                     menuItemSelectAll.setVisible(false);
                     menuItemClearSelection.setVisible(true);
