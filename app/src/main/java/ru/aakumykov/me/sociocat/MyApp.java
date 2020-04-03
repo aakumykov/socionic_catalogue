@@ -83,8 +83,6 @@ public class MyApp extends Application {
         prepareDefaultPreferences();
 
         logFCMRegistrationToken();
-
-        EventBus.getDefault().register(this);
     }
 
 
