@@ -328,7 +328,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         dataAdapter.showThrobber(0);
 
-        cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobber(insertPosition);

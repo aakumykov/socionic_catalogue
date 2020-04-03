@@ -87,24 +87,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-
-        DataItem lastDataItem = dataAdapter.getLastDataItem();
-
-        if (null == lastDataItem) {
-            setSuccessViewState();
-            return;
-        }
-
-        Card card = (Card) lastDataItem.getPayload();
-
-        pageView.setViewState(iCardsList.PageViewState.REFRESHING, null, null);
-
-        cardsSingleton.loadCardsFromNewestTo(card, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setSuccessViewState();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
+                setSuccessViewState();
             }
 
             @Override
@@ -336,7 +324,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         //pageView.setViewState(iCardsList.PageViewState.PROGRESS, null, null);
         dataAdapter.showThrobberItem();
 
-        cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 setSuccessViewState();
