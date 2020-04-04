@@ -666,36 +666,43 @@ public class CardsList_View
         presenter.onCardEdited(data);
     }
 
+
     private void setInitialToolbarState(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
         addSearchMenuItem(menuInflater, menu);
-        addSortMenuItem(menuInflater, menu);
         addProfileMenuItem(menuInflater, menu);
+        addSortMenuItem(menuInflater, menu, false);
+    }
+
+    private void setSortingToolbarState(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+
+        //addSortMenuItem(menuInflater, menu, true);
+        menuInflater.inflate(R.menu.sorting_menu, menu);
+    }
+
+    private void setFilteringToolbarState(Menu menu) {
+        showToast(R.string.not_implemented_yet);
     }
 
     private void addSearchMenuItem(MenuInflater menuInflater, Menu menu) {
         menuInflater.inflate(R.menu.search, menu);
     }
 
-    private void addSortMenuItem(MenuInflater menuInflater, Menu menu) {
+    private void addSortMenuItem(MenuInflater menuInflater, Menu menu, boolean isActive) {
         menuInflater.inflate(R.menu.sort, menu);
+
+        if (isActive) {
+            MenuItem menuItem = menu.findItem(R.id.actionSort);
+            if (null != menuItem)
+                menuItem.setIcon(R.drawable.ic_sort_active);
+        }
     }
 
     private void addProfileMenuItem(MenuInflater menuInflater, Menu menu) {
         int menuItem = (AuthSingleton.isLoggedIn()) ? R.menu.profile_in : R.menu.profile_out;
         menuInflater.inflate(menuItem, menu);
-    }
-
-
-    private void setSortingToolbarState(Menu menu) {
-        MenuItem menuItem = menu.findItem(R.id.actionSort);
-        if (null != menuItem)
-            menuItem.setIcon(R.drawable.ic_sort_active);
-    }
-
-    private void setFilteringToolbarState(Menu menu) {
-        showToast(R.string.not_implemented_yet);
     }
 
     private void addViewModeMenu(MenuInflater menuInflater, Menu menu) {
@@ -720,13 +727,11 @@ public class CardsList_View
         }
     }
 
-    private void addSortingMenu(MenuInflater menuInflater, Menu menu) {
-        menuInflater.inflate(R.menu.sort, menu);
-    }
-
-
 
     private void onSortMenuClicked() {
+        if (iCardsList.ToolbarState.SORTING.equals(presenter.getToolbarState()))
+            setToolbarState(iCardsList.ToolbarState.INITIAL);
+        else
         setToolbarState(iCardsList.ToolbarState.SORTING);
     }
 
