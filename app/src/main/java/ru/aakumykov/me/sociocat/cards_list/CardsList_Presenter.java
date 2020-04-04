@@ -37,6 +37,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
     private iCardsList.ViewMode currentViewMode;
+    private iCardsList.ToolbarState currentToolbarState;
 
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -83,6 +84,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         this.currentPageViewState = pageViewState;
         this.currentViewMessageId = messageId;
         this.currentViewMessageDetails = messageDetails;
+    }
+
+    @Override
+    public void storeToolbarState(iCardsList.ToolbarState toolbarState) {
+        this.currentToolbarState = toolbarState;
+    }
+
+    @Override
+    public iCardsList.ToolbarState getToolbarState() {
+        return currentToolbarState;
     }
 
     @Override

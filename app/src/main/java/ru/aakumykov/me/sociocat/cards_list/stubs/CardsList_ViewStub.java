@@ -25,6 +25,11 @@ public class CardsList_ViewStub
     }
 
     @Override
+    public void setToolbarState(iCardsList.ToolbarState toolbarState) {
+
+    }
+
+    @Override
     public boolean actionModeIsActive() {
         return false;
     }

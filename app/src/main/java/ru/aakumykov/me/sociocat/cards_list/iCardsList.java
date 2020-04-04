@@ -48,6 +48,12 @@ public interface iCardsList {
         ERROR
     }
 
+    enum ToolbarState {
+        INITIAL,
+        SORTING,
+        FILTERING
+    }
+
     enum SortingMode {
         ORDER_NAME_DIRECT,
         ORDER_NAME_REVERSED,
@@ -61,6 +67,8 @@ public interface iCardsList {
         void changeViewMode(@NonNull ViewMode viewMode);
 
         void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
+
+        void setToolbarState(ToolbarState toolbarState);
 
         boolean actionModeIsActive();
         void finishActionMode();
@@ -136,6 +144,9 @@ public interface iCardsList {
         void onConfigurationChanged();
 
 	    void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
+
+	    void storeToolbarState(ToolbarState toolbarState);
+	    ToolbarState getToolbarState();
 
         void onRefreshRequested();
 

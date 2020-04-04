@@ -1,8 +1,8 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,7 +11,6 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ActionBarPolicy;
 import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +44,8 @@ public class CardsList_View
         extends BaseView
         implements iCardsList.iPageView, iCardsList.ListEdgeReachedListener
 {
+    private static final String TAG = CardShow_View.class.getSimpleName();
+
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -67,6 +68,7 @@ public class CardsList_View
     private BottomSheetListener bottomSheetListener;
 
     private iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.FEED;
+    private iCardsList.ToolbarState initialToolbarState = iCardsList.ToolbarState.INITIAL;
 
 
     // Activity
@@ -134,7 +136,7 @@ public class CardsList_View
         presenter.unlinkView();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
@@ -162,7 +164,7 @@ public class CardsList_View
         }
 
         // Сортировка
-        /*switch (dataAdapter.getSortingMode()) {
+        *//*switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
                 menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
                 menuInflater.inflate(R.menu.sort_by_count, menu);
@@ -180,14 +182,39 @@ public class CardsList_View
                 menuInflater.inflate(R.menu.sort_by_count, menu);
             default:
                 break;
-        }*/
-        menuInflater.inflate(R.menu.sorting_menu, menu);
+        }*//*
+        menuInflater.inflate(R.menu.sort, menu);
 
         // Профиль пользователя
         if (AuthSingleton.isLoggedIn())
             menuInflater.inflate(R.menu.profile_in, menu);
         else
             menuInflater.inflate(R.menu.profile_out, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        iCardsList.ToolbarState toolbarState = presenter.getToolbarState();
+
+        switch (toolbarState) {
+            case INITIAL:
+                setInitialToolbarState(menu);
+                break;
+
+            case SORTING:
+                setSortingToolbarState(menu);
+                break;
+
+            case FILTERING:
+                setFilteringToolbarState(menu);
+                break;
+
+            default:
+                Log.e(TAG, "Unknown toolbar state: "+toolbarState);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -382,6 +409,12 @@ public class CardsList_View
         }
     }
 
+    @Override
+    public void setToolbarState(iCardsList.ToolbarState toolbarState) {
+        presenter.storeToolbarState(toolbarState);
+        invalidateOptionsMenu();
+    }
+
 
     // iCardsList.ListEdgeReachedListener
     @Override
@@ -394,6 +427,14 @@ public class CardsList_View
 
     }
 
+
+    // Нажатия
+    @OnClick(R.id.floatingActionButton)
+    void onFABClicked() {
+        presenter.onNewCardMenuClicked();
+    }
+
+
     // Внутренние методы
     private void configurePresenter() {
 
@@ -401,9 +442,10 @@ public class CardsList_View
                 .get(CardsList_ViewModel.class);
 
         if (viewModel.hasPresenter()) {
-            this.presenter = viewModel.getPresenter();
+            presenter = viewModel.getPresenter();
         } else {
-            this.presenter = new CardsList_Presenter();
+            presenter = new CardsList_Presenter();
+            presenter.storeToolbarState(initialToolbarState);
             viewModel.storePresenter(this.presenter);
         }
     }
@@ -624,15 +666,68 @@ public class CardsList_View
         presenter.onCardEdited(data);
     }
 
-    private void onSortMenuClicked() {
+    private void setInitialToolbarState(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
 
+        addSearchMenuItem(menuInflater, menu);
+        addSortMenuItem(menuInflater, menu);
+        addProfileMenuItem(menuInflater, menu);
+    }
+
+    private void addSearchMenuItem(MenuInflater menuInflater, Menu menu) {
+        menuInflater.inflate(R.menu.search, menu);
+    }
+
+    private void addSortMenuItem(MenuInflater menuInflater, Menu menu) {
+        menuInflater.inflate(R.menu.sort, menu);
+    }
+
+    private void addProfileMenuItem(MenuInflater menuInflater, Menu menu) {
+        int menuItem = (AuthSingleton.isLoggedIn()) ? R.menu.profile_in : R.menu.profile_out;
+        menuInflater.inflate(menuItem, menu);
     }
 
 
-    // Нажатия
-    @OnClick(R.id.floatingActionButton)
-    void onFABClicked() {
-        presenter.onNewCardMenuClicked();
+    private void setSortingToolbarState(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.actionSort);
+        if (null != menuItem)
+            menuItem.setIcon(R.drawable.ic_sort_active);
+    }
+
+    private void setFilteringToolbarState(Menu menu) {
+        showToast(R.string.not_implemented_yet);
+    }
+
+    private void addViewModeMenu(MenuInflater menuInflater, Menu menu) {
+        menuInflater.inflate(R.menu.view_mode, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.actionViewMode);
+
+        if (null != menuItem) {
+            switch (dataAdapter.getViewMode()) {
+                case FEED:
+                    menuItem.setIcon(R.drawable.ic_view_mode_list);
+                    break;
+
+                case LIST:
+                    menuItem.setIcon(R.drawable.ic_view_mode_grid);
+                    break;
+
+                case GRID:
+                    menuItem.setIcon(R.drawable.ic_view_mode_feed);
+                    break;
+            }
+        }
+    }
+
+    private void addSortingMenu(MenuInflater menuInflater, Menu menu) {
+        menuInflater.inflate(R.menu.sort, menu);
+    }
+
+
+
+    private void onSortMenuClicked() {
+        setToolbarState(iCardsList.ToolbarState.SORTING);
     }
 
 
