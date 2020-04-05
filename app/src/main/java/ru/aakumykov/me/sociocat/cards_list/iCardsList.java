@@ -109,8 +109,7 @@ public interface iCardsList {
         int getDataItemsCount();
 
         void sortByName(SortingListener sortingListener);
-        void sortByCount(SortingListener sortingListener);
-        SortingMode getSortingMode();
+        void sortByDate(SortingListener sortingListener);
 
         int getPositionOf(DataItem dataItem);
 

@@ -43,10 +43,8 @@ public class CardsList_DataAdapter
 
 
     // Конструктор
-    public CardsList_DataAdapter(
-            iCardsList.SortingMode sortingMode
-    ) {
-        this.currentSortingMode = sortingMode;
+    public CardsList_DataAdapter() {
+
     }
 
 
@@ -214,6 +212,9 @@ public class CardsList_DataAdapter
 
     @Override
     public void sortByName(iCardsList.SortingListener sortingListener) {
+        if (null == currentSortingMode)
+            currentSortingMode = iCardsList.SortingMode.ORDER_NAME_REVERSED;
+
         switch (currentSortingMode) {
             case ORDER_NAME_DIRECT:
                 currentSortingMode = iCardsList.SortingMode.ORDER_NAME_REVERSED;
@@ -227,7 +228,10 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void sortByCount(iCardsList.SortingListener sortingListener) {
+    public void sortByDate(iCardsList.SortingListener sortingListener) {
+        if (null == currentSortingMode)
+            currentSortingMode = iCardsList.SortingMode.ORDER_COUNT_REVERSED;
+
         switch (currentSortingMode) {
             case ORDER_COUNT_REVERSED:
                 currentSortingMode = iCardsList.SortingMode.ORDER_COUNT_DIRECT;
@@ -238,11 +242,6 @@ public class CardsList_DataAdapter
         }
 
         performSorting(sortingListener);
-    }
-
-    @Override
-    public iCardsList.SortingMode getSortingMode() {
-        return currentSortingMode;
     }
 
     @Override
@@ -399,3 +398,18 @@ public class CardsList_DataAdapter
             sortingListener.onSortingComplete();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

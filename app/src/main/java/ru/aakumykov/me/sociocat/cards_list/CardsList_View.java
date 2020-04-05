@@ -229,23 +229,11 @@ public class CardsList_View
                 break;
 
             case R.id.actionSortByName:
-            case R.id.actionSortByNameReverse:
-                dataAdapter.sortByName(new iCardsList.SortingListener() {
-                    @Override
-                    public void onSortingComplete() {
-                        refreshMenu();
-                    }
-                });
+                onSortByNameClicked();
                 break;
 
-            case R.id.actionSortByCount:
-            case R.id.actionSortByCountReverse:
-                dataAdapter.sortByCount(new iCardsList.SortingListener() {
-                    @Override
-                    public void onSortingComplete() {
-                        refreshMenu();
-                    }
-                });
+            case R.id.actionSortByDate:
+                onSortByDateClicked();
                 break;
 
             case R.id.actionViewMode:
@@ -466,7 +454,7 @@ public class CardsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new CardsList_DataAdapter(iCardsList.SortingMode.ORDER_NAME_DIRECT);
+            this.dataAdapter = new CardsList_DataAdapter();
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }
@@ -739,10 +727,31 @@ public class CardsList_View
 
 
     private void onSortMenuClicked() {
-        if (iCardsList.ToolbarState.SORTING.equals(presenter.getToolbarState()))
-            setToolbarState(iCardsList.ToolbarState.INITIAL);
-        else
-        setToolbarState(iCardsList.ToolbarState.SORTING);
+        setToolbarState(
+                (iCardsList.ToolbarState.SORTING.equals(presenter.getToolbarState()))
+                        ?
+                iCardsList.ToolbarState.INITIAL
+                        :
+                iCardsList.ToolbarState.SORTING
+        );
+    }
+
+    private void onSortByNameClicked() {
+        dataAdapter.sortByName(new iCardsList.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                //refreshMenu();
+            }
+        });
+    }
+
+    private void onSortByDateClicked() {
+        dataAdapter.sortByDate(new iCardsList.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                //refreshMenu();
+            }
+        });
     }
 
 

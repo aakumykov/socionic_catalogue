@@ -43,7 +43,6 @@ public class ItemsComparator implements Comparator {
     }
 
     private int makeNameSorting() {
-
         switch (sortOrder) {
             case ORDER_NAME_DIRECT:
                 return item1.compareTo(item2);
