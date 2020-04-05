@@ -221,6 +221,7 @@ public class CardsList_View
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+
         switch (menuItem.getItemId()) {
 
             case R.id.actionSort:
@@ -254,6 +255,7 @@ public class CardsList_View
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+
         return true;
     }
 
