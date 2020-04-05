@@ -11,7 +11,9 @@ import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +64,20 @@ public class DataItem_ViewHolder
         titleView.setOnLongClickListener(this);
 
         initializeCommonParts();
-        initializeSpecificParts();
+
+        switch (currentViewMode) {
+            case FEED:
+                initializeInFeedMode();
+                break;
+            case LIST:
+                initializeInListMode();
+                break;
+            case GRID:
+                initializeInGridMode();
+                break;
+            default:
+                throw new RuntimeException("Unknown view mode: "+currentViewMode);
+        }
     }
 
     @Override
@@ -125,22 +140,6 @@ public class DataItem_ViewHolder
         titleView.setText(currentCard.getTitle());
     }
 
-    private void initializeSpecificParts() {
-        switch (currentViewMode) {
-            case FEED:
-                initializeInFeedMode();
-                break;
-            case LIST:
-                initializeInListMode();
-                break;
-            case GRID:
-                initializeInGridMode();
-                break;
-            default:
-                throw new RuntimeException("Unknown view mode: "+currentViewMode);
-        }
-    }
-
     private void initializeInFeedMode() {
         if (currentCard.isImageCard()) {
             MyUtils.show(imageView);
@@ -167,16 +166,13 @@ public class DataItem_ViewHolder
         authorView.setText(currentCard.getUserName());
         commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
 
-        Long cTime = currentCard.getCTime();
-        Long mTime = currentCard.getMTime();
-        String formatterDate = SimpleDateFormat.getDateInstance().format((cTime > 0) ? cTime : mTime);
-        dateView.setText(formatterDate);
+        displayDate();
 
         ratingView.setText(String.valueOf(currentCard.getRating()));
     }
 
     private void initializeInListMode() {
-        // Заголовок уже установлен
+        displayDate();
     }
 
     private void initializeInGridMode() {
@@ -195,6 +191,16 @@ public class DataItem_ViewHolder
         else {
             imageView.setImageResource(R.drawable.ic_card_type_unknown);
         }
+    }
+
+    private void displayDate() {
+        Long cTime = currentCard.getCTime();
+        Long mTime = currentCard.getMTime();
+
+        DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance();
+        String formatterDate = dateFormat.format((cTime > 0) ? cTime : mTime);
+
+        dateView.setText(formatterDate);
     }
 
 
