@@ -5,6 +5,7 @@ import java.util.Comparator;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class ItemsComparator implements Comparator {
 
@@ -29,6 +30,7 @@ public class ItemsComparator implements Comparator {
         }
     }
 
+
     private int performSorting() {
         switch (sortOrder) {
             case ORDER_NAME_DIRECT:
@@ -36,7 +38,7 @@ public class ItemsComparator implements Comparator {
                 return makeNameSorting();
             case ORDER_COUNT_DIRECT:
             case ORDER_COUNT_REVERSED:
-                return makeCountSorting();
+                return makeDateSorting();
             default:
                 return 0;
         }
@@ -53,15 +55,15 @@ public class ItemsComparator implements Comparator {
         }
     }
 
-    private int makeCountSorting() {
-        int cardsCount1 = ((DataItem) item1).getCount();
-        int cardsCount2 = ((DataItem) item2).getCount();
+    private int makeDateSorting() {
+        long card1date = ((Card) ((DataItem) item1).getPayload()).getDate();
+        long card2date = ((Card) ((DataItem) item2).getPayload()).getDate();
 
         switch (sortOrder) {
             case ORDER_COUNT_DIRECT:
-                return Integer.compare(cardsCount1, cardsCount2);
+                return Long.compare(card1date, card2date);
             case ORDER_COUNT_REVERSED:
-                return Integer.compare(cardsCount2, cardsCount1);
+                return Long.compare(card2date, card1date);
             default:
                 return 0;
         }
