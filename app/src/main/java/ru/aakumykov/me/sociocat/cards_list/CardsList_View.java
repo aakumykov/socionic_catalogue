@@ -669,6 +669,7 @@ public class CardsList_View
         MenuInflater menuInflater = getMenuInflater();
 
         addSearchMenuItem(menuInflater, menu);
+        addViewModeMenu(menuInflater, menu);
         addProfileMenuItem(menuInflater, menu);
         addSortMenuItem(menuInflater, menu, false);
     }
