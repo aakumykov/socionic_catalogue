@@ -108,8 +108,6 @@ public interface iCardsList {
 
         int getDataItemsCount();
 
-        ViewMode getViewMode();
-
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
         SortingMode getSortingMode();
@@ -144,6 +142,9 @@ public interface iCardsList {
         void onConfigurationChanged();
 
 	    void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
+
+        void storeViewMode(ViewMode initialViewMode);
+        ViewMode getViewMode();
 
 	    void storeToolbarState(ToolbarState toolbarState);
 	    ToolbarState getToolbarState();

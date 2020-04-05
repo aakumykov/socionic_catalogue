@@ -445,28 +445,11 @@ public class CardsList_View
             presenter = viewModel.getPresenter();
         } else {
             presenter = new CardsList_Presenter();
+
             presenter.storeToolbarState(initialToolbarState);
+            presenter.storeViewMode(initialViewMode);
+
             viewModel.storePresenter(this.presenter);
-        }
-    }
-
-    private void configureLayoutManagers() {
-        int colsNum = MyUtils.isPortraitOrientation(this) ?
-                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
-
-        this.feedLayoutManager = new LinearLayoutManager(this);
-        this.listLayoutManager = this.feedLayoutManager;
-        this.gridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
-
-        switch (dataAdapter.getViewMode()) {
-            case LIST:
-                currentLayoutManager = listLayoutManager;
-                break;
-            case GRID:
-                currentLayoutManager = gridLayoutManager;
-                break;
-            default:
-                currentLayoutManager = feedLayoutManager;
         }
     }
 
@@ -481,10 +464,7 @@ public class CardsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new CardsList_DataAdapter(
-                    initialViewMode,
-                    iCardsList.SortingMode.ORDER_NAME_DIRECT
-                );
+            this.dataAdapter = new CardsList_DataAdapter(iCardsList.SortingMode.ORDER_NAME_DIRECT);
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }
@@ -492,6 +472,34 @@ public class CardsList_View
     private void bindPresenterAndAdapter() {
         dataAdapter.setPresenter(presenter);
         presenter.setDataAdapter(dataAdapter);
+    }
+
+    private void configureLayoutManagers() {
+
+        if (null == presenter)
+            throw new RuntimeException("Presenter must be created first");
+
+        if (null == dataAdapter)
+            throw new RuntimeException("Data adapter must be created first");
+
+
+        int colsNum = MyUtils.isPortraitOrientation(this) ?
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+
+        this.feedLayoutManager = new LinearLayoutManager(this);
+        this.listLayoutManager = this.feedLayoutManager;
+        this.gridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
+
+        switch (presenter.getViewMode()) {
+            case LIST:
+                currentLayoutManager = listLayoutManager;
+                break;
+            case GRID:
+                currentLayoutManager = gridLayoutManager;
+                break;
+            default:
+                currentLayoutManager = feedLayoutManager;
+        }
     }
 
     private void configureRecyclerView() {
@@ -711,7 +719,7 @@ public class CardsList_View
         MenuItem menuItem = menu.findItem(R.id.actionViewMode);
 
         if (null != menuItem) {
-            switch (dataAdapter.getViewMode()) {
+            switch (presenter.getViewMode()) {
                 case FEED:
                     menuItem.setIcon(R.drawable.ic_view_mode_list);
                     break;

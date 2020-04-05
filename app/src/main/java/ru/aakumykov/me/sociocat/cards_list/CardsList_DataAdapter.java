@@ -39,16 +39,13 @@ public class CardsList_DataAdapter
     private volatile List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-    private iCardsList.ViewMode currentViewMode;
     private iCardsList.SortingMode currentSortingMode;
 
 
     // Конструктор
     public CardsList_DataAdapter(
-            iCardsList.ViewMode viewMode,
             iCardsList.SortingMode sortingMode
     ) {
-        this.currentViewMode = viewMode;
         this.currentSortingMode = sortingMode;
     }
 
@@ -72,7 +69,7 @@ public class CardsList_DataAdapter
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         BasicViewHolder basicViewHolder =
-                CardsList_ItemFactory.createViewHolder(viewType, parent, currentViewMode);
+                CardsList_ItemFactory.createViewHolder(viewType, parent, presenter.getViewMode());
 
         basicViewHolder.setPresenter(presenter);
 
@@ -216,11 +213,6 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public iCardsList.ViewMode getViewMode() {
-        return currentViewMode;
-    }
-
-    @Override
     public void sortByName(iCardsList.SortingListener sortingListener) {
         switch (currentSortingMode) {
             case ORDER_NAME_DIRECT:
@@ -319,7 +311,7 @@ public class CardsList_DataAdapter
 
     @Override
     public void setLayoutMode(iCardsList.ViewMode viewMode) {
-        this.currentViewMode = viewMode;
+        presenter.storeViewMode(viewMode);
         notifyDataSetChanged();
     }
 
