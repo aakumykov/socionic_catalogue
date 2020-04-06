@@ -175,8 +175,9 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onListFiltered(CharSequence filterText, List<DataItem> filteredList) {
-        dataAdapter.setList(filteredList);
         this.filterText = filterText;
+        dataAdapter.setList(filteredList);
+        dataAdapter.showLoadmoreItem();
     }
 
     @Override

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.cards_list.filter_stuff.ItemsComparator;
-import ru.aakumykov.me.sociocat.cards_list.filter_stuff.ItemsFilter;
+import ru.aakumykov.me.sociocat.cards_list.utils.ItemsComparator;
+import ru.aakumykov.me.sociocat.cards_list.utils.ItemsFilter;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.LoadMoreItem;

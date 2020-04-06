@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list.filter_stuff;
+package ru.aakumykov.me.sociocat.cards_list.utils;
 
 import java.util.Comparator;
 
