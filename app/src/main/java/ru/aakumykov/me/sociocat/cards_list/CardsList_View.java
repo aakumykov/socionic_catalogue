@@ -618,32 +618,36 @@ public class CardsList_View
     }
 
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK == resultCode) {
+
+        showToast(R.string.not_implemented_yet);
+
+        /*if (RESULT_OK == resultCode) {
             if (null != data) {
+
                 String action = data.getAction();
-                action += "";
+                if (null == action) action = "";
 
-                if (Constants.ACTION_DELETE.equals(action)) {
-                    removeJustDeletedItem();
-                } else {
-                    updateJustShownItem();
+                Card card = data.getParcelableExtra(Constants.CARD);
+
+                switch (action) {
+                    case Constants.ACTION_DELETE:
+                        dataAdapter.removeItem();
+                        positionInWork = -1;
+                        break;
+
+                *//*case Constants.ACTION_EDIT:
+                    dataAdapter.updateItem(positionInWork, card);
+                    positionInWork = -1;
+                    break;*//*
+
+                    default:
+                        dataAdapter.updateItem(positionInWork, card);
+                        positionInWork = -1;
+                        break;
                 }
+
             }
-        }
-        else if (RESULT_CANCELED == resultCode) {
-            Log.w(TAG, "Cancelled result from activity");
-        }
-        else {
-            Log.w(TAG, "Unknown result code: "+resultCode);
-        }
-    }
-
-    private void removeJustDeletedItem() {
-        dataAdapter.removeItem(presenter.getCurrentDataItem());
-    }
-
-    private void updateJustShownItem() {
-        dataAdapter.updateItem(presenter.getCurrentDataItem());
+        }*/
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
