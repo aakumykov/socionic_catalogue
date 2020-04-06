@@ -560,11 +560,6 @@ public class CardsList_View
         String hint = MyUtils.getString(this, R.string.CARDS_GRID_search_widget_hint);
         searchView.setQueryHint(hint);
 
-        if (presenter.hasFilterText()) {
-            searchView.setQuery(presenter.getFilterText(), false);
-            searchView.setIconified(false);
-        }
-
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -596,6 +591,13 @@ public class CardsList_View
                 return false;
             }
         });
+
+//        presenter.onSearchViewConfigured();
+
+        if (presenter.hasFilterText()) {
+            searchView.setQuery(presenter.getFilterText(), false);
+            searchView.setIconified(false);
+        }
     }
 
     boolean searchViewNotNeedToBeProcessed() {
