@@ -224,6 +224,9 @@ public class CardsList_View
 
         switch (menuItem.getItemId()) {
 
+            case R.id.actionSearch:
+                break;
+
             case R.id.actionSort:
                 onSortMenuClicked();
                 break;
@@ -249,11 +252,7 @@ public class CardsList_View
 
     @Override
     public void onBackPressed() {
-        if (null != searchView && !searchView.isIconified()) {
-            searchView.clearFocus();
-            searchView.setIconified(true);
-        }
-        else
+        if (searchViewNotNeedToBeProcessed())
             super.onBackPressed();
     }
 
@@ -558,7 +557,7 @@ public class CardsList_View
 
         searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
 
-        String hint = MyUtils.getString(this, R.string.LIST_TEMPLATE_search_items);
+        String hint = MyUtils.getString(this, R.string.CARDS_GRID_search_widget_hint);
         searchView.setQueryHint(hint);
 
         if (presenter.hasFilterText()) {
@@ -597,6 +596,18 @@ public class CardsList_View
                 return false;
             }
         });
+    }
+
+    boolean searchViewNotNeedToBeProcessed() {
+        if (null == searchView)
+            return true;
+
+        if (searchView.isIconified())
+            return true;
+
+        searchView.clearFocus();
+        searchView.setIconified(true);
+        return true;
     }
 
     private void showRefreshThrobber() {
@@ -686,7 +697,9 @@ public class CardsList_View
     }
 
     private void addSearchMenuItem(MenuInflater menuInflater, Menu menu) {
-        menuInflater.inflate(R.menu.search, menu);
+        menuInflater.inflate(R.menu.search_widget, menu);
+        //menuInflater.inflate(R.menu.search, menu);
+        configureSearchView(menu);
     }
 
     private void addSortMenuItem(MenuInflater menuInflater, Menu menu, boolean isActive) {
