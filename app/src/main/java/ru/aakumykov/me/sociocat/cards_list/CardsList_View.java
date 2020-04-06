@@ -619,7 +619,7 @@ public class CardsList_View
 
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
 
-        showToast(R.string.not_implemented_yet);
+        //showToast(R.string.not_implemented_yet);
 
         /*if (RESULT_OK == resultCode) {
             if (null != data) {
@@ -635,10 +635,10 @@ public class CardsList_View
                         positionInWork = -1;
                         break;
 
-                *//*case Constants.ACTION_EDIT:
+                case Constants.ACTION_EDIT:
                     dataAdapter.updateItem(positionInWork, card);
                     positionInWork = -1;
-                    break;*//*
+                    break;
 
                     default:
                         dataAdapter.updateItem(positionInWork, card);
