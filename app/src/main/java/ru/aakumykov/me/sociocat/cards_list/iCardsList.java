@@ -153,6 +153,8 @@ public interface iCardsList {
         void onDataItemClicked(DataItem dataItem);
         void onDataItemLongClicked(DataItem dataItem);
 
+        DataItem getCurrentDataItem();
+
         void onCardAuthorClicked(String userId);
         void onCardCommentsClicked(Card card);
         void onRatingWidgetClicked(Card card);

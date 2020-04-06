@@ -43,7 +43,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    private DataItem currentlyEditedItem;
+    private DataItem currentDataItem;
 
 
     @Override
@@ -127,9 +127,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onDataItemClicked(DataItem dataItem) {
-        if (pageView.actionModeIsActive())
+        if (pageView.actionModeIsActive()) {
             toggleItemSelection(dataItem);
+        }
         else {
+            currentDataItem = dataItem;
             Card card = (Card) dataItem.getPayload();
             pageView.goShowCard(card);
         }
@@ -141,6 +143,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             pageView.setViewState(iCardsList.PageViewState.SELECTION, null, null);
             toggleItemSelection(dataItem);
         }
+    }
+
+    @Override
+    public DataItem getCurrentDataItem() {
+        return currentDataItem;
     }
 
     @Override
@@ -223,8 +230,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onEditSelectedItemClicked() {
-        currentlyEditedItem = dataAdapter.getSelectedItems().get(0);
-        Card card = (Card) currentlyEditedItem.getPayload();
+        currentDataItem = dataAdapter.getSelectedItems().get(0);
+        Card card = (Card) currentDataItem.getPayload();
         pageView.goEditCard(card);
         pageView.finishActionMode();
     }
@@ -335,8 +342,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        currentlyEditedItem.setPayload(card);
-        dataAdapter.updateItem(currentlyEditedItem);
+        currentDataItem.setPayload(card);
+        dataAdapter.updateItem(currentDataItem);
     }
 
 
