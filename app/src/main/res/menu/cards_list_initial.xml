@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchWidget"
+        android:icon="@drawable/ic_search"
+        android:title="@string/MENU_search"
+        android:hint="@string/CARDS_GRID_search_widget_hint"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
+        android:id="@+id/actionSort"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/MENU_sort"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionViewMode"
+        android:icon="@drawable/ic_view_mode_list"
+        android:title="@string/MENU_view_mode"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionProfile"
+        android:icon="@drawable/ic_user_logged_out"
+        android:title="@string/MENU_user_profile"
+        app:showAsAction="ifRoom" />
+
+    <!--<item
+        android:id="@+id/actionPreferences"
+        android:icon="@drawable/ic_preferences"
+        android:title="@string/MENU_preferences"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionLogin"
+        android:icon="@drawable/ic_login3"
+        android:title="@string/MENU_login" />-->
+
+</menu>

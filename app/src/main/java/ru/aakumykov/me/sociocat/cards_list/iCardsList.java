@@ -182,6 +182,8 @@ public interface iCardsList {
 
         void onNewCardCreated(@Nullable Intent data);
         void onCardEdited(@Nullable Intent data);
+
+        boolean isLoggedIn();
     }
 
 

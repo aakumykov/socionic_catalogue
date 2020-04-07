@@ -15,6 +15,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -338,6 +339,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         currentlyEditedItem.setPayload(card);
         dataAdapter.updateItem(currentlyEditedItem);
+    }
+
+    @Override
+    public boolean isLoggedIn() {
+        return AuthSingleton.isLoggedIn();
     }
 
 
