@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -571,6 +572,11 @@ public class CardsList_View
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                if (isFilterActive && hasFocus && TextUtils.isEmpty(searchView.getQuery())) {
+//                    searchView.clearFocus();
+                    searchView.setIconified(true);
+                }
+
                 if (hasFocus) {
                     isFilterActive = true;
                 }
@@ -607,9 +613,10 @@ public class CardsList_View
         if (searchView.isIconified())
             return true;
 
-        searchView.clearFocus();
+        //searchView.clearFocus();
         searchView.setIconified(true);
-        return true;
+
+        return false;
     }
 
     private void showRefreshThrobber() {
