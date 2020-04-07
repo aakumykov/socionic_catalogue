@@ -162,7 +162,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onLoadMoreClicked() {
         //int scrollPosition = dataAdapter.getDataItemsCount() + 1;
 
-        DataItem lastDataItem = dataAdapter.getLastDataItem();
+        DataItem lastDataItem = dataAdapter.getLastOriginalDataItem();
 
         if (null != lastDataItem) {
             Card card = (Card) lastDataItem.getPayload();
@@ -176,7 +176,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onListFiltered(CharSequence filterText, List<DataItem> filteredList) {
         this.filterText = filterText;
-        dataAdapter.setList(filteredList);
+        dataAdapter.setFilteredList(filteredList);
         dataAdapter.showLoadmoreItem();
     }
 
@@ -268,7 +268,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onChangeLayoutClicked() { ;
+    public void onChangeLayoutClicked() {
 
         switch (currentViewMode) {
             case FEED:

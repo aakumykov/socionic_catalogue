@@ -36,7 +36,8 @@ public class CardsList_DataAdapter
     private iCardsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
-    private volatile List<ListItem> itemsList = new ArrayList<>();
+    private volatile List<ListItem> visibleItemsList = new ArrayList<>();
+    private volatile List<ListItem> originalItemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
     private iCardsList.SortingMode currentSortingMode;
@@ -51,7 +52,7 @@ public class CardsList_DataAdapter
     // RecyclerView.Adapter
     @Override
     public int getItemViewType(int position) {
-        ListItem listItem = itemsList.get(position);
+        ListItem listItem = visibleItemsList.get(position);
 
         if (listItem instanceof DataItem)
             return iCardsList.DATA_ITEM_TYPE;
@@ -76,7 +77,7 @@ public class CardsList_DataAdapter
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ListItem listItem = itemsList.get(position);
+        ListItem listItem = visibleItemsList.get(position);
         BasicViewHolder viewHolder;
 
         if (listItem instanceof DataItem) {
@@ -96,7 +97,7 @@ public class CardsList_DataAdapter
         viewHolder.initialize(listItem);
 
         // Достигнут конец списка
-        if (position == (itemsList.size() - 1)) {
+        if (position == (visibleItemsList.size() - 1)) {
             if (null != listEdgeReachedListener) {
                 listEdgeReachedListener.onBottomReached(position);
                 Log.d(TAG, "Достигнут низ страницы");
@@ -106,7 +107,7 @@ public class CardsList_DataAdapter
 
     @Override
     public int getItemCount() {
-        return itemsList.size();
+        return visibleItemsList.size();
     }
 
 
@@ -133,8 +134,11 @@ public class CardsList_DataAdapter
 
     @Override
     public void setList(List<DataItem> inputList) {
-        itemsList.clear();
-        itemsList.addAll(inputList);
+        visibleItemsList.clear();
+        visibleItemsList.addAll(inputList);
+
+        originalItemsList.clear();
+        originalItemsList.addAll(inputList);
 
         this.isVirgin = false;
 
@@ -142,30 +146,29 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void setList(List<DataItem> inputList, CharSequence filterQuery) {
-        itemsList.clear();
-        itemsList.addAll(inputList);
+    public void setFilteredList(List<DataItem> filteredList) {
+        visibleItemsList.clear();
+        visibleItemsList.addAll(filteredList);
 
-        this.isVirgin = false;
-
-        getFilter().filter(filterQuery);
+        this.isVirgin = false; // На всякий случай
 
         notifyDataSetChanged();
     }
 
     @Override
     public void appendList(List<DataItem> inputList) {
-        int startIndex = getMaxIndex();
+        int startIndex = getMaxIndexVisible();
 
-        itemsList.addAll(inputList);
+        visibleItemsList.addAll(inputList);
+        originalItemsList.addAll(inputList);
 
         notifyItemRangeChanged(startIndex+1, inputList.size());
     }
 
     @Override
     public DataItem getDataItem(int position) {
-        if (position >= 0 && position <= getMaxIndex()) {
-            ListItem listItem = itemsList.get(position);
+        if (position >= 0 && position <= getMaxIndexVisible()) {
+            ListItem listItem = visibleItemsList.get(position);
             return (listItem instanceof DataItem) ? (DataItem) listItem : null;
         }
         else {
@@ -176,19 +179,21 @@ public class CardsList_DataAdapter
     @Override
     public List<DataItem> getAllDataItems() {
         List<DataItem> dataItemsList = new ArrayList<>();
-        for (ListItem listItem : itemsList)
+
+        for (ListItem listItem : visibleItemsList)
             if (listItem instanceof DataItem)
                 dataItemsList.add((DataItem) listItem);
+
         return dataItemsList;
     }
 
     @Override
-    public DataItem getLastDataItem() {
-        int listSize = itemsList.size();
-        int maxIndex = getMaxIndex();
+    public DataItem getLastOriginalDataItem() {
+        int listSize = originalItemsList.size();
+        int maxIndex = getMaxIndexOriginal();
 
         for (int i=0; i < listSize; i++) {
-            ListItem listItem = itemsList.get(maxIndex - i);
+            ListItem listItem = originalItemsList.get(maxIndex - i);
             if (listItem instanceof DataItem)
                 return (DataItem) listItem;
         }
@@ -198,9 +203,9 @@ public class CardsList_DataAdapter
 
     @Override
     public void removeItem(ListItem listItem) {
-        int index = itemsList.indexOf(listItem);
+        int index = visibleItemsList.indexOf(listItem);
         if (index >= 0) {
-            itemsList.remove(index);
+            visibleItemsList.remove(index);
             notifyItemRemoved(index);
         }
     }
@@ -246,7 +251,7 @@ public class CardsList_DataAdapter
 
     @Override
     public int getPositionOf(DataItem dataItem) {
-        return itemsList.indexOf(dataItem);
+        return visibleItemsList.indexOf(dataItem);
     }
 
     @Override
@@ -258,13 +263,13 @@ public class CardsList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        ListItem endingItem = getEndingItem();
+        ListItem endingItem = getVisibleEndingItem();
 
         if (endingItem instanceof LoadMoreItem)
             return;
 
         if (endingItem instanceof ThrobberItem) {
-            replaceEndingItem(new LoadMoreItem());
+            replaceVisibleEndingItem(new LoadMoreItem());
         } else {
             appendItem(new LoadMoreItem());
         }
@@ -272,20 +277,20 @@ public class CardsList_DataAdapter
 
     @Override
     public void showThrobberItem() {
-        ListItem endingItem = getEndingItem();
+        ListItem endingItem = getVisibleEndingItem();
 
         if (endingItem instanceof ThrobberItem)
             return;
 
         if (endingItem instanceof LoadMoreItem)
-            replaceEndingItem(new ThrobberItem());
+            replaceVisibleEndingItem(new ThrobberItem());
         else
             appendItem(new ThrobberItem());
     }
 
     @Override
     public void hideLoadmoreItem() {
-        ListItem endingItem = getEndingItem();
+        ListItem endingItem = getVisibleEndingItem();
 
         if (endingItem instanceof LoadMoreItem)
             removeItem(endingItem);
@@ -293,7 +298,7 @@ public class CardsList_DataAdapter
 
     @Override
     public void hideThrobberItem() {
-        ListItem endingItem = getEndingItem();
+        ListItem endingItem = getVisibleEndingItem();
 
         if (endingItem instanceof ThrobberItem)
             removeItem(endingItem);
@@ -317,20 +322,20 @@ public class CardsList_DataAdapter
     @Override
     public void setItemIsNowDeleting(DataItem dataItem, boolean value) {
         dataItem.setIsNowDeleting(value);
-        notifyItemChanged(itemsList.indexOf(dataItem));
+        notifyItemChanged(visibleItemsList.indexOf(dataItem));
     }
 
     @Override
     public int addItem(@NonNull DataItem dataItem) {
-        itemsList.add(0, dataItem);
+        visibleItemsList.add(0, dataItem);
         notifyItemInserted(0);
         return 0;
     }
 
     @Override
     public void updateItem(@NonNull DataItem dataItem) {
-        int index = itemsList.indexOf(dataItem);
-        itemsList.set(index, dataItem);
+        int index = visibleItemsList.indexOf(dataItem);
+        visibleItemsList.set(index, dataItem);
         notifyItemChanged(index);
     }
 
@@ -339,7 +344,7 @@ public class CardsList_DataAdapter
     @Override
     public Filter getFilter() {
         if (null == itemsFilter)
-            itemsFilter = new ItemsFilter(itemsList, presenter);
+            itemsFilter = new ItemsFilter(visibleItemsList, presenter);
         return itemsFilter;
     }
 
@@ -358,12 +363,12 @@ public class CardsList_DataAdapter
     }
 
     private void appendItem(ListItem listItem) {
-        itemsList.add(listItem);
-        notifyItemInserted(itemsList.indexOf(listItem));
+        visibleItemsList.add(listItem);
+        notifyItemInserted(visibleItemsList.indexOf(listItem));
     }
 
-    private int getMaxIndex() {
-        int size = itemsList.size();
+    private int getMaxIndexVisible() {
+        int size = visibleItemsList.size();
 
         if (0 == size)
             return -1;
@@ -371,26 +376,35 @@ public class CardsList_DataAdapter
         return size - 1;
     }
 
-    private ListItem getEndingItem() {
-        int maxIndex = getMaxIndex();
+    private int getMaxIndexOriginal() {
+        int size = originalItemsList.size();
+
+        if (0 == size)
+            return -1;
+
+        return size - 1;
+    }
+
+    private ListItem getVisibleEndingItem() {
+        int maxIndex = getMaxIndexVisible();
 
         if (maxIndex < 0)
             return null;
 
-        return itemsList.get(maxIndex);
+        return visibleItemsList.get(maxIndex);
     }
 
-    private void replaceEndingItem(ListItem replacementItem) {
-        ListItem endingItem = getEndingItem();
+    private void replaceVisibleEndingItem(ListItem replacementItem) {
+        ListItem endingItem = getVisibleEndingItem();
         if (null != endingItem) {
-            int index = itemsList.indexOf(endingItem);
-            itemsList.set(index, replacementItem);
+            int index = visibleItemsList.indexOf(endingItem);
+            visibleItemsList.set(index, replacementItem);
             notifyItemChanged(index);
         }
     }
 
     private void performSorting(@Nullable iCardsList.SortingListener sortingListener) {
-        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
+        Collections.sort(visibleItemsList, new ItemsComparator(currentSortingMode));
 
         notifyDataSetChanged();
 
