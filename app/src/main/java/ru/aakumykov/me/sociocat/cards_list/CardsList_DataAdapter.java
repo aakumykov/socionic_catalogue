@@ -177,7 +177,7 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public List<DataItem> getAllDataItems() {
+    public List<DataItem> getAllVisibleDataItems() {
         List<DataItem> dataItemsList = new ArrayList<>();
 
         for (ListItem listItem : visibleItemsList)
@@ -203,16 +203,20 @@ public class CardsList_DataAdapter
 
     @Override
     public void removeItem(ListItem listItem) {
-        int index = visibleItemsList.indexOf(listItem);
-        if (index >= 0) {
-            visibleItemsList.remove(index);
-            notifyItemRemoved(index);
+        int indexOrig = originalItemsList.indexOf(listItem);
+        if (indexOrig >= 0)
+            originalItemsList.remove(indexOrig);
+
+        int indexVisible = visibleItemsList.indexOf(listItem);
+        if (indexVisible >= 0) {
+            visibleItemsList.remove(indexVisible);
+            notifyItemRemoved(indexVisible);
         }
     }
 
     @Override
-    public int getDataItemsCount() {
-        return getAllDataItems().size();
+    public int getVisibleDataItemsCount() {
+        return getAllVisibleDataItems().size();
     }
 
     @Override
@@ -256,7 +260,7 @@ public class CardsList_DataAdapter
 
     @Override
     public boolean allItemsAreSelected() {
-        int dataItemsCount = getDataItemsCount();
+        int dataItemsCount = getVisibleDataItemsCount();
         int selectedItemsCount = getSelectedItemsCount();
         return dataItemsCount == selectedItemsCount && dataItemsCount > 0;
     }
@@ -328,6 +332,7 @@ public class CardsList_DataAdapter
     @Override
     public int addItem(@NonNull DataItem dataItem) {
         visibleItemsList.add(0, dataItem);
+        originalItemsList.add(0, dataItem);
         notifyItemInserted(0);
         return 0;
     }

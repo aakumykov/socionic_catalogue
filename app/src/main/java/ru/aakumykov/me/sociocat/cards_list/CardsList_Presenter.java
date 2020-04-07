@@ -160,7 +160,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-        //int scrollPosition = dataAdapter.getDataItemsCount() + 1;
+        //int scrollPosition = dataAdapter.getVisibleDataItemsCount() + 1;
 
         DataItem lastDataItem = dataAdapter.getLastOriginalDataItem();
 
@@ -212,7 +212,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onSelectAllClicked() {
-        dataAdapter.selectAll(dataAdapter.getDataItemsCount());
+        dataAdapter.selectAll(dataAdapter.getVisibleDataItemsCount());
         pageView.setViewState(iCardsList.PageViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
