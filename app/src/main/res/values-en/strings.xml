@@ -665,7 +665,7 @@
     <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
     <string name="add_new_card_bottom_menu_title">Add</string>
     <string name="CARDS_GRID_error_displaying_card">Error displaying card</string>
-    <string name="MENU_view_mode">View mode</string>
+    <string name="MENU_change_view_mode">Change view mode</string>
     <string name="MENU_feed_view">Feed view</string>
     <string name="MENU_sort">Sort</string>
     <string name="CARDS_GRID_search_widget_hint">Find card</string>

@@ -19,7 +19,7 @@
     <item
         android:id="@+id/actionViewMode"
         android:icon="@drawable/ic_view_mode_list"
-        android:title="@string/MENU_view_mode"
+        android:title="@string/MENU_change_view_mode"
         app:showAsAction="ifRoom" />
 
     <item
