@@ -184,6 +184,8 @@ public interface iCardsList {
         void onCardEdited(@Nullable Intent data);
 
         boolean isLoggedIn();
+
+        void storeFilterText(String text);
     }
 
 

@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowInsets;
+import android.widget.Filter;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -50,7 +50,7 @@ public class CardsList_View
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
-    private SearchView searchView;
+    private SearchView searchWidget;
 
     private boolean viewIsFresh = true;
     private boolean isFilterActive = false;
@@ -68,7 +68,7 @@ public class CardsList_View
 
     private BottomSheetListener bottomSheetListener;
 
-    private iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.FEED;
+    private iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.LIST;
     private iCardsList.ToolbarState initialToolbarState = iCardsList.ToolbarState.INITIAL;
 
 
@@ -226,7 +226,7 @@ public class CardsList_View
         switch (menuItem.getItemId()) {
 
             case R.id.searchWidget:
-                searchView.setIconified(false);
+                searchWidget.setIconified(false);
                 break;
 
             case R.id.actionSort:
@@ -556,34 +556,11 @@ public class CardsList_View
     }
 
     private void configureSearchView(Menu menu) {
-        searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
 
-        searchView.setIconifiedByDefault(true);
+        MenuItem searchMenuItem = menu.findItem(R.id.searchWidget);
+        searchWidget = (SearchView) searchMenuItem.getActionView();
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                searchView.clearFocus();
-
-                MenuItem menuItem = menu.findItem(R.id.searchWidget);
-                if (null != menuItem)
-                    menuItem.collapseActionView();
-
-                isFilterActive = false;
-                return false;
-            }
-        });
-
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    isFilterActive = true;
-                }
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -591,12 +568,48 @@ public class CardsList_View
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (isFilterActive) {
-                    dataAdapter.getFilter().filter(newText);
-                }
+//                if (isFilterActive) {
+                dataAdapter.getFilter().filter(newText);
+                presenter.storeFilterText(newText);
+//                }
                 return false;
             }
         });
+
+        searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchWidget.setQuery("", true);
+                return true;
+            }
+        });
+
+        searchWidget.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchWidget.clearFocus();
+
+                MenuItem menuItem = menu.findItem(R.id.searchWidget);
+                if (null != menuItem)
+                    menuItem.collapseActionView();
+//                isFilterActive = false;
+                return false;
+            }
+        });
+
+        /*searchWidget.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    isFilterActive = true;
+//                }
+            }
+        });*/
 
         /*if (presenter.hasFilterText()) {
             searchView.setQuery(presenter.getFilterText(), false);
@@ -605,14 +618,14 @@ public class CardsList_View
     }
 
     boolean searchViewNotNeedToBeProcessed() {
-        if (null == searchView)
+        if (null == searchWidget)
             return true;
 
-        if (searchView.isIconified())
+        if (searchWidget.isIconified())
             return true;
 
-        searchView.clearFocus();
-        searchView.setIconified(true);
+        searchWidget.clearFocus();
+        searchWidget.setIconified(true);
         return true;
     }
 

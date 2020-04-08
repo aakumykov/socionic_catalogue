@@ -114,8 +114,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                dataAdapter.setList(incapsulateObjects2DataItems(list));
+
+                if (hasFilterText()) {
+//                    dataAdapter.performFiltering(getFilterText());
+                }
+                else {
+                    dataAdapter.setList(incapsulateObjects2DataItems(list));
+                }
+
                 dataAdapter.showLoadmoreItem();
+
                 setSuccessViewState();
             }
 
@@ -344,6 +352,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public boolean isLoggedIn() {
         return AuthSingleton.isLoggedIn();
+    }
+
+    @Override
+    public void storeFilterText(String text) {
+        this.filterText = text;
     }
 
 
