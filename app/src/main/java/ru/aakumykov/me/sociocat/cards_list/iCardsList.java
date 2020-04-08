@@ -69,7 +69,6 @@ public interface iCardsList {
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
 
         void setToolbarState(ToolbarState toolbarState);
-        void setToolbarState(ToolbarState toolbarState, @Nullable String filterText);
 
         boolean actionModeIsActive();
         void finishActionMode();
@@ -193,8 +192,6 @@ public interface iCardsList {
         boolean isLoggedIn();
 
         void storeFilterText(String text);
-
-        void onFilterTextChanged(String filterText);
     }
 
 

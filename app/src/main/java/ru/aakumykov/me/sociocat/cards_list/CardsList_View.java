@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.cards_list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -401,19 +400,8 @@ public class CardsList_View
 
     @Override
     public void setToolbarState(iCardsList.ToolbarState toolbarState) {
-        setToolbarState(toolbarState, null);
-    }
-
-    @Override
-    public void setToolbarState(iCardsList.ToolbarState toolbarState, @Nullable String filterText) {
         presenter.storeToolbarState(toolbarState);
-
-        if (iCardsList.ToolbarState.FILTERING.equals(toolbarState)) {
-            if (null != searchWidget && !TextUtils.isEmpty(filterText)) {
-                searchWidget.setQuery(filterText, false);
-                invalidateOptionsMenu();
-            }
-        }
+        invalidateOptionsMenu();
     }
 
 
@@ -565,9 +553,27 @@ public class CardsList_View
         });
     }
 
-    private void configureSearchWidget(Menu menu) {
+    private void configureSearchView(Menu menu) {
 
         MenuItem searchMenuItem = menu.findItem(R.id.searchWidget);
+        searchWidget = (SearchView) searchMenuItem.getActionView();
+
+        searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                if (isFilterActive) {
+//                dataAdapter.getFilter().filter(newText);
+                dataAdapter.filterList(newText);
+                presenter.storeFilterText(newText);
+//                }
+                return false;
+            }
+        });
 
         searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
@@ -582,8 +588,6 @@ public class CardsList_View
             }
         });
 
-        searchWidget = (SearchView) searchMenuItem.getActionView();
-
         searchWidget.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -593,23 +597,6 @@ public class CardsList_View
                 if (null != menuItem)
                     menuItem.collapseActionView();
 //                isFilterActive = false;
-                return false;
-            }
-        });
-
-        searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String filterText) {
-                CharSequence currentFilterText = presenter.getFilterText();
-
-                if (!TextUtils.isEmpty(filterText) && !filterText.equals(String.valueOf(currentFilterText)))
-                    presenter.onFilterTextChanged(filterText);
-
                 return false;
             }
         });
@@ -730,7 +717,7 @@ public class CardsList_View
         MenuItem profileMenuItem = menu.findItem(R.id.actionProfile);
         profileMenuItem.setIcon(presenter.isLoggedIn() ? R.drawable.ic_user_logged_in : R.drawable.ic_user_logged_out);
 
-        configureSearchWidget(menu);
+        configureSearchView(menu);
     }
 
     private void setSortingToolbarState(Menu menu) {
@@ -747,7 +734,7 @@ public class CardsList_View
     private void addSearchMenuItem(MenuInflater menuInflater, Menu menu) {
         menuInflater.inflate(R.menu.search_widget, menu);
         //menuInflater.inflate(R.menu.search, menu);
-        configureSearchWidget(menu);
+        configureSearchView(menu);
     }
 
     private void addSortMenuItem(MenuInflater menuInflater, Menu menu, boolean isActive) {

@@ -30,11 +30,6 @@ public class CardsList_ViewStub
     }
 
     @Override
-    public void setToolbarState(iCardsList.ToolbarState toolbarState, @Nullable String filterText) {
-
-    }
-
-    @Override
     public boolean actionModeIsActive() {
         return false;
     }
