@@ -111,27 +111,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-
-                if (hasFilterText()) {
-//                    dataAdapter.performFiltering(getFilterText());
-                }
-                else {
-                    dataAdapter.setList(incapsulateObjects2DataItems(list));
-                }
-
-                dataAdapter.showLoadmoreItem();
-
-                setSuccessViewState();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
-            }
-        });
+        loadListFromBeginning();
     }
 
     @Override
@@ -362,16 +342,27 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     // Внутренние методы
     private void loadList() {
-        //pageView.setViewState(iCardsList.PageViewState.PROGRESS, null, null);
         dataAdapter.showThrobberItem();
+        loadListFromBeginning();
+    }
+
+    private void loadListFromBeginning() {
 
         cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setSuccessViewState();
                 dataAdapter.hideThrobberItem();
-                dataAdapter.setList(incapsulateObjects2DataItems(list));
+
+                List<DataItem> dataItemsList = incapsulateObjects2DataItems(list);
+
+                if (hasFilterText())
+                    dataAdapter.setListAndFilter(dataItemsList, getFilterText());
+                else
+                    dataAdapter.setList(dataItemsList);
+
                 dataAdapter.showLoadmoreItem();
+
+                setSuccessViewState();
             }
 
             @Override
@@ -389,8 +380,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobberItem();
-                dataAdapter.appendList(incapsulateObjects2DataItems(list));
+
+                List<DataItem> dataItemsList = incapsulateObjects2DataItems(list);
+
+                if (hasFilterText())
+                    dataAdapter.appendListAndFilter(dataItemsList, getFilterText());
+                else
+                    dataAdapter.appendList(dataItemsList);
+
                 dataAdapter.showLoadmoreItem();
+
+                setSuccessViewState();
             }
 
             @Override

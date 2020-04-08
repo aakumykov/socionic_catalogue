@@ -156,6 +156,13 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public void setListAndFilter(List<DataItem> inputList, CharSequence filterText) {
+        originalItemsList.clear();
+        originalItemsList.addAll(inputList);
+        getFilter().filter(filterText);
+    }
+
+    @Override
     public void appendList(List<DataItem> inputList) {
         int startIndex = getMaxIndexVisible();
 
@@ -163,6 +170,12 @@ public class CardsList_DataAdapter
         originalItemsList.addAll(inputList);
 
         notifyItemRangeChanged(startIndex+1, inputList.size());
+    }
+
+    @Override
+    public void appendListAndFilter(List<DataItem> inputList, CharSequence filterText) {
+        originalItemsList.addAll(inputList);
+        getFilter().filter(filterText);
     }
 
     @Override
@@ -342,6 +355,11 @@ public class CardsList_DataAdapter
         int index = visibleItemsList.indexOf(dataItem);
         visibleItemsList.set(index, dataItem);
         notifyItemChanged(index);
+    }
+
+    @Override
+    public void filterList(CharSequence filterText) {
+        getFilter().filter(filterText);
     }
 
 

@@ -569,7 +569,8 @@ public class CardsList_View
             @Override
             public boolean onQueryTextChange(String newText) {
 //                if (isFilterActive) {
-                dataAdapter.getFilter().filter(newText);
+//                dataAdapter.getFilter().filter(newText);
+                dataAdapter.filterList(newText);
                 presenter.storeFilterText(newText);
 //                }
                 return false;

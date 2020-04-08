@@ -97,8 +97,14 @@ public interface iCardsList {
         boolean isVirgin();
 
         void setList(List<DataItem> inputList);
+
         void setFilteredList(List<DataItem>filteredList);
+        void setListAndFilter(List<DataItem> inputList, CharSequence filterText);
+
         void appendList(List<DataItem> inputList);
+        void appendListAndFilter(List<DataItem> inputList, CharSequence filterText);
+
+        void filterList(CharSequence filterText);
 
         DataItem getDataItem(int position);
         List<DataItem> getAllVisibleDataItems();
