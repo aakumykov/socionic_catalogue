@@ -337,6 +337,15 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         this.filterText = text;
     }
 
+    @Override
+    public void onFilterTextChanged(String filterText) {
+        storeFilterText(filterText);
+
+        pageView.setToolbarState(iCardsList.ToolbarState.FILTERING, filterText);
+
+        dataAdapter.filterList(filterText);
+    }
+
 
     // Внутренние методы
     private void loadList() {
