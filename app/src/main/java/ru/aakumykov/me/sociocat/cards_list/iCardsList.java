@@ -85,6 +85,7 @@ public interface iCardsList {
         void goUserProfile(String userId);
 
         void go2cardComments(Card card);
+
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

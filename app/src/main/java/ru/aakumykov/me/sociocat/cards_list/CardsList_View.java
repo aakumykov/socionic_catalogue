@@ -610,10 +610,12 @@ public class CardsList_View
             }
         });*/
 
-        /*if (presenter.hasFilterText()) {
-            searchView.setQuery(presenter.getFilterText(), false);
-            searchView.setIconified(false);
-        }*/
+        if (presenter.hasFilterText()) {
+            searchWidget.setQuery(presenter.getFilterText(), false);
+            searchWidget.setIconified(false);
+            searchMenuItem.expandActionView();
+            searchWidget.clearFocus();
+        }
     }
 
     boolean searchViewNotNeedToBeProcessed() {
