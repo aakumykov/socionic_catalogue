@@ -110,13 +110,13 @@ public class DataItem_ViewHolder
 
     // Нажатия
     @Optional
-    @OnClick({R.id.titleView, R.id.imageView, R.id.quoteView})
+    @OnClick({ R.id.titleView, R.id.imageView, R.id.quoteView, R.id.dateView })
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
 
     @Optional
-    @OnClick({R.id.authorView, R.id.dateView})
+    @OnClick({R.id.authorView})
     void onAuthorClicked() {
         presenter.onCardAuthorClicked(currentCard.getUserId());
     }
