@@ -70,8 +70,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-//        pageView.changeViewMode(currentViewMode);
-
         loadList();
     }
 

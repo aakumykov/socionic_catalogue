@@ -166,8 +166,8 @@ public class CardsList_DataAdapter
     public void appendList(List<DataItem> inputList) {
         int startIndex = getMaxIndexVisible();
 
-        visibleItemsList.addAll(inputList);
         originalItemsList.addAll(inputList);
+        visibleItemsList.addAll(inputList);
 
         notifyItemRangeChanged(startIndex+1, inputList.size());
     }
@@ -367,7 +367,10 @@ public class CardsList_DataAdapter
     @Override
     public Filter getFilter() {
         if (null == itemsFilter)
-            itemsFilter = new ItemsFilter(visibleItemsList, presenter);
+            this.itemsFilter = new ItemsFilter(presenter);
+
+        itemsFilter.setList(originalItemsList);
+
         return itemsFilter;
     }
 
