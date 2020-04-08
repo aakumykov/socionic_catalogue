@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,6 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -141,7 +141,7 @@ public class CardsList_View
 
         // Поиск
         menuInflater.inflate(R.menu.search_widget, menu);
-        configureSearchView(menu);
+        configureSearchWidget(menu);
 
         // Изменение вида список/плитки
         menuInflater.inflate(R.menu.view_mode, menu);
@@ -553,10 +553,17 @@ public class CardsList_View
         });
     }
 
-    private void configureSearchView(Menu menu) {
+    private void configureSearchWidget(Menu menu) {
 
         MenuItem searchMenuItem = menu.findItem(R.id.searchWidget);
         searchWidget = (SearchView) searchMenuItem.getActionView();
+
+        searchWidget.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                isFilterActive = hasFocus;
+            }
+        });
 
         searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -566,11 +573,10 @@ public class CardsList_View
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                if (isFilterActive) {
-//                dataAdapter.getFilter().filter(newText);
-                dataAdapter.filterList(newText);
-                presenter.storeFilterText(newText);
-//                }
+                if (isFilterActive) {
+                    dataAdapter.filterList(newText);
+                    presenter.storeFilterText(newText);
+                }
                 return false;
             }
         });
@@ -591,24 +597,16 @@ public class CardsList_View
         searchWidget.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                isFilterActive = false;
                 searchWidget.clearFocus();
 
                 MenuItem menuItem = menu.findItem(R.id.searchWidget);
                 if (null != menuItem)
                     menuItem.collapseActionView();
-//                isFilterActive = false;
+
                 return false;
             }
         });
-
-        /*searchWidget.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    isFilterActive = true;
-//                }
-            }
-        });*/
 
         if (presenter.hasFilterText()) {
             searchWidget.setQuery(presenter.getFilterText(), false);
@@ -719,7 +717,7 @@ public class CardsList_View
         MenuItem profileMenuItem = menu.findItem(R.id.actionProfile);
         profileMenuItem.setIcon(presenter.isLoggedIn() ? R.drawable.ic_user_logged_in : R.drawable.ic_user_logged_out);
 
-        configureSearchView(menu);
+        configureSearchWidget(menu);
     }
 
     private void setSortingToolbarState(Menu menu) {
@@ -732,50 +730,6 @@ public class CardsList_View
     private void setFilteringToolbarState(Menu menu) {
         showToast(R.string.not_implemented_yet);
     }
-
-    private void addSearchMenuItem(MenuInflater menuInflater, Menu menu) {
-        menuInflater.inflate(R.menu.search_widget, menu);
-        //menuInflater.inflate(R.menu.search, menu);
-        configureSearchView(menu);
-    }
-
-    private void addSortMenuItem(MenuInflater menuInflater, Menu menu, boolean isActive) {
-        menuInflater.inflate(R.menu.sort, menu);
-
-        if (isActive) {
-            MenuItem menuItem = menu.findItem(R.id.actionSort);
-            if (null != menuItem)
-                menuItem.setIcon(R.drawable.ic_sort_active);
-        }
-    }
-
-    private void addProfileMenuItem(MenuInflater menuInflater, Menu menu) {
-        int menuItem = (AuthSingleton.isLoggedIn()) ? R.menu.profile_in : R.menu.profile_out;
-        menuInflater.inflate(menuItem, menu);
-    }
-
-    private void addViewModeMenu(MenuInflater menuInflater, Menu menu) {
-        menuInflater.inflate(R.menu.view_mode, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.actionViewMode);
-
-        if (null != menuItem) {
-            switch (presenter.getViewMode()) {
-                case FEED:
-                    menuItem.setIcon(R.drawable.ic_view_mode_list);
-                    break;
-
-                case LIST:
-                    menuItem.setIcon(R.drawable.ic_view_mode_grid);
-                    break;
-
-                case GRID:
-                    menuItem.setIcon(R.drawable.ic_view_mode_feed);
-                    break;
-            }
-        }
-    }
-
 
     private void onSortMenuClicked() {
         setToolbarState(
