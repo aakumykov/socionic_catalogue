@@ -16,8 +16,12 @@ public class ItemsFilter extends Filter {
     private List<ListItem> originalItemsList = new ArrayList<>();
 
 
-    public ItemsFilter(List<ListItem> list, iCardsList.iPresenter presenter) {
+    public ItemsFilter(iCardsList.iPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    public void setList(List<ListItem> list) {
+        this.originalItemsList.clear();
         this.originalItemsList.addAll(list);
     }
 
@@ -53,7 +57,6 @@ public class ItemsFilter extends Filter {
 
         return filterResults;
     }
-
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
