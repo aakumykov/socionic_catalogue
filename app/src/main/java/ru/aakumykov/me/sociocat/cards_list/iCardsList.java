@@ -40,7 +40,7 @@ public interface iCardsList {
         GRID
     }
 
-    enum PageViewState {
+    enum ViewState {
         SUCCESS,
         PROGRESS,
         REFRESHING,
@@ -66,7 +66,7 @@ public interface iCardsList {
 
         void changeViewMode(@NonNull ViewMode viewMode);
 
-        void setViewState(PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails);
+        void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
 
         void setToolbarState(ToolbarState toolbarState);
 
@@ -146,7 +146,7 @@ public interface iCardsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-	    void storeViewState(PageViewState pageViewState, Integer messageId, Object messageDetails);
+	    void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
         void storeViewMode(ViewMode initialViewMode);
         ViewMode getViewMode();

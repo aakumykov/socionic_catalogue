@@ -20,7 +20,7 @@ public class CardsList_ViewStub
     }
 
     @Override
-    public void setViewState(iCardsList.PageViewState pageViewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(iCardsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
     }
 

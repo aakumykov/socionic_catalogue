@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Filter;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -361,14 +359,14 @@ public class CardsList_View
     }
 
     @Override
-    public void setViewState(@Nullable iCardsList.PageViewState pageViewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(@Nullable iCardsList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
 
-        presenter.storeViewState(pageViewState, messageId, messageDetails);
+        presenter.storeViewState(viewState, messageId, messageDetails);
 
-        if (null == pageViewState)
+        if (null == viewState)
             return;
 
-        switch (pageViewState) {
+        switch (viewState) {
             case SUCCESS:
                 finishActionMode();
                 hideProgressMessage();

@@ -34,7 +34,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
-    private iCardsList.PageViewState currentPageViewState;
+    private iCardsList.ViewState currentViewState;
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
 
@@ -76,13 +76,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         //pageView.changeViewMode(currentViewMode);
-        pageView.setViewState(currentPageViewState, currentViewMessageId, currentViewMessageDetails);
+        pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
         //pageView.setToolbarState(currentToolbarState);
     }
 
     @Override
-    public void storeViewState(iCardsList.PageViewState pageViewState, Integer messageId, Object messageDetails) {
-        this.currentPageViewState = pageViewState;
+    public void storeViewState(iCardsList.ViewState viewState, Integer messageId, Object messageDetails) {
+        this.currentViewState = viewState;
         this.currentViewMessageId = messageId;
         this.currentViewMessageDetails = messageDetails;
     }
@@ -125,7 +125,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onDataItemLongClicked(DataItem dataItem) {
         if (canSelectItem()) {
-            pageView.setViewState(iCardsList.PageViewState.SELECTION, null, null);
+            pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
             toggleItemSelection(dataItem);
         }
     }
@@ -200,7 +200,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectAll(dataAdapter.getVisibleDataItemsCount());
-        pageView.setViewState(iCardsList.PageViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
+        pageView.setViewState(iCardsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
     @Override
@@ -452,16 +452,16 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         if (0 == selectedItemsCount) {
             setSuccessViewState();
         } else {
-            pageView.setViewState(iCardsList.PageViewState.SELECTION, null, selectedItemsCount);
+            pageView.setViewState(iCardsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
     private void setSuccessViewState() {
-        pageView.setViewState(iCardsList.PageViewState.SUCCESS, null, null);
+        pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
     }
 
     private void setErrorViewState(int messageId, String errorMessage) {
-        pageView.setViewState(iCardsList.PageViewState.ERROR, messageId, errorMessage);
+        pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
     }
 
     private boolean isAdmin() {
