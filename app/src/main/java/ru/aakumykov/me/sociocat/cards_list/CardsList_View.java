@@ -590,6 +590,7 @@ public class CardsList_View
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 searchWidget.setQuery("", true);
+                presenter.storeFilterText("");
                 return true;
             }
         });
