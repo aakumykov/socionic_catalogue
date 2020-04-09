@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -569,6 +568,8 @@ public class CardsList_View
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 searchWidget.setQuery("", true);
                 presenter.storeFilterText("");
+
+                searchWidget.clearFocus();
 
                 isFilterActive = false;
                 return true;
