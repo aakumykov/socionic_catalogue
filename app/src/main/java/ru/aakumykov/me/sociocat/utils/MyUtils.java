@@ -207,10 +207,10 @@ public final class MyUtils {
         editTextView.requestFocus();
     }
 
-    public static void hideKeyboard(Context ctx, EditText editText) {
+    public static void hideKeyboard(Context ctx, View view) {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
     }
 
