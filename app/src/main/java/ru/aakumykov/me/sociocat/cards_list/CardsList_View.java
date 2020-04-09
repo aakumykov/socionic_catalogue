@@ -252,7 +252,7 @@ public class CardsList_View
 
     @Override
     public void onBackPressed() {
-        if (searchViewNotNeedToBeProcessed())
+        //if (searchViewNotNeedToBeProcessed())
             super.onBackPressed();
     }
 
@@ -558,32 +558,10 @@ public class CardsList_View
         MenuItem searchMenuItem = menu.findItem(R.id.searchWidget);
         searchWidget = (SearchView) searchMenuItem.getActionView();
 
-        searchWidget.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                isFilterActive = hasFocus;
-            }
-        });
-
-        searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (isFilterActive) {
-                    dataAdapter.filterList(newText);
-                    presenter.storeFilterText(newText);
-                }
-                return false;
-            }
-        });
-
         searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                isFilterActive = true;
                 return true;
             }
 
@@ -591,6 +569,8 @@ public class CardsList_View
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 searchWidget.setQuery("", true);
                 presenter.storeFilterText("");
+
+                isFilterActive = false;
                 return true;
             }
         });
@@ -606,6 +586,25 @@ public class CardsList_View
                     menuItem.collapseActionView();
 
                 return false;
+            }
+        });
+
+        searchWidget.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (isFilterActive) {
+                    dataAdapter.filterList(newText);
+                    presenter.storeFilterText(newText);
+                    return false;
+                }
+                else {
+                    return false;
+                }
             }
         });
 
