@@ -1,17 +1,12 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -141,66 +136,7 @@ public class CardsList_View
         presenter.unlinkView();
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-
-        // Поиск
-        menuInflater.inflate(R.menu.search_widget, menu);
-        configureSearchWidget(menu);
-
-        // Изменение вида список/плитки
-        menuInflater.inflate(R.menu.view_mode, menu);
-        MenuItem menuItem = menu.findItem(R.id.actionViewMode);
-        if (null != menuItem) {
-            switch (dataAdapter.getViewMode()) {
-                case FEED:
-                    menuItem.setIcon(R.drawable.ic_view_mode_list);
-                    break;
-
-                case LIST:
-                    menuItem.setIcon(R.drawable.ic_view_mode_grid);
-                    break;
-
-                case GRID:
-                    menuItem.setIcon(R.drawable.ic_view_mode_feed);
-                    break;
-            }
-        }
-
-        // Сортировка
-        *//*switch (dataAdapter.getSortingMode()) {
-            case ORDER_NAME_DIRECT:
-                menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
-                menuInflater.inflate(R.menu.sort_by_count, menu);
-                break;
-            case ORDER_NAME_REVERSED:
-                menuInflater.inflate(R.menu.sort_by_name, menu);
-                menuInflater.inflate(R.menu.sort_by_count, menu);
-                break;
-            case ORDER_COUNT_DIRECT:
-                menuInflater.inflate(R.menu.sort_by_name, menu);
-                menuInflater.inflate(R.menu.sort_by_count_reverse, menu);
-                break;
-            case ORDER_COUNT_REVERSED:
-                menuInflater.inflate(R.menu.sort_by_name, menu);
-                menuInflater.inflate(R.menu.sort_by_count, menu);
-            default:
-                break;
-        }*//*
-        menuInflater.inflate(R.menu.sort, menu);
-
-        // Профиль пользователя
-        if (AuthSingleton.isLoggedIn())
-            menuInflater.inflate(R.menu.profile_in, menu);
-        else
-            menuInflater.inflate(R.menu.profile_out, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
-    @SuppressLint("RestrictedApi")
-    @Override
+    @Override @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if(menu instanceof MenuBuilder){
@@ -251,8 +187,16 @@ public class CardsList_View
                 onSortByDateClicked();
                 break;
 
-            case R.id.actionChangeViewMode:
-                onChangeViewModeClicked();
+            case R.id.actionViewModeList:
+                presenter.onChangeViewModeClicked(iCardsList.ViewMode.LIST);
+                break;
+
+            case R.id.actionViewModeGrid:
+                presenter.onChangeViewModeClicked(iCardsList.ViewMode.GRID);
+                break;
+
+            case R.id.actionViewModeFeed:
+                presenter.onChangeViewModeClicked(iCardsList.ViewMode.FEED);
                 break;
 
             default:
@@ -262,7 +206,7 @@ public class CardsList_View
         return true;
     }
 
-    private void onChangeViewModeClicked() {
+    /*private void onChangeViewModeClicked() {
 
         View view = findViewById(R.id.actionChangeViewMode);
 
@@ -274,7 +218,7 @@ public class CardsList_View
         popupMenu.getMenuInflater().inflate(R.menu.cards_list_view_mode_popup_menu, popupMenu.getMenu());
 
         popupMenu.show();
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -725,7 +669,7 @@ public class CardsList_View
     private void setInitialToolbarState(Menu menu) {
         getMenuInflater().inflate(R.menu.cards_list_initial, menu);
 
-        MenuItem viewModeMenuItem = menu.findItem(R.id.actionChangeViewMode);
+        /*MenuItem viewModeMenuItem = menu.findItem(R.id.actionChangeViewMode);
         if (null != viewModeMenuItem) {
             switch (presenter.getViewMode()) {
                 case FEED:
@@ -740,7 +684,7 @@ public class CardsList_View
                     viewModeMenuItem.setIcon(R.drawable.ic_view_mode_feed);
                     break;
             }
-        }
+        }*/
 
         MenuItem profileMenuItem = menu.findItem(R.id.actionProfile);
         profileMenuItem.setIcon(presenter.isLoggedIn() ? R.drawable.ic_user_logged_in : R.drawable.ic_user_logged_out);

@@ -182,7 +182,7 @@ public interface iCardsList {
 
         void onActionModeDestroyed();
 
-        void onChangeLayoutClicked();
+        void onChangeViewModeClicked(ViewMode viewMode);
 
         void onNewCardMenuClicked();
         void onNewCardTypeSelected(CardType cardType);

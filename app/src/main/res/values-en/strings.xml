@@ -228,8 +228,9 @@
     <string name="CARDS_LIST_loading_list">Loading cards list</string>
     <string name="CARDS_GRID_loading_cards">Loading cards list</string>
     <string name="CARDS_GRID_page_title">All cards</string>
-    <string name="MENU_grid_view">Grid view</string>
-    <string name="MENU_list_view">List view</string>
+    <string name="MENU_view_mode_grid">As grid</string>
+    <string name="MENU_view_mode_list">As list</string>
+    <string name="MENU_view_mode_feed">As feed</string>
     <string name="CARDS_GRID_error_no_such_card">No such card</string>
     <string name="DIALOG_login_required">Login required</string>
     <string name="DIALOG_do_login">Login</string>
@@ -665,8 +666,7 @@
     <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
     <string name="add_new_card_bottom_menu_title">Add</string>
     <string name="CARDS_GRID_error_displaying_card">Error displaying card</string>
-    <string name="MENU_change_view_mode">Change view</string>
-    <string name="MENU_feed_view">Feed view</string>
+    <string name="MENU_change_view_mode">View mode</string>
     <string name="MENU_sort">Sort</string>
     <string name="CARDS_GRID_search_widget_hint">Find card</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->

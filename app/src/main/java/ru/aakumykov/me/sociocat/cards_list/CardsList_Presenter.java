@@ -255,25 +255,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onChangeLayoutClicked() {
-
-        switch (currentViewMode) {
-            case FEED:
-                dataAdapter.setLayoutMode(iCardsList.ViewMode.LIST);
-                break;
-
-            case LIST:
-                dataAdapter.setLayoutMode(iCardsList.ViewMode.GRID);
-                break;
-
-            case GRID:
-                dataAdapter.setLayoutMode(iCardsList.ViewMode.FEED);
-                break;
-
-            default:
-                throw new RuntimeException("Unknown layout mode");
-        }
-
+    public void onChangeViewModeClicked(iCardsList.ViewMode viewMode) {
+        dataAdapter.setLayoutMode(viewMode);
         pageView.changeViewMode(currentViewMode);
         pageView.refreshMenu();
     }

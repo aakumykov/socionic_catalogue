@@ -230,8 +230,9 @@
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
     <string name="CARDS_GRID_page_title">Все карточки</string>
-    <string name="MENU_grid_view">Сеткой</string>
-    <string name="MENU_list_view">Списком</string>
+    <string name="MENU_view_mode_grid">Сеткой</string>
+    <string name="MENU_view_mode_list">Списком</string>
+    <string name="MENU_view_mode_feed">Лентой</string>
     <string name="CARDS_GRID_error_no_such_card">Нет такой карточки</string>
     <string name="DIALOG_login_required">Сначала зайдите в приложение</string>
     <string name="DIALOG_do_login">Войти</string>
@@ -670,8 +671,7 @@
     <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
     <string name="add_new_card_bottom_menu_title">Добавить</string>
     <string name="CARDS_GRID_error_displaying_card">Ошибка отображения карточки</string>
-    <string name="MENU_change_view_mode">Сменить вид</string>
-    <string name="MENU_feed_view">Лентой</string>
+    <string name="MENU_change_view_mode">Режим просмотра</string>
     <string name="MENU_sort">Сортировать</string>
     <string name="CARDS_GRID_search_widget_hint">Искать карточку</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
