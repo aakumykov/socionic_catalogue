@@ -466,9 +466,9 @@
     <string name="CARD_SHOW_login_required_to_change_rating">Войдите, чтобы ставить оценки</string>
     <string name="TAGS_LIST_error_loading_list">Ошибка загрузки списка меток</string>
     <string name="TAGS_LIST_loading_list">Загрузка списка меток</string>
-    <string name="MENU_sort_by_name">Сортировать по алфавиту</string>
+    <string name="MENU_sort_by_name">По алфавиту</string>
     <string name="MENU_sort_by_name_reverse">Сортировать по алфавиту в обратном порядке</string>
-    <string name="MENU_sort_by_count">Сортировать по количеству</string>
+    <string name="MENU_sort_by_date">По дате</string>
     <string name="MENU_sort_by_count_reverse">Сортировать по количеству в обратном порядке</string>
     <string name="LOGIN_login_via">Или войти через</string>
     <string name="LOGIN_error_login_via_vkontakte">Ошибка входа через ВКонтакте</string>
