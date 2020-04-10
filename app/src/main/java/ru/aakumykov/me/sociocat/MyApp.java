@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +40,8 @@ public class MyApp extends Application {
         super.onCreate();
 
         usersSingleton = UsersSingleton.getInstance();
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         // Подписываюсь на события изменения авторизации Firebase
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
