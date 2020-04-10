@@ -45,4 +45,25 @@
 
     </item>
 
+    <item
+        android:id="@+id/actionSort"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/MENU_sort"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/actionSortByName"
+                android:icon="@drawable/ic_sort_by_name"
+                android:title="@string/MENU_sort_by_name"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/actionSortByDate"
+                android:icon="@drawable/ic_sort_by_date"
+                android:title="@string/MENU_sort_by_date"
+                app:showAsAction="never" />
+        </menu>
+
+    </item>
+
 </menu>

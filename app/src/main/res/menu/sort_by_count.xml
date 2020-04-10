@@ -5,6 +5,6 @@
     <item
         android:id="@+id/actionSortByCount"
         android:icon="@drawable/ic_sort_by_count_down"
-        android:title="@string/MENU_sort_by_count"
+        android:title="@string/MENU_sort_by_date"
         app:showAsAction="always" />
 </menu>

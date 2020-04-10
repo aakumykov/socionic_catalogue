@@ -171,22 +171,12 @@ public class CardsList_View
 
         switch (menuItem.getItemId()) {
 
+            // Виджет поиска
             case R.id.searchWidget:
                 searchWidget.setIconified(false);
                 break;
 
-            case R.id.actionSort:
-                onSortMenuClicked();
-                break;
-
-            case R.id.actionSortByName:
-                onSortByNameClicked();
-                break;
-
-            case R.id.actionSortByDate:
-                onSortByDateClicked();
-                break;
-
+            // Режим просмотра
             case R.id.actionViewModeList:
                 presenter.onChangeViewModeClicked(iCardsList.ViewMode.LIST);
                 break;
@@ -199,6 +189,16 @@ public class CardsList_View
                 presenter.onChangeViewModeClicked(iCardsList.ViewMode.FEED);
                 break;
 
+            // Сортировка
+            case R.id.actionSortByName:
+                onSortByNameClicked();
+                break;
+
+            case R.id.actionSortByDate:
+                onSortByDateClicked();
+                break;
+
+            // По умолчанию
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
