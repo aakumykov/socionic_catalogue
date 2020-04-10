@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -199,14 +197,8 @@ public class CardsList_View
         return super.onCreateOptionsMenu(menu);
     }*/
 
-    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        if(menu instanceof MenuBuilder){
-            MenuBuilder menuBuilder = ((MenuBuilder) menu);
-            menuBuilder.setOptionalIconsVisible(true);
-        }
 
         iCardsList.ToolbarState toolbarState = presenter.getToolbarState();
 
