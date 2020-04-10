@@ -17,10 +17,10 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/actionViewMode"
+        android:id="@+id/actionChangeViewMode"
         android:icon="@drawable/ic_view_mode_list"
         android:title="@string/MENU_change_view_mode"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/actionProfile"

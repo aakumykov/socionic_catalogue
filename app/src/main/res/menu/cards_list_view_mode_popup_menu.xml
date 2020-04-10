@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_sort"
         android:title="@string/MENU_sort" />
     <item
-        android:id="@+id/actionViewMode"
+        android:id="@+id/actionChangeViewMode"
         android:icon="@drawable/ic_view_mode"
         android:title="@string/MENU_change_view_mode" />
 </menu>

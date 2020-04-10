@@ -1,11 +1,16 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -238,8 +243,8 @@ public class CardsList_View
                 onSortByDateClicked();
                 break;
 
-            case R.id.actionViewMode:
-                presenter.onChangeLayoutClicked();
+            case R.id.actionChangeViewMode:
+                onChangeViewModeClicked();
                 break;
 
             default:
@@ -247,6 +252,20 @@ public class CardsList_View
         }
 
         return true;
+    }
+
+    private void onChangeViewModeClicked() {
+
+        View view = findViewById(R.id.actionChangeViewMode);
+
+//        Context wrapper = new ContextThemeWrapper(this, R.style.NoPopupAnimation);
+//        PopupMenu popupMenu = new PopupMenu(wrapper, view, Gravity.END);
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+
+        popupMenu.getMenuInflater().inflate(R.menu.cards_list_view_mode_popup_menu, popupMenu.getMenu());
+
+        popupMenu.show();
     }
 
     @Override
@@ -698,7 +717,7 @@ public class CardsList_View
     private void setInitialToolbarState(Menu menu) {
         getMenuInflater().inflate(R.menu.cards_list_initial, menu);
 
-        MenuItem viewModeMenuItem = menu.findItem(R.id.actionViewMode);
+        MenuItem viewModeMenuItem = menu.findItem(R.id.actionChangeViewMode);
         if (null != viewModeMenuItem) {
             switch (presenter.getViewMode()) {
                 case FEED:
