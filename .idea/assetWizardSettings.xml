@@ -135,7 +135,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_sort_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/andrey/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_view_quilt_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -145,9 +145,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_sort_by_date" />
+                            <entry key="outputName" value="ic_view_mode" />
                             <entry key="sourceFile" value="$USER_HOME$/Рабочий стол/сортировка/sort-by-date.svg" />
                           </map>
                         </option>
