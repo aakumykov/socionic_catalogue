@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,10 +21,8 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardNotificationHelper;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
-import ru.aakumykov.me.sociocat.push_notifications.NewCommentNotificationHelper;
-import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
+import ru.aakumykov.me.sociocat.push_notifications.NewCardNotification_Helper;
+import ru.aakumykov.me.sociocat.push_notifications.NewCommentNotification_Helper;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -83,30 +80,7 @@ public class MyApp extends Application {
             }
         });
 
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
-        prepareDefaultPreferences();
-
-        logFCMRegistrationToken();
-
-        EventBus.getDefault().register(this);
-    }
-
-
-    // Подписки на события EventBus
-    @Subscribe
-    public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCardNotificationHelper.processNotification(this, newCardEvent, new iNewCardEventCallbacks() {
-            @Override
-            public void onNewCardCreatedByOtherUserReceived() {
-                NewCardsCounter.incrementCounter();
-            }
-        });
-    }
-
-    @Subscribe
-    public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        NewCommentNotificationHelper.processNotification(this, newCommentEvent);
+        //logFCMRegistrationToken();
     }
 
 
@@ -121,103 +95,6 @@ public class MyApp extends Application {
         EventBus.getDefault().post(new UserUnauthorizedEvent());
         usersSingleton.clearCurrentUser();
     }
-
-    private void prepareDefaultPreferences() {
-
-        // Подготавливаю необходимые компоненты
-//        Context appContext = getApplicationContext();
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Проверяю, первый ли это запуск программы?
-        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_is_first_run, true);
-
-        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
-        if (isFirstRun) {
-            PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-            //PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
-
-            // Помечаю, что теперь это не первый запуск
-            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            editor.putBoolean(Constants.PREFERENCE_KEY_is_first_run, false);
-            editor.apply();
-        }
-    }
-
-//    private void registerPushToken(User user) {
-//        Log.d(TAG, "registerPushToken()");
-//
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-//                    @Override public void onSuccess(InstanceIdResult instanceIdResult) {
-//                        String devId = instanceIdResult.getId();
-//
-//                        usersSingleton.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
-//                            @Override public void onStoreDeviceIdSuccess() {
-//                                Log.d(TAG, "device id saved: "+devId);
-//                            }
-//
-//                            @Override public void onStoreDeviceIdFailed(String errorMSg) {
-//                                Log.e(TAG, errorMSg);
-//                            }
-//                        });
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override public void onFailure(@NonNull Exception e) {
-//
-//                    }
-//                });
-//    }
-
-//    private void checkPushToken(User user) {
-//
-//        if (null == user.getPushToken()) {
-//
-//            FirebaseInstanceId.getInstance().getInstanceId()
-//                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//
-//                        @Override
-//                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//
-//                            if (!task.isSuccessful()) {
-//                                Exception exception = task.getException();
-//                                if (null != exception) {
-//                                    Log.e(TAG, exception.getMessage());
-//                                    exception.printStackTrace();
-//                                }
-//
-//                            } else {
-//
-//                                InstanceIdResult instanceIdResult = task.getResult();
-//
-//                                if (null != instanceIdResult) {
-//
-//                                    String token = instanceIdResult.getToken();
-//
-//                                    usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
-//                                        @Override
-//                                        public void onPushTokenUpdateSuccess(String token) {
-//                                            User user = usersSingleton.getCurrentUser();
-//                                            user.setPushToken(token);
-//                                            usersSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
-//                                        }
-//
-//                                        @Override
-//                                        public void onPushTokenUpdateError(String errorMsg) {
-//                                            Log.e(TAG, errorMsg);
-//                                        }
-//                                    });
-//
-//                                } else {
-//                                    Log.e(TAG, "InstanceIdResult is NULL");
-//                                }
-//                            }
-//                        }
-//                    });
-//
-//        }
-//    }
 
     private void logFCMRegistrationToken() {
 

@@ -138,7 +138,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     /*private void checkUserName() {
 
-        view.setViewState(iRegisterStep2.ViewState.CHECKING_USER_NAME, -1);
+        view.setViewState(iRegisterStep2.PageViewState.CHECKING_USER_NAME, -1);
 
         String userName = view.getUserName();
 
@@ -154,7 +154,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
                 @Override
                 public void onExists() {
-                    view.setViewState(iRegisterStep2.ViewState.NAME_ERROR, R.string.REGISTER2_user_name_already_used);
+                    view.setViewState(iRegisterStep2.PageViewState.NAME_ERROR, R.string.REGISTER2_user_name_already_used);
                 }
 
                 @Override
@@ -197,7 +197,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         usersSingleton.saveUser(user, new iUsersSingleton.SaveCallbacks() {
             @Override
             public void onUserSaveSuccess(User user) {
-                view.setViewState(iRegisterStep2.ViewState.SUCCESS, R.string.REGISTER2_registration_success);
+                view.setViewState(iRegisterStep2.PageViewState.SUCCESS, R.string.REGISTER2_registration_success);
             }
 
             @Override

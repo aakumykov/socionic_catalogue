@@ -72,7 +72,7 @@ public class MyDialogs {
     }
 
     // Удаление карточки
-    public static void cardDeleteDialog(Activity activity, String cardName, iMyDialogs.Delete callbacks) {
+    public static void cardDeleteDialog(Activity activity, String cardName, iMyDialogs.DeleteCallbacks callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_card);
 
@@ -82,6 +82,28 @@ public class MyDialogs {
                 activity,
                 title,
                 cardName,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
+
+    // Удаление нескольких выбранных карточек
+    public static void deleteSelectedCardsDialog(
+            Activity activity,
+            int titlePluralsResourceId,
+            int count,
+            iMyDialogs.DeleteCallbacks callbacks) {
+
+        String title = activity.getResources().getQuantityString(titlePluralsResourceId, count, count);
+
+        basicDialog(
+                activity,
+                title,
+                null,
                 R.string.yes,
                 R.string.no,
                 null,
@@ -324,7 +346,7 @@ public class MyDialogs {
     }
 
     // Удаление комментария
-    public static void commentDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
+    public static void commentDeleteDialog(Activity activity, String message, iMyDialogs.DeleteCallbacks callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_comment);
 

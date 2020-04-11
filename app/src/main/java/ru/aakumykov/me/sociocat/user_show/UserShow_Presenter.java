@@ -147,16 +147,20 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     private void showUserProfile() {
 
-        String profileUserId = profileUser.getKey();
-        String currentUserId = AuthSingleton.currentUserId();
+        if (null != profileUser) {
 
-        boolean isPrivateMode =
-                profileUserId.equals(currentUserId) ||
-                        UsersSingleton.getInstance().currentUserIsAdmin();
+            String profileUserId = profileUser.getKey();
+            String currentUserId = AuthSingleton.currentUserId();
 
-        if (isPrivateMode)
-            view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, profileUser);
-        else
-            view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, profileUser);
+            boolean isPrivateMode =
+                    profileUserId.equals(currentUserId) ||
+                            UsersSingleton.getInstance().currentUserIsAdmin();
+
+            if (isPrivateMode)
+                view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, profileUser);
+            else
+                view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, profileUser);
+
+        }
     }
 }

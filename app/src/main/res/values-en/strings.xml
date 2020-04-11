@@ -46,7 +46,7 @@
     <string name="add_card">Add card</string>
     <string name="text">Create text card</string>
     <string name="image">Create image card</string>
-    <string name="card_deleted">Card is deleted</string>
+    <string name="card_deleted_short">Card is deleted</string>
     <string name="deleting_card">Deleting card</string>
     <string name="CARD_SHOW_error_deleting_card">Error deleting card</string>
     <string name="unknown_request_code">Unknown request code</string>
@@ -228,8 +228,9 @@
     <string name="CARDS_LIST_loading_list">Loading cards list</string>
     <string name="CARDS_GRID_loading_cards">Loading cards list</string>
     <string name="CARDS_GRID_page_title">All cards</string>
-    <string name="MENU_grid_view">Grid view</string>
-    <string name="MENU_list_view">List view</string>
+    <string name="MENU_view_mode_grid">As grid</string>
+    <string name="MENU_view_mode_list">As list</string>
+    <string name="MENU_view_mode_feed">As feed</string>
     <string name="CARDS_GRID_error_no_such_card">No such card</string>
     <string name="DIALOG_login_required">Login required</string>
     <string name="DIALOG_do_login">Login</string>
@@ -443,7 +444,7 @@
     <string name="CARD_SHOW_you_cannot_edit_this_card">You cannot edit this card</string>
     <string name="CARD_SHOW_there_is_no_card">There is no card</string>
     <string name="CARDS_GRID_card_creation_cancelled">Card creation is cancelled</string>
-    <string name="CARDS_GRID_card_creation_error">Card creation error</string>
+    <string name="CARDS_GRID_error_creating_card">Card creation error</string>
     <string name="SHORTCUT_PROCESSOR_unknown_action">Unknown action</string>
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Card creation cencelled</string>
     <string name="SHORTCUT_PROCESSOR_error_creating_card">Error creating card</string>
@@ -462,9 +463,9 @@
     <string name="CARD_SHOW_login_required_to_change_rating">Login to set ratings</string>
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
     <string name="TAGS_LIST_loading_list">Loading tags list</string>
-    <string name="MENU_sort_by_name">Sort alphabetically</string>
+    <string name="MENU_sort_by_name">Alphabetically</string>
     <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse sort order</string>
-    <string name="MENU_sort_by_count">Sort by count</string>
+    <string name="MENU_sort_by_date">By date</string>
     <string name="MENU_sort_by_count_reverse">Sort by count in reverse sort order</string>
     <string name="LOGIN_login_via">Or login via</string>
     <string name="LOGIN_error_login_via_vkontakte">Error login via Vkontakte</string>
@@ -478,7 +479,6 @@
     <string name="CARDS_GRID_error_no_tag_filter">There is no filter tag</string>
     <string name="CARDS_GRID_new_cards_title">New cards</string>
     <string name="CARD_SHOW_refreshing_card">Refreshing card</string>
-    <string name="MENU_search_widget">Search area</string>
     <string name="press_again_to_exit">Press again to exit app</string>
     <string name="CARDS_GRID_error_storing_cards_list">Error storing cards list</string>
     <string name="USER_EDIT_error_updating_user">Error updating user (relogin is recommended)</string>
@@ -525,7 +525,7 @@
     <string name="USER_SHOW_complex_page_title">Profile of user «%1$s»</string>
     <string name="LOGIN_email_confirmation_required">Confirm your Email (●\'◡\'●)</string>
     <string name="COMMENT_error_cannot_change_comment_rating">Error rating comment</string>
-    <string name="error_deleting_card">Error deleting card</string>
+    <string name="error_deleting_card_short">Error deleting card</string>
     <string name="cannot_edit_card">Edition refused</string>
     <string name="CARD_SHOW_edit_cancelled">Card edition cancelled</string>
     <string name="PREFERENCE_dropbox_access_token_title">Dropbox access token</string>
@@ -641,7 +641,7 @@
     <string name="DEBUG_backup_service_already_running">Backup service already running</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
-    <string name="CARDS_GRID_load_more">Load more</string>
+    <string name="CARDS_GRID_load_more">More</string>
     <string name="CARDS_GRID_new_cards_available">New cards available (%1$d)</string>
     <string name="PREFERENCE_category_notifications">Notifications</string>
     <string name="PREFERENCE_notify_about_new_cards_title">New cards</string>
@@ -655,13 +655,20 @@
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
 
-    <string name="NOTIFICATIONS_new_comment_notification_title">New comment from «%1$s»</string>
+    <string name="NOTIFICATIONS_new_comment_notification_title">New comment to «%1$s»</string>
     <string name="CARD_SHOW_info_both_card_and_card_id_presented">Input data conflict</string>
     <string name="MENU_delete">Delete</string>
     <string name="LIST_TEMPLATE_items_selected">Selected: %1$d</string>
     <string name="select_all">Select all</string>
     <string name="clear_selection">Clear selection</string>
     <string name="LIST_TEMPLATE_loading_list">Loading list</string>
+    <string name="card_deleted_long">Card «%1$s» is deleted</string>
+    <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
+    <string name="add_new_card_bottom_menu_title">Add</string>
+    <string name="CARDS_GRID_error_displaying_card">Error displaying card</string>
+    <string name="MENU_change_view_mode">View mode</string>
+    <string name="MENU_sort">Sort</string>
+    <string name="CARDS_GRID_search_widget_hint">Find card</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

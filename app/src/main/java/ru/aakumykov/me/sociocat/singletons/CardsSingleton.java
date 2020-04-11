@@ -54,7 +54,7 @@ public class CardsSingleton implements iCardsSingleton {
 
 
     @Override
-    public void loadFirstPortionOfCards(ListCallbacks callbacks) {
+    public void loadFirstPortion(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
@@ -204,16 +204,16 @@ public class CardsSingleton implements iCardsSingleton {
                             callbacks.onCardLoadSuccess(card);
                         }
                         catch (Exception e) {
-                            e.printStackTrace();
                             callbacks.onCardLoadFailed(e.getMessage());
+                            MyUtils.printError(TAG, e);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardLoadFailed(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
 
@@ -492,8 +492,7 @@ public class CardsSingleton implements iCardsSingleton {
         if (null != limit)
             query = query.limit(limit);
         else {
-            /* Если установлена нижняя граница через карточку,
-               количество по умолчанию ставить не нужно. */
+            // Если установлена нижняя граница через карточку, количество по умолчанию ставить не нужно.
             if (null == endAtCard)
                 query = query.limit(AppConfig.DEFAULT_CARDS_LOAD_COUNT);
         }
@@ -504,7 +503,6 @@ public class CardsSingleton implements iCardsSingleton {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
                         extractCardsFromQuerySnapshot(queryDocumentSnapshots, new iExtractQuerySnapshotCallbacks() {
                             @Override
                             public void OnExtractSuccess(List<Card> cardsList) {
@@ -521,8 +519,8 @@ public class CardsSingleton implements iCardsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onListLoadFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }

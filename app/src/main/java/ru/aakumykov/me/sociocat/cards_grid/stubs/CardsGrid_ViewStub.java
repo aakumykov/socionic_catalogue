@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid.stubs;
 
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -18,7 +18,7 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
     }
 
     @Override
-    public void goCreateCard(Constants.CardType cardType) {
+    public void goCreateCard(CardType cardType) {
 
     }
 

@@ -56,6 +56,8 @@ public interface iBaseView {
 
     String getString(int stringResourceId);
 
+    String getString(int stringResourceId, int substitutedMessage);
+
     String getString(int stringResourceId, String substitutedMessage);
 
     void startSomeActivity(Intent intent);

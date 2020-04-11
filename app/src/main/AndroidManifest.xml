@@ -27,13 +27,26 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity
-            android:name=".template_of_list.ItemsList_View"
+        <activity android:name=".cards_grid.CardsGrid_View"
+            android:exported="true">
+
+        </activity>
+
+        <activity android:name=".cards_list.CardsList_View"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".template_of_list.TemplateOfList_View"
+            android:exported="true">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
 
         <activity
@@ -46,7 +59,7 @@
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".cards_grid.CardsGrid_View" />
+
         <activity
             android:name=".register_step_1.RegisterStep1_View"
             android:windowSoftInputMode="stateHidden" />
@@ -147,6 +160,7 @@
         <activity
             android:name=".user_change_password.UserChangePassword_View"
             android:windowSoftInputMode="stateHidden" />
+
         <!--
 <activity
             android:name=".dynamic_link_processor.DLP_View"

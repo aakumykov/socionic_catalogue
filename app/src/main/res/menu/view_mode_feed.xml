@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionFeedView"
+        android:icon="@drawable/ic_view_mode_feed"
+        android:title="@string/MENU_view_mode_feed"
+        app:showAsAction="always" />
+</menu>

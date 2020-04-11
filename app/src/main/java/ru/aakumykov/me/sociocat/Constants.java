@@ -4,13 +4,6 @@ public final class Constants
 {
     private Constants() {}
 
-    public enum CardType {
-        TEXT_CARD,
-        IMAGE_CARD,
-        AUDIO_CARD,
-        VIDEO_CARD
-    }
-
     public final static String CARDS_PATH = "cards";
     public final static String TAGS_PATH = "tags";
     public final static String COMMENTS_PATH = "comments";
@@ -37,6 +30,7 @@ public final class Constants
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
+    public static final String ACTION_SHOW_CARD_COMMENTS = "ACTION_SHOW_CARD_COMMENTS";
     public static final String ACTION_CONTINUE_REGISTRATION = "PATH_ACTION_CONTINUE_REGISTRATION";
     public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
     public static final String ACTION_FILL_NEW_USER_PROFILE = "ACTION_FILL_NEW_USER_PROFILE";

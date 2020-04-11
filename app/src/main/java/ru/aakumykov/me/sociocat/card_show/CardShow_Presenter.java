@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -149,7 +148,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         MyDialogs.commentDeleteDialog(
                 pageView.getActivity(),
                 comment.getText(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 
@@ -283,7 +282,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         MyDialogs.cardDeleteDialog(
                 pageView.getActivity(),
                 currentCard.getTitle(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 
@@ -709,13 +708,13 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             @Override
             public void onCardDeleteSuccess(Card card) {
                 pageView.hideProgressMessage();
-                pageView.showToast(R.string.card_deleted);
+                pageView.showToast(R.string.card_deleted_short);
                 pageView.closePage(RESULT_OK, Constants.ACTION_DELETE);
             }
 
             @Override
             public void onCardDeleteError(String errorMsg) {
-                pageView.showErrorMsg(R.string.error_deleting_card, errorMsg);
+                pageView.showErrorMsg(R.string.error_deleting_card_short, errorMsg);
             }
         });
     }

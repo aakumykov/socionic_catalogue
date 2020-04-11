@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
@@ -20,14 +18,6 @@ public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "FCM_Service";
 
-
-    // Service
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-
     // FirebaseMessagingService
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -36,25 +26,10 @@ public class FCMService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("isCardNotification")) {
-            NewCardEvent newCardEvent = new NewCardEvent();
-
-            newCardEvent.setKey(data.get(Card.KEY_KEY));
-            newCardEvent.setTitle(data.get(Card.KEY_TITLE));
-            newCardEvent.setUserId(data.get(Card.KEY_USER_ID));
-            newCardEvent.setUserName(data.get(Card.KEY_USER_NAME));
-
-            EventBus.getDefault().post(newCardEvent);
+            processNewCardNotification(data);
         }
         else if (data.containsKey("isCommentNotification")) {
-            NewCommentEvent newCommentEvent = new NewCommentEvent();
-                newCommentEvent.setCommentKey(data.get(Comment.KEY_KEY));
-                newCommentEvent.setText(data.get(Comment.KEY_TEXT));
-                newCommentEvent.setUserId(data.get(Comment.KEY_USER_ID));
-                newCommentEvent.setUserName(data.get(Comment.KEY_USER_NAME));
-                newCommentEvent.setCardId(data.get(Comment.KEY_CARD_ID));
-                newCommentEvent.setCardTitle(data.get(Comment.KEY_CARD_TITLE));
-
-            EventBus.getDefault().post(newCommentEvent);
+            processNewCommentNotification(data);
         }
         else {
             Log.e(TAG, "Unknown push notification type: "+data);
@@ -84,6 +59,33 @@ public class FCMService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         Log.d(TAG, "New token: " + token);
         //sendRegistrationToServer(token);
+    }
+
+
+    // Внутренние методы
+    private void processNewCardNotification(Map<String, String> data) {
+
+        NewCardEvent newCardEvent = new NewCardEvent();
+            newCardEvent.setKey(data.get(Card.KEY_KEY));
+            newCardEvent.setTitle(data.get(Card.KEY_TITLE));
+            newCardEvent.setUserId(data.get(Card.KEY_USER_ID));
+            newCardEvent.setUserName(data.get(Card.KEY_USER_NAME));
+
+        NewCardNotification_Helper.processNotification(this, newCardEvent);
+    }
+
+    private void processNewCommentNotification(Map<String, String> data) {
+        NewCommentEvent newCommentEvent = new NewCommentEvent();
+            newCommentEvent.setCommentKey(data.get(Comment.KEY_KEY));
+            newCommentEvent.setText(data.get(Comment.KEY_TEXT));
+            newCommentEvent.setUserId(data.get(Comment.KEY_USER_ID));
+            newCommentEvent.setUserName(data.get(Comment.KEY_USER_NAME));
+            newCommentEvent.setCardId(data.get(Comment.KEY_CARD_ID));
+            newCommentEvent.setCardTitle(data.get(Comment.KEY_CARD_TITLE));
+
+        //EventBus.getDefault().post(newCommentEvent);
+
+        NewCommentNotification_Helper.processNotification(this, newCommentEvent);
     }
 
 }

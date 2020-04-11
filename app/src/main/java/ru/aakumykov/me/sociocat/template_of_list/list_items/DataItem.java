@@ -3,14 +3,14 @@ package ru.aakumykov.me.sociocat.template_of_list.list_items;
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.iListPayload;
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 
 public class DataItem<T extends iListPayload> extends ListItem {
 
     private String name;
     private int count;
     private Object payload;
+    private boolean isNowDeleting = false;
 
     public DataItem() {
 
@@ -77,8 +77,18 @@ public class DataItem<T extends iListPayload> extends ListItem {
 
     // ListItem
     @Override
-    public iItemsList.ItemType getItemType() {
-        return iItemsList.ItemType.DATA_ITEM;
+    public iTemplateOfList.ItemType getItemType() {
+        return iTemplateOfList.ItemType.DATA_ITEM;
+    }
+
+    @Override
+    public void setIsNowDeleting(boolean value) {
+        this.isNowDeleting = value;
+    }
+
+    @Override
+    public boolean isNowDeleting() {
+        return this.isNowDeleting;
     }
 
 }

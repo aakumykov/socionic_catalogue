@@ -54,36 +54,45 @@ public final class MyUtils {
 
     private MyUtils() {}
 
-    public static void show(View view) {
-        view.setVisibility(View.VISIBLE);
+    public static void show(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.VISIBLE);
     }
 
-    public static void hide(View view) {
-        view.setVisibility(View.GONE);
+    public static void hide(@Nullable View view) {
+        if (null != view)
+            view.setVisibility(View.GONE);
     }
 
-    public static void hide(View view, boolean makeInvisibleInsteadOfGone) {
-        if (makeInvisibleInsteadOfGone)
-            view.setVisibility(View.INVISIBLE);
-        else
-            MyUtils.hide(view);
-    }
-
-    public static void toggleVisibility(View view) {
-        if (View.VISIBLE == view.getVisibility()) {
-            MyUtils.show(view);
-        }
-        else {
-            MyUtils.hide(view);
+    public static void hide(@Nullable View view, boolean makeInvisibleInsteadOfGone) {
+        if (null != view) {
+            if (makeInvisibleInsteadOfGone)
+                view.setVisibility(View.INVISIBLE);
+            else
+                MyUtils.hide(view);
         }
     }
 
-    public static void enable(View view) {
-        view.setEnabled(true);
+    public static void toggleVisibility(@Nullable View view) {
+        if (null != view) {
+            if (View.VISIBLE == view.getVisibility()) {
+                MyUtils.show(view);
+            } else {
+                MyUtils.hide(view);
+            }
+        }
     }
 
-    public static void disable(View view) {
-        view.setEnabled(false);
+    public static void enable(@Nullable View view) {
+        if (null != view) {
+            view.setEnabled(true);
+        }
+    }
+
+    public static void disable(@Nullable View view) {
+        if (null != view) {
+            view.setEnabled(false);
+        }
     }
 
     public static String mime2ext(String mimeType) {
@@ -198,10 +207,10 @@ public final class MyUtils {
         editTextView.requestFocus();
     }
 
-    public static void hideKeyboard(Context ctx, EditText editText) {
+    public static void hideKeyboard(Context ctx, View view) {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
     }
 
@@ -304,20 +313,24 @@ public final class MyUtils {
         return stackTrace;
     }
 
-    public static String getString(Context context, int msgId) {
-        return context.getResources().getString(msgId);
+    public static String getString(Context context, int stringResourceId) {
+        return context.getResources().getString(stringResourceId);
     }
 
-    public static String getString(Context context, int baseStringResourceId, int insertedStringResourceId) {
+    public static String getStringWithStringResource(Context context, int baseStringResourceId, int insertedStringResourceId) {
         String innerString = getString(context, insertedStringResourceId);
-        return getString(context, baseStringResourceId, innerString);
+        return getStringWithString(context, baseStringResourceId, innerString);
     }
 
-    public static String getString(Context context, int stringResourceId, String insertedText) {
+    public static String getStringWithString(Context context, int stringResourceId, String insertedText) {
         return context.getResources().getString(stringResourceId, insertedText);
     }
 
-    public static String getString(Context context, int stringResourceId, String... insertedTextPieces) {
+    public static String getStringWithNumber(Context context, int stringResourceId, int number) {
+        return context.getResources().getString(stringResourceId, number);
+    }
+
+    public static String getStringWithMultipleStrings(Context context, int stringResourceId, String... insertedTextPieces) {
         return context.getResources().getString(stringResourceId, insertedTextPieces);
     }
 

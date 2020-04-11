@@ -2,18 +2,18 @@ package ru.aakumykov.me.sociocat.template_of_list.filter_stuff;
 
 import java.util.Comparator;
 
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 
 public class ItemsComparator implements Comparator {
 
-    private iItemsList.SortingMode sortOrder;
+    private iTemplateOfList.SortingMode sortOrder;
     private ListItem item1;
     private ListItem item2;
 
 
-    public ItemsComparator(iItemsList.SortingMode sortingMode) {
+    public ItemsComparator(iTemplateOfList.SortingMode sortingMode) {
         this.sortOrder = sortingMode;
     }
 

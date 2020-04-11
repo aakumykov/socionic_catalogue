@@ -46,7 +46,7 @@
     <string name="add_card">Добавить карточку</string>
     <string name="text">Текст</string>
     <string name="image">Картинка</string>
-    <string name="card_deleted">Карточка удалена</string>
+    <string name="card_deleted_short">Карточка удалена</string>
     <string name="deleting_card">Удаляем карточку</string>
     <string name="CARD_SHOW_error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
@@ -230,8 +230,9 @@
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
     <string name="CARDS_GRID_page_title">Все карточки</string>
-    <string name="MENU_grid_view">Плитками</string>
-    <string name="MENU_list_view">Списком</string>
+    <string name="MENU_view_mode_grid">Сеткой</string>
+    <string name="MENU_view_mode_list">Списком</string>
+    <string name="MENU_view_mode_feed">Лентой</string>
     <string name="CARDS_GRID_error_no_such_card">Нет такой карточки</string>
     <string name="DIALOG_login_required">Сначала зайдите в приложение</string>
     <string name="DIALOG_do_login">Войти</string>
@@ -403,7 +404,7 @@
     <string name="DRAFT_RESTORE_DIALOG_title">Найдена несохранённая карточка</string>
     <string name="DRAFT_RESTORE_DIALOG_remind_later">Напомнить позже</string>
     <string name="FAB_subitem_audio">Аудио</string>
-    <string name="FAB_subitem_image">Картинка</string>
+    <string name="FAB_subitem_image">Картинку</string>
     <string name="FAB_subitem_video">Видео</string>
     <string name="FAB_subitem_text">Текст</string>
     <string name="USER_SHOW_cards_of_user">Карточки пользователя</string>
@@ -446,7 +447,7 @@
     <string name="CARD_SHOW_you_cannot_edit_this_card">Вы не можете редактировать эту карточку</string>
     <string name="CARD_SHOW_there_is_no_card">Карточка отсутствует</string>
     <string name="CARDS_GRID_card_creation_cancelled">Создание карточки отменено</string>
-    <string name="CARDS_GRID_card_creation_error">Ошибка создания карточки</string>
+    <string name="CARDS_GRID_error_creating_card">Ошибка создания карточки</string>
     <string name="SHORTCUT_PROCESSOR_unknown_action">Неизвестное действие</string>
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Создание карточки отменено</string>
     <string name="SHORTCUT_PROCESSOR_error_creating_card">Ошибка создания карточки</string>
@@ -465,9 +466,9 @@
     <string name="CARD_SHOW_login_required_to_change_rating">Войдите, чтобы ставить оценки</string>
     <string name="TAGS_LIST_error_loading_list">Ошибка загрузки списка меток</string>
     <string name="TAGS_LIST_loading_list">Загрузка списка меток</string>
-    <string name="MENU_sort_by_name">Сортировать по алфавиту</string>
+    <string name="MENU_sort_by_name">По алфавиту</string>
     <string name="MENU_sort_by_name_reverse">Сортировать по алфавиту в обратном порядке</string>
-    <string name="MENU_sort_by_count">Сортировать по количеству</string>
+    <string name="MENU_sort_by_date">По дате</string>
     <string name="MENU_sort_by_count_reverse">Сортировать по количеству в обратном порядке</string>
     <string name="LOGIN_login_via">Или войти через</string>
     <string name="LOGIN_error_login_via_vkontakte">Ошибка входа через ВКонтакте</string>
@@ -481,7 +482,6 @@
     <string name="CARDS_GRID_error_no_tag_filter">Отсутствует метка-фильтр</string>
     <string name="CARDS_GRID_new_cards_title">Новые карточки</string>
     <string name="CARD_SHOW_refreshing_card">Обновляем карточку</string>
-    <string name="MENU_search_widget">Поле поиска</string>
     <string name="press_again_to_exit">Нажмите ещё раз, чтобы выйти</string>
     <string name="CARDS_GRID_error_storing_cards_list">Ошибка сохранения списка карточек</string>
     <string name="USER_EDIT_error_updating_user">Ошибка обновления пользователя (рекомендуется выйти из програмы и зайти вновь)</string>
@@ -530,7 +530,7 @@
     <string name="error">Ошибка</string>
     <string name="USER_SHOW_complex_page_title">Профиль пользователя «%1$s»</string>
     <string name="COMMENT_error_cannot_change_comment_rating">Ошибка изменения рейтинга</string>
-    <string name="error_deleting_card">Ошибка удаления карточки</string>
+    <string name="error_deleting_card_short">Ошибка удаления карточки</string>
     <string name="cannot_edit_card">Редактирование запрещено</string>
     <string name="CARD_SHOW_edit_cancelled">Редактирование отменено</string>
     <string name="PREFERENCE_dropbox_access_token_title">Ключ доступа Dropbox</string>
@@ -646,7 +646,7 @@
     <string name="DEBUG_backup_service_already_running">Служба резервного копирования уже запущена</string>
     <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Ошибка данных</string>
-    <string name="CARDS_GRID_load_more">Загрузить ещё</string>
+    <string name="CARDS_GRID_load_more">Ещё</string>
     <string name="CARDS_GRID_new_cards_available">Есть новые карточки (%1$d)</string>
     <string name="PREFERENCE_category_notifications">Уведомления</string>
     <string name="PREFERENCE_notify_about_new_cards_title">Новые карточки</string>
@@ -660,13 +660,20 @@
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">Новая карточка от %1$s</string>
 
-    <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий от %1$s</string>
+    <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий к %1$s</string>
     <string name="CARD_SHOW_info_both_card_and_card_id_presented">Противоречивые входящие данные</string>
     <string name="MENU_delete">Удалить</string>
     <string name="LIST_TEMPLATE_items_selected">Выбрано: %1$d</string>
     <string name="select_all">Выбрать всё</string>
     <string name="clear_selection">Снять выделение</string>
     <string name="LIST_TEMPLATE_loading_list">Загружаем список</string>
+    <string name="card_deleted_long">Карточка «%1$s» удалена</string>
+    <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
+    <string name="add_new_card_bottom_menu_title">Добавить</string>
+    <string name="CARDS_GRID_error_displaying_card">Ошибка отображения карточки</string>
+    <string name="MENU_change_view_mode">Режим просмотра</string>
+    <string name="MENU_sort">Сортировать</string>
+    <string name="CARDS_GRID_search_widget_hint">Искать карточку</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

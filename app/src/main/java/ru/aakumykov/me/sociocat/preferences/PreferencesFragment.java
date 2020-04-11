@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.push_notifications.PushSubscriptionHelper;
+import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
@@ -135,7 +135,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 
 
     private void subscribe2topic(String topicName, String preferencesKey) {
-        PushSubscriptionHelper.subscribe2topic(topicName, new PushSubscriptionHelper.SubscriptionCallbacks() {
+        PushSubscription_Helper.subscribe2topic(topicName, new PushSubscription_Helper.SubscriptionCallbacks() {
             @Override
             public void onSubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_subscribed);
@@ -149,7 +149,7 @@ public class PreferencesFragment extends PreferenceFragment implements
     }
 
     private void unsubscribe4romTopic(String topicName, String preferencesKey) {
-        PushSubscriptionHelper.unsubscribeFromTopic(topicName, new PushSubscriptionHelper.UnsubscriptionCallbacks() {
+        PushSubscription_Helper.unsubscribeFromTopic(topicName, new PushSubscription_Helper.UnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_unsubscribed);

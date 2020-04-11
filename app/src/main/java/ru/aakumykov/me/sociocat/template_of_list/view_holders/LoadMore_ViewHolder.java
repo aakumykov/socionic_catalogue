@@ -2,17 +2,14 @@ package ru.aakumykov.me.sociocat.template_of_list.view_holders;
 
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 public class LoadMore_ViewHolder extends BasicViewHolder {
 
-    @BindView(R.id.cardView) View cardView;
+    @BindView(R.id.elementView) View cardView;
 
     // Конструктор
     public LoadMore_ViewHolder(View itemView) {
@@ -30,8 +27,13 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
 
     }
 
+    @Override
+    public void setIsNowDeleting(boolean isNowDeleting) {
+
+    }
+
     // Нажатия
-    @OnClick(R.id.cardView)
+    @OnClick(R.id.elementView)
     void onItemClicked() {
         presenter.onLoadMoreClicked();
     }

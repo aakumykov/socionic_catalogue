@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
@@ -100,7 +100,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 isRefreshing = false;
-                NewCardsCounter.reset();
 
                 pageView.hideSwipeThrobber();
                 pageView.onPageRefreshed();
@@ -186,7 +185,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
                 newCardsAreLoadedNow = false;
                 newCardsBoundaryCard = null;
-                NewCardsCounter.reset();
             }
 
             @Override
@@ -226,7 +224,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onCreateCardClicked(Constants.CardType cardType) {
+    public void onCreateCardClicked(CardType cardType) {
         pageView.goCreateCard(cardType);
     }
 
@@ -249,7 +247,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         MyDialogs.cardDeleteDialog(
                 pageView.getActivity(),
                 card.getTitle(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 
@@ -330,7 +328,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         dataAdapter.showThrobber(0);
 
-        cardsSingleton.loadFirstPortionOfCards(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobber(insertPosition);

@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 
 public class LoadMoreItem extends ListItem {
 
@@ -13,7 +13,17 @@ public class LoadMoreItem extends ListItem {
     }
 
     @Override
-    public iItemsList.ItemType getItemType() {
-        return iItemsList.ItemType.LOADMORE_ITEM;
+    public iTemplateOfList.ItemType getItemType() {
+        return iTemplateOfList.ItemType.LOADMORE_ITEM;
+    }
+
+    @Override
+    public void setIsNowDeleting(boolean value) {
+
+    }
+
+    @Override
+    public boolean isNowDeleting() {
+        return false;
     }
 }

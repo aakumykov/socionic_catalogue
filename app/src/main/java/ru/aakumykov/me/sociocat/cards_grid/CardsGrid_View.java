@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +19,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -34,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
@@ -43,8 +39,8 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -71,7 +67,6 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
-    private static final int NEW_CARDS_AVAILABLE = 10;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -168,15 +163,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        scheduleNewCardsChecking();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
-        unScheduleNewCardsChecking();
     }
 
     @Override
@@ -307,7 +295,7 @@ public class CardsGrid_View extends BaseView implements
     public <T> void setTitle(T title) {
 //        String titleString = "";
 //        if (title instanceof Integer) {
-//            titleString = getResources().getString((Integer)title);
+//            titleString = getResources().getStringWithStringResource((Integer)title);
 //        }
 //        else if (title instanceof String) {
 //            titleString = (String) title;
@@ -326,7 +314,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void goCreateCard(Constants.CardType cardType) {
+    public void goCreateCard(CardType cardType) {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType.name());
@@ -458,19 +446,19 @@ public class CardsGrid_View extends BaseView implements
         switch (actionItem.getId()) {
 
             case R.id.fab_quote:
-                presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                presenter.onCreateCardClicked(CardType.TEXT_CARD);
                 return false;
 
             case R.id.fab_image:
-                presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
+                presenter.onCreateCardClicked(CardType.IMAGE_CARD);
                 return false;
 
             case R.id.fab_audio:
-                presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
+                presenter.onCreateCardClicked(CardType.AUDIO_CARD);
                 return false;
 
             case R.id.fab_video:
-                presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
+                presenter.onCreateCardClicked(CardType.VIDEO_CARD);
                 return false;
 
             default:
@@ -659,7 +647,7 @@ public class CardsGrid_View extends BaseView implements
             }
         }
         catch (Exception e) {
-            showErrorMsg(R.string.CARDS_GRID_card_creation_error, e.getMessage());
+            showErrorMsg(R.string.CARDS_GRID_error_creating_card, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -751,44 +739,8 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void scheduleNewCardsChecking() {
-        Handler newCardsCheckingHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case NEW_CARDS_AVAILABLE:
-                        presenter.onNewCardsAvailable((Integer) msg.obj);
-                        break;
-                    default:
-                        super.handleMessage(msg);
-                }
-            }
-        };
-
-        newCardsCheckingTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                checkForNewCards(newCardsCheckingHandler);
-            }
-        };
-
-        new Timer().schedule(
-                newCardsCheckingTimerTask,
-                AppConfig.NEW_CARDS_CHECK_DELAY,
-                AppConfig.NEW_CARDS_CHECK_INTERVAL
-        );
-    }
-
     private void unScheduleNewCardsChecking() {
         newCardsCheckingTimerTask.cancel();
-    }
-
-    private void checkForNewCards(Handler handler) {
-        int newCardsCount = NewCardsCounter.getCount();
-        if (newCardsCount > 0) {
-            Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
-            handler.sendMessage(message);
-        }
     }
 
 

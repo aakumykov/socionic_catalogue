@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -400,6 +401,13 @@ public class CardEdit_Presenter implements
 
         if (null == currentCard) {
             view.showErrorMsg(R.string.data_error, "Failed to get Card from Intent");
+            Log.e(TAG, "Intent: "+intent);
+            Bundle extras = intent.getExtras();
+            if (null != extras) {
+                Log.e(TAG, "Intent extras:");
+                for (String key : extras.keySet())
+                    Log.e(TAG, key + ": " + extras.get(key));
+            }
             return;
         }
 

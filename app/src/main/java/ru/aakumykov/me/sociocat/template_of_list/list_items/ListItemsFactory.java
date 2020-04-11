@@ -5,11 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+import ru.aakumykov.me.sociocat.template_of_list.iTemplateOfList;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;
@@ -19,15 +18,15 @@ import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder
 public class ListItemsFactory {
 
     @NonNull
-    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent, iItemsList.LayoutMode layoutMode) {
+    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
         switch (viewType) {
-            case iItemsList.DATA_ITEM_TYPE:
+            case iTemplateOfList.DATA_ITEM_TYPE:
                 return dataItemViewHolder(parent, layoutMode);
 
-            case iItemsList.LOADMORE_ITEM_TYPE:
+            case iTemplateOfList.LOADMORE_ITEM_TYPE:
                 return loadmoreViewHolder(parent, layoutMode);
 
-            case iItemsList.THROBBER_ITEM_TYPE:
+            case iTemplateOfList.THROBBER_ITEM_TYPE:
                 return throbberItemViewHolder(parent, layoutMode);
 
             default:
@@ -35,29 +34,29 @@ public class ListItemsFactory {
         }
     }
 
-    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iItemsList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
-        return new Unknown_ViewHolder(itemView);
-    }
-
-    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iItemsList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
-        return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
-    }
-
-    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iItemsList.LayoutMode layoutMode) {
-        View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
-        return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
-    }
-
-    private static BasicViewHolder dataItemViewHolder(ViewGroup parent, iItemsList.LayoutMode layoutMode) {
-        int layoutResourceId = (iItemsList.LayoutMode.LIST.equals(layoutMode)) ?
+    private static BasicViewHolder dataItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        int layoutResourceId = (iTemplateOfList.LayoutMode.LIST.equals(layoutMode)) ?
                 R.layout.template_of_list_data_item_list_mode :
                 R.layout.template_of_list_data_item_grid_mode;
 
         View itemView = createItemView(parent, layoutResourceId);
 
-        return new DataItem_ViewHolder(itemView);
+        return new DataItem_ViewHolder(itemView, layoutMode);
+    }
+
+    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
+        return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
+    }
+
+    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
+        return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
+    }
+
+    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iTemplateOfList.LayoutMode layoutMode) {
+        View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
+        return new Unknown_ViewHolder(itemView);
     }
 
     private static View createItemView(ViewGroup parent, int layoutResourceId) {

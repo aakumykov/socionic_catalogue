@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="cards_count">
-        <item quantity="one">%1$d card</item>
-        <item quantity="other">%1$d cardsList</item>
+    <plurals name="CARDS_GRID_delete_selected_cards_title">
+        <item quantity="one">Delete %1$d selected card?</item>
+        <item quantity="other">Delete selected %1$d cards?</item>
+    </plurals>
+
+    <plurals name="LIST_TEMPLATE_delete_selected_items_dialog_title">
+        <item quantity="one">Delete %1$d selected element?</item>
+        <item quantity="other">Delete selected %1$d elements?</item>
     </plurals>
 </resources>

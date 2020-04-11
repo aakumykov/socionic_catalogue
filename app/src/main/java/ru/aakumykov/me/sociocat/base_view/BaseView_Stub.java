@@ -136,6 +136,11 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public String getString(int stringResourceId, int substitutedMessage) {
+        return null;
+    }
+
+    @Override
     public String getString(int stringResourceId, String substitutedMessage) {
         return null;
     }

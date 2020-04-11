@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/cards_grid_icon_height"
             android:adjustViewBounds="true"
-            app:srcCompat="@drawable/ic_cards_grid_video" />
+            app:srcCompat="@drawable/ic_card_type_video" />
 
     </LinearLayout>
 

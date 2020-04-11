@@ -9,6 +9,9 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.models.Card;
+
 public class IntentUtils {
 
     public static ContentType detectContentType(@Nullable Intent intent) {
@@ -86,6 +89,13 @@ public class IntentUtils {
         String text = extractText(intent);
 
         return YoutubeUtils.extractYoutubeVideoCode(text);
+    }
+
+    public static Card extractCard(@NonNull Intent data) {
+        if (data.hasExtra(Constants.CARD))
+            return data.getParcelableExtra(Constants.CARD);
+        else
+            return null;
     }
 
 

@@ -16,13 +16,13 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
-    public int getSelectedItemCount() {
+    public int getSelectedItemsCount() {
         return 0;
     }
 
     @Override
-    public Integer getSingleSelectedItemIndex() {
-        return null;
+    public boolean isSingleItemSelected() {
+        return false;
     }
 
     @Override

@@ -211,7 +211,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     private void displayQuoteSource() {
         String quoteSource = currentCard.getQuoteSource();
         if (!TextUtils.isEmpty(quoteSource)) {
-            quoteSourceView.setText(MyUtils.getString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
+            quoteSourceView.setText(MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
             MyUtils.show(quoteSourceView);
         }
     }
@@ -247,7 +247,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayAuthor() {
         authorView.setText(
-                MyUtils.getString(
+                MyUtils.getStringWithString(
                         authorView.getContext(),
                         R.string.CARD_SHOW_author,
                         currentCard.getUserName()

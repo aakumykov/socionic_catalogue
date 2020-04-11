@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchWidget"
+        android:icon="@drawable/ic_search"
+        android:title="@string/MENU_search"
+        android:hint="@string/CARDS_GRID_search_widget_hint"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
+        android:id="@+id/actionProfile"
+        android:icon="@drawable/ic_user_logged_out"
+        android:title="@string/MENU_user_profile"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/actionChangeViewMode"
+        android:icon="@drawable/ic_view_mode"
+        android:title="@string/MENU_change_view_mode"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/actionViewModeList"
+                android:icon="@drawable/ic_view_mode_list"
+                android:title="@string/MENU_view_mode_list"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/actionViewModeGrid"
+                android:icon="@drawable/ic_view_mode_grid"
+                android:title="@string/MENU_view_mode_grid"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/actionViewModeFeed"
+                android:icon="@drawable/ic_view_mode_feed"
+                android:title="@string/MENU_view_mode_feed"
+                app:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/actionSort"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/MENU_sort"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/actionSortByName"
+                android:icon="@drawable/ic_sort_by_name"
+                android:title="@string/MENU_sort_by_name"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/actionSortByDate"
+                android:icon="@drawable/ic_sort_by_date"
+                android:title="@string/MENU_sort_by_date"
+                app:showAsAction="never" />
+        </menu>
+
+    </item>
+
+</menu>
