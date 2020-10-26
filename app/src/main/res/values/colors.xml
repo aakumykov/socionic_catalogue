@@ -96,4 +96,10 @@
 
     <!--  Цвет иконок меню, вызываемого плавающей кнопкой  -->
     <color name="bottom_sheet_menu_icon_color">@color/grey</color>
+
+    <!--  Цвета иконок типа карточки  -->
+    <color name="card_type_icon_text">#AFAFAF</color>
+    <color name="card_type_icon_video">#B39DDB</color>
+    <color name="card_type_icon_audio">#F48FB1</color>
+    <color name="card_type_icon_image">#AED581</color>
 </resources>
