@@ -38,6 +38,7 @@ public class DataItem_ViewHolder
     @Nullable @BindView(R.id.dateView) TextView dateView;
     @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
     @Nullable @BindView(R.id.ratingView) TextView ratingView;
+    @Nullable @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
@@ -63,6 +64,8 @@ public class DataItem_ViewHolder
         elementView.setOnLongClickListener(this);
         titleView.setOnLongClickListener(this);
 
+        displayCardType();
+
         initializeCommonParts();
 
         switch (currentViewMode) {
@@ -77,6 +80,27 @@ public class DataItem_ViewHolder
                 break;
             default:
                 throw new RuntimeException("Unknown view mode: "+currentViewMode);
+        }
+    }
+
+    private void displayCardType() {
+        if (null != cardTypeImageView) {
+            switch (currentCard.getType()) {
+                case Card.TEXT_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
+                    break;
+                case Card.IMAGE_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
+                    break;
+                case Card.VIDEO_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
+                    break;
+                case Card.AUDIO_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
