@@ -136,13 +136,7 @@ public class CardsList_View
         presenter.unlinkView();
     }
 
-    @Override @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        if(menu instanceof MenuBuilder){
-            MenuBuilder menuBuilder = ((MenuBuilder) menu);
-            menuBuilder.setOptionalIconsVisible(true);
-        }
 
         iCardsList.ToolbarState toolbarState = presenter.getToolbarState();
 

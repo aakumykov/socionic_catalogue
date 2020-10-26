@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.base_view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,8 +115,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
+    @Override @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        if(menu instanceof MenuBuilder){
+            MenuBuilder menuBuilder = (MenuBuilder) menu;
+            menuBuilder.setOptionalIconsVisible(true);
+        }
 
         MenuInflater menuInflater = getMenuInflater();
 
