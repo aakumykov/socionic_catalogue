@@ -11,39 +11,20 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
-        android:id="@+id/actionProfile"
-        android:icon="@drawable/ic_user_logged_out"
-        android:title="@string/MENU_user_profile"
-        app:showAsAction="never" />
-
+        android:id="@+id/actionViewModeFeed"
+        android:icon="@drawable/ic_view_mode_feed"
+        android:title="@string/MENU_view_mode_feed"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/actionChangeViewMode"
-        android:icon="@drawable/ic_view_mode"
-        android:title="@string/MENU_change_view_mode"
-        app:showAsAction="always">
-
-        <menu>
-            <item
-                android:id="@+id/actionViewModeList"
-                android:icon="@drawable/ic_view_mode_list"
-                android:title="@string/MENU_view_mode_list"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/actionViewModeGrid"
-                android:icon="@drawable/ic_view_mode_grid"
-                android:title="@string/MENU_view_mode_grid"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/actionViewModeFeed"
-                android:icon="@drawable/ic_view_mode_feed"
-                android:title="@string/MENU_view_mode_feed"
-                app:showAsAction="never" />
-
-        </menu>
-
-    </item>
+        android:id="@+id/actionViewModeList"
+        android:icon="@drawable/ic_view_mode_list"
+        android:title="@string/MENU_view_mode_list"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionViewModeGrid"
+        android:icon="@drawable/ic_view_mode_grid"
+        android:title="@string/MENU_view_mode_grid"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/actionSort"
@@ -65,5 +46,10 @@
         </menu>
 
     </item>
+    <item
+        android:id="@+id/actionProfile"
+        android:icon="@drawable/ic_user_logged_out"
+        android:title="@string/MENU_user_profile"
+        app:showAsAction="never" />
 
 </menu>
