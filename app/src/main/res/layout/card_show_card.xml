@@ -11,12 +11,11 @@
     android:layout_marginBottom="18dp">
 
     <TextView
-        android:id="@+id/labelView"
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="18sp"
         android:padding="8dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
         tools:text="Заголовок карточки" />
@@ -27,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:textIsSelectable="true"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:padding="8dp"
         android:fontFamily="serif"
         android:textStyle="italic"
@@ -73,7 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:padding="8dp"
-        android:textColor="@color/defaultTextColor"
         android:textIsSelectable="true"
         android:textSize="18sp"
         tools:text="Для загрузки доступны iso-образы" />

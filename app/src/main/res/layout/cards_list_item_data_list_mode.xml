@@ -11,22 +11,21 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/titleView"
+        android:id="@+id/labelView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
         android:textAlignment="viewStart"
         android:textColor="?attr/colorPrimaryDark"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/dateView"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Название элемента" />
 
     <ImageView
         android:id="@+id/cardTypeImageView"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -48,6 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelView"
         tools:text="Дата" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

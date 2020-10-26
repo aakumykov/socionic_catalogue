@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +30,7 @@ public class DataItem_ViewHolder
         implements View.OnLongClickListener
 {
     @BindView(R.id.elementView) ViewGroup elementView;
-    @BindView(R.id.titleView) TextView titleView;
+    @BindView(R.id.labelView) TextView titleView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
     @Nullable @BindView(R.id.authorView) TextView authorView;
@@ -134,7 +133,7 @@ public class DataItem_ViewHolder
 
     // Нажатия
     @Optional
-    @OnClick({ R.id.titleView, R.id.imageView, R.id.quoteView, R.id.dateView })
+    @OnClick({ R.id.labelView, R.id.imageView, R.id.quoteView, R.id.dateView })
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }

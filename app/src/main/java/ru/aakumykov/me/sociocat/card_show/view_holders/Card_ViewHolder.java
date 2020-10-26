@@ -31,7 +31,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 {
 //    @BindView(R.id.cardLayout) LinearLayout cardLayout;
 
-    @BindView(R.id.labelView) TextView titleView;
+    @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
