@@ -574,9 +574,8 @@ public class CardEdit_View extends BaseView implements
             imageIsSetted = true;
             imageView.setImageBitmap(imageBitmap);
         }
-        else {
-            imageView.setImageResource(R.drawable.ic_image_placeholder_color);
-        }
+        else
+            showImagePlaceholder();
 
         MyUtils.show(imageHolder);
     }
@@ -917,7 +916,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void showImagePlaceholder() {
-        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
+        imageView.setImageResource(R.drawable.ic_add_image);
     }
 
     private void changeFormSate(boolean isEnabled) {
