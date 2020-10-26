@@ -14,9 +14,9 @@
         android:id="@+id/labelView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:textColor="@color/defaultTextColor"
         android:textSize="18sp"
+        android:padding="8dp"
         android:textStyle="bold"
         android:visibility="visible"
         tools:text="Заголовок карточки" />
@@ -26,9 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/quoteTextColor"
         android:textIsSelectable="true"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        android:padding="8dp"
+        android:fontFamily="serif"
         android:textStyle="italic"
         android:visibility="gone"
         tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13'
@@ -40,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
         android:padding="2dp"
+        android:scaleType="fitCenter"
         tools:srcCompat="@tools:sample/backgrounds/scenic[9]" />
 
     <FrameLayout
@@ -60,6 +61,7 @@
         android:textColor="@color/grey"
         android:textIsSelectable="true"
         android:textSize="16sp"
+        android:paddingHorizontal="8dp"
         android:textStyle="italic"
         android:visibility="gone"
         tools:text="Источник цитаты/медиа"
@@ -70,6 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:padding="8dp"
         android:textColor="@color/defaultTextColor"
         android:textIsSelectable="true"
         android:textSize="18sp"
@@ -96,6 +99,7 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/grey"
         android:visibility="gone"
+        android:paddingHorizontal="8dp"
         tools:text="Создано: вчера"
         tools:visibility="visible" />
 
@@ -106,6 +110,7 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/grey"
         android:visibility="gone"
+        android:paddingHorizontal="8dp"
         tools:text="Изменено: сегодня"
         tools:visibility="visible" />
 
@@ -119,6 +124,7 @@
         app:container_border_color="@color/transparent"
         app:container_enable_drag="false"
         app:horizontal_interval="10dp"
+        android:paddingHorizontal="8dp"
         app:tag_clickable="true"
         app:tag_ripple_duration="400"
         app:tag_text_size="@dimen/tag_font_size"
@@ -129,7 +135,8 @@
         android:id="@+id/controlsHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp">
+        android:paddingHorizontal="8dp"
+        android:layout_marginTop="18dp">
 
         <ImageView
             android:id="@+id/cardRateUpWidget"
@@ -179,7 +186,6 @@
             android:id="@+id/replyWidget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:text="@string/CARD_SHOW_add_comment"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
