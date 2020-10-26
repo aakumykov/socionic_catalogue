@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:id="@+id/elementView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
+    android:id="@+id/elementView"
     android:layout_width="match_parent"
-    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content"
     android:focusable="true"
-    >
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,9 +21,8 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,52 +48,60 @@
             android:id="@+id/quoteView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:fontFamily="serif"
+            android:padding="8dp"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="italic"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
             tools:text="Цитата, цитата, здесь цитата."
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/authorView"
+        <LinearLayout
+            android:id="@+id/authorDateContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:textAlignment="viewStart"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/quoteView"
-            tools:text="Автор" />
+            app:layout_constraintTop_toBottomOf="@id/quoteView"
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/dateView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_weight="1"
-            android:textAlignment="viewEnd"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/authorView"
-            app:layout_constraintTop_toBottomOf="@+id/authorView"
-            tools:text="Дата" />
+            <TextView
+                android:id="@+id/authorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textSize="13sp"
+                tools:text="Автор" />
+
+            <TextView
+                android:id="@+id/dateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textSize="12sp"
+                tools:text="Дата" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/commentsInfoContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ratingView"
-            app:layout_constraintStart_toEndOf="@+id/authorView">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/quoteView"
+            tools:layout_editor_absoluteX="43dp"
+            tools:visibility="visible">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -115,34 +120,38 @@
                 tools:text="10" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/rateUpWidget"
+        <LinearLayout
+            android:id="@+id/ratingContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ratingView"
-            app:layout_constraintEnd_toStartOf="@+id/ratingView"
-            app:layout_constraintTop_toTopOf="@+id/ratingView"
-            app:srcCompat="@drawable/ic_thumb_up_neutral" />
-
-        <TextView
-            android:id="@+id/ratingView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/rateDownWidget"
-            app:layout_constraintEnd_toStartOf="@+id/rateDownWidget"
-            app:layout_constraintTop_toTopOf="@+id/rateDownWidget"
-            tools:text="1000" />
-
-        <ImageView
-            android:id="@+id/rateDownWidget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_thumb_down_neutral" />
+            app:layout_constraintTop_toBottomOf="@id/quoteView"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/rateUpWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                app:srcCompat="@drawable/ic_thumb_up_neutral" />
+
+            <TextView
+                android:id="@+id/ratingView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                tools:text="1000" />
+
+            <ImageView
+                android:id="@+id/rateDownWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:srcCompat="@drawable/ic_thumb_down_neutral" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
