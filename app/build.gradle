@@ -31,10 +31,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // TODO: попробовать это удалить
-    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.media:media:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.exifinterface:exifinterface:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.exifinterface:exifinterface:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
 
     implementation 'androidx.preference:preference:1.1.1'
 //    testImplementation 'junit:junit:4.12'
@@ -78,17 +78,17 @@ dependencies {
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.1'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // EventBus
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
     // FloatingActionButtonSpeedDial
     implementation "com.leinardi.android:speed-dial:2.0.1"
