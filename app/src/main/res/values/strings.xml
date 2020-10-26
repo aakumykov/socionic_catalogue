@@ -145,7 +145,7 @@
     <string name="CARDS_LIST_comments_count">Комментариев: %1$d</string>
     <string name="MENU_refresh">Обновить</string>
     <string name="MENU_share">Поделиться</string>
-    <string name="COMMENT_comment_deletion">Удаление комментария</string>
+    <string name="COMMENT_comment_deletion">Удалить комментарий?</string>
     <string name="COMMENT_delete_error">Ошибка удаления комментария</string>
     <string name="COMMENT_error_saving_comment">Ошибка сохранения комментария</string>
     <string name="DIALOG_delete_card">Удалить карточку?</string>

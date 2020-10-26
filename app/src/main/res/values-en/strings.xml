@@ -144,7 +144,7 @@
     <string name="CARDS_LIST_comments_count">Comments: %1$d</string>
     <string name="MENU_refresh">Refresh</string>
     <string name="MENU_share">Share</string>
-    <string name="COMMENT_comment_deletion">Deleting a comment</string>
+    <string name="COMMENT_comment_deletion">Delete comment?</string>
     <string name="COMMENT_delete_error">Error deleting comment</string>
     <string name="COMMENT_error_saving_comment">Comment save error</string>
     <string name="DIALOG_delete_card">Delete card?</string>
