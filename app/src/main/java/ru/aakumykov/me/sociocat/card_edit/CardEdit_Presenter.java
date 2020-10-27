@@ -432,14 +432,15 @@ public class CardEdit_Presenter implements
             view.displayImage(mImageBitmap);
     }
 
-    private void updateCurrentCardFromView(){
-        if (null != currentCard)
+    private void updateCurrentCardFromView() {
+        if (null != currentCard) {
             currentCard.setTitle(view.getCardTitle());
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
             currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
             currentCard.setTimecode(view.getTimecode());
+        }
     }
 
     private void processBeforeSave() {
