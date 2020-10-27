@@ -115,6 +115,7 @@ public class CardEdit_Presenter implements
     @Override
     public void onConfigurationChanged() {
         view.displayCard(currentCard);
+        displayLocalImage();
     }
 
     @Override
@@ -426,14 +427,19 @@ public class CardEdit_Presenter implements
         }
     }
 
+    private void displayLocalImage() {
+        if (null != mImageBitmap)
+            view.displayImage(mImageBitmap);
+    }
 
     private void updateCurrentCardFromView(){
-        currentCard.setTitle(view.getCardTitle());
-        currentCard.setQuote(view.getQuote());
-        currentCard.setQuoteSource(view.getQuoteSource());
-        currentCard.setDescription(view.getDescription());
-        currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
-        currentCard.setTimecode(view.getTimecode());
+        if (null != currentCard)
+            currentCard.setTitle(view.getCardTitle());
+            currentCard.setQuote(view.getQuote());
+            currentCard.setQuoteSource(view.getQuoteSource());
+            currentCard.setDescription(view.getDescription());
+            currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
+            currentCard.setTimecode(view.getTimecode());
     }
 
     private void processBeforeSave() {
