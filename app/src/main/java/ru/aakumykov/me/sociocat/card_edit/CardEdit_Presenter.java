@@ -70,6 +70,7 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onViewPaused() {
+        updateCurrentCardFromView();
         mediaPosition = view.pauseMedia();
     }
 
