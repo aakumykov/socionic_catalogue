@@ -274,7 +274,7 @@ public class CardEdit_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void displayCard(Card card) {
+    public void displayCard(Card card, boolean omitImage) {
 
         hideProgressMessage();
 
@@ -285,7 +285,8 @@ public class CardEdit_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                displayImage(card.getImageURL());
+                if (!omitImage)
+                    displayImage(card.getImageURL());
                 break;
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode(), card.getTimecode());

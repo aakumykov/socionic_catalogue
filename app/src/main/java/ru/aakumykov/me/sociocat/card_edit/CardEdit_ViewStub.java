@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
 
     @Override
-    public void displayCard(Card card) {
+    public void displayCard(Card card, boolean withoutImage) {
 
     }
 

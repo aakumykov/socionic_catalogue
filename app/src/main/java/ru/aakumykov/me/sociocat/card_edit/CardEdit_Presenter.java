@@ -114,7 +114,7 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onConfigurationChanged() {
-        view.displayCard(currentCard);
+        view.displayCard(currentCard, (null != mImageBitmap));
         displayLocalImage();
     }
 
@@ -220,7 +220,7 @@ public class CardEdit_Presenter implements
     @Override
     public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
         this.mImageType = imageType;
-        this.mImageBitmap = bitmap;
+        this.mImageBitmap = bitmap.copy(bitmap.getConfig(), true);
         view.displayImage(bitmap);
     }
 
@@ -420,7 +420,7 @@ public class CardEdit_Presenter implements
             case Constants.IMAGE_CARD:
             case Constants.VIDEO_CARD:
             case Constants.AUDIO_CARD:
-                view.displayCard(currentCard);
+                view.displayCard(currentCard, false);
                 break;
             default:
                 throw new Exception("Unknown card type: "+cardType);
