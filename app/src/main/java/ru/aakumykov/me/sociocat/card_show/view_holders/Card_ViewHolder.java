@@ -285,7 +285,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         Glide.with(imageView.getContext())
                 .load(currentCard.getImageURL())
-                .placeholder(R.drawable.ic_image_placeholder_monochrome)
+                .placeholder(R.drawable.ic_image_placeholder_smaller)
                 .error(R.drawable.ic_image_error)
                 .into(imageView);
     }
