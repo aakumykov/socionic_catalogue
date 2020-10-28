@@ -114,7 +114,8 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onConfigurationChanged() {
-        view.displayCard(currentCard, (null != mImageBitmap));
+        boolean hasLocalImage = (null != mImageBitmap);
+        view.displayCard(currentCard, hasLocalImage);
         displayLocalImage();
     }
 

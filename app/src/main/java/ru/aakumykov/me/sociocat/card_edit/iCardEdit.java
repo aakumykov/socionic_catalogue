@@ -23,7 +23,7 @@ public interface iCardEdit {
         void requestLogin(Intent transitIntent);
 
         // "Большие" методы
-        void displayCard(Card card, boolean withoutImage);
+        void displayCard(Card card, boolean omitImage);
 
         void disableForm();
         void enableForm();
