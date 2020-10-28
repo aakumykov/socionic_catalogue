@@ -272,6 +272,48 @@ public class CardEdit_View extends BaseView implements
         super.requestLogin(transitIntent);
     }
 
+    @Override
+    public void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1) {
+        setViewState(viewState, viewStateData1, null);
+    }
+
+    @Override
+    public void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1, @Nullable Object viewStateData2) {
+        switch (viewState) {
+            case TEXT_CARD:
+                setTextCardViewState(viewState, viewStateData1);
+                break;
+
+            case IMAGE_CARD_NO_IMAGE:
+            case IMAGE_CARD_LOCAL_IMAGE:
+            case IMAGE_CARD_REMOTE_IMAGE:
+                setImageCardViewState(viewState, viewStateData1);
+                break;
+
+            case IMAGE_CARD_NO_AUDIO:
+            case IMAGE_CARD_REMOTE_AUDIO:
+                setAudioCardViewState(viewState, viewStateData1);
+                break;
+
+            case IMAGE_CARD_NO_VIDEO:
+            case IMAGE_CARD_REMOTE_VIDEO:
+                setVideoCardViewState(viewState, viewStateData1);
+                break;
+
+            case PROGRESS:
+                setProgressViewState(viewStateData1);
+                break;
+
+            case ERROR:
+                setErrorViewState(viewStateData1, viewStateData2);
+                break;
+
+            default:
+                throw new RuntimeException("Unknown eCardEdit_ViewState: "+viewState);
+        }
+    }
+
+
     // Интерфейсные методы
     @Override
     public void displayCard(Card card, boolean omitImage) {
@@ -1067,5 +1109,46 @@ public class CardEdit_View extends BaseView implements
     private void setTimecodeToVideo() {
         float timecode = getTimecode();
         insertableYoutubePlayer.seekTo(timecode);
+    }
+
+
+
+    private void setTextCardViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData) {
+        if (viewStateData instanceof Card) {
+
+        }
+        else {
+            setViewState(eCardEdit_ViewState.ERROR, R.string.CARD_EDIT_data_error);
+            Log.e(TAG, "viewStateData is not a Card");
+        }
+    }
+
+    private void setImageCardViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData) {
+        switch (viewState) {
+            case IMAGE_CARD_NO_IMAGE:
+                showImagePlaceholder();
+                break;
+
+            case IMAGE_CARD_LOCAL_IMAGE:
+            case IMAGE_CARD_REMOTE_IMAGE:
+                displayImage(viewStateData);
+                break;
+        }
+    }
+
+    private void setAudioCardViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData) {
+
+    }
+
+    private void setVideoCardViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData) {
+
+    }
+
+    private void setProgressViewState(@Nullable Object viewStateData) {
+        showProgressMessage((int) viewStateData);
+    }
+
+    private void setErrorViewState(Object viewStateData1, @Nullable Object viewStateData2) {
+        showErrorMsg((int) viewStateData1, (String) viewStateData2);
     }
 }

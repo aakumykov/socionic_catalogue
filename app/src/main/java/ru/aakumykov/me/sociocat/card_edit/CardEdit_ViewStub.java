@@ -11,6 +11,17 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
 
+
+    @Override
+    public void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1) {
+
+    }
+
+    @Override
+    public void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1, @Nullable Object viewStateData2) {
+
+    }
+
     @Override
     public void displayCard(Card card, boolean omitImage) {
 

@@ -23,6 +23,9 @@ public interface iCardEdit {
         void requestLogin(Intent transitIntent);
 
         // "Большие" методы
+        void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1);
+        void setViewState(eCardEdit_ViewState viewState, @Nullable Object viewStateData1, @Nullable Object viewStateData2);
+
         void displayCard(Card card, boolean omitImage);
 
         void disableForm();
