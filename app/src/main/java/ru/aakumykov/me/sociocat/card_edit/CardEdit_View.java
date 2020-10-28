@@ -335,9 +335,12 @@ public class CardEdit_View extends BaseView implements
                 imageView.setImageResource(R.drawable.ic_image_error);
                 imageIsSetted = false;
 
-                hideImageThrobber();
+                Log.e(TAG, errorMsg);
 
-                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, errorMsg);
+                hideImageThrobber();
+                showImagePlaceholder();MyUtils.show(imageHolder);
+
+//                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, errorMsg);
             }
         });
     }
@@ -918,6 +921,7 @@ public class CardEdit_View extends BaseView implements
 
     private void showImagePlaceholder() {
         imageView.setImageResource(R.drawable.ic_add_image);
+        MyUtils.show(imageHolder);
     }
 
     private void changeFormSate(boolean isEnabled) {
