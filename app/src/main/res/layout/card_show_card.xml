@@ -50,6 +50,22 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" />
 
+    <ImageView
+        android:id="@+id/videoThrobber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_video_placeholder"
+        android:adjustViewBounds="true"
+        android:visibility="gone" />
+
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youTubePlayerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:autoPlay="false"
+        />
+
     <TextView
         android:id="@+id/quoteSourceView"
         android:layout_width="match_parent"

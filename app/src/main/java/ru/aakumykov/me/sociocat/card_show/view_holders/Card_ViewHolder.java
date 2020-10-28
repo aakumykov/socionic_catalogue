@@ -10,6 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -23,6 +29,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.AnimationUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
@@ -34,7 +41,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
+    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
     @BindView(R.id.quoteSourceView) TextView quoteSourceView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
@@ -218,31 +227,94 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayMedia(MediaType mediaType) {
 
-        InsertableYoutubePlayer insertableYoutubePlayer =
-                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
+//        InsertableYoutubePlayer insertableYoutubePlayer =
+//                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
 
         switch (mediaType) {
             case AUDIO:
-                insertableYoutubePlayer.show(
+                /*insertableYoutubePlayer.show(
                         currentCard.getAudioCode(),
                         currentCard.getTimecode(),
                         InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER,
                         R.string.YOUTUBE_PLAYER_waiting_for_audio
-                );
+                );*/
                 break;
 
             case VIDEO:
-                insertableYoutubePlayer.show(
+                /*insertableYoutubePlayer.show(
                         currentCard.getVideoCode(),
                         currentCard.getTimecode(),
                         InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER,
                         R.string.YOUTUBE_PLAYER_waiting_for_video
-                );
+                );*/
+                displayVideo();
                 break;
 
             default:
                 throw new RuntimeException("Unknown mediaType: "+mediaType);
         }
+    }
+
+    private void displayVideo() {
+
+        MyUtils.show(videoThrobber);
+        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(1000L, false));
+
+        youTubePlayerView.addYouTubePlayerListener(new YouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                MyUtils.hide(videoThrobber);
+                videoThrobber.clearAnimation();
+
+                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+                MyUtils.show(youTubePlayerView);
+            }
+
+            @Override
+            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+
+            }
+
+            @Override
+            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+            }
+
+            @Override
+            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+
+            }
+
+            @Override
+            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+
+            }
+
+            @Override
+            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+
+            }
+        });
     }
 
     private void displayAuthor() {
