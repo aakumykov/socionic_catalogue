@@ -258,7 +258,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     private void displayVideo() {
 
         MyUtils.show(videoThrobber);
-        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(1000L, false));
+        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
 
         youTubePlayerView.addYouTubePlayerListener(new YouTubePlayerListener() {
             @Override
