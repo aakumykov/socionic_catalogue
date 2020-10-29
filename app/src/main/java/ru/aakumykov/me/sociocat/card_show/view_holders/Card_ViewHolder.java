@@ -227,17 +227,17 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayMedia(MediaType mediaType) {
 
-//        InsertableYoutubePlayer insertableYoutubePlayer =
-//                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
-
         switch (mediaType) {
             case AUDIO:
-                /*insertableYoutubePlayer.show(
+                InsertableYoutubePlayer insertableYoutubePlayer =
+                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
+
+                insertableYoutubePlayer.show(
                         currentCard.getAudioCode(),
                         currentCard.getTimecode(),
                         InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER,
                         R.string.YOUTUBE_PLAYER_waiting_for_audio
-                );*/
+                );
                 break;
 
             case VIDEO:
@@ -253,6 +253,51 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             default:
                 throw new RuntimeException("Unknown mediaType: "+mediaType);
         }
+    }
+
+    private void displayAuthor() {
+        authorView.setText(
+                MyUtils.getStringWithString(
+                        authorView.getContext(),
+                        R.string.CARD_SHOW_author,
+                        currentCard.getUserName()
+                )
+        );
+    }
+
+    private void displayTags() {
+        tagsContainer.removeAllTags();
+
+        List<String> tagsList = currentCard.getTags();
+        if (tagsList.size() > 0) {
+            for (String tag : tagsList)
+                tagsContainer.addTag(tag);
+            MyUtils.show(tagsContainer);
+        }
+    }
+
+    private void displayImage() {
+
+        /* С ImageLoader-ом опять пошли артефакты
+        imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+
+        ImageLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageLoader.LoadImageCallbacks() {
+            @Override
+            public void onImageLoadSuccess(Bitmap imageBitmap) {
+                CardUtils.smartDisplayImage(imageView, imageBitmap);
+            }
+
+            @Override
+            public void onImageLoadError(String errorMsg) {
+                imageView.setImageResource(R.drawable.ic_image_error);
+            }
+        });*/
+
+        Glide.with(imageView.getContext())
+                .load(currentCard.getImageURL())
+                .placeholder(R.drawable.ic_image_placeholder_smaller)
+                .error(R.drawable.ic_image_error)
+                .into(imageView);
     }
 
     private void displayVideo() {
@@ -315,51 +360,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
             }
         });
-    }
-
-    private void displayAuthor() {
-        authorView.setText(
-                MyUtils.getStringWithString(
-                        authorView.getContext(),
-                        R.string.CARD_SHOW_author,
-                        currentCard.getUserName()
-                )
-        );
-    }
-
-    private void displayTags() {
-        tagsContainer.removeAllTags();
-
-        List<String> tagsList = currentCard.getTags();
-        if (tagsList.size() > 0) {
-            for (String tag : tagsList)
-                tagsContainer.addTag(tag);
-            MyUtils.show(tagsContainer);
-        }
-    }
-
-    private void displayImage() {
-
-        /* С ImageLoader-ом опять пошли артефакты
-        imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
-
-        ImageLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageLoader.LoadImageCallbacks() {
-            @Override
-            public void onImageLoadSuccess(Bitmap imageBitmap) {
-                CardUtils.smartDisplayImage(imageView, imageBitmap);
-            }
-
-            @Override
-            public void onImageLoadError(String errorMsg) {
-                imageView.setImageResource(R.drawable.ic_image_error);
-            }
-        });*/
-
-        Glide.with(imageView.getContext())
-                .load(currentCard.getImageURL())
-                .placeholder(R.drawable.ic_image_placeholder_smaller)
-                .error(R.drawable.ic_image_error)
-                .into(imageView);
     }
 
     private void showImageError(String errorMsg) {
