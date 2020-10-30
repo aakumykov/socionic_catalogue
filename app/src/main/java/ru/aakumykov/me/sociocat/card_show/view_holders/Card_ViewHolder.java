@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
+import android.animation.AnimatorSet;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -8,8 +10,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
@@ -293,11 +303,46 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             }
         });*/
 
-        Glide.with(imageView.getContext())
+        /*Glide.with(imageView.getContext())
                 .load(currentCard.getImageURL())
                 .placeholder(R.drawable.ic_image_placeholder_smaller)
                 .error(R.drawable.ic_image_error)
-                .into(imageView);
+                .into(imageView);*/
+
+        imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
+        MyUtils.show(imageView);
+        AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
+
+        Glide.with(imageView.getContext())
+                .load(currentCard.getImageURL())
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        imageView.setImageResource(R.drawable.ic_image_error);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imageView.setImageDrawable(resource);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return false;
+                    }
+                })
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                    }
+                });
     }
 
     private void displayVideo() {
