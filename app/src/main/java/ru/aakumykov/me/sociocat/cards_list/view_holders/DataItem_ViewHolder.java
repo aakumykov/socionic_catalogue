@@ -1,15 +1,25 @@
 package ru.aakumykov.me.sociocat.cards_list.view_holders;
 
+import android.animation.AnimatorSet;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +33,7 @@ import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.AnimationUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataItem_ViewHolder
@@ -165,11 +176,41 @@ public class DataItem_ViewHolder
 
     private void initializeInFeedMode() {
         if (currentCard.isImageCard()) {
+
+            imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
             MyUtils.show(imageView);
+            AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
 
             Glide.with(imageView).load(currentCard.getImageURL())
-                    .error(R.drawable.ic_image_error)
-                    .into(imageView);
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            imageView.setImageResource(R.drawable.ic_image_error);
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            imageView.setImageDrawable(resource);
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                            return false;
+                        }
+                    })
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        }
+                    });
         }
         else
             MyUtils.hide(imageView);

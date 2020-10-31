@@ -313,6 +313,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         MyUtils.show(imageView);
         AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
 
+        // TODO: удалить игнор кеша
+
         Glide.with(imageView.getContext())
                 .load(currentCard.getImageURL())
                 .skipMemoryCache(true)
