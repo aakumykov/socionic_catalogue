@@ -133,7 +133,7 @@ public class DataItem_ViewHolder
 
     // Нажатия
     @Optional
-    @OnClick({ R.id.labelView, R.id.imageView, R.id.quoteView, R.id.dateView })
+    @OnClick({ R.id.elementView, R.id.labelView, R.id.imageView, R.id.quoteView, R.id.dateView })
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
