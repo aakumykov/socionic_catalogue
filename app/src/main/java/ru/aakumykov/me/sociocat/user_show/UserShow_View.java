@@ -108,8 +108,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         if (presenter.canEditUser())
             getMenuInflater().inflate(R.menu.edit_user, menu);
 
-        return super.onCreateOptionsMenu(menu);
-//        return true;
+//        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
