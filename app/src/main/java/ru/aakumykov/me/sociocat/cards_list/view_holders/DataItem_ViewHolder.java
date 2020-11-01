@@ -236,7 +236,7 @@ public class DataItem_ViewHolder
     }
 
     private void initializeInListMode() {
-        displayDate();
+        //displayDate();
     }
 
     private void initializeInGridMode() {
