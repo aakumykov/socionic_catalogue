@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp"
+        android:paddingVertical="14dp"
         android:textAlignment="viewStart"
         android:textColor="?attr/colorPrimaryDark"
         android:textSize="18sp"
