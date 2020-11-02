@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.login.iLogin;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -73,7 +74,10 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        loadAndShowUser(profileUser.getKey());
+        if (null != profileUser)
+            loadAndShowUser(profileUser.getKey());
+        else
+            view.setState(currentViewState, currentMessageId, currentMessagePayload);
     }
 
     @Override
