@@ -86,6 +86,7 @@ public interface iCardsList {
 
         void go2cardComments(Card card);
 
+        void forgetActivityResult();
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

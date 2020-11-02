@@ -330,6 +330,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onStart(int requestCode, int resultCode, @Nullable Intent data) {
         processActivityResult(requestCode, resultCode, data);
+        pageView.forgetActivityResult();
     }
 
 

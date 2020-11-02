@@ -74,4 +74,9 @@ public class CardsList_ViewStub
 
     }
 
+    @Override
+    public void forgetActivityResult() {
+
+    }
+
 }

@@ -307,6 +307,13 @@ public class CardsList_View
     }
 
     @Override
+    public void forgetActivityResult() {
+        lastActivityResult_Data = null;
+        lastActivityResult_RequestCode = -1;
+        lastActivityResult_ResultCode = -1;
+    }
+
+    @Override
     public void changeViewMode(@NonNull iCardsList.ViewMode viewMode) {
 
         switch (viewMode) {
