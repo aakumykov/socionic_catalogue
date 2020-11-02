@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,12 +61,16 @@ public class CardsList_View
     private RecyclerView.LayoutManager currentLayoutManager;
 
     private ActionMode actionMode;
-    private ActionMode.Callback actionModeCallback = new ActionModeCallback();
+    private final ActionMode.Callback actionModeCallback = new ActionModeCallback();
 
     private BottomSheetListener bottomSheetListener;
 
-    private iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.LIST;
-    private iCardsList.ToolbarState initialToolbarState = iCardsList.ToolbarState.INITIAL;
+    private final iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.LIST;
+    private final iCardsList.ToolbarState initialToolbarState = iCardsList.ToolbarState.INITIAL;
+
+    private int lastActivityResult_RequestCode = -1;
+    private int lastActivityResult_ResultCode = -1;
+    private Intent lastActivityResult_Data = null;
 
 
     // Activity
@@ -93,6 +95,11 @@ public class CardsList_View
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        lastActivityResult_RequestCode = requestCode;
+        lastActivityResult_ResultCode = resultCode;
+        lastActivityResult_Data = data;
+
         switch (requestCode) {
             case Constants.CODE_SHOW_CARD:
                 processCardShowResult(resultCode, data);
@@ -117,6 +124,8 @@ public class CardsList_View
 
         presenter.linkView(this);
         dataAdapter.bindBottomReachedListener(this);
+
+        presenter.onStart(lastActivityResult_RequestCode, lastActivityResult_ResultCode, lastActivityResult_Data);
 
         if (viewIsFresh)
         {

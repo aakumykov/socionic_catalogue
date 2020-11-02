@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
@@ -25,6 +26,8 @@ import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
+
+import static android.app.Activity.RESULT_OK;
 
 public class CardsList_Presenter implements iCardsList.iPresenter {
 
@@ -291,6 +294,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             dataItem.setPayload(card);
 
         dataAdapter.addItem(dataItem);
+        pageView.setViewState(iCardsList.ViewState.SUCCESS, -1, null);
     }
 
     @Override
@@ -320,8 +324,26 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         this.filterText = text;
     }
 
+    @Override
+    public void onStart(int requestCode, int resultCode, @Nullable Intent data) {
+        processActivityResult(requestCode, resultCode, data);
+    }
+
 
     // Внутренние методы
+    private void processActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constants.CODE_CREATE_CARD) {
+            processCardCreationResult(resultCode, data);
+        }
+    }
+
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode)
+            return;
+
+        onNewCardCreated(data);
+    }
+
     private void loadList() {
         dataAdapter.showThrobberItem();
         loadListFromBeginning();

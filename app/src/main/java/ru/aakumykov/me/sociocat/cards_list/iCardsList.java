@@ -193,6 +193,8 @@ public interface iCardsList {
         boolean isLoggedIn();
 
         void storeFilterText(String text);
+
+        void onStart(int requestCode, int resultCode, @Nullable Intent data);
     }
 
 
