@@ -37,10 +37,10 @@ import static android.app.Activity.RESULT_OK;
 public class CardShow_Presenter implements iCardShow.iPresenter
 {
     private final static String TAG = "CardShow_Presenter";
-    private AuthSingleton authSingleton = AuthSingleton.getInstance();
-    private UsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private CardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private CommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
+    private final AuthSingleton authSingleton = AuthSingleton.getInstance();
+    private final UsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private final CardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private final CommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCardShow.iPageView pageView = null;
     private iCardShow.iDataAdapter dataAdapter = null;
 
@@ -332,8 +332,6 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         Card card = data.getParcelableExtra(Constants.CARD);
         String cardKey = data.getStringExtra(Constants.CARD_KEY);
 
-        pageView.showProgressMessage(R.string.CARD_SHOW_waiting_for_data);
-
         if (null != card && null == cardKey) {
             showCard(card);
         }
@@ -377,6 +375,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     private void loadAndShowCard(@NonNull String cardKey) {
+
+        pageView.showProgressMessage(R.string.CARD_SHOW_waiting_for_data);
 
         loadCard(cardKey, new iLoadCardCallbacks() {
             @Override
