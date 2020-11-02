@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.login.iLogin;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -51,7 +50,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     public void onFirstOpen(@Nullable Intent intent) {
 
         if (null == intent) {
-            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, "Intent is null");
+            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_data_error, "Intent is null");
             return;
         }
 
@@ -60,7 +59,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
                 AuthSingleton.currentUserId();
 
         if (null == userId) {
-            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, "There is no userId in Intent");
+            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_data_error, "There is no userId in Intent");
             return;
         }
 
@@ -144,7 +143,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
             @Override
             public void onUserReadFail(String errorMsg) {
-                view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, errorMsg);
+                view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_data_error, errorMsg);
             }
         });
     }

@@ -147,7 +147,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     @Override
     public void displayUser(@Nullable User user, boolean isPrivateMode) {
         if (null == user) {
-            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is null");
+            showErrorMsg(R.string.USER_SHOW_data_error, "User is null");
             return;
         }
 
@@ -266,14 +266,14 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     private void processUserEditResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_FIRST_USER:
-                showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Unknown result code "+resultCode);
+                showErrorMsg(R.string.USER_SHOW_data_error, "Unknown result code "+resultCode);
                 return;
             case RESULT_CANCELED:
                 return;
         }
 
         if (null == data) {
-            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent data is null");
+            showErrorMsg(R.string.USER_SHOW_data_error, "Intent data is null");
             return;
         }
 
