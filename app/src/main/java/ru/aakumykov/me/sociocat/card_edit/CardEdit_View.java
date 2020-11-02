@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -41,19 +42,19 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 
 //@RuntimePermissions
 public class CardEdit_View extends BaseView implements
@@ -100,7 +101,7 @@ public class CardEdit_View extends BaseView implements
     private InsertableYoutubePlayer insertableYoutubePlayer;
 
     private iCardEdit.Presenter presenter;
-    private List<String> tagsList = new ArrayList<>();
+    private final List<String> tagsList = new ArrayList<>();
     // TODO: место этих флагов - в презентере!
     private boolean isImageSelectionMode = false;
     private boolean imageIsSetted = false;
@@ -462,12 +463,12 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void showTitleError(int msgId) {
-        titleInput.setError(getResources().getString(msgId));
+        showErrorAndFocus(msgId, titleInput);
     }
 
     @Override
     public void showQuoteError(int msgId) {
-        quoteInput.setError(getResources().getString(msgId));
+        showErrorAndFocus(msgId, quoteInput);
     }
 
     @Override
@@ -492,7 +493,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void showDescriptionError(int msgId) {
-        descriptionInput.setError(getResources().getString(msgId));
+        showErrorAndFocus(msgId, descriptionInput);
     }
 
     @Override
@@ -1071,5 +1072,19 @@ public class CardEdit_View extends BaseView implements
     private void setTimecodeToVideo() {
         float timecode = getTimecode();
         insertableYoutubePlayer.seekTo(timecode);
+    }
+
+    private void showErrorAndFocus(int msgId, EditText editText) {
+        editText.setError(getResources().getString(msgId));
+
+        Rect offsetViewBounds = new Rect();
+        editText.getDrawingRect(offsetViewBounds);
+        scrollView.offsetDescendantRectToMyCoords(editText, offsetViewBounds);
+
+        int relativeTop = offsetViewBounds.top;
+//        int relativeLeft = offsetViewBounds.left;
+
+        scrollView.smoothScrollTo(0, relativeTop);
+        editText.requestFocus();
     }
 }

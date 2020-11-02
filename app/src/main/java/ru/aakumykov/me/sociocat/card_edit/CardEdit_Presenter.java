@@ -42,10 +42,10 @@ public class CardEdit_Presenter implements
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
 
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
+    private final iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private final iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private final iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private final iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
     private Card oldCard;
@@ -473,7 +473,7 @@ public class CardEdit_Presenter implements
         String title = view.getCardTitle().trim();
         if (TextUtils.isEmpty(title)) {
             view.showTitleError(R.string.cannot_be_empty);
-            valid = false;
+            return false;
         } else {
             if (title.length() < AppConfig.TITLE_MIN_LENGTH) {
                 view.showTitleError(R.string.CARD_EDIT_title_too_short);
@@ -491,7 +491,7 @@ public class CardEdit_Presenter implements
             String quote = view.getQuote().trim();
             if (TextUtils.isEmpty(quote)) {
                 view.showQuoteError(R.string.cannot_be_empty);
-                valid = false;
+                return false;
             } else {
                 if (quote.length() < AppConfig.QUOTE_MIN_LENGTH) {
                     view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
@@ -509,7 +509,7 @@ public class CardEdit_Presenter implements
         String description = view.getDescription().trim();
         if (TextUtils.isEmpty(description)) {
             view.showDescriptionError(R.string.cannot_be_empty);
-            valid = false;
+            return false;
         } else {
             if (description.length() < AppConfig.DESCRIPTION_MIN_LENGTH) {
                 view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
