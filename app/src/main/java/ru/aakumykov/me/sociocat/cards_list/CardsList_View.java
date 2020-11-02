@@ -95,27 +95,8 @@ public class CardsList_View
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        lastActivityResult_RequestCode = requestCode;
-        lastActivityResult_ResultCode = resultCode;
-        lastActivityResult_Data = data;
-
-        switch (requestCode) {
-            case Constants.CODE_SHOW_CARD:
-                processCardShowResult(resultCode, data);
-                break;
-
-//            case Constants.CODE_CREATE_CARD:
-//                processCardCreationResult(resultCode, data);
-//                break;
-
-            case Constants.CODE_EDIT_CARD:
-                processCardEditionResult(resultCode, data);
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
+        presenter.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -125,7 +106,7 @@ public class CardsList_View
         presenter.linkView(this);
         dataAdapter.bindBottomReachedListener(this);
 
-        presenter.onStart(lastActivityResult_RequestCode, lastActivityResult_ResultCode, lastActivityResult_Data);
+        presenter.onStart();
 
         if (viewIsFresh)
         {
@@ -304,13 +285,6 @@ public class CardsList_View
         intent.setAction(Constants.ACTION_SHOW_CARD_COMMENTS);
         intent.putExtra(Constants.CARD, card);
         startActivity(intent);
-    }
-
-    @Override
-    public void forgetActivityResult() {
-        lastActivityResult_Data = null;
-        lastActivityResult_RequestCode = -1;
-        lastActivityResult_ResultCode = -1;
     }
 
     @Override
@@ -627,54 +601,6 @@ public class CardsList_View
         if (actionMode == null)
             actionMode = startSupportActionMode(actionModeCallback);
     }
-
-    private void processCardShowResult(int resultCode, @Nullable Intent data) {
-
-        //showToast(R.string.not_implemented_yet);
-
-        /*if (RESULT_OK == resultCode) {
-            if (null != data) {
-
-                String action = data.getAction();
-                if (null == action) action = "";
-
-                Card card = data.getParcelableExtra(Constants.CARD);
-
-                switch (action) {
-                    case Constants.ACTION_DELETE:
-                        dataAdapter.removeItem();
-                        positionInWork = -1;
-                        break;
-
-                case Constants.ACTION_EDIT:
-                    dataAdapter.updateItem(positionInWork, card);
-                    positionInWork = -1;
-                    break;
-
-                    default:
-                        dataAdapter.updateItem(positionInWork, card);
-                        positionInWork = -1;
-                        break;
-                }
-
-            }
-        }*/
-    }
-
-    /*private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode)
-            return;
-
-        presenter.onNewCardCreated(data);
-    }*/
-
-    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode)
-            return;
-
-        presenter.onCardEdited(data);
-    }
-
 
     private void setInitialToolbarState(Menu menu) {
         getMenuInflater().inflate(R.menu.cards_list_initial, menu);

@@ -85,8 +85,6 @@ public interface iCardsList {
         void goUserProfile(String userId);
 
         void go2cardComments(Card card);
-
-        void forgetActivityResult();
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
@@ -188,14 +186,13 @@ public interface iCardsList {
         void onNewCardMenuClicked();
         void onNewCardTypeSelected(CardType cardType);
 
-        void onNewCardCreated(@Nullable Intent data);
-        void onCardEdited(@Nullable Intent data);
-
         boolean isLoggedIn();
 
         void storeFilterText(String text);
 
-        void onStart(int requestCode, int resultCode, @Nullable Intent data);
+        void onStart();
+
+        void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
     }
 
 

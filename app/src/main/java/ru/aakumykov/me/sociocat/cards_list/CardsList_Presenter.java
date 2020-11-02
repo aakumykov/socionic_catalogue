@@ -49,6 +49,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private DataItem<Card> currentlyEditedItem;
 
+    private int activityRequestCode;
+    private int activityResultCode;
+    private Intent activityResultData;
+
 
     @Override
     public void setDataAdapter(iCardsList.iDataAdapter dataAdapter) {
@@ -275,7 +279,63 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onNewCardCreated(@Nullable Intent intent) {
+    public boolean isLoggedIn() {
+        return AuthSingleton.isLoggedIn();
+    }
+
+    @Override
+    public void storeFilterText(String text) {
+        this.filterText = text;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        this.activityRequestCode = requestCode;
+        this.activityResultCode = resultCode;
+        this.activityResultData = data;
+    }
+
+    @Override
+    public void onStart() {
+        processActivityResult();
+        forgetActivityResult();
+    }
+
+
+    // Внутренние методы
+    private void processActivityResult() {
+        switch (activityRequestCode) {
+            case Constants.CODE_CREATE_CARD:
+                processCardCreationResult(activityResultCode, activityResultData);
+                break;
+
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(activityResultCode, activityResultData);
+                break;
+
+            case Constants.CODE_EDIT_CARD:
+                processCardEditionResult(activityResultCode, activityResultData);
+                break;
+
+            default:
+                Log.e(TAG, "Unknown request code: "+activityRequestCode);
+        }
+    }
+
+    private void forgetActivityResult() {
+        this.activityRequestCode = -1;
+        this.activityResultCode = -1;
+        this.activityResultData = null;
+    }
+
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode)
+            return;
+
+        onNewCardCreated(data);
+    }
+
+    private void onNewCardCreated(@Nullable Intent intent) {
         if (null == intent) {
             setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Intent is null");
             return;
@@ -289,9 +349,9 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         }
 
         DataItem<Card> dataItem = new DataItem<>();
-            dataItem.setName(card.getTitle());
-            dataItem.setCount(card.getTitle().length());
-            dataItem.setPayload(card);
+        dataItem.setName(card.getTitle());
+        dataItem.setCount(card.getTitle().length());
+        dataItem.setPayload(card);
 
         dataAdapter.addItem(dataItem);
 
@@ -300,8 +360,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         pageView.scrollToPosition(0);
     }
 
-    @Override
-    public void onCardEdited(@Nullable Intent data) {
+    private void processCardShowResult(int activityResultCode, @Nullable Intent activityResultData) {
+
+    }
+
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         if (null == data) {
             setErrorViewState(R.string.CARDS_GRID_error_displaying_card, "Intent is null");
             return;
@@ -315,37 +378,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         currentlyEditedItem.setPayload(card);
         dataAdapter.updateItem(currentlyEditedItem);
-    }
-
-    @Override
-    public boolean isLoggedIn() {
-        return AuthSingleton.isLoggedIn();
-    }
-
-    @Override
-    public void storeFilterText(String text) {
-        this.filterText = text;
-    }
-
-    @Override
-    public void onStart(int requestCode, int resultCode, @Nullable Intent data) {
-        processActivityResult(requestCode, resultCode, data);
-        pageView.forgetActivityResult();
-    }
-
-
-    // Внутренние методы
-    private void processActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Constants.CODE_CREATE_CARD) {
-            processCardCreationResult(resultCode, data);
-        }
-    }
-
-    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode)
-            return;
-
-        onNewCardCreated(data);
     }
 
     private void loadList() {
@@ -507,4 +539,5 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             }
         });
     }
+
 }
