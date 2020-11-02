@@ -332,6 +332,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         Card card = data.getParcelableExtra(Constants.CARD);
         String cardKey = data.getStringExtra(Constants.CARD_KEY);
 
+        pageView.showProgressMessage(R.string.CARD_SHOW_waiting_for_data);
+
         if (null != card && null == cardKey) {
             showCard(card);
         }

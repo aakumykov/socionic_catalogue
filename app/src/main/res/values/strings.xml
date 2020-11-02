@@ -674,6 +674,7 @@
     <string name="MENU_change_view_mode">Режим просмотра</string>
     <string name="MENU_sort">Сортировать</string>
     <string name="CARDS_GRID_search_widget_hint">Искать карточку</string>
+    <string name="CARD_SHOW_waiting_for_data">Ожидание данных</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->
