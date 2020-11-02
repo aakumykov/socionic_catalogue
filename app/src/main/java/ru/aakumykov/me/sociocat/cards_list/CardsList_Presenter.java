@@ -294,6 +294,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             dataItem.setPayload(card);
 
         dataAdapter.addItem(dataItem);
+
         pageView.setViewState(iCardsList.ViewState.SUCCESS, -1, null);
     }
 

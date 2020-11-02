@@ -105,9 +105,9 @@ public class CardsList_View
                 processCardShowResult(resultCode, data);
                 break;
 
-            case Constants.CODE_CREATE_CARD:
-                processCardCreationResult(resultCode, data);
-                break;
+//            case Constants.CODE_CREATE_CARD:
+//                processCardCreationResult(resultCode, data);
+//                break;
 
             case Constants.CODE_EDIT_CARD:
                 processCardEditionResult(resultCode, data);
@@ -654,12 +654,12 @@ public class CardsList_View
         }*/
     }
 
-    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+    /*private void processCardCreationResult(int resultCode, @Nullable Intent data) {
         if (RESULT_OK != resultCode)
             return;
 
         presenter.onNewCardCreated(data);
-    }
+    }*/
 
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         if (RESULT_OK != resultCode)
