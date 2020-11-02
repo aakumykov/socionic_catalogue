@@ -285,7 +285,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        DataItem dataItem = new DataItem<>();
+        DataItem<Card> dataItem = new DataItem<>();
             dataItem.setName(card.getTitle());
             dataItem.setCount(card.getTitle().length());
             dataItem.setPayload(card);
