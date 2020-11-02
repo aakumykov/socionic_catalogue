@@ -296,6 +296,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         dataAdapter.addItem(dataItem);
 
         pageView.setViewState(iCardsList.ViewState.SUCCESS, -1, null);
+
+        pageView.scrollToPosition(0);
     }
 
     @Override
