@@ -41,10 +41,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.ViewMode currentViewMode;
     private iCardsList.ToolbarState currentToolbarState;
 
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private final iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private final iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    private DataItem currentlyEditedItem;
+    private DataItem<Card> currentlyEditedItem;
 
 
     @Override
