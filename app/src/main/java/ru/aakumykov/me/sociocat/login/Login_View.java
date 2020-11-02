@@ -321,6 +321,7 @@ public class Login_View extends BaseView implements
                 presenter.onGoogleLoginResult(data);
                 break;
             case RESULT_CANCELED:
+                presenter.onLoginWithGoogleCancelled();
                 break;
             default:
                 Log.e(TAG, "Unknown result code: "+resultCode);

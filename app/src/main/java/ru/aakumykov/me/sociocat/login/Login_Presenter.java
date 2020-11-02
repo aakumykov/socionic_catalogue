@@ -119,6 +119,12 @@ public class Login_Presenter implements
     }
 
     @Override
+    public void onLoginWithGoogleClicked() {
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_requesting_google_sign_in);
+        view.startLoginWithGoogle();
+    }
+
+    @Override
     public void onGoogleLoginResult(@Nullable Intent data) {
 
         GoogleAuthHelper.processGoogleLoginResult(data, new GoogleAuthHelper.iGoogleLoginCallbacks() {
@@ -135,8 +141,8 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void onLoginWithGoogleClicked() {
-        view.startLoginWithGoogle();
+    public void onLoginWithGoogleCancelled() {
+        view.setState(iLogin.ViewState.INITIAL, -1);
     }
 
     @Override

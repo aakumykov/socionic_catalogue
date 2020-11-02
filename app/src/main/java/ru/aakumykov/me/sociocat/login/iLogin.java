@@ -45,7 +45,8 @@ public interface iLogin {
 
         void onFormIsValid();
 
-        void onGoogleLoginResult(@Nullable Intent data);
         void onLoginWithGoogleClicked();
+        void onGoogleLoginResult(@Nullable Intent data);
+        void onLoginWithGoogleCancelled();
     }
 }
