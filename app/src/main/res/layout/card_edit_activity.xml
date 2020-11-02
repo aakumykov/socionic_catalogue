@@ -35,14 +35,16 @@
                 android:id="@+id/quoteInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="serif"
                 android:hint="@string/quote"
                 android:inputType="textCapSentences|textMultiLine"
                 android:selectAllOnFocus="false"
                 android:singleLine="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="italic"
-                android:fontFamily="serif"
                 android:visibility="gone" />
 
             <EditText
@@ -231,6 +233,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="@string/description"
                 android:inputType="textCapSentences|textMultiLine"
                 android:textSize="18sp" />
