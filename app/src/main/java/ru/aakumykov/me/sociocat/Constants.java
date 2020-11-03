@@ -113,9 +113,6 @@ public final class Constants
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
 
-    public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS = "new_cards";
-    public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS = "new_comments";
-
 //    public final static String NOTIFICATIONS_CHANNEL_BACKUP_SERVICE = "new_comments";
 
     public final static String PREFERENCE_KEY_is_first_run = "IS_FIRST_RUN";

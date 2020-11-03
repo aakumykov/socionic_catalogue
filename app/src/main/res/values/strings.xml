@@ -676,6 +676,10 @@
     <string name="CARDS_GRID_search_widget_hint">Искать карточку</string>
     <string name="CARD_SHOW_waiting_for_data">Ожидание данных</string>
     <string name="LOGIN_requesting_google_sign_in">Запрашиваем вход через Google</string>
+    <string name="PREFERENCES_subscription_on_new_comments_success">Подписка на комментарии оформлена</string>
+    <string name="PREFERENCES_subscription_on_new_comments_failed">Ошибка подписки на комментарии</string>
+    <string name="PREFERENCES_subscription_on_new_cards_success">Подписка на карточки оформлена</string>
+    <string name="PREFERENCES_subscription_on_new_cards_failed">Ошибка подписки на карточки</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

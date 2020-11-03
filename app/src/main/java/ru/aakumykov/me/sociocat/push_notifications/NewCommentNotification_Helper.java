@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
@@ -40,7 +41,7 @@ public class NewCommentNotification_Helper {
 
         PendingIntent pendingIntent = preparePendingIntent(context, newCommentEvent);
 
-        return new NotificationCompat.Builder(context, Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS)
+        return new NotificationCompat.Builder(context, NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS)
                 .setSmallIcon(R.drawable.ic_notification_new_comment)
                 .setContentTitle(title)
                 .setContentText(shortMessage)

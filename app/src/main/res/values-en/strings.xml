@@ -671,6 +671,10 @@
     <string name="CARDS_GRID_search_widget_hint">Find card</string>
     <string name="CARD_SHOW_waiting_for_data">Waiting for data</string>
     <string name="LOGIN_requesting_google_sign_in">Requesting Google sign in</string>
+    <string name="PREFERENCES_subscription_on_new_comments_success">You are subscribed to comments</string>
+    <string name="PREFERENCES_subscription_on_new_comments_failed">Comments subscription failed</string>
+    <string name="PREFERENCES_subscription_on_new_cards_success">You are subscribed to cards</string>
+    <string name="PREFERENCES_subscription_on_new_cards_failed">Cards subscription failed</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

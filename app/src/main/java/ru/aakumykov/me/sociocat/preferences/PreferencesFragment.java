@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -87,13 +88,18 @@ public class PreferencesFragment
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
                     R.string.NOTIFICATIONS_new_cards_channel_title,
                     R.string.NOTIFICATIONS_new_cards_channel_description,
                     new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
-                            subscribe2topic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
+                            subscribe2topic(
+                                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                                    preferencesKey,
+                                    R.string.PREFERENCES_subscription_on_new_cards_success,
+                                    R.string.PREFERENCES_subscription_on_new_cards_failed
+                            );
                         }
 
                         @Override
@@ -104,7 +110,7 @@ public class PreferencesFragment
             );
         }
         else {
-            unsubscribe4romTopic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
         }
     }
 
@@ -114,13 +120,18 @@ public class PreferencesFragment
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
+                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
                     R.string.NOTIFICATIONS_new_comments_channel_title,
                     R.string.NOTIFICATIONS_new_comments_channel_description,
                     new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
-                            subscribe2topic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS, preferencesKey);
+                            subscribe2topic(
+                                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
+                                    preferencesKey,
+                                    R.string.PREFERENCES_subscription_on_new_comments_success,
+                                    R.string.PREFERENCES_subscription_on_new_comments_failed
+                            );
                         }
 
                         @Override
@@ -131,21 +142,22 @@ public class PreferencesFragment
             );
         }
         else {
-            unsubscribe4romTopic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
         }
     }
 
 
-    private void subscribe2topic(String topicName, String preferencesKey) {
+    private void subscribe2topic(String topicName, String preferencesKey, int successMessageId, int errorMessageId) {
         PushSubscription_Helper.subscribe2topic(topicName, new PushSubscription_Helper.SubscriptionCallbacks() {
             @Override
             public void onSubscribeSuccess() {
-                showToast(R.string.PREFERENCE_you_are_subscribed);
+                showToast(successMessageId);
             }
 
             @Override
             public void onSubscribeError(String errorMsg) {
                 revertPreferencesKey(preferencesKey, false);
+                showToast(errorMessageId);
             }
         });
     }
