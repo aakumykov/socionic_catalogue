@@ -654,8 +654,6 @@
     <string name="PREFERENCE_notify_on_comments_title">Комментарии</string>
     <string name="PREFERENCE_notify_on_comments_description">Уведомлять о комментариях</string>
     <string name="PREFERENCES_error_changing_preference">Ошибка изменения настройки</string>
-    <string name="PREFERENCE_you_are_unsubscribed">Вы отписаны</string>
-    <string name="PREFERENCE_you_are_subscribed">Подписка оформлена</string>
 
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">Новая карточка от %1$s</string>
@@ -676,10 +674,17 @@
     <string name="CARDS_GRID_search_widget_hint">Искать карточку</string>
     <string name="CARD_SHOW_waiting_for_data">Ожидание данных</string>
     <string name="LOGIN_requesting_google_sign_in">Запрашиваем вход через Google</string>
-    <string name="PREFERENCES_subscription_on_new_comments_success">Подписка на комментарии оформлена</string>
+
+    <string name="PREFERENCES_subscription_on_new_comments_success">Вы подписаны на комментарии</string>
     <string name="PREFERENCES_subscription_on_new_comments_failed">Ошибка подписки на комментарии</string>
-    <string name="PREFERENCES_subscription_on_new_cards_success">Подписка на карточки оформлена</string>
+    <string name="PREFERENCES_subscription_on_new_cards_success">Вы подписаны на карточки</string>
     <string name="PREFERENCES_subscription_on_new_cards_failed">Ошибка подписки на карточки</string>
+
+    <string name="PREFERENCES_unsubscribe_from_new_cards_success">Подписка на карточки отменена</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отмены подписки на карточки</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_success">Подписка на комментарии отменена</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отмены подписки на комментарии</string>
+
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

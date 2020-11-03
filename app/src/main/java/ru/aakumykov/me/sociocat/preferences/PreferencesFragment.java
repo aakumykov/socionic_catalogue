@@ -110,7 +110,12 @@ public class PreferencesFragment
             );
         }
         else {
-            unsubscribe4romTopic(NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(
+                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    preferencesKey,
+                    R.string.PREFERENCES_unsubscribe_from_new_cards_success,
+                    R.string.PREFERENCES_unsubscribe_from_new_cards_failed
+            );
         }
     }
 
@@ -142,7 +147,12 @@ public class PreferencesFragment
             );
         }
         else {
-            unsubscribe4romTopic(NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(
+                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    preferencesKey,
+                    R.string.PREFERENCES_unsubscribe_from_new_comments_success,
+                    R.string.PREFERENCES_unsubscribe_from_new_comments_failed
+            );
         }
     }
 
@@ -162,16 +172,17 @@ public class PreferencesFragment
         });
     }
 
-    private void unsubscribe4romTopic(String topicName, String preferencesKey) {
+    private void unsubscribe4romTopic(String topicName, String preferencesKey, int successMsgId, int errorMsgId) {
         PushSubscription_Helper.unsubscribeFromTopic(topicName, new PushSubscription_Helper.UnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
-                showToast(R.string.PREFERENCE_you_are_unsubscribed);
+                showToast(successMsgId);
             }
 
             @Override
             public void onUnsubscribeError(String errorMsg) {
                 revertPreferencesKey(preferencesKey, true);
+                showToast(errorMsgId);
             }
         });
     }

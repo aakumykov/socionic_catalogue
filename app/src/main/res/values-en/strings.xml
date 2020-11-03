@@ -649,8 +649,6 @@
     <string name="PREFERENCE_notify_on_comments_title">Comments</string>
     <string name="PREFERENCE_notify_on_comments_description">Notify about comments</string>
     <string name="PREFERENCES_error_changing_preference">Error changing preference</string>
-    <string name="PREFERENCE_you_are_unsubscribed">Unsubscribed</string>
-    <string name="PREFERENCE_you_are_subscribed">Subscribed</string>
 
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
@@ -675,6 +673,10 @@
     <string name="PREFERENCES_subscription_on_new_comments_failed">Comments subscription failed</string>
     <string name="PREFERENCES_subscription_on_new_cards_success">You are subscribed to cards</string>
     <string name="PREFERENCES_subscription_on_new_cards_failed">Cards subscription failed</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_success">You are unsubscribed from cards</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Failed to unsubscribe from cards</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_success">You are unsubscribed from comments</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Failed to unsubscribe from comments</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->
