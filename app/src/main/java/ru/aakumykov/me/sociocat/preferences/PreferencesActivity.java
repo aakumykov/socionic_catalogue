@@ -70,13 +70,12 @@ public class PreferencesActivity extends BaseView {
     private void prepareDefaultPreferences() {
 
         // Подготавливаю необходимые компоненты
-//        Context appContext = getApplicationContext();
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Проверяю, первый ли это запуск программы?
         boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_is_first_run, true);
 
-        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
+        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию
         if (isFirstRun) {
             PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
             //PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
@@ -88,4 +87,12 @@ public class PreferencesActivity extends BaseView {
         }
     }
 }
+
+
+
+
+
+
+
+
 

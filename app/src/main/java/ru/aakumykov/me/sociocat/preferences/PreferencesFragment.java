@@ -16,11 +16,13 @@ import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
-public class PreferencesFragment extends PreferenceFragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener
+public class PreferencesFragment
+        extends PreferenceFragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "PreferencesFragment";
     private SharedPreferences sharedPreferences;
+
 
     // PreferencesFragment
     @Override
