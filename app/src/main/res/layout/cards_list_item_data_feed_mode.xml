@@ -61,12 +61,11 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic[9]"
             tools:visibility="visible" />
 
-        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-            android:id="@+id/youTubePlayerView"
+        <FrameLayout
+            android:id="@+id/audioVideoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:autoPlay="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView"
@@ -81,7 +80,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/commentsInfoContainer"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youTubePlayerView"
+            app:layout_constraintTop_toBottomOf="@id/audioVideoContainer"
             tools:visibility="visible">
 
             <TextView
@@ -114,7 +113,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youTubePlayerView"
+            app:layout_constraintTop_toBottomOf="@id/audioVideoContainer"
             tools:layout_editor_absoluteX="43dp"
             tools:visibility="visible">
 
@@ -143,7 +142,7 @@
             android:layout_marginEnd="8dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youTubePlayerView"
+            app:layout_constraintTop_toBottomOf="@id/audioVideoContainer"
             tools:visibility="visible">
 
             <ImageView

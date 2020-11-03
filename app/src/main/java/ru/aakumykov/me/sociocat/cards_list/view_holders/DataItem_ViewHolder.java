@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,7 +52,7 @@ public class DataItem_ViewHolder
     @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
-    @Nullable @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
+    @Nullable @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
     @Nullable @BindView(R.id.authorView) TextView authorView;
     @Nullable @BindView(R.id.dateView) TextView dateView;
     @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
@@ -247,14 +248,14 @@ public class DataItem_ViewHolder
     private void hideContentParts() {
         MyUtils.hide(quoteView);
         MyUtils.hide(imageView);
-        MyUtils.hide(youTubePlayerView);
+        MyUtils.hide(audioVideoContainer);
     }
 
     private void showVideo() {
 //        MyUtils.show(videoThrobber);
 //        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
 
-        MyUtils.show(youTubePlayerView);
+        /*MyUtils.show(youTubePlayerView);
 
         if (null != youTubePlayerView) {
             youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -264,7 +265,27 @@ public class DataItem_ViewHolder
                     youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
                 }
             });
-        }
+        }*/
+
+        if (null == audioVideoContainer)
+            return;
+
+        YouTubePlayerView youTubePlayerView = new YouTubePlayerView(audioVideoContainer.getContext());
+
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        youTubePlayerView.setLayoutParams(layoutParams);
+
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                super.onReady(youTubePlayer);
+                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+            }
+        });
+
+        audioVideoContainer.addView(youTubePlayerView);
+        MyUtils.show(audioVideoContainer);
     }
 
     private void initializeInListMode() {
