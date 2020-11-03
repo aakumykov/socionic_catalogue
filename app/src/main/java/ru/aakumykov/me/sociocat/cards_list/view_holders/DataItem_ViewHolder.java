@@ -211,6 +211,11 @@ public class DataItem_ViewHolder
     private void hideContentParts() {
         MyUtils.hide(quoteView);
         MyUtils.hide(imageView);
+
+        // Нужно, чтоббы высвободить YouTubePlayerView
+        if (null != audioVideoContainer)
+            audioVideoContainer.removeAllViews();
+
         MyUtils.hide(audioVideoContainer);
     }
 
