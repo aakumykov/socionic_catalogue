@@ -74,7 +74,7 @@ dependencies {
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
     // Insertable Youtube Playr
-    implementation 'com.github.aakumykov:insertable-youtube-player:0.15'
+    implementation 'com.github.aakumykov:insertable-youtube-player:0.16'
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
