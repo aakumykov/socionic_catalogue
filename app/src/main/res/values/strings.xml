@@ -685,7 +685,7 @@
     <string name="PREFERENCES_unsubscribe_from_new_comments_success">Подписка на комментарии отменена</string>
     <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отмены подписки на комментарии</string>
 
-    <string name="CARD_EDIT_impossible_without_network_connection">Создание карточки невозможно без подключения к интернету</string>
+    <string name="CARD_EDIT_impossible_without_network_connection">Создание невозможно без подключения к интернету</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>

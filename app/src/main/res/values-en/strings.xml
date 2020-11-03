@@ -678,7 +678,7 @@
     <string name="PREFERENCES_unsubscribe_from_new_comments_success">You are unsubscribed from comments</string>
     <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Failed to unsubscribe from comments</string>
 
-    <string name="CARD_EDIT_impossible_without_network_connection">Impossible to create card without network connection</string>
+    <string name="CARD_EDIT_impossible_without_network_connection">Impossible to create without network connection</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->
