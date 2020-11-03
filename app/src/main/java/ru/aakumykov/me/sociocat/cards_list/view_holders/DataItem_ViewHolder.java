@@ -21,13 +21,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -188,6 +181,8 @@ public class DataItem_ViewHolder
 
         hideContentParts();
 
+        showTitle();
+
         if (currentCard.isImageCard())
             showImage();
 
@@ -199,13 +194,16 @@ public class DataItem_ViewHolder
         if (currentCard.isVideoCard())
             showVideo();
 
-        authorView.setText(currentCard.getUserName());
+        if (currentCard.isAudioCard())
+            showAudio();
 
-        commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
+        showAuthor();
 
-        displayDate();
+        showCommentsCount();
 
-        ratingView.setText(String.valueOf(currentCard.getRating()));
+        showDate();
+
+        showRating();
     }
 
     private void hideContentParts() {
@@ -217,6 +215,13 @@ public class DataItem_ViewHolder
             audioVideoContainer.removeAllViews();
 
         MyUtils.hide(audioVideoContainer);
+    }
+
+    private void showTitle() {
+        if (null != titleView) {
+            titleView.setText(currentCard.getTitle());
+            MyUtils.show(titleView);
+        }
     }
 
     private void showQuote() {
@@ -289,6 +294,31 @@ public class DataItem_ViewHolder
                 .show(currentCard.getVideoCode(), currentCard.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
     }
 
+    private void showAudio() {
+        if (null == audioVideoContainer)
+            return;
+
+        new InsertableYoutubePlayer(audioVideoContainer.getContext(), audioVideoContainer).show(
+                currentCard.getAudioCode(), currentCard.getTimecode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER
+        );
+    }
+
+    private void showAuthor() {
+        if (null != authorView)
+            authorView.setText(currentCard.getUserName());
+    }
+
+    private void showCommentsCount() {
+        if (null != commentsCountView)
+            commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
+    }
+
+    private void showRating() {
+        if (null != ratingView)
+            ratingView.setText(String.valueOf(currentCard.getRating()));
+    }
+
+
     private void initializeInListMode() {
         //displayDate();
     }
@@ -311,7 +341,7 @@ public class DataItem_ViewHolder
         }
     }
 
-    private void displayDate() {
+    private void showDate() {
         Long cTime = currentCard.getCTime();
         Long mTime = currentCard.getMTime();
 
