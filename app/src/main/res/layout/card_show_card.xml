@@ -54,7 +54,7 @@
         android:id="@+id/videoThrobber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_video_placeholder"
+        android:src="@drawable/ic_youtube_video_placeholder"
         android:adjustViewBounds="true"
         android:visibility="gone" />
 

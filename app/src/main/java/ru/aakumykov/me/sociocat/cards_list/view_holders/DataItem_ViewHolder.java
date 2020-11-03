@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
@@ -46,7 +44,6 @@ public class DataItem_ViewHolder
     @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
-    @Nullable @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
     @Nullable @BindView(R.id.authorView) TextView authorView;
     @Nullable @BindView(R.id.dateView) TextView dateView;
     @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
@@ -55,8 +52,8 @@ public class DataItem_ViewHolder
 
     private static final String TAG = DataItem_ViewHolder.class.getSimpleName();
     private DataItem dataItem;
-    private iCardsList.ViewMode currentViewMode;
-    private int neutralStateColor = -1;
+    private final iCardsList.ViewMode currentViewMode;
+    private final int neutralStateColor = -1;
     private Card currentCard;
 
 
@@ -209,12 +206,6 @@ public class DataItem_ViewHolder
     private void hideContentParts() {
         MyUtils.hide(quoteView);
         MyUtils.hide(imageView);
-
-        // Нужно, чтоббы высвободить YouTubePlayerView
-        if (null != audioVideoContainer)
-            audioVideoContainer.removeAllViews();
-
-        MyUtils.hide(audioVideoContainer);
     }
 
     private void showTitle() {
@@ -269,38 +260,52 @@ public class DataItem_ViewHolder
     }
 
     private void showVideo() {
-
-        if (null == audioVideoContainer)
+        if (null == imageView)
             return;
 
-        MyUtils.show(audioVideoContainer);
+        imageView.setImageResource(R.drawable.ic_youtube_video_placeholder);
+        MyUtils.show(imageView);
+        AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
 
-//        MyUtils.show(videoThrobber);
-//        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
+        String youtubeThumbnailURL = "https://img.youtube.com/vi/"+currentCard.getVideoCode()+"/mqdefault.jpg";
 
-        /*MyUtils.show(youTubePlayerView);
+        Glide.with(imageView.getContext())
+                .load(youtubeThumbnailURL)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        imageView.setImageResource(R.drawable.ic_youtube_video_placeholder);
+                        return false;
+                    }
 
-        if (null != youTubePlayerView) {
-            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                @Override
-                public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-                    super.onReady(youTubePlayer);
-                    youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
-                }
-            });
-        }*/
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imageView.setImageDrawable(resource);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return false;
+                    }
+                })
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
 
-        new InsertableYoutubePlayer(audioVideoContainer.getContext(), audioVideoContainer)
-                .show(currentCard.getVideoCode(), currentCard.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                    }
+                });
     }
 
     private void showAudio() {
-        if (null == audioVideoContainer)
+        /*if (null == audioVideoContainer)
             return;
 
         new InsertableYoutubePlayer(audioVideoContainer.getContext(), audioVideoContainer).show(
                 currentCard.getAudioCode(), currentCard.getTimecode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER
-        );
+        );*/
     }
 
     private void showAuthor() {
