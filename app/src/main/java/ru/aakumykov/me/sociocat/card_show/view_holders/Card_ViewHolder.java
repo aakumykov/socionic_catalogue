@@ -240,7 +240,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         switch (mediaType) {
             case AUDIO:
                 InsertableYoutubePlayer insertableYoutubePlayer =
-                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
+                    new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
 
                 insertableYoutubePlayer.show(
                         currentCard.getAudioCode(),
