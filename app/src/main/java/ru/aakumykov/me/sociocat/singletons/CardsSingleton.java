@@ -6,10 +6,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,21 +33,37 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsSingleton implements iCardsSingleton {
 
     private final static String TAG = "CardsSingleton";
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
-    private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
-    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
+    private final FirebaseFirestore firebaseFirestore;
+    private final CollectionReference cardsCollection;
+    private final CollectionReference commentsCollection;
+    private final CollectionReference tagsCollection;
+    private final CollectionReference usersCollection;
 
     // Шаблона Одиночки начало
     private static volatile CardsSingleton ourInstance;
+
     public synchronized static CardsSingleton getInstance() {
         synchronized (CardsSingleton.class) {
-            if (null == ourInstance) ourInstance = new CardsSingleton();
+            if (null == ourInstance)
+                ourInstance = new CardsSingleton();
             return ourInstance;
         }
     }
-    private CardsSingleton() { }
+
+    private CardsSingleton() {
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        /*FirebaseFirestoreSettings firebaseFirestoreSettings =
+                new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        firebaseFirestore.setFirestoreSettings(firebaseFirestoreSettings);*/
+
+        cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+        commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
+        tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
+        usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
+    }
     // Шаблона Одиночки конец
 
 
