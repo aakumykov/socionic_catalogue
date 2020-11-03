@@ -129,7 +129,7 @@ public class CardShow_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.open_in_browser, menu);
+        //menuInflater.inflate(R.menu.open_in_browser, menu);
 
         if (presenter.canEditCard())
             menuInflater.inflate(R.menu.edit, menu);
