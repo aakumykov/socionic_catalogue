@@ -87,6 +87,7 @@ public class CardEdit_Presenter implements
         if (!NetworkUtils.isNetworkAvailable(view.getAppContext())) {
             view.showToast(R.string.CARD_EDIT_impossible_without_network_connection);
             view.closePage();
+            return;
         }
 
         if (null == intent) {
