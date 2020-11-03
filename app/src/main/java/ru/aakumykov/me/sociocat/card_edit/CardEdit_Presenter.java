@@ -84,8 +84,8 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-        if (NetworkUtils.isAirplaneModeOn(view.getAppContext())) {
-            view.showToast(R.string.CARD_EDIT_impossible_in_airplen_mode);
+        if (!NetworkUtils.isNetworkAvailable(view.getAppContext())) {
+            view.showToast(R.string.CARD_EDIT_impossible_without_network_connection);
             view.closePage();
         }
 
