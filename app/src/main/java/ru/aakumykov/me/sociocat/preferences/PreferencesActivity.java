@@ -21,11 +21,8 @@ public class PreferencesActivity extends BaseView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setTitle(R.string.PREFERENCES_ACTIVITY_page_title);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setPageTitle(R.string.PREFERENCES_ACTIVITY_page_title);
+        activateUpButton();
 
         getFragmentManager()
                 .beginTransaction()
