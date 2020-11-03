@@ -62,7 +62,7 @@ public class DraftRestoreFragment extends DialogFragment {
         Bundle arguments = getArguments();
         if (null != arguments) {
 
-            TextView titleView = view.findViewById(R.id.labelView);
+            TextView titleView = view.findViewById(R.id.titleView);
             TextView quoteView = view.findViewById(R.id.quoteView);
             TextView descriptionView = view.findViewById(R.id.descriptionView);
 

@@ -23,7 +23,7 @@ public class Card_ViewHolder extends BaseViewHolder
     private final static String TAG = "Card_ViewHolder";
 
     @BindView(R.id.mainView) CardView mCardView;
-    @BindView(R.id.labelView) TextView mTitleView;
+    @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageView) ImageView mImageView;
 
     private iCardsGrid.iPresenter mPresenter;

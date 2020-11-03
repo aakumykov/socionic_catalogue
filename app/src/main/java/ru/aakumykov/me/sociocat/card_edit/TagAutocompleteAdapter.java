@@ -56,7 +56,7 @@ public class TagAutocompleteAdapter extends ArrayAdapter<String> {
     }
 
     static class ViewHolder {
-        @BindView(R.id.labelView) TextView titleView;
+        @BindView(R.id.titleView) TextView titleView;
         ViewHolder(View view){
             ButterKnife.bind(this, view);
         }

@@ -20,6 +20,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,9 +48,10 @@ public class DataItem_ViewHolder
         implements View.OnLongClickListener
 {
     @BindView(R.id.elementView) ViewGroup elementView;
-    @BindView(R.id.labelView) TextView titleView;
-    @Nullable @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.titleView) TextView titleView;
     @Nullable @BindView(R.id.quoteView) TextView quoteView;
+    @Nullable @BindView(R.id.imageView) ImageView imageView;
+    @Nullable @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
     @Nullable @BindView(R.id.authorView) TextView authorView;
     @Nullable @BindView(R.id.dateView) TextView dateView;
     @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
@@ -144,7 +152,7 @@ public class DataItem_ViewHolder
 
     // Нажатия
     @Optional
-    @OnClick({ R.id.elementView, R.id.labelView, R.id.imageView, R.id.quoteView, R.id.dateView })
+    @OnClick({ R.id.elementView, R.id.titleView, R.id.imageView, R.id.quoteView, R.id.dateView })
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
@@ -175,6 +183,9 @@ public class DataItem_ViewHolder
     }
 
     private void initializeInFeedMode() {
+
+        hideContentParts();
+
         if (currentCard.isImageCard()) {
 
             imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
@@ -212,18 +223,16 @@ public class DataItem_ViewHolder
                         }
                     });
         }
-        else
-            MyUtils.hide(imageView);
 
         if (currentCard.isTextCard()) {
-            MyUtils.hide(titleView);
-
             quoteView.setText(currentCard.getQuote());
             MyUtils.show(quoteView);
+
+            MyUtils.hide(titleView);
         }
-        else {
-            MyUtils.show(titleView);
-            MyUtils.hide(quoteView);
+
+        if (currentCard.isVideoCard()) {
+            showVideo();
         }
 
 
@@ -233,6 +242,29 @@ public class DataItem_ViewHolder
         displayDate();
 
         ratingView.setText(String.valueOf(currentCard.getRating()));
+    }
+
+    private void hideContentParts() {
+        MyUtils.hide(quoteView);
+        MyUtils.hide(imageView);
+        MyUtils.hide(youTubePlayerView);
+    }
+
+    private void showVideo() {
+//        MyUtils.show(videoThrobber);
+//        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
+
+        MyUtils.show(youTubePlayerView);
+
+        if (null != youTubePlayerView) {
+            youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                    super.onReady(youTubePlayer);
+                    youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+                }
+            });
+        }
     }
 
     private void initializeInListMode() {
