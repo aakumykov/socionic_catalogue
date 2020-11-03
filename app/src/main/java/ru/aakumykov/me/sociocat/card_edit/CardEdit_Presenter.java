@@ -32,6 +32,7 @@ import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.NetworkUtils;
 
 public class CardEdit_Presenter implements
         iCardEdit.Presenter,
@@ -83,6 +84,11 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
+        if (NetworkUtils.isAirplaneModeOn(view.getAppContext())) {
+            view.showToast(R.string.CARD_EDIT_impossible_in_airplen_mode);
+            view.closePage();
+        }
+
         if (null == intent) {
             view.showErrorMsg(R.string.data_error, "Intent is null");
             return;

@@ -684,6 +684,7 @@
     <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отмены подписки на карточки</string>
     <string name="PREFERENCES_unsubscribe_from_new_comments_success">Подписка на комментарии отменена</string>
     <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отмены подписки на комментарии</string>
+    <string name="CARD_EDIT_impossible_in_airplen_mode">Невозможно в режиме полёта</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
