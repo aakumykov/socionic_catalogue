@@ -28,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
@@ -42,10 +41,9 @@ public class DataItem_ViewHolder
         implements View.OnLongClickListener
 {
     @BindView(R.id.elementView) ViewGroup elementView;
-    @BindView(R.id.titleView) TextView titleView;
-    @Nullable @BindView(R.id.mediaContainer) ViewGroup mediaContainer;
-    @Nullable @BindView(R.id.quoteView) TextView quoteView;
+    @BindView(R.id.labelView) TextView titleView;
     @Nullable @BindView(R.id.imageView) ImageView imageView;
+    @Nullable @BindView(R.id.quoteView) TextView quoteView;
     @Nullable @BindView(R.id.authorView) TextView authorView;
     @Nullable @BindView(R.id.dateView) TextView dateView;
     @Nullable @BindView(R.id.commentsCountView) TextView commentsCountView;
@@ -78,8 +76,6 @@ public class DataItem_ViewHolder
 
         displayCardType();
 
-        hideContentFieldsExceptTitle();
-
         initializeCommonParts();
 
         switch (currentViewMode) {
@@ -94,6 +90,27 @@ public class DataItem_ViewHolder
                 break;
             default:
                 throw new RuntimeException("Unknown view mode: "+currentViewMode);
+        }
+    }
+
+    private void displayCardType() {
+        if (null != cardTypeImageView) {
+            switch (currentCard.getType()) {
+                case Card.TEXT_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
+                    break;
+                case Card.IMAGE_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
+                    break;
+                case Card.VIDEO_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
+                    break;
+                case Card.AUDIO_CARD:
+                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -126,22 +143,26 @@ public class DataItem_ViewHolder
 
 
     // Нажатия
-    @Optional @OnClick({ R.id.elementView, R.id.titleView, R.id.imageView, R.id.quoteView, R.id.dateView })
+    @Optional
+    @OnClick({ R.id.elementView, R.id.labelView, R.id.imageView, R.id.quoteView, R.id.dateView })
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
 
-    @Optional @OnClick({R.id.authorView})
+    @Optional
+    @OnClick({R.id.authorView})
     void onAuthorClicked() {
         presenter.onCardAuthorClicked(currentCard.getUserId());
     }
 
-    @Optional @OnClick(R.id.commentsInfoContainer)
+    @Optional
+    @OnClick(R.id.commentsInfoContainer)
     void onCommentsClicked() {
         presenter.onCardCommentsClicked(currentCard);
     }
 
-    @Optional @OnClick({R.id.rateUpWidget, R.id.rateDownWidget})
+    @Optional
+    @OnClick({R.id.rateUpWidget, R.id.rateDownWidget})
     void onRatingWidgetClicked() {
         presenter.onRatingWidgetClicked(currentCard);
     }
@@ -149,42 +170,11 @@ public class DataItem_ViewHolder
 
 
     // Внутренние
-    private void hideContentFieldsExceptTitle() {
-        MyUtils.hide(quoteView);
-        MyUtils.hide(imageView);
-
-        if (null != mediaContainer)
-            mediaContainer.removeAllViews();
-    }
-
     private void initializeCommonParts() {
         titleView.setText(currentCard.getTitle());
     }
 
-    private void displayCardType() {
-        if (null != cardTypeImageView) {
-            switch (currentCard.getType()) {
-                case Card.TEXT_CARD:
-                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
-                    break;
-                case Card.IMAGE_CARD:
-                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
-                    break;
-                case Card.VIDEO_CARD:
-                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
-                    break;
-                case Card.AUDIO_CARD:
-                    cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     private void initializeInFeedMode() {
-
-        // С изображением
         if (currentCard.isImageCard()) {
 
             imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
@@ -222,22 +212,20 @@ public class DataItem_ViewHolder
                         }
                     });
         }
+        else
+            MyUtils.hide(imageView);
 
-        // С текстом
         if (currentCard.isTextCard()) {
             MyUtils.hide(titleView);
 
             quoteView.setText(currentCard.getQuote());
             MyUtils.show(quoteView);
         }
-
-        if (currentCard.isVideoCard()) {
-            showVideo();
+        else {
+            MyUtils.show(titleView);
+            MyUtils.hide(quoteView);
         }
 
-        if (currentCard.isAudioCard()) {
-            showAudio();
-        }
 
         authorView.setText(currentCard.getUserName());
         commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
@@ -245,28 +233,6 @@ public class DataItem_ViewHolder
         displayDate();
 
         ratingView.setText(String.valueOf(currentCard.getRating()));
-    }
-
-    private void showVideo() {
-        MyUtils.show(mediaContainer);
-
-        new InsertableYoutubePlayer(mediaContainer.getContext(), mediaContainer).show(
-                currentCard.getVideoCode(),
-                currentCard.getTimecode(),
-                InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER,
-                R.string.YOUTUBE_PLAYER_waiting_for_video
-        );
-    }
-
-    private void showAudio() {
-        MyUtils.show(mediaContainer);
-
-        new InsertableYoutubePlayer(mediaContainer.getContext(), mediaContainer).show(
-                currentCard.getVideoCode(),
-                currentCard.getTimecode(),
-                InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER,
-                R.string.YOUTUBE_PLAYER_waiting_for_audio
-        );
     }
 
     private void initializeInListMode() {
@@ -341,6 +307,5 @@ public class DataItem_ViewHolder
                 break;
         }
     }
-
 
 }
