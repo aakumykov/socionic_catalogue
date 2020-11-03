@@ -188,48 +188,11 @@ public class DataItem_ViewHolder
 
         hideContentParts();
 
-        if (currentCard.isImageCard()) {
-
-            imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
-            MyUtils.show(imageView);
-            AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
-
-            Glide.with(imageView).load(currentCard.getImageURL())
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            imageView.setImageResource(R.drawable.ic_image_error);
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            imageView.setImageDrawable(resource);
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                            return false;
-                        }
-                    })
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                        }
-                    });
-        }
+        if (currentCard.isImageCard())
+            showImage();
 
         if (currentCard.isTextCard()) {
-            quoteView.setText(currentCard.getQuote());
-            MyUtils.show(quoteView);
-
+            showQuote();
             MyUtils.hide(titleView);
         }
 
@@ -237,6 +200,7 @@ public class DataItem_ViewHolder
             showVideo();
 
         authorView.setText(currentCard.getUserName());
+
         commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
 
         displayDate();
@@ -248,6 +212,50 @@ public class DataItem_ViewHolder
         MyUtils.hide(quoteView);
         MyUtils.hide(imageView);
         MyUtils.hide(audioVideoContainer);
+    }
+
+    private void showQuote() {
+        if (null != quoteView) {
+            quoteView.setText(currentCard.getQuote());
+            MyUtils.show(quoteView);
+        }
+    }
+
+    private void showImage() {
+        imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
+        MyUtils.show(imageView);
+        AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
+
+        Glide.with(imageView).load(currentCard.getImageURL())
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        imageView.setImageResource(R.drawable.ic_image_error);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imageView.setImageDrawable(resource);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return false;
+                    }
+                })
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                    }
+                });
     }
 
     private void showVideo() {
