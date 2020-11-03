@@ -36,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
@@ -232,10 +233,8 @@ public class DataItem_ViewHolder
             MyUtils.hide(titleView);
         }
 
-        if (currentCard.isVideoCard()) {
+        if (currentCard.isVideoCard())
             showVideo();
-        }
-
 
         authorView.setText(currentCard.getUserName());
         commentsCountView.setText( String.valueOf(currentCard.getCommentsKeys().size()) );
@@ -252,6 +251,12 @@ public class DataItem_ViewHolder
     }
 
     private void showVideo() {
+
+        if (null == audioVideoContainer)
+            return;
+
+        MyUtils.show(audioVideoContainer);
+
 //        MyUtils.show(videoThrobber);
 //        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
 
@@ -267,25 +272,8 @@ public class DataItem_ViewHolder
             });
         }*/
 
-        if (null == audioVideoContainer)
-            return;
-
-        YouTubePlayerView youTubePlayerView = new YouTubePlayerView(audioVideoContainer.getContext());
-
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        youTubePlayerView.setLayoutParams(layoutParams);
-
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-                super.onReady(youTubePlayer);
-                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
-            }
-        });
-
-        audioVideoContainer.addView(youTubePlayerView);
-        MyUtils.show(audioVideoContainer);
+        new InsertableYoutubePlayer(audioVideoContainer.getContext(), audioVideoContainer)
+                .show(currentCard.getVideoCode(), currentCard.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
     }
 
     private void initializeInListMode() {
