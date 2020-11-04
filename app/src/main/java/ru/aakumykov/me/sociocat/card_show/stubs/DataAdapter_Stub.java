@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.stubs;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
@@ -81,6 +83,11 @@ public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     @Override
     public void clearCommentsList() {
 
+    }
+
+    @Override
+    public int getCommentPositionByKey(@NonNull String commentKey) {
+        return 0;
     }
 
     @Override

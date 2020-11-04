@@ -77,6 +77,8 @@ public interface iCardShow
         void hideCommentsThrobber2(int position);
 
         void clearCommentsList();
+
+        int getCommentPositionByKey(@NonNull String commentKey);
     }
 
     interface iPresenter {

@@ -48,6 +48,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     private iList_Item currentListItem = null;
     private iCommentable repliedItem = null;
     private Comment editedComment = null;
+    private String commentKey = null;
 
 
     @Override
@@ -332,19 +333,14 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         Card card = data.getParcelableExtra(Constants.CARD);
         String cardKey = data.getStringExtra(Constants.CARD_KEY);
 
-        if (null != card && null == cardKey) {
+        this.commentKey = data.getStringExtra(Constants.COMMENT_KEY);
+
+        if (null != card)
             showCard(card);
-        }
-        else if (null != cardKey && null == card) {
+        else if (null != cardKey)
             loadAndShowCard(cardKey);
-        }
-        else if (null != card && null != cardKey) {
-            pageView.showErrorMsg(R.string.CARD_SHOW_info_both_card_and_card_id_presented, "Both Card and cardKey are provided");
-            loadAndShowCard(cardKey);
-        }
-        else {
+        else
             pageView.showErrorMsg(R.string.data_error, "There is no Card or card key in Intent");
-        }
     }
 
     @Override
@@ -429,6 +425,11 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 } else {
                     dataAdapter.hideCommentsThrobber2(insertPosition);
                     dataAdapter.addCommentsList(list, insertPosition);
+                }
+
+                if (null != commentKey) {
+                    int position = dataAdapter.getCommentPositionByKey(commentKey);
+                    pageView.scrollToComment(position);
                 }
             }
 

@@ -35,8 +35,8 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
 {
     private final static int CARD_POSITION = 0;
     private final static int FIRST_COMMENT_POSITION = 1;
-    private List<iList_Item> itemsList = new ArrayList<>();
-    private iCardShow.iPresenter presenter;
+    private final List<iList_Item> itemsList = new ArrayList<>();
+    private final iCardShow.iPresenter presenter;
 
 
     CardShow_DataAdapter(iCardShow.iPresenter presenter) {
@@ -285,6 +285,18 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
         comments2remove.addAll(itemsList.subList(FIRST_COMMENT_POSITION, listSize()));
         itemsList.removeAll(comments2remove);
         notifyItemRangeRemoved(FIRST_COMMENT_POSITION, comments2remove.size());
+    }
+
+    @Override
+    public int getCommentPositionByKey(@NonNull String commentKey) {
+        for (iList_Item listItem : itemsList) {
+            if (listItem instanceof Comment_Item) {
+                Comment comment = (Comment) listItem.getPayload();
+                if (commentKey.equals(comment.getKey()))
+                    return itemsList.indexOf(listItem);
+            }
+        }
+        return -1;
     }
 
 
