@@ -132,10 +132,10 @@ public class CardShow_View extends BaseView implements
         //menuInflater.inflate(R.menu.open_in_browser, menu);
 
         if (presenter.canEditCard())
-            menuInflater.inflate(R.menu.edit, menu);
+            menuInflater.inflate(R.menu.card_edit, menu);
 
         if (presenter.canDeleteCard())
-            menuInflater.inflate(R.menu.delete, menu);
+            menuInflater.inflate(R.menu.card_delete, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
