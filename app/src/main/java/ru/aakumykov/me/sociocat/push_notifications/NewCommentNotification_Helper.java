@@ -59,7 +59,7 @@ public class NewCommentNotification_Helper {
 
         return PendingIntent.getActivity(
                 context,
-                Constants.CODE_SHOW_COMMENT,
+                newCommentEvent.getCommentKey().hashCode(),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
