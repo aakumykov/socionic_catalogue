@@ -79,6 +79,8 @@ public interface iCardShow
         void clearCommentsList();
 
         int getCommentPositionByKey(@NonNull String commentKey);
+
+        void highlightComment(int position);
     }
 
     interface iPresenter {

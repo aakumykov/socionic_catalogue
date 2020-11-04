@@ -91,6 +91,11 @@ public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     }
 
     @Override
+    public void highlightComment(int position) {
+
+    }
+
+    @Override
     public void showCommentsThrobber2(int position) {
 
     }

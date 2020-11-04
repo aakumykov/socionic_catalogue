@@ -430,6 +430,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 if (null != commentKey) {
                     int position = dataAdapter.getCommentPositionByKey(commentKey);
                     pageView.scrollToComment(position);
+                    dataAdapter.highlightComment(position);
                 }
             }
 
@@ -488,6 +489,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
                 int position = dataAdapter.appendOneComment(comment);
                 pageView.scrollToComment(position);
+                dataAdapter.highlightComment(position);
 
                 pageView.clearCommentForm();
                 pageView.hideCommentForm();

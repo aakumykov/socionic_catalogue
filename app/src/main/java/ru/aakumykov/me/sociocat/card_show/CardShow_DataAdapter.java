@@ -37,6 +37,7 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final static int FIRST_COMMENT_POSITION = 1;
     private final List<iList_Item> itemsList = new ArrayList<>();
     private final iCardShow.iPresenter presenter;
+    private int highlightedPosition = -1;
 
 
     CardShow_DataAdapter(iCardShow.iPresenter presenter) {
@@ -100,6 +101,7 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
                 Comment_ViewHolder commentViewHolder = (Comment_ViewHolder) holder;
                 commentViewHolder.initialize(listItem);
                 commentViewHolder.colorizeRatingWidget(commentRatingAction);
+                commentViewHolder.highlight((highlightedPosition == position));
                 break;
 
             case iList_Item.LOAD_MORE:
@@ -297,6 +299,11 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
         }
         return -1;
+    }
+
+    @Override
+    public void highlightComment(int position) {
+        this.highlightedPosition = position;
     }
 
 

@@ -235,4 +235,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
     }
 
+    public void highlight(boolean isActive) {
+        commentRow.setBackgroundResource(
+                (isActive) ?
+                        R.drawable.shape_comment_hightlited_background :
+                        R.drawable.shape_comment_background
+        );
+    }
 }
