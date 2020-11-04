@@ -81,6 +81,7 @@ public interface iCardEdit {
         // Разное
         void finishEdit(Card card);
         void addTag(String tag);
+        void focusFirstField();
     }
 
     interface Presenter {

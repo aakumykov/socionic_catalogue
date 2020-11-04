@@ -565,6 +565,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void focusFirstField() {
+        titleInput.requestFocus();
+    }
+
+    @Override
     public void prepareForQuote(String title, String quote) {
         titleInput.setText(title);
         quoteInput.setText(quote);

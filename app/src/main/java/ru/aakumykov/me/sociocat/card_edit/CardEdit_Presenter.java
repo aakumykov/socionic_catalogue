@@ -102,6 +102,9 @@ public class CardEdit_Presenter implements
 
         String action = String.valueOf(intent.getAction());
 
+        // Не очень уместно делать это здесь, но помогает избежать дублирования.
+        view.focusFirstField();
+
         try {
             switch (action) {
                 case Constants.ACTION_CREATE:
