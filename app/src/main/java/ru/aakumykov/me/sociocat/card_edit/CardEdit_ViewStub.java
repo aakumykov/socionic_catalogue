@@ -187,7 +187,7 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void focusFirstField() {
+    public void focusFirstField(boolean launchKeyboard) {
 
     }
 

@@ -102,9 +102,6 @@ public class CardEdit_Presenter implements
 
         String action = String.valueOf(intent.getAction());
 
-        // Не очень уместно делать это здесь, но помогает избежать дублирования.
-        view.focusFirstField();
-
         try {
             switch (action) {
                 case Constants.ACTION_CREATE:
@@ -343,6 +340,8 @@ public class CardEdit_Presenter implements
         String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
         Intent externalDataIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 
+        view.focusFirstField(true);
+
         switch (cardType) {
             case Constants.TEXT_CARD:
                 prepareForTextCard(externalDataIntent);
@@ -414,6 +413,8 @@ public class CardEdit_Presenter implements
 
         isNewCard = false;
         currentCard = intent.getParcelableExtra(Constants.CARD);
+
+        view.focusFirstField(false);
 
         if (null == currentCard) {
             view.showErrorMsg(R.string.data_error, "Failed to get Card from Intent");

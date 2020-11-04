@@ -565,8 +565,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void focusFirstField() {
-        titleInput.requestFocus();
+    public void focusFirstField(boolean launchKeyboard) {
+        if (launchKeyboard)
+            MyUtils.showKeyboardOnFocus(this, titleInput);
+        else
+            titleInput.requestFocus();
     }
 
     @Override
