@@ -680,10 +680,10 @@
     <string name="PREFERENCES_subscription_on_new_cards_success">Вы подписаны на карточки</string>
     <string name="PREFERENCES_subscription_on_new_cards_failed">Ошибка подписки на карточки</string>
 
-    <string name="PREFERENCES_unsubscribe_from_new_cards_success">Подписка на карточки отменена</string>
-    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отмены подписки на карточки</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_success">Подписка на комментарии отменена</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отмены подписки на комментарии</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_success">Вы отписаны от карточек</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отписки от карточек</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_success">Вы отписаны от комментариев</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отписки от комментариев</string>
 
     <string name="CARD_EDIT_impossible_without_network_connection">Создание невозможно без подключения к интернету</string>
 
