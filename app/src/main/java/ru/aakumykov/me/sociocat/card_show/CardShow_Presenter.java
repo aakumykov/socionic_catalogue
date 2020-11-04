@@ -17,6 +17,7 @@ import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.utils.LogUtils;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -334,6 +335,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         String cardKey = data.getStringExtra(Constants.CARD_KEY);
 
         this.commentKey = data.getStringExtra(Constants.COMMENT_KEY);
+        LogUtils.d(TAG, "commentKey: " + commentKey);
 
         if (null != card)
             showCard(card);
