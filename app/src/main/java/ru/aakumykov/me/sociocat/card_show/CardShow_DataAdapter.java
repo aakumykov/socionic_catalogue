@@ -304,6 +304,7 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void highlightComment(int position) {
         this.highlightedPosition = position;
+        notifyItemRangeChanged(1, maxIndex());
     }
 
 
