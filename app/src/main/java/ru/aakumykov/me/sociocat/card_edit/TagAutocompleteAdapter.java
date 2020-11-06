@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,31 +21,34 @@ import ru.aakumykov.me.sociocat.R;
 public class TagAutocompleteAdapter extends ArrayAdapter<String> {
 
     private final static String TAG = "TagAutocompleteAdapter";
-    private LayoutInflater inflater;
-    private int layout;
-    private List<String> list;
-    private List<String> allTags = new ArrayList<>();
-    private List<String> suggestedTags = new ArrayList<>();
+    private final LayoutInflater inflater;
+    private final int layout;
+    private final List<String> list;
+    private final List<String> allTags = new ArrayList<>();
+    private final List<String> suggestedTags = new ArrayList<>();
 
     public TagAutocompleteAdapter(Context context, int resource, List<String> list) {
         super(context, resource, list);
-        this.list = list;
-        this.allTags.addAll(this.list);
+
         this.layout = resource;
+        this.list = list;
+
+        this.allTags.addAll(this.list);
+
         this.inflater = LayoutInflater.from(context);
     }
 
     // Разметочная машина
     @NonNull
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         ViewHolder viewHolder;
-        if(convertView==null){
+        if (null == convertView) {
             convertView = inflater.inflate(this.layout, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
-        else{
+        else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -68,7 +72,7 @@ public class TagAutocompleteAdapter extends ArrayAdapter<String> {
         return tagFilter;
     }
 
-    private Filter tagFilter = new Filter() {
+    private final Filter tagFilter = new Filter() {
 
         @Override
         protected FilterResults performFiltering(CharSequence pattern) {

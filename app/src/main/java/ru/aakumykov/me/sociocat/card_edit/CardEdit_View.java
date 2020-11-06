@@ -130,6 +130,7 @@ public class CardEdit_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
+        loadTagsAutocompleteList();
         setupTagWatcher();
     }
 
@@ -870,7 +871,7 @@ public class CardEdit_View extends BaseView implements
             @Override
             public void onTagsListLoadSuccess(List<String> list) {
                 tagsList.addAll(list);
-                setTagAutocomplete();
+                configureTagAutocomplete();
             }
 
             @Override
@@ -881,7 +882,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void startEditWork(Intent intent) {
-        loadTagsAutocompleteList();
         /*try {
             presenter.onFirstOpen(intent);
 
@@ -893,7 +893,7 @@ public class CardEdit_View extends BaseView implements
         }*/
     }
 
-    private void setTagAutocomplete() {
+    private void configureTagAutocomplete() {
         newTagInput.setThreshold(1);
 
         TagAutocompleteAdapter tagAutocompleteAdapter = new TagAutocompleteAdapter(
