@@ -64,6 +64,7 @@
             android:name=".reset_password_step1.ResetPasswordStep1_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
+
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -117,6 +118,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
