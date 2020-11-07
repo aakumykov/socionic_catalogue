@@ -6,9 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.CardType;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -34,11 +34,56 @@ public class ExternalDataReceiver extends BaseView {
         processInputIntent(getIntent());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                try {
+                    processCardCreationResult(resultCode, data);
+                } catch (Exception e) {
+                    showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_creating_card, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        String action = (null != intent) ? intent.getAction() : null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finishIfDone();
+    }
+
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+
+    // Внутренние методы
     private void processInputIntent(@Nullable Intent intent) {
         if (null == intent) {
             showLongToast(R.string.EXTERNAL_DATA_RECIEVER_no_input_data);
             return;
         }
+
+        String action = (null != intent) ? intent.getAction() : null;
 
         ContentType intentDataType = IntentUtils.detectContentType(intent);
 
@@ -69,47 +114,6 @@ public class ExternalDataReceiver extends BaseView {
         }
 
         go2createCard(cardType, intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        switch (requestCode) {
-            case Constants.CODE_CREATE_CARD:
-                try {
-                    processCardCreationResult(resultCode, data);
-                } catch (Exception e) {
-                    showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_creating_card, e.getMessage());
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        finishIfDone();
-    }
-
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
-
-
-    // Внутренние методы
-    private void finishIfDone() {
-        if (mWorkDone)
-            finish();
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
@@ -158,5 +162,10 @@ public class ExternalDataReceiver extends BaseView {
         }
 
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void finishIfDone() {
+        if (mWorkDone)
+            finish();
     }
 }
