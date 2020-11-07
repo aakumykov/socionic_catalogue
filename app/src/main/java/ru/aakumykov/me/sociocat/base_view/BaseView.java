@@ -42,7 +42,6 @@ import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.tags_lsit3.TagsList3_View;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -526,8 +525,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void goTagsList() {
-        Intent intent = new Intent(this, TagsList3_View.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, TagsList3_View.class);
+//        startActivity(intent);
+        showToast(R.string.not_implemented_yet);
     }
 
     private void checkUnfinishedEdit() {
