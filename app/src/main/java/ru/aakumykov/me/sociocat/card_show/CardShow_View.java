@@ -114,6 +114,9 @@ public class CardShow_View extends BaseView implements
 
         presenter.bindViewAndAdapter(this, dataAdapter);
 
+        Intent intent = getIntent();
+        String action = (null != intent) ? intent.getAction() : null;
+
         if (dataAdapter.notYetFilled())
             presenter.onFirstOpen(getIntent());
     }

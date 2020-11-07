@@ -66,6 +66,7 @@
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
 
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -73,6 +74,7 @@
 
                 <data android:mimeType="image/*" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -80,6 +82,7 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
