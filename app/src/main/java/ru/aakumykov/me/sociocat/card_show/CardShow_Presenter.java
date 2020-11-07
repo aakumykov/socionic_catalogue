@@ -333,6 +333,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
         Card card = data.getParcelableExtra(Constants.CARD);
         String cardKey = data.getStringExtra(Constants.CARD_KEY);
+        LogUtils.d(TAG, "cardKey: " + cardKey);
 
         this.commentKey = data.getStringExtra(Constants.COMMENT_KEY);
         LogUtils.d(TAG, "commentKey: " + commentKey);
