@@ -678,6 +678,18 @@
     <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Failed to unsubscribe from comments</string>
 
     <string name="CARD_EDIT_impossible_without_network_connection">Impossible to create without network connection</string>
+
+    <string name="list_item_loadmore_title">More</string>
+    <string name="menu_item_invert_selection">Invert selection</string>
+    <string name="menu_item_select_all">Select all</string>
+    <string name="menu_item_sorted_by_author">Author</string>
+    <string name="menu_item_sorted_by_date">Date</string>
+    <string name="menu_item_sorted_by_name">Name</string>
+    <string name="menu_item_clear_selection">Clear selection</string>
+    <string name="filter">Filter</string>
+    <string name="menu_item_sort_by">Sort by</string>
+    <string name="page_title_selected_items_count">Selected: %1$d</string>
+
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

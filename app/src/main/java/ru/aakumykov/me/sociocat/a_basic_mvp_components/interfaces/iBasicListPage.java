@@ -1,0 +1,33 @@
+package ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces;
+
+import android.content.Context;
+import android.content.Intent;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+public interface iBasicListPage {
+
+    void setPageTitle(int titleId);
+    void setPageTitle(int titleId, Object... substitutedData);
+    void setPageTitle(String title);
+
+    void setDefaultPageTitle();
+
+    void showToast(int messageId);
+    void showToast(String message);
+
+    void activateUpButton();
+
+    void setViewState(@NonNull iViewState state, @Nullable Object data);
+
+    void refreshMenu();
+
+    void restoreSearchView(String filterText);
+
+    void scroll2position(int position);
+
+    // Эти два здесь неуместны
+    Intent getInputIntent();
+    Context getAppContext();
+}

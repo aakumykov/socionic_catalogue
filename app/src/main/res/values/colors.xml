@@ -105,4 +105,6 @@
 
     <color name="highlighted_comment_border">#FFF59D</color>
     <color name="highlighted_comment_background">#FFFDE7</color>
+
+    <color name="colorErrorText">#E6453A</color>
 </resources>
