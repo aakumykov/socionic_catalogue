@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
 
 
-public class Basic_ViewStub implements iBasicListPage {
+public class BasicMVP_ViewStub implements iBasicListPage {
 
     @Override
     public void setDefaultPageTitle() {

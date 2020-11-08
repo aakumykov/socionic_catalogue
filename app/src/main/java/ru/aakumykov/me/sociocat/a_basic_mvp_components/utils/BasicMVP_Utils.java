@@ -7,7 +7,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPreparationCallback;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModel;
 
 
 public class BasicMVP_Utils {
@@ -34,7 +34,7 @@ public class BasicMVP_Utils {
             recyclerViewConfigurationListener.onRecyclerViewAssembled();
     }
 
-    public static BasicMVP_Presenter prepPresenter(Basic_ViewModel viewModel, iPresenterPreparationCallback callback) {
+    public static BasicMVP_Presenter prepPresenter(BasicMVP_ViewModel viewModel, iPresenterPreparationCallback callback) {
         if (viewModel.hasPresenter()) {
             return (BasicMVP_Presenter) viewModel.getPresenter();
         }
@@ -45,7 +45,7 @@ public class BasicMVP_Utils {
         }
     }
 
-    public static BasicMVP_DataAdapter prepDataAdapter(Basic_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
+    public static BasicMVP_DataAdapter prepDataAdapter(BasicMVP_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
         if (viewModel.hasDataAdapter()) {
             return (BasicMVP_DataAdapter) viewModel.getDataAdapter();
         }

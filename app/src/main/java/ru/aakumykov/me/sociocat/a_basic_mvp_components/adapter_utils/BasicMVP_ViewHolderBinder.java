@@ -4,22 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_LoadmoreViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_ThrobberViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_LoadmoreViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ThrobberViewHolder;
 
 
-public class Basic_ViewHolderBinder {
+public class BasicMVP_ViewHolderBinder {
 
 //    private iBasic_ItemClickListener clickListener;
 
-    public void bindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, Basic_ListItem listItem) {
+    public void bindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, BasicMVP_ListItem listItem) {
 
-        if (holder instanceof Basic_LoadmoreViewHolder) {
-            Basic_LoadmoreViewHolder loadmoreItemViewHolder = ((Basic_LoadmoreViewHolder) holder);
+        if (holder instanceof BasicMVP_LoadmoreViewHolder) {
+            BasicMVP_LoadmoreViewHolder loadmoreItemViewHolder = ((BasicMVP_LoadmoreViewHolder) holder);
             loadmoreItemViewHolder.fillWithData(listItem);
         }
-        else if (holder instanceof Basic_ThrobberViewHolder) {
+        else if (holder instanceof BasicMVP_ThrobberViewHolder) {
 
         }
         else {

@@ -14,8 +14,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSearchViewLis
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_DataViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_ViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ViewHolder;
 
 
 public abstract class BasicMVP_Presenter
@@ -100,10 +100,10 @@ public abstract class BasicMVP_Presenter
 
 
     @Override
-    public abstract void onItemLongClicked(Basic_DataViewHolder basicViewHolder);
+    public abstract void onItemLongClicked(BasicMVP_DataViewHolder basicViewHolder);
 
     @Override
-    public abstract void onLoadMoreClicked(Basic_ViewHolder basicViewHolder);
+    public abstract void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder);
 
     public iSortingMode getCurrentSortingMode() {
         return mCurrentSortingMode;
@@ -154,7 +154,7 @@ public abstract class BasicMVP_Presenter
 
     // iSelectionCommandsListener
     @Override
-    public void onSelectItemClicked(Basic_DataViewHolder basicDataViewHolder) {
+    public void onSelectItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
         mListView.toggleItemSelection(basicDataViewHolder.getAdapterPosition());
         updateSelectionModeMenu();
     }

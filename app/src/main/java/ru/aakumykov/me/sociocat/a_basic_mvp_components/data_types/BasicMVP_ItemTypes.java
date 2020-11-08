@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_components.data_types;
 
-public final class ItemTypes {
+public final class BasicMVP_ItemTypes {
     public static final int STRING_ITEM = 1;
 
     public final static int LOADMORE_ITEM = 2;

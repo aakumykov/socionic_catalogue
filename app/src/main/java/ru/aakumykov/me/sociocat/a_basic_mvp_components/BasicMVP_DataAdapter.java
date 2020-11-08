@@ -13,20 +13,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.Basic_ViewHolderBinder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.Basic_ViewHolderCreator;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.Basic_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderBinder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicFilterableLsit;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_LoadmoreItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_ThrobberItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils.Basic_ItemsFilter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_LoadmoreItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ThrobberItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils.BasicMVP_ItemsFilter;
 
 
 public abstract class BasicMVP_DataAdapter
@@ -36,14 +35,14 @@ public abstract class BasicMVP_DataAdapter
     private boolean mIsVirgin = true;
     private boolean mIsSorted = false;
 
-    private final List<Basic_ListItem> mItemsList;
+    private final List<BasicMVP_ListItem> mItemsList;
 
     private String mFilterPattern;
-    private final List<Basic_ListItem> mOriginalItemsList;
+    private final List<BasicMVP_ListItem> mOriginalItemsList;
 
-    protected Basic_ViewHolderCreator mViewHolderCreator;
-    protected Basic_ViewHolderBinder mViewHolderBinder;
-    protected Basic_ViewTypeDetector mViewTypeDetector;
+    protected BasicMVP_ViewHolderCreator mViewHolderCreator;
+    protected BasicMVP_ViewHolderBinder mViewHolderBinder;
+    protected BasicMVP_ViewTypeDetector mViewTypeDetector;
 
     protected iBasic_ItemClickListener mItemClickListener;
     private Filter mFilter;
@@ -66,9 +65,9 @@ public abstract class BasicMVP_DataAdapter
     }
 
 
-    protected abstract Basic_ViewHolderCreator prepareViewHolderCreator();
-    protected abstract Basic_ViewHolderBinder prepareViewHolderBinder();
-    protected abstract Basic_ViewTypeDetector prepareViewTypeDetector();
+    protected abstract BasicMVP_ViewHolderCreator prepareViewHolderCreator();
+    protected abstract BasicMVP_ViewHolderBinder prepareViewHolderBinder();
+    protected abstract BasicMVP_ViewTypeDetector prepareViewTypeDetector();
     protected abstract iItemsComparator getItemsComparator();
 
 
@@ -79,7 +78,7 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Basic_ListItem listItem = getItem(position);
+        BasicMVP_ListItem listItem = getItem(position);
         mViewHolderBinder.bindViewHolder(holder, position, listItem);
     }
 
@@ -104,7 +103,7 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void setList(List<Basic_ListItem> inputList) {
+    public void setList(List<BasicMVP_ListItem> inputList) {
         mIsVirgin = false;
 
         mItemsList.clear();
@@ -113,7 +112,7 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void setListAndFilter(List<Basic_ListItem> inputList) {
+    public void setListAndFilter(List<BasicMVP_ListItem> inputList) {
         mIsVirgin = false;
 
         mOriginalItemsList.clear();
@@ -126,12 +125,12 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void appendList(List<Basic_ListItem> inputList) {
+    public void appendList(List<BasicMVP_ListItem> inputList) {
         appendListAndSort(inputList, null, null);
     }
 
     @Override
-    public void appendListAndSort(List<Basic_ListItem> inputList, @Nullable iSortingMode sortingMode, @Nullable eSortingOrder sortingOrder) {
+    public void appendListAndSort(List<BasicMVP_ListItem> inputList, @Nullable iSortingMode sortingMode, @Nullable eSortingOrder sortingOrder) {
         hideThrobberItem();
         hideLoadmoreItem();
 
@@ -146,13 +145,13 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void appendListAndFilter(List<Basic_ListItem> inputList) {
+    public void appendListAndFilter(List<BasicMVP_ListItem> inputList) {
         addToOriginalItemsList(inputList);
         applyFilter();
     }
 
     @Override
-    public void addItem(Basic_ListItem listItem) {
+    public void addItem(BasicMVP_ListItem listItem) {
         mItemsList.add(listItem);
         notifyItemInserted(getMaxIndex());
     }
@@ -174,13 +173,13 @@ public abstract class BasicMVP_DataAdapter
     public int getDataItemsCount() {
         int count = getAllItemsCount();
 
-        ListIterator<Basic_ListItem> listIterator = (isFiltered()) ?
+        ListIterator<BasicMVP_ListItem> listIterator = (isFiltered()) ?
                 mOriginalItemsList.listIterator(count) : mItemsList.listIterator(count);
 
-        Basic_ListItem listItem = listIterator.previous();
+        BasicMVP_ListItem listItem = listIterator.previous();
 
         while (null != listItem) {
-            if (listItem instanceof Basic_DataItem)
+            if (listItem instanceof BasicMVP_DataItem)
                 return count;
 
             count--;
@@ -191,18 +190,18 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public Basic_ListItem getItem(int position) {
+    public BasicMVP_ListItem getItem(int position) {
         return mItemsList.get(position);
     }
 
     @Override
-    public Basic_DataItem getLastDataItem() {
-        ListIterator<Basic_ListItem> listIterator = mItemsList.listIterator(mItemsList.size());
-        Basic_ListItem listItem;
+    public BasicMVP_DataItem getLastDataItem() {
+        ListIterator<BasicMVP_ListItem> listIterator = mItemsList.listIterator(mItemsList.size());
+        BasicMVP_ListItem listItem;
         while (listIterator.hasPrevious()) {
             listItem = listIterator.previous();
-            if (listItem instanceof Basic_DataItem)
-                return (Basic_DataItem) listItem;
+            if (listItem instanceof BasicMVP_DataItem)
+                return (BasicMVP_DataItem) listItem;
         }
         return null;
     }
@@ -215,33 +214,33 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void showThrobberItem() {
-        addItem(new Basic_ThrobberItem());
+        addItem(new BasicMVP_ThrobberItem());
     }
 
     @Override
     public void hideThrobberItem() {
-        Basic_ListItem tailItem = getTailItem();
+        BasicMVP_ListItem tailItem = getTailItem();
 
-        if (tailItem instanceof Basic_ThrobberItem)
+        if (tailItem instanceof BasicMVP_ThrobberItem)
             removeItem(mItemsList.indexOf(tailItem));
     }
 
 
     @Override
     public void showLoadmoreItem() {
-        addItem(new Basic_LoadmoreItem());
+        addItem(new BasicMVP_LoadmoreItem());
     }
 
     @Override
     public void showLoadmoreItem(int titleId) {
-        addItem(new Basic_LoadmoreItem(titleId));
+        addItem(new BasicMVP_LoadmoreItem(titleId));
     }
 
     @Override
     public void hideLoadmoreItem() {
-        Basic_ListItem tailItem = getTailItem();
+        BasicMVP_ListItem tailItem = getTailItem();
 
-        if (tailItem instanceof Basic_LoadmoreItem)
+        if (tailItem instanceof BasicMVP_LoadmoreItem)
             removeItem(mItemsList.indexOf(tailItem));
     }
 
@@ -252,9 +251,9 @@ public abstract class BasicMVP_DataAdapter
         if (null == mFilter) {
             saveOriginalItemsList();
 
-            mFilter = new Basic_ItemsFilter(mOriginalItemsList, new Basic_ItemsFilter.CompleteCallback() {
+            mFilter = new BasicMVP_ItemsFilter(mOriginalItemsList, new BasicMVP_ItemsFilter.CompleteCallback() {
                 @Override
-                public void onListFiltered(List<Basic_ListItem> filteredList) {
+                public void onListFiltered(List<BasicMVP_ListItem> filteredList) {
                     setList(filteredList);
                 }
             });
@@ -325,7 +324,7 @@ public abstract class BasicMVP_DataAdapter
     // Выбор элементов
     @Override
     public void toggleItemSelection(int position) {
-        Basic_DataItem dataItem = (Basic_DataItem) getItem(position);
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) getItem(position);
 
         if (dataItem.isSelected()) {
             dataItem.setSelected(false);
@@ -346,9 +345,9 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void selectAll() {
-        for (Basic_ListItem listItem : mItemsList) {
-            if (listItem instanceof Basic_DataItem){
-                Basic_DataItem dataItem = (Basic_DataItem) listItem;
+        for (BasicMVP_ListItem listItem : mItemsList) {
+            if (listItem instanceof BasicMVP_DataItem){
+                BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
                 if (!dataItem.isSelected()) {
                     dataItem.setSelected(true);
                     increaseSelectedItemsCount();
@@ -360,9 +359,9 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void clearSelection() {
-        for (Basic_ListItem listItem : mItemsList)
-            if (listItem instanceof Basic_DataItem)
-                ((Basic_DataItem) listItem).setSelected(false);
+        for (BasicMVP_ListItem listItem : mItemsList)
+            if (listItem instanceof BasicMVP_DataItem)
+                ((BasicMVP_DataItem) listItem).setSelected(false);
 
         resetSelectionCounter();
 
@@ -371,11 +370,11 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void invertSelection() {
-        for (Basic_ListItem listItem : mItemsList)
+        for (BasicMVP_ListItem listItem : mItemsList)
         {
-            if (listItem instanceof Basic_DataItem)
+            if (listItem instanceof BasicMVP_DataItem)
             {
-                Basic_DataItem dataItem = (Basic_DataItem) listItem;
+                BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
 
                 if (dataItem.isSelected()) {
                     dataItem.setSelected(false);
@@ -403,7 +402,7 @@ public abstract class BasicMVP_DataAdapter
         return (0==listSize) ? -1 : listSize - 1;
     }
 
-    private void replaceItem(int position, Basic_ListItem listItem) {
+    private void replaceItem(int position, BasicMVP_ListItem listItem) {
         if (position < 0)
             throw new RuntimeException("List position cannot be < 0");
 
@@ -420,15 +419,15 @@ public abstract class BasicMVP_DataAdapter
     }
 
     /*private void removeLastNonDataItem() {
-        Basic_ListItem listItem = getTailItem();
+        BasicMVP_ListItem listItem = getTailItem();
 
-        if (listItem instanceof Basic_DataItem)
+        if (listItem instanceof BasicMVP_DataItem)
             return;
 
         removeItem(listItem);
     }*/
 
-    private Basic_ListItem getTailItem() {
+    private BasicMVP_ListItem getTailItem() {
         int maxIndex = getMaxIndex();
 
         if (-1 == getMaxIndex())
@@ -450,7 +449,7 @@ public abstract class BasicMVP_DataAdapter
     }
 
 
-    private void performSorting(List<Basic_ListItem> itemsList, iItemsComparator comparator) {
+    private void performSorting(List<BasicMVP_ListItem> itemsList, iItemsComparator comparator) {
         Collections.sort(itemsList, comparator);
         notifyDataSetChanged();
     }
@@ -463,18 +462,18 @@ public abstract class BasicMVP_DataAdapter
             return;
 
         int maxIndex = getMaxIndex();
-        Basic_ListItem lastItem = mItemsList.get(maxIndex);
+        BasicMVP_ListItem lastItem = mItemsList.get(maxIndex);
 
-        if (lastItem instanceof Basic_LoadmoreItem)
+        if (lastItem instanceof BasicMVP_LoadmoreItem)
             mItemsList.remove(maxIndex);
 
-        if (lastItem instanceof Basic_ThrobberItem)
+        if (lastItem instanceof BasicMVP_ThrobberItem)
             mItemsList.remove(maxIndex);
 
         mOriginalItemsList.addAll(mItemsList);
     }
 
-    private void addToOriginalItemsList(List<Basic_ListItem> list) {
+    private void addToOriginalItemsList(List<BasicMVP_ListItem> list) {
         mOriginalItemsList.addAll(list);
     }
 

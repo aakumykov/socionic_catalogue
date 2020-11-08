@@ -33,12 +33,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModelFactory;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModelFactory;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 
 
 public abstract class BasicMVP_View
-        extends BasicMVP_Activity
+        extends BaseView
         implements iBasicListPage
 {
     @Nullable @BindView(R.id.swipeRefreshLayout)
@@ -48,7 +49,7 @@ public abstract class BasicMVP_View
 
     private static final String TAG = BasicMVP_View.class.getSimpleName();
 
-    protected Basic_ViewModel mViewModel;
+    protected BasicMVP_ViewModel mViewModel;
     protected BasicMVP_Presenter mPresenter;
     protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
@@ -69,8 +70,8 @@ public abstract class BasicMVP_View
     protected void onStart() {
         super.onStart();
 
-        mViewModel = new ViewModelProvider(this, new Basic_ViewModelFactory())
-                .get(Basic_ViewModel.class);
+        mViewModel = new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
+                .get(BasicMVP_ViewModel.class);
 
         mPresenter = preparePresenter();
 
@@ -429,11 +430,6 @@ public abstract class BasicMVP_View
         showProgressBar();
     }
 
-    private void hideProgressMessage() {
-        hideProgressBar();
-        hideMessage();
-    }
-
     public void showRefreshThrobber() {
         if (null != swipeRefreshLayout)
             swipeRefreshLayout.setRefreshing(true);
@@ -463,23 +459,10 @@ public abstract class BasicMVP_View
         ViewUtils.show(messageView);
     }
 
-    private void hideMessage() {
-        ViewUtils.hide(messageView);
-    }
-
     private void setMessageColor(int colorId) {
         int color = getResources().getColor(colorId);
         messageView.setTextColor(color);
     }
-
-    private void showProgressBar() {
-        ViewUtils.show(progressBar);
-    }
-
-    private void hideProgressBar() {
-        ViewUtils.hide(progressBar);
-    }
-
 
     private void showSelectionViewState(Object viewStateData) {
         showSelectionMenu();

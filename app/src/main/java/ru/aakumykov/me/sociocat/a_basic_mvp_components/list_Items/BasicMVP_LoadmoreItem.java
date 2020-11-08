@@ -5,19 +5,19 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListBottomItem;
 
 
-public class Basic_LoadmoreItem extends Basic_ListItem implements iListBottomItem {
+public class BasicMVP_LoadmoreItem extends BasicMVP_ListItem implements iListBottomItem {
 
     private int titleId;
 
-    public Basic_LoadmoreItem() { }
+    public BasicMVP_LoadmoreItem() { }
 
-    public Basic_LoadmoreItem(int titleId) {
+    public BasicMVP_LoadmoreItem(int titleId) {
         this.titleId = titleId;
     }
 
     @NonNull @Override
     public String toString() {
-        return Basic_LoadmoreItem.class.getSimpleName() + " { }";
+        return BasicMVP_LoadmoreItem.class.getSimpleName() + " { }";
     }
 
     public int getTitleId() {

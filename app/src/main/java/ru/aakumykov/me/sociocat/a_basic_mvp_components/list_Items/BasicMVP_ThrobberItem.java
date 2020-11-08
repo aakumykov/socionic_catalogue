@@ -5,12 +5,12 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListBottomItem;
 
 
-public class Basic_ThrobberItem extends Basic_ListItem implements iListBottomItem {
+public class BasicMVP_ThrobberItem extends BasicMVP_ListItem implements iListBottomItem {
 
     @NonNull
     @Override
     public String toString() {
-        return Basic_ThrobberItem.class.getSimpleName() + " { }";
+        return BasicMVP_ThrobberItem.class.getSimpleName() + " { }";
     }
 
 }

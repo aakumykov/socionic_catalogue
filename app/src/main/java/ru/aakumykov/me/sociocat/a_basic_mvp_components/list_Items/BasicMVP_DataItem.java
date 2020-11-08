@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicData;
 
 
-public abstract class Basic_DataItem extends Basic_ListItem {
+public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
 
     // Своейства
     private boolean isSelected = false;

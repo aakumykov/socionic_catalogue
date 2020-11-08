@@ -6,19 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 
 
-public abstract class Basic_ViewHolder extends RecyclerView.ViewHolder {
+public abstract class BasicMVP_ViewHolder extends RecyclerView.ViewHolder {
 
     protected iBasic_ItemClickListener mItemClickListener;
 
-    public Basic_ViewHolder(@NonNull View itemView) {
+    public BasicMVP_ViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
 
-    public abstract void fillWithData(Basic_ListItem basicListItem);
+    public abstract void fillWithData(BasicMVP_ListItem basicListItem);
 
     public void setItemClickListener(iBasic_ItemClickListener clickListener) {
         mItemClickListener = clickListener;

@@ -35,8 +35,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.PageUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModelFactory;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModelFactory;
 
 public abstract class BasicMVP_Fragment
         extends Fragment
@@ -49,7 +49,7 @@ public abstract class BasicMVP_Fragment
 
     private static final String TAG = BasicMVP_Fragment.class.getSimpleName();
 
-    protected Basic_ViewModel mViewModel;
+    protected BasicMVP_ViewModel mViewModel;
     protected BasicMVP_Presenter mPresenter;
     protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
@@ -77,8 +77,8 @@ public abstract class BasicMVP_Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this, new Basic_ViewModelFactory())
-                .get(Basic_ViewModel.class);
+        mViewModel = new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
+                .get(BasicMVP_ViewModel.class);
         mPresenter = preparePresenter();
         mDataAdapter = prepareDataAdapter();
         mLayoutManager = prepareLayoutManager();

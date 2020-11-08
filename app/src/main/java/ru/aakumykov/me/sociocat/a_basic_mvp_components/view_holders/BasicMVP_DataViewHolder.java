@@ -4,9 +4,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-public abstract class Basic_DataViewHolder extends Basic_ViewHolder {
+public abstract class BasicMVP_DataViewHolder extends BasicMVP_ViewHolder {
     
-    public Basic_DataViewHolder(@NonNull View itemView) {
+    public BasicMVP_DataViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 

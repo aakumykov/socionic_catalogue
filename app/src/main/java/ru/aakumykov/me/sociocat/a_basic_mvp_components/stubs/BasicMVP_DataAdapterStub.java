@@ -7,11 +7,11 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 
 
-public class Basic_DataAdapterStub implements iBasicList {
+public class BasicMVP_DataAdapterStub implements iBasicList {
 
     @Override
     public boolean isVirgin() {
@@ -19,32 +19,32 @@ public class Basic_DataAdapterStub implements iBasicList {
     }
 
     @Override
-    public void setList(List<Basic_ListItem> inputList) {
+    public void setList(List<BasicMVP_ListItem> inputList) {
 
     }
 
     @Override
-    public void setListAndFilter(List<Basic_ListItem> list) {
+    public void setListAndFilter(List<BasicMVP_ListItem> list) {
 
     }
 
     @Override
-    public void appendList(List<Basic_ListItem> inputList) {
+    public void appendList(List<BasicMVP_ListItem> inputList) {
 
     }
 
     @Override
-    public void appendListAndSort(List<Basic_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder) {
+    public void appendListAndSort(List<BasicMVP_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder) {
 
     }
 
     @Override
-    public void appendListAndFilter(List<Basic_ListItem> inputList) {
+    public void appendListAndFilter(List<BasicMVP_ListItem> inputList) {
 
     }
 
     @Override
-    public void addItem(Basic_ListItem item) {
+    public void addItem(BasicMVP_ListItem item) {
 
     }
 
@@ -59,12 +59,12 @@ public class Basic_DataAdapterStub implements iBasicList {
     }
 
     @Override
-    public Basic_ListItem getItem(int position) {
+    public BasicMVP_ListItem getItem(int position) {
         return null;
     }
 
     @Override
-    public Basic_DataItem getLastDataItem() {
+    public BasicMVP_DataItem getLastDataItem() {
         return null;
     }
 
