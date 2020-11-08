@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.a_basic_mvp_components;
+package ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers;
 
 import android.view.Menu;
 import android.view.MenuInflater;
