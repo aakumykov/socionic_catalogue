@@ -1,8 +1,10 @@
-package ru.aakumykov.me.sociocat.a_basic_mvp_components;
+package ru.aakumykov.me.sociocat.a_basic_mvp_components.utils;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
