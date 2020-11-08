@@ -462,7 +462,7 @@
     <string name="CARD_SHOW_error_changing_card_rating">Error changing rating</string>
     <string name="CARD_SHOW_login_required_to_change_rating">Login to set ratings</string>
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
-    <string name="TAGS_LIST_loading_list">Loading tags list</string>
+    <string name="TAGS_LIST_loading_list">Loading tags</string>
     <string name="MENU_sort_by_name">Alphabetically</string>
     <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse sort order</string>
     <string name="MENU_sort_by_date">By date</string>

@@ -12,10 +12,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewM
 
 public class BasicMVP_Utils {
 
-    public interface iRecyclerViewConfigurationListener {
-        void onRecyclerViewAssembled();
-    }
-
     public static void configureRecyclerview(
             RecyclerView recyclerView,
             BasicMVP_DataAdapter dataAdapter,
@@ -54,5 +50,10 @@ public class BasicMVP_Utils {
             viewModel.setDataAdapter(dataAdapter);
             return dataAdapter;
         }
+    }
+
+
+    public interface iRecyclerViewConfigurationListener {
+        void onRecyclerViewAssembled();
     }
 }

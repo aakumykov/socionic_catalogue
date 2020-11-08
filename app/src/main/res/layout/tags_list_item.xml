@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/nameView"
+        android:id="@+id/titleView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -16,7 +16,7 @@
         tools:text="Метка 1" />
 
     <TextView
-        android:id="@+id/countView"
+        android:id="@+id/commentsCountView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

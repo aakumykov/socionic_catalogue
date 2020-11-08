@@ -15,17 +15,17 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
     @Override
     protected BasicMVP_ViewHolderCreator prepareViewHolderCreator() {
-        return null;
+        return new TagsList_ViewHolderCreator(mItemClickListener);
     }
 
     @Override
     protected BasicMVP_ViewHolderBinder prepareViewHolderBinder() {
-        return null;
+        return new TagsList_ViewHolderBinder();
     }
 
     @Override
     protected BasicMVP_ViewTypeDetector prepareViewTypeDetector() {
-        return null;
+        return new TagsList_ViewTypeDetector();
     }
 
     @Override
