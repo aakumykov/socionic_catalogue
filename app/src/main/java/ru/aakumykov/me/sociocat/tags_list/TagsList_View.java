@@ -27,6 +27,8 @@ public class TagsList_View extends BasicMVP_View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tags_list);
         ButterKnife.bind(this);
+
+        activateUpButton();
     }
 
     @Override
