@@ -159,6 +159,8 @@
             android:name=".user_change_password.UserChangePassword_View"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity android:name=".tags_list.TagsList_View" android:exported="true" />
+
         <!--
 <activity
             android:name=".dynamic_link_processor.DLP_View"
