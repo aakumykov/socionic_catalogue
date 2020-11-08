@@ -3,8 +3,6 @@ package ru.aakumykov.me.sociocat.tags_list;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +15,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.BasicMVP_Utils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.RecyclerViewUtils;
 
 public class TagsList_View extends BasicMVP_View {
 
@@ -35,22 +34,14 @@ public class TagsList_View extends BasicMVP_View {
     protected void onStart() {
         super.onStart();
 
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-
-        dividerItemDecoration.setDrawable(
-                ResourcesCompat.getDrawable(
-                        getResources(),
-                        R.drawable.simple_list_item_divider,
-                        null
-                )
-        );
+        RecyclerView.ItemDecoration itemDecoration =
+                RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
 
         BasicMVP_Utils.configureRecyclerview(
                 mRecyclerView,
                 mDataAdapter,
                 mLayoutManager,
-                null,
+                itemDecoration,
                 null
         );
     }
