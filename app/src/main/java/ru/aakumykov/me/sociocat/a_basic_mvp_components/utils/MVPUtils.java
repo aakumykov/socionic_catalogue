@@ -3,8 +3,8 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_components.utils;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_DataAdapter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
@@ -18,7 +18,7 @@ public class MVPUtils {
 
     public static void configureRecyclerview(
             RecyclerView recyclerView,
-            Basic_DataAdapter dataAdapter,
+            BasicMVP_DataAdapter dataAdapter,
             RecyclerView.LayoutManager layoutManager,
             @Nullable RecyclerView.ItemDecoration itemDecoration,
             @Nullable iRecyclerViewConfigurationListener recyclerViewConfigurationListener
@@ -34,23 +34,23 @@ public class MVPUtils {
             recyclerViewConfigurationListener.onRecyclerViewAssembled();
     }
 
-    public static Basic_Presenter prepPresenter(Basic_ViewModel viewModel, iPresenterPreparationCallback callback) {
+    public static BasicMVP_Presenter prepPresenter(Basic_ViewModel viewModel, iPresenterPreparationCallback callback) {
         if (viewModel.hasPresenter()) {
-            return (Basic_Presenter) viewModel.getPresenter();
+            return (BasicMVP_Presenter) viewModel.getPresenter();
         }
         else {
-            Basic_Presenter presenter = callback.onPresenterPrepared();
+            BasicMVP_Presenter presenter = callback.onPresenterPrepared();
             viewModel.setPresenter(presenter);
             return presenter;
         }
     }
 
-    public static Basic_DataAdapter prepDataAdapter(Basic_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
+    public static BasicMVP_DataAdapter prepDataAdapter(Basic_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
         if (viewModel.hasDataAdapter()) {
-            return (Basic_DataAdapter) viewModel.getDataAdapter();
+            return (BasicMVP_DataAdapter) viewModel.getDataAdapter();
         }
         else {
-            Basic_DataAdapter dataAdapter = callback.onDataAdapterPrepared();
+            BasicMVP_DataAdapter dataAdapter = callback.onDataAdapterPrepared();
             viewModel.setDataAdapter(dataAdapter);
             return dataAdapter;
         }

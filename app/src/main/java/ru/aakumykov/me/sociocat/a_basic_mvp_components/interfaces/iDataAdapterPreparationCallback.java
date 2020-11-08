@@ -1,8 +1,8 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces;
 
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 
 public interface iDataAdapterPreparationCallback {
-    Basic_DataAdapter onDataAdapterPrepared();
+    BasicMVP_DataAdapter onDataAdapterPrepared();
 }

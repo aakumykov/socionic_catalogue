@@ -1,8 +1,10 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_components;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,12 +15,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -31,13 +32,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.PageUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModelFactory;
 
-
-public abstract class Basic_View
-        extends Basic_Activity
+public abstract class BasicMVP_Fragment
+        extends Fragment
         implements iBasicListPage
 {
     @Nullable @BindView(R.id.swipeRefreshLayout)
@@ -45,59 +46,66 @@ public abstract class Basic_View
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
 
-    private static final String TAG = Basic_View.class.getSimpleName();
+    private static final String TAG = BasicMVP_Fragment.class.getSimpleName();
 
     protected Basic_ViewModel mViewModel;
-    protected Basic_Presenter mPresenter;
-    protected Basic_DataAdapter mDataAdapter;
+    protected BasicMVP_Presenter mPresenter;
+    protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    private Menu mMenu;
+    private View mFragmentView;
+
+    protected Menu mMenu;
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
     private SearchView mSearchView;
 
 
-    // Абстрактные методы
-    protected abstract Basic_Presenter preparePresenter();
-    protected abstract Basic_DataAdapter prepareDataAdapter();
+    protected abstract BasicMVP_Presenter preparePresenter();
+    protected abstract BasicMVP_DataAdapter prepareDataAdapter();
     protected abstract RecyclerView.LayoutManager prepareLayoutManager();
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mViewModel = new ViewModelProvider(this, new Basic_ViewModelFactory())
                 .get(Basic_ViewModel.class);
-
         mPresenter = preparePresenter();
-
         mDataAdapter = prepareDataAdapter();
-
         mLayoutManager = prepareLayoutManager();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         configureSwipeRefresh();
-
         mPresenter.bindViews(this, mDataAdapter);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mPresenter.onResume();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
-        if (null != mPresenter)
-            mPresenter.onStop();
+        mPresenter.onStop();
     }
 
-    @SuppressLint("RestrictedApi") @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
         if(menu instanceof MenuBuilder){
             MenuBuilder menuBuilder = (MenuBuilder) menu;
@@ -105,11 +113,9 @@ public abstract class Basic_View
         }
 
         mMenu = menu;
-        mMenuInflater = getMenuInflater();
+        mMenuInflater = inflater;
 
         mPresenter.onMenuCreated();
-
-        return true;
     }
 
     @Override
@@ -118,7 +124,6 @@ public abstract class Basic_View
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                // FIXME: сделать корректно с т.з. навигации
                 onBackPressed();
                 break;
 
@@ -161,28 +166,30 @@ public abstract class Basic_View
 
     @Override
     public void setPageTitle(int titleId) {
-        String title = getString(titleId);
-        setPageTitle(title);
+        Activity activity = getActivity();
+        if (null != activity)
+            ((BasicMVP_Activity) activity).setPageTitle(titleId);
     }
 
     @Override
     public void setPageTitle(int titleId, Object... formatArguments) {
-        String title = getResources().getString(titleId, formatArguments);
-        setPageTitle(title);
+        Activity activity = getActivity();
+        if (null != activity)
+            ((BasicMVP_Activity) activity).setPageTitle(titleId, formatArguments);
     }
 
     @Override
     public void setPageTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar)
-            actionBar.setTitle(title);
+        Activity activity = getActivity();
+        if (null != activity)
+            ((BasicMVP_Activity) activity).setPageTitle(title);
     }
 
     @Override
     public void activateUpButton() {
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar)
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        Activity activity = getActivity();
+        if (null != activity)
+            ((BasicMVP_Activity) activity).activateUpButton();
     }
 
     @Override
@@ -196,23 +203,23 @@ public abstract class Basic_View
                 break;
 
             case PROGRESS:
-                showProgressMessage(data);
+                setProgressViewState(data);
                 break;
 
             case ERROR:
-                showErrorMessage(data);
+                setErrorViewState(data);
                 break;
 
             case REFRESHING:
-                showRefreshThrobber();
+                setRefreshViewState();
                 break;
 
             case SELECTION:
-                showSelectionViewState(data);
+                setSelectionViewState(data);
                 break;
 
             case SELECTION_ALL:
-                showAllSelectedViewState(data);
+                setAllSelectedViewState(data);
                 break;
 
             default:
@@ -226,23 +233,27 @@ public abstract class Basic_View
     }
 
     @Override
-    public void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    public void showToast(String title) {
+        PageUtils.showToast(getContext(), title);
     }
+
 
     @Override
     public Intent getInputIntent() {
-        return getIntent();
+        Activity activity = getActivity();
+        return (null == activity) ? null : getActivity().getIntent();
     }
 
     @Override
     public void refreshMenu() {
-        invalidateOptionsMenu();
+        Activity activity = getActivity();
+        if (null != activity)
+            ((BasicMVP_Activity) getActivity()).refreshMenu();
     }
 
     @Override
     public void restoreSearchView(String filterText) {
-        invalidateOptionsMenu();
+        refreshMenu();
 
         if (null != mSearchView) {
             mSearchView.setQuery(filterText, false);
@@ -253,18 +264,17 @@ public abstract class Basic_View
 
     @Override
     public void scroll2position(int position) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        if (null != recyclerView)
-            recyclerView.scrollToPosition(position);
+
     }
 
     @Override
     public Context getAppContext() {
-        return getApplicationContext();
+        // FIXME: исправить это. Только как?
+        return getActivity().getApplicationContext();
     }
 
     protected void buildMenu() {
-        if (null != mMenu && null != mMenuInflater) {
+        if (null != mMenu) {
             clearMenu();
 
             addSearchView();
@@ -277,6 +287,12 @@ public abstract class Basic_View
 
 
     // Внутренние
+    private void onBackPressed() {
+        Activity activity = getActivity();
+        if (null != activity)
+            activity.onBackPressed();
+    }
+
     private void configureSwipeRefresh() {
         if (null == swipeRefreshLayout)
             return;
@@ -290,12 +306,17 @@ public abstract class Basic_View
     }
 
     private void clearMenu() {
-        mMenu.clear();
+        if (null != mMenu)
+            mMenu.clear();
     }
 
     private void addSearchView() {
 
-        mMenuInflater.inflate(R.menu.search_view, mMenu);
+        Activity activity = getActivity();
+        if (null == activity)
+            return;
+
+        activity.getMenuInflater().inflate(R.menu.search_view, mMenu);
 
         MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
 
@@ -350,6 +371,7 @@ public abstract class Basic_View
                 .addMenuResource(R.menu.menu_sort_by_name)
                 .addDirectOrderMenuItemId(R.id.actionSortByNameDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByNameReverse)
+                .addReverseOrderActiveIcon(R.id.actionSortByNameReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_name_direct_active)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_name_reverse_active)
                 .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_name_direct)
@@ -385,6 +407,7 @@ public abstract class Basic_View
                 .addMenuResource(R.menu.menu_sort_by_date)
                 .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
+                .addReverseOrderActiveIcon(R.id.actionSortByDateReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_date_reverse_active)
                 .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_date_direct)
@@ -414,7 +437,7 @@ public abstract class Basic_View
 
 
     // ViewState
-    private void setNeutralViewState() {
+    protected void setNeutralViewState() {
         setDefaultPageTitle();
 
         hideRefreshThrobber();
@@ -423,34 +446,34 @@ public abstract class Basic_View
         buildMenu();
     }
 
-    private void showProgressMessage(Object data) {
+    protected void setProgressViewState(Object data) {
         showMessage(data);
         showProgressBar();
     }
 
-    private void hideProgressMessage() {
+    protected void hideProgressMessage() {
         hideProgressBar();
         hideMessage();
     }
 
-    public void showRefreshThrobber() {
+    protected void setRefreshViewState() {
         if (null != swipeRefreshLayout)
             swipeRefreshLayout.setRefreshing(true);
     }
 
-    public void hideRefreshThrobber() {
+    protected void hideRefreshThrobber() {
         if (null != swipeRefreshLayout)
             swipeRefreshLayout.setRefreshing(false);
     }
 
-    public void showErrorMessage(Object data) {
+    protected void setErrorViewState(Object data) {
         setNeutralViewState();
 
         showMessage(data);
         setMessageColor(R.color.colorErrorText);
     }
 
-    private void showMessage(Object data) {
+    protected void showMessage(Object data) {
         if (data instanceof Integer)
             messageView.setText((int) data);
         else if (data instanceof String)
@@ -462,48 +485,49 @@ public abstract class Basic_View
         ViewUtils.show(messageView);
     }
 
-    private void hideMessage() {
+    protected void hideMessage() {
         ViewUtils.hide(messageView);
     }
 
-    private void setMessageColor(int colorId) {
+    protected void setMessageColor(int colorId) {
         int color = getResources().getColor(colorId);
         messageView.setTextColor(color);
     }
 
-    private void showProgressBar() {
+    protected void showProgressBar() {
         ViewUtils.show(progressBar);
     }
 
-    private void hideProgressBar() {
+    protected void hideProgressBar() {
         ViewUtils.hide(progressBar);
     }
 
 
-    private void showSelectionViewState(Object viewStateData) {
+    protected void setSelectionViewState(Object viewStateData) {
         showSelectionMenu();
         showSelectedItemsCount(viewStateData);
     }
 
-    private void showSelectionMenu() {
+    protected void setAllSelectedViewState(Object viewStateData) {
+        showAllSelectedMenu();
+        showSelectedItemsCount(viewStateData);
+    }
+
+    protected void showSelectionMenu() {
         clearMenu();
         mMenuInflater.inflate(R.menu.item_select_all, mMenu);
         mMenuInflater.inflate(R.menu.item_invert_selection, mMenu);
         mMenuInflater.inflate(R.menu.item_clear_selection, mMenu);
     }
 
-    private void showAllSelectedViewState(Object viewStateData) {
-        showAllSelectedMenu();
-        showSelectedItemsCount(viewStateData);
-    }
-
-    private void showAllSelectedMenu() {
+    protected void showAllSelectedMenu() {
         clearMenu();
         mMenuInflater.inflate(R.menu.item_clear_selection, mMenu);
     }
 
-    private void showSelectedItemsCount(Object viewStateData) {
+    protected void showSelectedItemsCount(Object viewStateData) {
         setPageTitle(R.string.page_title_selected_items_count, viewStateData);
     }
+
 
 }

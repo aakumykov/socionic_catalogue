@@ -1,10 +1,8 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_components;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,11 +13,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -32,13 +31,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.PageUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModelFactory;
 
-public abstract class Basic_Fragment
-        extends Fragment
+
+public abstract class BasicMVP_View
+        extends BasicMVP_Activity
         implements iBasicListPage
 {
     @Nullable @BindView(R.id.swipeRefreshLayout)
@@ -46,66 +45,59 @@ public abstract class Basic_Fragment
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
 
-    private static final String TAG = Basic_Fragment.class.getSimpleName();
+    private static final String TAG = BasicMVP_View.class.getSimpleName();
 
     protected Basic_ViewModel mViewModel;
-    protected Basic_Presenter mPresenter;
-    protected Basic_DataAdapter mDataAdapter;
+    protected BasicMVP_Presenter mPresenter;
+    protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    private View mFragmentView;
-
-    protected Menu mMenu;
+    private Menu mMenu;
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
     private SearchView mSearchView;
 
 
-    protected abstract Basic_Presenter preparePresenter();
-    protected abstract Basic_DataAdapter prepareDataAdapter();
+    // Абстрактные методы
+    protected abstract BasicMVP_Presenter preparePresenter();
+    protected abstract BasicMVP_DataAdapter prepareDataAdapter();
     protected abstract RecyclerView.LayoutManager prepareLayoutManager();
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onStart() {
+        super.onStart();
 
         mViewModel = new ViewModelProvider(this, new Basic_ViewModelFactory())
                 .get(Basic_ViewModel.class);
-        mPresenter = preparePresenter();
-        mDataAdapter = prepareDataAdapter();
-        mLayoutManager = prepareLayoutManager();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        mPresenter = preparePresenter();
+
+        mDataAdapter = prepareDataAdapter();
+
+        mLayoutManager = prepareLayoutManager();
+
         configureSwipeRefresh();
+
         mPresenter.bindViews(this, mDataAdapter);
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
         mPresenter.onResume();
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        mPresenter.onStop();
+        if (null != mPresenter)
+            mPresenter.onStop();
     }
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    @SuppressLint("RestrictedApi") @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 
         if(menu instanceof MenuBuilder){
             MenuBuilder menuBuilder = (MenuBuilder) menu;
@@ -113,9 +105,11 @@ public abstract class Basic_Fragment
         }
 
         mMenu = menu;
-        mMenuInflater = inflater;
+        mMenuInflater = getMenuInflater();
 
         mPresenter.onMenuCreated();
+
+        return true;
     }
 
     @Override
@@ -124,6 +118,7 @@ public abstract class Basic_Fragment
         switch (item.getItemId()) {
 
             case android.R.id.home:
+                // FIXME: сделать корректно с т.з. навигации
                 onBackPressed();
                 break;
 
@@ -166,30 +161,28 @@ public abstract class Basic_Fragment
 
     @Override
     public void setPageTitle(int titleId) {
-        Activity activity = getActivity();
-        if (null != activity)
-            ((Basic_Activity) activity).setPageTitle(titleId);
+        String title = getString(titleId);
+        setPageTitle(title);
     }
 
     @Override
     public void setPageTitle(int titleId, Object... formatArguments) {
-        Activity activity = getActivity();
-        if (null != activity)
-            ((Basic_Activity) activity).setPageTitle(titleId, formatArguments);
+        String title = getResources().getString(titleId, formatArguments);
+        setPageTitle(title);
     }
 
     @Override
     public void setPageTitle(String title) {
-        Activity activity = getActivity();
-        if (null != activity)
-            ((Basic_Activity) activity).setPageTitle(title);
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar)
+            actionBar.setTitle(title);
     }
 
     @Override
     public void activateUpButton() {
-        Activity activity = getActivity();
-        if (null != activity)
-            ((Basic_Activity) activity).activateUpButton();
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar)
+            actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -203,23 +196,23 @@ public abstract class Basic_Fragment
                 break;
 
             case PROGRESS:
-                setProgressViewState(data);
+                showProgressMessage(data);
                 break;
 
             case ERROR:
-                setErrorViewState(data);
+                showErrorMessage(data);
                 break;
 
             case REFRESHING:
-                setRefreshViewState();
+                showRefreshThrobber();
                 break;
 
             case SELECTION:
-                setSelectionViewState(data);
+                showSelectionViewState(data);
                 break;
 
             case SELECTION_ALL:
-                setAllSelectedViewState(data);
+                showAllSelectedViewState(data);
                 break;
 
             default:
@@ -233,27 +226,23 @@ public abstract class Basic_Fragment
     }
 
     @Override
-    public void showToast(String title) {
-        PageUtils.showToast(getContext(), title);
+    public void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     public Intent getInputIntent() {
-        Activity activity = getActivity();
-        return (null == activity) ? null : getActivity().getIntent();
+        return getIntent();
     }
 
     @Override
     public void refreshMenu() {
-        Activity activity = getActivity();
-        if (null != activity)
-            ((Basic_Activity) getActivity()).refreshMenu();
+        invalidateOptionsMenu();
     }
 
     @Override
     public void restoreSearchView(String filterText) {
-        refreshMenu();
+        invalidateOptionsMenu();
 
         if (null != mSearchView) {
             mSearchView.setQuery(filterText, false);
@@ -264,17 +253,18 @@ public abstract class Basic_Fragment
 
     @Override
     public void scroll2position(int position) {
-
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        if (null != recyclerView)
+            recyclerView.scrollToPosition(position);
     }
 
     @Override
     public Context getAppContext() {
-        // FIXME: исправить это. Только как?
-        return getActivity().getApplicationContext();
+        return getApplicationContext();
     }
 
     protected void buildMenu() {
-        if (null != mMenu) {
+        if (null != mMenu && null != mMenuInflater) {
             clearMenu();
 
             addSearchView();
@@ -287,12 +277,6 @@ public abstract class Basic_Fragment
 
 
     // Внутренние
-    private void onBackPressed() {
-        Activity activity = getActivity();
-        if (null != activity)
-            activity.onBackPressed();
-    }
-
     private void configureSwipeRefresh() {
         if (null == swipeRefreshLayout)
             return;
@@ -306,17 +290,12 @@ public abstract class Basic_Fragment
     }
 
     private void clearMenu() {
-        if (null != mMenu)
-            mMenu.clear();
+        mMenu.clear();
     }
 
     private void addSearchView() {
 
-        Activity activity = getActivity();
-        if (null == activity)
-            return;
-
-        activity.getMenuInflater().inflate(R.menu.search_view, mMenu);
+        mMenuInflater.inflate(R.menu.search_view, mMenu);
 
         MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
 
@@ -371,7 +350,6 @@ public abstract class Basic_Fragment
                 .addMenuResource(R.menu.menu_sort_by_name)
                 .addDirectOrderMenuItemId(R.id.actionSortByNameDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByNameReverse)
-                .addReverseOrderActiveIcon(R.id.actionSortByNameReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_name_direct_active)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_name_reverse_active)
                 .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_name_direct)
@@ -407,7 +385,6 @@ public abstract class Basic_Fragment
                 .addMenuResource(R.menu.menu_sort_by_date)
                 .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
-                .addReverseOrderActiveIcon(R.id.actionSortByDateReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_date_reverse_active)
                 .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_date_direct)
@@ -437,7 +414,7 @@ public abstract class Basic_Fragment
 
 
     // ViewState
-    protected void setNeutralViewState() {
+    private void setNeutralViewState() {
         setDefaultPageTitle();
 
         hideRefreshThrobber();
@@ -446,34 +423,34 @@ public abstract class Basic_Fragment
         buildMenu();
     }
 
-    protected void setProgressViewState(Object data) {
+    private void showProgressMessage(Object data) {
         showMessage(data);
         showProgressBar();
     }
 
-    protected void hideProgressMessage() {
+    private void hideProgressMessage() {
         hideProgressBar();
         hideMessage();
     }
 
-    protected void setRefreshViewState() {
+    public void showRefreshThrobber() {
         if (null != swipeRefreshLayout)
             swipeRefreshLayout.setRefreshing(true);
     }
 
-    protected void hideRefreshThrobber() {
+    public void hideRefreshThrobber() {
         if (null != swipeRefreshLayout)
             swipeRefreshLayout.setRefreshing(false);
     }
 
-    protected void setErrorViewState(Object data) {
+    public void showErrorMessage(Object data) {
         setNeutralViewState();
 
         showMessage(data);
         setMessageColor(R.color.colorErrorText);
     }
 
-    protected void showMessage(Object data) {
+    private void showMessage(Object data) {
         if (data instanceof Integer)
             messageView.setText((int) data);
         else if (data instanceof String)
@@ -485,49 +462,48 @@ public abstract class Basic_Fragment
         ViewUtils.show(messageView);
     }
 
-    protected void hideMessage() {
+    private void hideMessage() {
         ViewUtils.hide(messageView);
     }
 
-    protected void setMessageColor(int colorId) {
+    private void setMessageColor(int colorId) {
         int color = getResources().getColor(colorId);
         messageView.setTextColor(color);
     }
 
-    protected void showProgressBar() {
+    private void showProgressBar() {
         ViewUtils.show(progressBar);
     }
 
-    protected void hideProgressBar() {
+    private void hideProgressBar() {
         ViewUtils.hide(progressBar);
     }
 
 
-    protected void setSelectionViewState(Object viewStateData) {
+    private void showSelectionViewState(Object viewStateData) {
         showSelectionMenu();
         showSelectedItemsCount(viewStateData);
     }
 
-    protected void setAllSelectedViewState(Object viewStateData) {
-        showAllSelectedMenu();
-        showSelectedItemsCount(viewStateData);
-    }
-
-    protected void showSelectionMenu() {
+    private void showSelectionMenu() {
         clearMenu();
         mMenuInflater.inflate(R.menu.item_select_all, mMenu);
         mMenuInflater.inflate(R.menu.item_invert_selection, mMenu);
         mMenuInflater.inflate(R.menu.item_clear_selection, mMenu);
     }
 
-    protected void showAllSelectedMenu() {
+    private void showAllSelectedViewState(Object viewStateData) {
+        showAllSelectedMenu();
+        showSelectedItemsCount(viewStateData);
+    }
+
+    private void showAllSelectedMenu() {
         clearMenu();
         mMenuInflater.inflate(R.menu.item_clear_selection, mMenu);
     }
 
-    protected void showSelectedItemsCount(Object viewStateData) {
+    private void showSelectedItemsCount(Object viewStateData) {
         setPageTitle(R.string.page_title_selected_items_count, viewStateData);
     }
-
 
 }

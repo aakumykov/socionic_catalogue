@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.Basic_Throbber
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils.Basic_ItemsFilter;
 
 
-public abstract class Basic_DataAdapter
+public abstract class BasicMVP_DataAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements iBasicList
 {
@@ -51,7 +51,7 @@ public abstract class Basic_DataAdapter
     private int mSelectedItemsCount;
 
 
-    public Basic_DataAdapter(
+    public BasicMVP_DataAdapter(
             iBasic_ItemClickListener itemClickListener
     )
     {

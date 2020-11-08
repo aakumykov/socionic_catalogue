@@ -5,11 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_DataAdapter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.Basic_View;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_View;
 
-public class TagsList_View extends Basic_View {
+public class TagsList_View extends BasicMVP_View {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -17,12 +17,12 @@ public class TagsList_View extends Basic_View {
     }
 
     @Override
-    protected Basic_Presenter preparePresenter() {
+    protected BasicMVP_Presenter preparePresenter() {
         return null;
     }
 
     @Override
-    protected Basic_DataAdapter prepareDataAdapter() {
+    protected BasicMVP_DataAdapter prepareDataAdapter() {
         return null;
     }
 

@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_DataVi
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.Basic_ViewHolder;
 
 
-public abstract class Basic_Presenter
+public abstract class BasicMVP_Presenter
         implements
         iBasic_ItemClickListener,
         iSearchViewListener,
