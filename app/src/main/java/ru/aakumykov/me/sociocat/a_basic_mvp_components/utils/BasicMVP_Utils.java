@@ -10,7 +10,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPrep
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.Basic_ViewModel;
 
 
-public class MVPUtils {
+public class BasicMVP_Utils {
 
     public interface iRecyclerViewConfigurationListener {
         void onRecyclerViewAssembled();
