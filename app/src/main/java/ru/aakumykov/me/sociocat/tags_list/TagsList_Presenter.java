@@ -6,6 +6,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ViewHolder;
@@ -13,7 +14,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 
-public class TagsList_Presenter extends BasicMVP_Presenter {
+public class TagsList_Presenter extends BasicMVP_Presenter implements iTagsList_ClickListener {
 
     private final TagsSingleton mTagsSingleton;
 
@@ -33,7 +34,7 @@ public class TagsList_Presenter extends BasicMVP_Presenter {
 
     @Override
     public void onItemLongClicked(BasicMVP_DataViewHolder basicViewHolder) {
-
+        onSelectItemClicked(basicViewHolder);
     }
 
     @Override
@@ -79,5 +80,20 @@ public class TagsList_Presenter extends BasicMVP_Presenter {
         for (Tag tag : tagsList)
             dataItemList.add(new Tag_ListItem(tag));
         return dataItemList;
+    }
+
+    // iTagsList_ClickListener
+    @Override
+    public void onTagClicked(Tag_ViewHolder tagViewHolder) {
+        if (mListView.isSelectionMode()) {
+            onSelectItemClicked(tagViewHolder);
+        }
+        else {
+            int position = tagViewHolder.getAdapterPosition();
+            BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
+
+            Tag tag = (Tag) basicDataItem.getPayload();
+            mPageView.showToast(tag.getName());
+        }
     }
 }

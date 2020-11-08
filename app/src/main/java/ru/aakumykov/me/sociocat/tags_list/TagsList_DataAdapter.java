@@ -4,7 +4,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetecto
 
 public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
-    public TagsList_DataAdapter(iBasic_ItemClickListener itemClickListener) {
+    public TagsList_DataAdapter(iBasicMVP_ItemClickListener itemClickListener) {
         super(itemClickListener);
     }
 

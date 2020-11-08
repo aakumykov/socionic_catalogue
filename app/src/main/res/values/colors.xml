@@ -107,4 +107,6 @@
     <color name="highlighted_comment_background">#FFFDE7</color>
 
     <color name="colorErrorText">#E6453A</color>
+
+    <color name="tags_list_selection_background_color">#CCCCCC</color>
 </resources>

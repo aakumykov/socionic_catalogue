@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.data_types.BasicMVP_ItemTypes;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_LoadmoreViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ThrobberViewHolder;
 
 public class BasicMVP_ViewHolderCreator {
 
-    protected iBasic_ItemClickListener mItemClickListener;
+    protected iBasicMVP_ItemClickListener mItemClickListener;
 
-    public BasicMVP_ViewHolderCreator(iBasic_ItemClickListener itemClickListener) {
+    public BasicMVP_ViewHolderCreator(iBasicMVP_ItemClickListener itemClickListener) {
         this.mItemClickListener = itemClickListener;
     }
 

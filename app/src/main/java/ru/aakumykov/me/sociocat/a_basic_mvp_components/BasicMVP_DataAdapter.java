@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_Vi
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
@@ -44,14 +44,14 @@ public abstract class BasicMVP_DataAdapter
     protected BasicMVP_ViewHolderBinder mViewHolderBinder;
     protected BasicMVP_ViewTypeDetector mViewTypeDetector;
 
-    protected iBasic_ItemClickListener mItemClickListener;
+    protected iBasicMVP_ItemClickListener mItemClickListener;
     private Filter mFilter;
 
     private int mSelectedItemsCount;
 
 
     public BasicMVP_DataAdapter(
-            iBasic_ItemClickListener itemClickListener
+            iBasicMVP_ItemClickListener itemClickListener
     )
     {
         mItemClickListener = itemClickListener;

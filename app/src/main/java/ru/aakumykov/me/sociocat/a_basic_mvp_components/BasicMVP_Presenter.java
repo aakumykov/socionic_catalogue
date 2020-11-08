@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_Vie
 
 public abstract class BasicMVP_Presenter
         implements
-        iBasic_ItemClickListener,
+        iBasicMVP_ItemClickListener,
         iSearchViewListener,
         iSelectionCommandsListener
 {
