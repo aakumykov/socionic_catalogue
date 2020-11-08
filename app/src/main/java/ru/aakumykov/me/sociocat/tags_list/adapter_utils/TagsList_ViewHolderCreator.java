@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list;
+package ru.aakumykov.me.sociocat.tags_list.adapter_utils;
 
 import android.view.ViewGroup;
 
@@ -9,6 +9,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.data_types.BasicMVP_ItemTypes;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasic_ItemClickListener;
+import ru.aakumykov.me.sociocat.tags_list.Tag_ViewHolder;
 
 public class TagsList_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 

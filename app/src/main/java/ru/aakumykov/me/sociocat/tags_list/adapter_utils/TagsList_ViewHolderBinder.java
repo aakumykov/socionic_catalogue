@@ -1,10 +1,11 @@
-package ru.aakumykov.me.sociocat.tags_list;
+package ru.aakumykov.me.sociocat.tags_list.adapter_utils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.tags_list.Tag_ViewHolder;
 
 public class TagsList_ViewHolderBinder extends BasicMVP_ViewHolderBinder {
 
