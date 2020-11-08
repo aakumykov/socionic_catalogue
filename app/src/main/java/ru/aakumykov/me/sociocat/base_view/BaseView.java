@@ -37,15 +37,16 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.tags_list.TagsList_View;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
@@ -127,7 +128,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 //        if (BuildConfig.DEBUG)
 //            menuInflater.inflate(R.menu.probe, menu);
 
-//        menuInflater.inflate(R.menu.tags, menu);
+        menuInflater.inflate(R.menu.tags, menu);
 
         menuInflater.inflate(R.menu.preferences, menu);
 
@@ -525,9 +526,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void goTagsList() {
-//        Intent intent = new Intent(this, TagsList3_View.class);
-//        startActivity(intent);
-        showToast(R.string.not_implemented_yet);
+        Intent intent = new Intent(this, TagsList_View.class);
+        startActivity(intent);
     }
 
     private void checkUnfinishedEdit() {
