@@ -80,6 +80,7 @@ public abstract class BasicMVP_Presenter
 
     protected void onColdStart() {
         //setViewState(eBasicViewStates.NEUTRAL, null);
+        mPageView.setDefaultPageTitle();
     }
 
     protected void onConfigChanged() {
