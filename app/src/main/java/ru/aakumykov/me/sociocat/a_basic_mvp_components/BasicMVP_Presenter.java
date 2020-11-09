@@ -33,13 +33,13 @@ public abstract class BasicMVP_Presenter
     protected eSortingOrder mCurrentSortingOrder;
 
 
-    public abstract iSortingMode getDefaultSortingMode();
-    public abstract eSortingOrder getDefaultSortingOrder(iSortingMode sortingMode);
+    protected abstract iSortingMode getDefaultSortingMode();
+    protected abstract eSortingOrder getSortingOrderFor(iSortingMode sortingMode);
 
 
     public BasicMVP_Presenter() {
         mCurrentSortingMode = getDefaultSortingMode();
-        mCurrentSortingOrder = getDefaultSortingOrder(mCurrentSortingMode);
+        mCurrentSortingOrder = getSortingOrderFor(mCurrentSortingMode);
     }
 
 
@@ -125,10 +125,12 @@ public abstract class BasicMVP_Presenter
     }
 
     public void onSortMenuItemClicked(iSortingMode sortingMode) {
+        // Присваивание mCurrentSortingMode должно производиться после mCurrentSortingOrder.
+        mCurrentSortingOrder = getSortingOrderFor(sortingMode);
         mCurrentSortingMode = sortingMode;
-        mCurrentSortingOrder = mCurrentSortingOrder.reverse();
 
         mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
+
         mPageView.refreshMenu();
     }
 
