@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
@@ -30,9 +29,19 @@ public abstract class BasicMVP_Presenter
     protected iViewState mCurrentViewState;
     protected Object mCurrentViewStateData;
 
-    protected iSortingMode mCurrentSortingMode = eBasic_SortingMode.BY_NAME;
-    protected eSortingOrder mCurrentSortingOrder = eSortingOrder.DIRECT;
-    // TODO: abstract getDefaultSortingOrder()
+    protected iSortingMode mCurrentSortingMode;
+    protected eSortingOrder mCurrentSortingOrder;
+
+
+    public abstract iSortingMode getDefaultSortingMode();
+    public abstract eSortingOrder getDefaultSortingOrder(iSortingMode sortingMode);
+
+
+    public BasicMVP_Presenter() {
+        mCurrentSortingMode = getDefaultSortingMode();
+        mCurrentSortingOrder = getDefaultSortingOrder(mCurrentSortingMode);
+    }
+
 
     public void bindViews(iBasicListPage pageView, iBasicList listView) {
         mPageView = pageView;

@@ -25,7 +25,7 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
             eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
             switch (sortingMode) {
-                case CARDS_COUNT:
+                case BY_CARDS_COUNT:
                     return sortByCardsCount(sortingMode, o1, o2);
                 default:
                     return unknownSortingMode(TAG, mSortingMode);

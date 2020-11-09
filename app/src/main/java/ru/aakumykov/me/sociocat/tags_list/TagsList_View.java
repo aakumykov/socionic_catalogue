@@ -63,7 +63,7 @@ public class TagsList_View extends BasicMVP_View {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (R.id.actionSortByCardsCountDirect == itemId || R.id.actionSortByCardsCountReverse == itemId) {
-            mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.CARDS_COUNT);
+            mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.BY_CARDS_COUNT);
             return true;
         }
         else {
@@ -140,7 +140,7 @@ public class TagsList_View extends BasicMVP_View {
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
                         switch ((eTagsList_SortingMode) sortingMode) {
-                            case CARDS_COUNT:
+                            case BY_CARDS_COUNT:
                                 return true;
                             default:
                                 return false;
