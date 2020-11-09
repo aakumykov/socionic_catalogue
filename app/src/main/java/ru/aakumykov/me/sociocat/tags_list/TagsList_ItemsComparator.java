@@ -9,24 +9,18 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
 
     private static final String TAG = TagsList_ItemsComparator.class.getSimpleName();
 
+
     @Override
     public int compare(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
         if (mSortingMode instanceof eTagsList_SortingMode)
-            return sortByOwn(o1, o2);
+            return sortSelf(o1, o2, false);
         else
             return super.compare(o1, o2);
     }
 
-    private int sortByOwn(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        if (hasPinnedItems(o1, o2))
-            return sortPinnedItems(o1, o2);
-        else
-            return sortMiddleItems(o1, o2);
-    }
 
     protected int sortMiddleItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
 
-        if (mSortingMode instanceof eTagsList_SortingMode) {
             eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
             switch (sortingMode) {
@@ -35,11 +29,8 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
                 default:
                     return unknownSortingMode(TAG, mSortingMode);
             }
-        }
-        else {
-            return super.sortMiddleItems(o1, o2);
-        }
     }
+
 
     private int sortByCardsCount(eTagsList_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
         Tag tag1 = (Tag) ((BasicMVP_DataItem) o1).getPayload();

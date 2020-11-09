@@ -4,16 +4,16 @@ import android.util.Log;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListBottomItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListTopItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 
 
-public class BasicMVP_ItemsComparator implements iItemsComparator {
+public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
 
     private static final String TAG = BasicMVP_ItemsComparator.class.getSimpleName();
     protected iSortingMode mSortingMode;
@@ -28,18 +28,20 @@ public class BasicMVP_ItemsComparator implements iItemsComparator {
 
     @Override
     public int compare(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-
-        if (hasTopItem(o1, o2)) {
-            return sortTopItems(o1 ,o2);
-        }
-        else if (hasBottomItem(o1, o2)) {
-            return sortBottomItems(o1 ,o2);
-        }
-        else {
-            return sortMiddleItems(o1, o2);
-        }
+        return sortSelf(o1, o2, true);
     }
 
+
+    protected int sortSelf(BasicMVP_ListItem o1, BasicMVP_ListItem o2, boolean calledFromBasicComparator) {
+        if (hasPinnedItems(o1, o2))
+            return sortPinnedItems(o1, o2);
+        else {
+            if (calledFromBasicComparator)
+                return sortMiddleItemsBasic(o1, o2);
+            else
+                return sortMiddleItems(o1, o2);
+        }
+    }
 
     protected boolean hasPinnedItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
         return hasTopItem(o1, o2) || hasBottomItem(o1, o2);
@@ -66,8 +68,9 @@ public class BasicMVP_ItemsComparator implements iItemsComparator {
         return 0;
     }
 
-    protected int sortMiddleItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected abstract int sortMiddleItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2);
 
+    private int sortMiddleItemsBasic(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
         if (mSortingMode instanceof eBasic_SortingMode) {
 
             switch ((eBasic_SortingMode) mSortingMode) {
