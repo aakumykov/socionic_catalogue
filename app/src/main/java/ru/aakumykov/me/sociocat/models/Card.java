@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.iListPayload;
 
 
@@ -24,7 +25,8 @@ import ru.aakumykov.me.sociocat.iListPayload;
 public class Card implements
         Parcelable,
         iCommentable,
-        iListPayload
+        iListPayload,
+        iSortableData
 {
     public static final String KEY_KEY = "key";
     public final static String KEY_CTIME = "ctime";
@@ -61,8 +63,8 @@ public class Card implements
     private Long ctime = 0L;
     private Long mtime = 0L;
 
-    private List<String> commentsKeys = new ArrayList<>();
-    private List<String> tags = new ArrayList<>();
+    private final List<String> commentsKeys = new ArrayList<>();
+    private final List<String> tags = new ArrayList<>();
 
     @Exclude private transient String localImageURI;
     @Exclude private transient String mimeType;
@@ -243,7 +245,12 @@ public class Card implements
     // getTitle() реализовано в стандартных геттерах
 
     @Override
-    public long getDate() {
+    public String getName() {
+        return getTitle();
+    }
+
+    @Override
+    public Long getDate() {
         return getCTime();
     }
 

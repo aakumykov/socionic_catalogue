@@ -9,16 +9,17 @@ import androidx.annotation.Nullable;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 
 @IgnoreExtraProperties
 public class Comment implements
         Parcelable,
-        iCommentable
+        iCommentable,
+        iSortableData
 {
     public static final String KEY_KEY = "key";
     public static final String KEY_USER_ID = "userId";
@@ -86,6 +87,17 @@ public class Comment implements
         this.userName = userName;
         this.userAvatarURL = userAvatarURL;
         this.rating = 0;
+    }
+
+    // iSortableData
+    @Override
+    public String getName() {
+        return getCardTitle();
+    }
+
+    @Override
+    public Long getDate() {
+        return getCreatedAt();
     }
 
     @Override @Exclude

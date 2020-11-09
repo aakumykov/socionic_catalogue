@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
+
 @IgnoreExtraProperties
-public class User implements Parcelable {
+public class User implements Parcelable, iSortableData {
 
     // Ключи простых свойств, используются при сохранении пользователя
     public static final String KEY_NAME = "name";
@@ -38,9 +40,9 @@ public class User implements Parcelable {
     private String avatarURL;
     private boolean emailVerified = false;
 
-    private List<String> cardsKeys = new ArrayList<>();
-    private List<String> commentsKeys = new ArrayList<>();
-    private List<String> unsubscribedCards = new ArrayList<>();
+    private final List<String> cardsKeys = new ArrayList<>();
+    private final List<String> commentsKeys = new ArrayList<>();
+    private final List<String> unsubscribedCards = new ArrayList<>();
     private List<String> ratedUpCardKeys = new ArrayList<>();
     private List<String> ratedDownCardKeys = new ArrayList<>();
     private List<String> ratedUpCommentKeys = new ArrayList<>();
@@ -167,6 +169,12 @@ public class User implements Parcelable {
     public String getName() {
         return name;
     }
+
+    @Override
+    public Long getDate() {
+        return 0L;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

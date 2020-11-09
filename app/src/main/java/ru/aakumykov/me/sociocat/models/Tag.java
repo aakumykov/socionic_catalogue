@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
+
 @IgnoreExtraProperties
-public class Tag implements Parcelable {
+public class Tag implements Parcelable, iSortableData {
 
     public static final String KEY_KEY = "key";
     public static final String KEY_NAME = "name";
@@ -22,7 +24,7 @@ public class Tag implements Parcelable {
 
     private String key;
     private String name;
-    private List<String> cards = new ArrayList<>();
+    private final List<String> cards = new ArrayList<>();
 
 
     public Tag() {}
@@ -33,8 +35,7 @@ public class Tag implements Parcelable {
     }
 
 
-    @NotNull
-    @Override
+    @NotNull @Override
     public String toString() {
         return "Tag { key: "+getKey()+
                 ", name: "+getName()+
@@ -95,9 +96,6 @@ public class Tag implements Parcelable {
         this.key = key;
     }
 
-    public String getName() {
-        return name;
-    }
     public void setName(String name) {
         this.name = name;
     }
@@ -122,5 +120,17 @@ public class Tag implements Parcelable {
     @Exclude
     public int getCardsCount() {
         return this.cards.size();
+    }
+
+
+    // iSortableData
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Long getDate() {
+        return 0L;
     }
 }
