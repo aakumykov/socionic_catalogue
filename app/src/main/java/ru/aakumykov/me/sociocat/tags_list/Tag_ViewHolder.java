@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
-    @BindView(R.id.listItem) LinearLayout listItem;
+    @BindView(R.id.listItem) View listItem;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.commentsCountView) TextView commentsCountView;
 
