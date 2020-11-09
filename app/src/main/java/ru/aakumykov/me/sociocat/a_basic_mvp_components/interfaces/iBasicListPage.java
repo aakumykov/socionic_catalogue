@@ -13,6 +13,7 @@ public interface iBasicListPage {
     void setPageTitle(String title);
 
     void setDefaultPageTitle();
+    void compileMenu();
 
     void showToast(int messageId);
     void showToast(String message);
