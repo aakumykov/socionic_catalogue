@@ -17,6 +17,11 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     }
 
     @Override
+    public void compileMenu() {
+
+    }
+
+    @Override
     public void setPageTitle(int titleId) {
 
     }
