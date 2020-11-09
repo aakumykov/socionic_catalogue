@@ -353,9 +353,9 @@ public abstract class BasicMVP_View
                 .addMenuResource(R.menu.menu_sort_by_name)
                 .addDirectOrderMenuItemId(R.id.actionSortByNameDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByNameReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_name_direct_active)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_name_reverse_active)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_name_direct)
+                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_name_simple)
+                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_name_simple)
+                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_name_simple)
                 .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {

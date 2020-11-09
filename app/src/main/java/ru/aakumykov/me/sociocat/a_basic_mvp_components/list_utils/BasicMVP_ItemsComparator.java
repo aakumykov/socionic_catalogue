@@ -4,7 +4,7 @@ import android.util.Log;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicData;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListBottomItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListTopItem;
@@ -114,8 +114,8 @@ public class BasicMVP_ItemsComparator implements iItemsComparator {
         BasicMVP_DataItem dataItem1 = (BasicMVP_DataItem) o1;
         BasicMVP_DataItem dataItem2 = (BasicMVP_DataItem) o2;
 
-        iBasicData data1 = (iBasicData) dataItem1.getPayload();
-        iBasicData data2 = (iBasicData) dataItem2.getPayload();
+        iSortableData data1 = (iSortableData) dataItem1.getPayload();
+        iSortableData data2 = (iSortableData) dataItem2.getPayload();
 
         String name1 = data1.getName();
         String name2 = data2.getName();
@@ -130,8 +130,8 @@ public class BasicMVP_ItemsComparator implements iItemsComparator {
         BasicMVP_DataItem dataItem1 = (BasicMVP_DataItem) o1;
         BasicMVP_DataItem dataItem2 = (BasicMVP_DataItem) o2;
 
-        iBasicData basicData1 = dataItem1.getBasicData();
-        iBasicData basicData2 = dataItem2.getBasicData();
+        iSortableData basicData1 = dataItem1.getBasicData();
+        iSortableData basicData2 = dataItem2.getBasicData();
 
         Long date1 = basicData1.getDate();
         Long date2 = basicData2.getDate();

@@ -32,7 +32,7 @@ public abstract class BasicMVP_Presenter
 
     protected iSortingMode mCurrentSortingMode = eBasic_SortingMode.BY_NAME;
     protected eSortingOrder mCurrentSortingOrder = eSortingOrder.DIRECT;
-
+    // TODO: abstract getDefaultSortingOrder()
 
     public void bindViews(iBasicListPage pageView, iBasicList listView) {
         mPageView = pageView;

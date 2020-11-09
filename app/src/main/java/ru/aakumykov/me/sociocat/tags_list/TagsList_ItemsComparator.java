@@ -25,14 +25,19 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
     protected int sortMiddleItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
-        switch (sortingMode) {
-            case CARDS_COUNT_DIRECT:
-            case CARDS_COUNT_REVERSE:
-                return sortByCardsCount(sortingMode, o1, o2);
-            default:
-                return unknownSortingMode(TAG, mSortingMode);
+        if (mSortingMode instanceof eTagsList_SortingMode) {
+            eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
+
+            switch (sortingMode) {
+                case CARDS_COUNT:
+                    return sortByCardsCount(sortingMode, o1, o2);
+                default:
+                    return unknownSortingMode(TAG, mSortingMode);
+            }
+        }
+        else {
+            return super.sortMiddleItems(o1, o2);
         }
     }
 

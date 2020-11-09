@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicData;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortableData;
 
 
 public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
@@ -27,8 +27,8 @@ public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
         this.isSelected = selected;
     }
 
-    public iBasicData getBasicData() {
-        return (iBasicData) getPayload();
+    public iSortableData getBasicData() {
+        return (iSortableData) getPayload();
     }
 
     // Абстрактные классы
