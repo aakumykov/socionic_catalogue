@@ -33,6 +33,6 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
     @Override
     protected iItemsComparator getItemsComparator() {
-        return null;
+        return new TagsList_ItemsComparator();
     }
 }

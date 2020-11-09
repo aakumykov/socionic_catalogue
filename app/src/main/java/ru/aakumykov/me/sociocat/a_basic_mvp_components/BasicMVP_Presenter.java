@@ -120,7 +120,6 @@ public abstract class BasicMVP_Presenter
         mCurrentSortingOrder = mCurrentSortingOrder.reverse();
 
         mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
-
         mPageView.refreshMenu();
     }
 

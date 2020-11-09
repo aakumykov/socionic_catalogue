@@ -696,6 +696,7 @@
     <string name="filter">Фильтр</string>
     <string name="menu_item_sort">Сортировать</string>
     <string name="page_title_selected_items_count">Выбрано: %1$d</string>
+    <string name="menu_item_sorted_by_cards_count">По числу карточек</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
