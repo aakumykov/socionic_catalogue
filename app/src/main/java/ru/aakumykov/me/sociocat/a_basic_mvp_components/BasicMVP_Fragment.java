@@ -59,6 +59,7 @@ public abstract class BasicMVP_Fragment
     protected Menu mMenu;
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
+
     private SearchView mSearchView;
 
 
@@ -164,6 +165,18 @@ public abstract class BasicMVP_Fragment
 
     @Override
     public abstract void setDefaultPageTitle();
+
+    public void compileMenu() {
+        if (null != mMenu) {
+            clearMenu();
+
+            addSearchView();
+            addSortingMenuRoot();
+
+            addSortByNameMenu();
+            addSortByDateMenu();
+        }
+    }
 
     @Override
     public void setPageTitle(int titleId) {
@@ -272,18 +285,6 @@ public abstract class BasicMVP_Fragment
     public Context getAppContext() {
         // FIXME: исправить это. Только как?
         return getActivity().getApplicationContext();
-    }
-
-    protected void buildMenu() {
-        if (null != mMenu) {
-            clearMenu();
-
-            addSearchView();
-            addSortingMenuRoot();
-
-            addSortByNameMenu();
-            addSortByDateMenu();
-        }
     }
 
 
@@ -444,7 +445,7 @@ public abstract class BasicMVP_Fragment
         hideRefreshThrobber();
         hideProgressMessage();
 
-        buildMenu();
+        compileMenu();
     }
 
     protected void setProgressViewState(Object data) {
