@@ -19,7 +19,7 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    protected int sortMiddleItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
 
             eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
