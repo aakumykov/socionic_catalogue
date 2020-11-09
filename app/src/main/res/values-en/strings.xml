@@ -682,12 +682,12 @@
     <string name="list_item_loadmore_title">More</string>
     <string name="menu_item_invert_selection">Invert selection</string>
     <string name="menu_item_select_all">Select all</string>
-    <string name="menu_item_sorted_by_author">Author</string>
-    <string name="menu_item_sorted_by_date">Date</string>
-    <string name="menu_item_sorted_by_name">Name</string>
+    <string name="menu_item_sorted_by_author">By author</string>
+    <string name="menu_item_sorted_by_date">By date</string>
+    <string name="menu_item_sorted_by_name">By name</string>
     <string name="menu_item_clear_selection">Clear selection</string>
     <string name="filter">Filter</string>
-    <string name="menu_item_sort_by">Sort by</string>
+    <string name="menu_item_sort">Sort</string>
     <string name="page_title_selected_items_count">Selected: %1$d</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->

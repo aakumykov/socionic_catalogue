@@ -4,7 +4,7 @@
     <item
         android:id="@+id/actionSort"
         android:icon="@drawable/ic_sort"
-        android:title="@string/menu_item_sort_by">
+        android:title="@string/menu_item_sort">
         <menu />
     </item>
 </menu>
