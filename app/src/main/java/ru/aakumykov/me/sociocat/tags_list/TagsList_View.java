@@ -1,7 +1,9 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +46,21 @@ public class TagsList_View extends BasicMVP_View {
                 itemDecoration,
                 null
         );
+    }
+
+    @Override
+    public void compileMenu() {
+        super.compileMenu();
+        MenuItem sortMenuItem = mMenu.findItem(R.id.actionSort);
+        if (null != sortMenuItem) {
+            sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            sortMenuItem.setIcon(R.drawable.ic_sort_visible);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
