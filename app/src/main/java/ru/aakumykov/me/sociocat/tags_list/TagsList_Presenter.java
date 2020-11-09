@@ -13,6 +13,10 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_Vie
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
+import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
+import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
 
 public class TagsList_Presenter extends BasicMVP_Presenter implements iTagsList_ClickListener {
 

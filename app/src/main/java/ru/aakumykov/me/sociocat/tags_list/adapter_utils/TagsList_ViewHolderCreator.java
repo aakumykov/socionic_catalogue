@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.data_types.BasicMVP_ItemTypes;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
-import ru.aakumykov.me.sociocat.tags_list.Tag_ViewHolder;
+import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 
 public class TagsList_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 

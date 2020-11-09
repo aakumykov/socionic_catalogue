@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list;
+package ru.aakumykov.me.sociocat.tags_list.list_parts;
 
 import androidx.annotation.NonNull;
 

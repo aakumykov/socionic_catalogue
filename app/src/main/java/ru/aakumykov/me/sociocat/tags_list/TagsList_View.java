@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPrep
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.BasicMVP_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 
 public class TagsList_View extends BasicMVP_View {
 
