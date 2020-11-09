@@ -39,7 +39,7 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
             if (calledFromBasicComparator)
                 return sortMiddleItemsBasic(o1, o2);
             else
-                return sortSortableItems(o1, o2);
+                return compareSortableItems(o1, o2);
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
         return 0;
     }
 
-    protected abstract int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2);
+    protected abstract int compareSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2);
 
     private int sortMiddleItemsBasic(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
         if (mSortingMode instanceof eBasic_SortingMode) {
