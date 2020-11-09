@@ -54,9 +54,10 @@ public abstract class BasicMVP_View
     protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    private Menu mMenu;
+    protected Menu mMenu;
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
+
     private SearchView mSearchView;
 
 
@@ -161,6 +162,18 @@ public abstract class BasicMVP_View
     @Override
     public abstract void setDefaultPageTitle();
 
+    public void compileMenu() {
+        if (null != mMenu && null != mMenuInflater) {
+            clearMenu();
+
+            addSearchView();
+
+            addSortingMenuRoot();
+            addSortByNameMenu();
+            //addSortByDateMenu();
+        }
+    }
+
     @Override
     public void setPageTitle(int titleId) {
         String title = getString(titleId);
@@ -263,18 +276,6 @@ public abstract class BasicMVP_View
     @Override
     public Context getAppContext() {
         return getApplicationContext();
-    }
-
-    protected void buildMenu() {
-        if (null != mMenu && null != mMenuInflater) {
-            clearMenu();
-
-            addSearchView();
-            addSortingMenuRoot();
-
-            addSortByNameMenu();
-            addSortByDateMenu();
-        }
     }
 
 
@@ -418,11 +419,10 @@ public abstract class BasicMVP_View
     // ViewState
     private void setNeutralViewState() {
         setDefaultPageTitle();
+        compileMenu();
 
         hideRefreshThrobber();
         hideProgressMessage();
-
-        buildMenu();
     }
 
     private void showProgressMessage(Object data) {
