@@ -55,10 +55,7 @@ public class TagsList_View extends BasicMVP_View {
     @Override
     public void compileMenu() {
         super.compileMenu();
-
         makeSortingMenuVisible();
-
-        addSortBySecondSymbolMenuItem();
         addSortByCardsCountMenuItem();
     }
 
@@ -67,10 +64,6 @@ public class TagsList_View extends BasicMVP_View {
         int itemId = item.getItemId();
         if (R.id.actionSortByCardsCountDirect == itemId || R.id.actionSortByCardsCountReverse == itemId) {
             mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.BY_CARDS_COUNT);
-            return true;
-        }
-        else if (R.id.actionSortBySecondSymbolDirect == itemId || R.id.actionSortBySecondSymbolReverse == itemId) {
-            mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.BY_SECOND_SYMBOL);
             return true;
         }
         else {
@@ -148,41 +141,6 @@ public class TagsList_View extends BasicMVP_View {
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
                         switch ((eTagsList_SortingMode) sortingMode) {
                             case BY_CARDS_COUNT:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
-                    }
-                })
-                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
-    }
-
-    private void addSortBySecondSymbolMenuItem() {
-
-        new SortingMenuItemConstructor()
-                .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_second_symbol)
-                .addDirectOrderMenuItemId(R.id.actionSortBySecondSymbolDirect)
-                .addReverseOrderMenuItemId(R.id.actionSortBySecondSymbolReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_second_symbol)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_second_symbol)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_second_symbol)
-                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
-                    @Override
-                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eTagsList_SortingMode;
-                    }
-
-                    @Override
-                    public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eTagsList_SortingMode) sortingMode) {
-                            case BY_SECOND_SYMBOL:
                                 return true;
                             default:
                                 return false;

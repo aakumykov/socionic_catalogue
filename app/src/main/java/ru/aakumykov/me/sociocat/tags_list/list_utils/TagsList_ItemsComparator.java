@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.tags_list.list_utils;
 
-import android.util.Pair;
-
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils.BasicMVP_ItemsComparator;
@@ -22,52 +20,30 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    protected int compareSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
 
             eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
             switch (sortingMode) {
                 case BY_CARDS_COUNT:
-                    return compareByCardsCount(o1, o2);
-                case BY_SECOND_SYMBOL:
-                    return compareBySecondSymbol(o1, o2);
+                    return sortByCardsCount(sortingMode, o1, o2);
                 default:
                     return unknownSortingMode(TAG, mSortingMode);
             }
     }
 
 
-    private int compareByCardsCount(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Pair<Tag,Tag> tagsPair = getTagsPair(o1, o2);
+    private int sortByCardsCount(eTagsList_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+        Tag tag1 = (Tag) ((BasicMVP_DataItem) o1).getPayload();
+        Tag tag2 = (Tag) ((BasicMVP_DataItem) o2).getPayload();
 
-        Integer cardsCount1 = tagsPair.first.getCardsCount();
-        Integer cardsCount2 = tagsPair.second.getCardsCount();
+        Integer cardsCount1 = tag1.getCardsCount();
+        Integer cardsCount2 = tag2.getCardsCount();
 
         if (mSortingOrder.isDirect())
             return cardsCount1.compareTo(cardsCount2);
         else
             return cardsCount2.compareTo(cardsCount1);
-    }
-
-    private int compareBySecondSymbol(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Pair<Tag,Tag> tagsPair = getTagsPair(o1, o2);
-
-        String tagName1 = tagsPair.first.getName();
-        String tagName2 = tagsPair.second.getName();
-
-        String secondSymbol1 = String.valueOf(tagName1.charAt(1));
-        String secondSymbol2 = String.valueOf(tagName2.charAt(1));
-
-        if (mSortingOrder.isDirect())
-            return secondSymbol1.compareTo(secondSymbol2);
-        else
-            return secondSymbol2.compareTo(secondSymbol1);
-    }
-
-    private Pair<Tag, Tag> getTagsPair(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Tag tag1 = (Tag) ((BasicMVP_DataItem) o1).getPayload();
-        Tag tag2 = (Tag) ((BasicMVP_DataItem) o2).getPayload();
-        return new Pair<>(tag1, tag2);
     }
 }
 
