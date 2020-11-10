@@ -21,7 +21,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -81,6 +81,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     public Card_ViewHolder(@NonNull View itemView, iCardShow.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+
         this.presenter = presenter;
     }
 
@@ -190,10 +191,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     // Внутренние методы
     private void displayCard() {
 
-        titleView.setText(currentCard.getTitle());
-        descriptionView.setText(currentCard.getDescription());
-
-        displayQuoteSource();
+        displayCommonCardParts();
 
         switch (currentCard.getType()) {
             case Card.TEXT_CARD:
@@ -205,55 +203,59 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Card.VIDEO_CARD:
-                displayMedia(MediaType.VIDEO);
+                displayAudioVideo(MediaType.VIDEO);
                 break;
 
             case Card.AUDIO_CARD:
-                displayMedia(MediaType.AUDIO);
+                displayAudioVideo(MediaType.AUDIO);
                 break;
 
             default:
                 break;
         }
 
+        presenter.onCardAlmostDisplayed(this);
+    }
+
+
+    private void displayCommonCardParts() {
+        displayTitle();
+
+        displayDescription();
+
+        displayQuoteSource();
+
         displayAuthor();
 
         displayTags();
 
-        cardRatingView.setText(String.valueOf(currentCard.getRating()));
-
-        presenter.onCardAlmostDisplayed(this);
-    }
-
-    private void displayImageCard() {
-        displayImage();
-
-        MyUtils.hide(quoteView);
-        videoContainer.removeAllViews();
+        displayRating();
     }
 
     private void displayTextCard() {
-        quoteView.setText(currentCard.getQuote());
-        MyUtils.show(quoteView);
+        hideVideo();
+        hideAudio();
+        hideImage();
+
+        displayQuote();
     }
 
-    private void displayQuoteSource() {
-        String quoteSource = currentCard.getQuoteSource();
-        if (!TextUtils.isEmpty(quoteSource)) {
-            quoteSourceView.setText(MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
-            MyUtils.show(quoteSourceView);
-        }
+    private void displayImageCard() {
+        hideQuote();
+        hideVideo();
+        hideAudio();
+
+        displayImage();
     }
 
-    private void displayMedia(MediaType mediaType) {
-
-        MyUtils.hide(quoteView);
-        MyUtils.hide(imageView);
+    private void displayAudioVideo(MediaType mediaType) {
+        hideQuote();
+        hideImage();
 
         switch (mediaType) {
             case AUDIO:
                 InsertableYoutubePlayer insertableYoutubePlayer =
-                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
+                        new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
 
                 insertableYoutubePlayer.show(
                         currentCard.getAudioCode(),
@@ -278,6 +280,114 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         }
     }
 
+    private void displayVideo() {
+
+        MyUtils.hide(youTubePlayerView);
+        MyUtils.show(videoThrobber);
+
+        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
+
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                super.onReady(youTubePlayer);
+
+                videoThrobber.clearAnimation();
+
+                MyUtils.hide(videoThrobber);
+                MyUtils.show(youTubePlayerView);
+
+                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError error) {
+                super.onError(youTubePlayer, error);
+
+                videoThrobber.clearAnimation();
+                videoThrobber.setImageResource(R.drawable.ic_youtube_video_error);
+            }
+        });
+
+        /*youTubePlayerView.addYouTubePlayerListener(new YouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                MyUtils.hide(videoThrobber);
+                videoThrobber.clearAnimation();
+
+                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+                MyUtils.show(youTubePlayerView);
+            }
+
+            @Override
+            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+
+            }
+
+            @Override
+            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+            }
+
+            @Override
+            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+
+            }
+
+            @Override
+            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+
+            }
+
+            @Override
+            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+
+            }
+        });*/
+    }
+
+
+    private void displayTitle() {
+        titleView.setText(currentCard.getTitle());
+    }
+
+    private void displayQuote() {
+        quoteView.setText(currentCard.getQuote());
+        MyUtils.show(quoteView);
+    }
+
+    private void displayQuoteSource() {
+        String quoteSource = currentCard.getQuoteSource();
+        if (!TextUtils.isEmpty(quoteSource)) {
+            quoteSourceView.setText(MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
+            MyUtils.show(quoteSourceView);
+        }
+    }
+
+    private void displayDescription() {
+        descriptionView.setText(currentCard.getDescription());
+    }
+
     private void displayAuthor() {
         authorView.setText(
                 MyUtils.getStringWithString(
@@ -297,6 +407,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 tagsContainer.addTag(tag);
             MyUtils.show(tagsContainer);
         }
+    }
+
+    private void displayRating() {
+        cardRatingView.setText(String.valueOf(currentCard.getRating()));
     }
 
     private void displayImage() {
@@ -356,67 +470,27 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 });
     }
 
-    private void displayVideo() {
 
-        MyUtils.show(videoThrobber);
-        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(500L, false));
-
-        youTubePlayerView.addYouTubePlayerListener(new YouTubePlayerListener() {
-            @Override
-            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-                MyUtils.hide(videoThrobber);
-                videoThrobber.clearAnimation();
-
-                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
-                MyUtils.show(youTubePlayerView);
-            }
-
-            @Override
-            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
-
-            }
-
-            @Override
-            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
-
-            }
-
-            @Override
-            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
-
-            }
-
-            @Override
-            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-
-            }
-
-            @Override
-            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
-
-            }
-
-            @Override
-            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
-
-            }
-        });
+    private void hideQuote() {
+        MyUtils.hide(quoteView);
+        MyUtils.hide(quoteSourceView);
     }
+
+    private void hideImage() {
+        MyUtils.hide(imageView);
+    }
+
+    private void hideVideo() {
+        this.youTubePlayerView.release();
+
+        MyUtils.hide(videoThrobber);
+        this.videoContainer.removeAllViews();
+    }
+
+    private void hideAudio() {
+        hideVideo();
+    }
+
 
     private void showImageError(String errorMsg) {
         imageView.setImageResource(R.drawable.ic_image_error);
