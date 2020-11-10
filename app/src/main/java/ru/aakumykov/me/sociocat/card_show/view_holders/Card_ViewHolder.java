@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -69,6 +70,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
     @BindView(R.id.replyWidget) TextView replyWidget;
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
 
     private enum MediaType { AUDIO, VIDEO }
 
@@ -282,6 +284,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayVideo() {
 
+        videoThrobber.setImageResource(R.drawable.ic_youtube_video_placeholder);
         MyUtils.show(videoThrobber);
         videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
 
@@ -298,12 +301,27 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 super.onReady(youTubePlayer);
 
                 videoThrobber.clearAnimation();
+
+                mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int visibility = videoThrobber.getVisibility();
+
+                        if (View.GONE == visibility) {
+                            videoContainer.addView(mYoutubePlayerView);
+
+                            MyUtils.show(videoContainer);
+
+                            youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
+
+                            videoThrobber.getViewTreeObserver().removeOnGlobalLayoutListener(mGlobalLayoutListener);
+                        }
+                    }
+                };
+
+                videoThrobber.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+
                 MyUtils.hide(videoThrobber);
-
-                videoContainer.addView(mYoutubePlayerView);
-                MyUtils.show(videoContainer);
-
-                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
             }
 
             @Override
