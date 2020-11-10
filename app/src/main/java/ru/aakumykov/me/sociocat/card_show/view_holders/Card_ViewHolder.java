@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -52,7 +53,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
-    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
     @BindView(R.id.quoteSourceView) TextView quoteSourceView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
@@ -76,7 +76,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     private iList_Item currentListItem = null;
     private Card currentCard = null;
     private iCardShow.iPresenter presenter = null;
-
+    private YouTubePlayerView mYoutubePlayerView;
 
     public Card_ViewHolder(@NonNull View itemView, iCardShow.iPresenter presenter) {
         super(itemView);
@@ -282,20 +282,26 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayVideo() {
 
-        MyUtils.hide(youTubePlayerView);
         MyUtils.show(videoThrobber);
-
         videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
 
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        if (null != mYoutubePlayerView)
+            mYoutubePlayerView.release();
+
+        mYoutubePlayerView = new YouTubePlayerView(videoContainer.getContext());
+        mYoutubePlayerView.setEnableAutomaticInitialization(false);
+        mYoutubePlayerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        mYoutubePlayerView.initialize(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 super.onReady(youTubePlayer);
 
                 videoThrobber.clearAnimation();
-
                 MyUtils.hide(videoThrobber);
-                MyUtils.show(youTubePlayerView);
+
+                videoContainer.addView(mYoutubePlayerView);
+                MyUtils.show(videoContainer);
 
                 youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
             }
@@ -308,62 +314,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 videoThrobber.setImageResource(R.drawable.ic_youtube_video_error);
             }
         });
-
-        /*youTubePlayerView.addYouTubePlayerListener(new YouTubePlayerListener() {
-            @Override
-            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-                MyUtils.hide(videoThrobber);
-                videoThrobber.clearAnimation();
-
-                youTubePlayer.cueVideo(currentCard.getVideoCode(), currentCard.getTimecode());
-                MyUtils.show(youTubePlayerView);
-            }
-
-            @Override
-            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
-
-            }
-
-            @Override
-            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
-
-            }
-
-            @Override
-            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
-
-            }
-
-            @Override
-            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-
-            }
-
-            @Override
-            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-            }
-
-            @Override
-            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
-
-            }
-
-            @Override
-            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
-
-            }
-        });*/
     }
 
 
@@ -481,10 +431,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void hideVideo() {
-        this.youTubePlayerView.release();
+        if (null != mYoutubePlayerView)
+            mYoutubePlayerView.release();
+
+        this.videoContainer.removeAllViews();
 
         MyUtils.hide(videoThrobber);
-        this.videoContainer.removeAllViews();
     }
 
     private void hideAudio() {
