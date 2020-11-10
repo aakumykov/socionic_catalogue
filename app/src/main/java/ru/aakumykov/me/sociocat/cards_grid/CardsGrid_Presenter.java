@@ -38,8 +38,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iDataAdapter dataAdapter;
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private final iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private final iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
     private Card newCardsBoundaryCard;
     private boolean newCardsAreLoadedNow = false;
@@ -101,7 +101,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             public void onListLoadSuccess(List<Card> list) {
                 isRefreshing = false;
 
-                pageView.hideSwipeThrobber();
+                pageView.hideRefreshThrobber();
                 pageView.onPageRefreshed();
 
                 dataAdapter.setList(cardsList2gridItemsList(list));

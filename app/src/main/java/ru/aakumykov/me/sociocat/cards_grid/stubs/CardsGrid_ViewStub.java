@@ -86,7 +86,7 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
 
     }
 
-    @Override public void hideSwipeThrobber() {
+    @Override public void hideRefreshThrobber() {
 
     }
 

@@ -190,11 +190,6 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public void hideSwipeThrobber() {
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
     public void showCommentForm(Comment editedComment) {
         commentForm.setText(editedComment.getText());
         commentForm.show();
@@ -273,6 +268,16 @@ public class CardShow_View extends BaseView implements
         intent.setAction(Intent.ACTION_VIEW);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

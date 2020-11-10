@@ -40,7 +40,7 @@ public interface iCardsGrid {
         void hideToolbarThrobber();
 
         void showSwipeThrobber();
-        void hideSwipeThrobber();
+        void hideRefreshThrobber();
 
         void scroll2position(int position);
 

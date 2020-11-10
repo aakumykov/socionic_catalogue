@@ -14,11 +14,6 @@ import ru.aakumykov.me.sociocat.models.iCommentable;
 public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageView {
 
     @Override
-    public void hideSwipeThrobber() {
-
-    }
-
-    @Override
     public void showCommentForm(Comment editedComment) {
 
     }
@@ -75,6 +70,16 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
 
     @Override
     public void goBack(@NonNull Card card) {
+
+    }
+
+    @Override
+    public void showRefreshThrobber() {
+
+    }
+
+    @Override
+    public void hideRefreshThrobber() {
 
     }
 

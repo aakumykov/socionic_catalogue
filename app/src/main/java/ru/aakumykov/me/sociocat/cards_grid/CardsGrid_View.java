@@ -386,7 +386,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void hideSwipeThrobber() {
+    public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }
 

@@ -24,8 +24,6 @@ public interface iCardShow
     String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
-        void hideSwipeThrobber();
-
         void showCommentForm(Comment editedComment);
         void showCommentForm(iCommentable repliedItem);
         void hideCommentForm();
@@ -44,6 +42,9 @@ public interface iCardShow
         void openImageInBrowser(String imageURL);
 
         void goBack(@NonNull Card card);
+
+        void showRefreshThrobber();
+        void hideRefreshThrobber();
     }
 
     interface iDataAdapter {

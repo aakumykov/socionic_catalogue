@@ -67,7 +67,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     @Override
     public void onRefreshRequested() {
-        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
+//        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
         loadAndShowCard(currentCard.getKey());
     }
 
@@ -385,7 +385,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     private void loadAndShowCard(@NonNull String cardKey) {
 
-        pageView.showProgressMessage(R.string.CARD_SHOW_waiting_for_data);
+//        pageView.showProgressMessage(R.string.CARD_SHOW_waiting_for_data);
+//        pageView.showRefreshThrobber();
 
         loadCard(cardKey, new iLoadCardCallbacks() {
             @Override
@@ -399,7 +400,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     private void showCard(Card card) {
         storeCurrentCard(card);
 
-        pageView.hideSwipeThrobber();
+        pageView.hideRefreshThrobber();
 
         pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
 
