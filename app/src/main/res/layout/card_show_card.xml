@@ -138,11 +138,12 @@
         app:container_border_color="@color/transparent"
         app:container_enable_drag="false"
         app:horizontal_interval="10dp"
-        android:paddingHorizontal="8dp"
         app:tag_clickable="true"
         app:tag_ripple_duration="400"
         app:tag_text_size="@dimen/tag_font_size"
         app:tag_theme="pure_teal"
+        android:paddingVertical="18dp"
+        android:paddingHorizontal="8dp"
         app:vertical_interval="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
