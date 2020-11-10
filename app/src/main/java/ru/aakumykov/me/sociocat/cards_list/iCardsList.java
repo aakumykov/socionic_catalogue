@@ -135,6 +135,7 @@ public interface iCardsList {
 
         int addItem(@NonNull DataItem dataItem);
         void updateItem(@NonNull DataItem currentlyEditedItem);
+        void updateItemWithCard(@NonNull Card card);
     }
 
     interface iPresenter {
@@ -156,8 +157,8 @@ public interface iCardsList {
 
         void onRefreshRequested();
 
-        void onDataItemClicked(DataItem dataItem);
-        void onDataItemLongClicked(DataItem dataItem);
+        void onDataItemClicked(DataItem<Card> dataItem);
+        void onDataItemLongClicked(DataItem<Card> dataItem);
 
         void onCardAuthorClicked(String userId);
         void onCardCommentsClicked(Card card);

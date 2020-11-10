@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +144,7 @@ public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void showCard(Card card) {
+    public void showCard(@NotNull Card card) {
         displayAtCardPosition(new Card_Item(card));
     }
 

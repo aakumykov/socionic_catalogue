@@ -120,7 +120,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onDataItemClicked(DataItem dataItem) {
+    public void onDataItemClicked(DataItem<Card> dataItem) {
         if (pageView.actionModeIsActive())
             toggleItemSelection(dataItem);
         else {
@@ -130,7 +130,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onDataItemLongClicked(DataItem dataItem) {
+    public void onDataItemLongClicked(DataItem<Card> dataItem) {
         if (canSelectItem()) {
             pageView.setViewState(iCardsList.ViewState.SELECTION, null, null);
             toggleItemSelection(dataItem);
@@ -361,8 +361,27 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     private void processCardShowResult(int activityResultCode, @Nullable Intent activityResultData) {
+        if (activityResultCode == RESULT_OK) {
+            if (null != activityResultData) {
 
+                String action = activityResultData.getAction();
+                Card card0 = activityResultData.getParcelableExtra(Constants.CARD);
+
+                if (Intent.ACTION_VIEW.equals(action)) {
+
+                    Card card = activityResultData.getParcelableExtra(Constants.CARD);
+
+                    if (null != card)
+                        updateCardInList(card);
+                }
+            }
+        }
     }
+
+    private void updateCardInList(@NonNull Card card) {
+        dataAdapter.updateItemWithCard(card);
+    }
+
 
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         if (null == data) {

@@ -319,9 +319,19 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onEditCardComplete(Card card) {
-        dataAdapter.showCard(card);
-        pageView.setSuccessEditionResult(card);
+    public void onEditCardComplete(@Nullable Intent data) {
+        if (null != data) {
+            Card card = data.getParcelableExtra(Constants.CARD);
+            if (null != card) {
+                currentCard = card;
+                dataAdapter.showCard(currentCard);
+            }
+            else
+                pageView.showErrorMsg(R.string.data_error, "Card from activity result is null");
+        }
+        else {
+            pageView.showErrorMsg(R.string.data_error, "Edited card is null");
+        }
     }
 
     @Override

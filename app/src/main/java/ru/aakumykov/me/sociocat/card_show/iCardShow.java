@@ -41,8 +41,6 @@ public interface iCardShow
         void goEditCard(Card card);
         void goUserProfile(String userId);
 
-        void setSuccessEditionResult(Card card);
-
         void openImageInBrowser(String imageURL);
 
         void goBack(@NonNull Card card);
@@ -53,7 +51,7 @@ public interface iCardShow
 
         void showCardThrobber();
 
-        void showCard(Card card);
+        void showCard(@NonNull Card card);
 
         int appendOneComment(Comment comment);
         void removeComment(iList_Item listItem);
@@ -104,7 +102,7 @@ public interface iCardShow
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
         void onEditCardClicked();
-        void onEditCardComplete(Card card);
+        void onEditCardComplete(@Nullable Intent data);
         void onDeleteCardClicked();
 
         void onLoadMoreClicked(iList_Item listItem);

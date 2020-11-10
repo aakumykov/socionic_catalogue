@@ -69,11 +69,6 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
-    public void setSuccessEditionResult(Card card) {
-
-    }
-
-    @Override
     public void openImageInBrowser(String imageURL) {
 
     }

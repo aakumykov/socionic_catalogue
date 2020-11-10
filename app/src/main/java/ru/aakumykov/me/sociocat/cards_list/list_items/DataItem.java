@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.iListPayload;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class DataItem<T extends iListPayload> extends ListItem {
 
@@ -14,6 +15,10 @@ public class DataItem<T extends iListPayload> extends ListItem {
 
     public DataItem() {
 
+    }
+
+    public DataItem(@NonNull Card card) {
+        setPayload(card);
     }
 
     public DataItem(String name, int count) {

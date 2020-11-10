@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.card_show.stubs;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
@@ -21,7 +23,7 @@ public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     }
 
     @Override
-    public void showCard(Card card) {
+    public void showCard(@NotNull Card card) {
 
     }
 

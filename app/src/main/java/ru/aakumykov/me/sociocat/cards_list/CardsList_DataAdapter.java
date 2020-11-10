@@ -19,6 +19,7 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.LoadMoreItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ThrobberItem;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.selectable_adapter.SelectableAdapter;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.DataItem_ViewHolder;
@@ -36,8 +37,8 @@ public class CardsList_DataAdapter
     private iCardsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
-    private volatile List<ListItem> visibleItemsList = new ArrayList<>();
-    private volatile List<ListItem> originalItemsList = new ArrayList<>();
+    private final List<ListItem> visibleItemsList = new ArrayList<>();
+    private final List<ListItem> originalItemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
     private iCardsList.SortingMode currentSortingMode;
@@ -358,6 +359,15 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public void updateItemWithCard(@NonNull Card newCard) {
+        updateCardInList(newCard, originalItemsList);
+
+        int position = updateCardInList(newCard, visibleItemsList);
+        if (position >= 0)
+            notifyItemChanged(position);
+    }
+
+    @Override
     public void filterList(CharSequence filterText) {
         getFilter().filter(filterText);
     }
@@ -436,6 +446,26 @@ public class CardsList_DataAdapter
 
         if (null != sortingListener)
             sortingListener.onSortingComplete();
+    }
+
+    private int updateCardInList(@NonNull Card newCard, List<ListItem> updatedList) {
+        for (ListItem listItem : updatedList) {
+            if (listItem instanceof DataItem) {
+
+                Card oldCardInItem = (Card) ((DataItem) listItem).getPayload();
+
+                if (oldCardInItem.getKey().equals(newCard.getKey())) {
+
+                    int position = updatedList.indexOf(listItem);
+
+                    updatedList.set(position, new DataItem<>(newCard));
+
+                    return position;
+                }
+            }
+        }
+
+        return -1;
     }
 }
 

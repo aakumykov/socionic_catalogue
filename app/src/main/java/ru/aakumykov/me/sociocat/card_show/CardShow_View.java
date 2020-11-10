@@ -259,15 +259,6 @@ public class CardShow_View extends BaseView implements
         startActivity(intent);
     }
 
-    // Установка результата для Плиточного вида, чтобы там обновилась отредактированная карточка
-    @Override
-    public void setSuccessEditionResult(Card card) {
-        Intent intent = new Intent();
-        intent.setAction(Constants.ACTION_EDIT);
-        intent.putExtra(Constants.CARD, card);
-        setResult(RESULT_OK, intent);
-    }
-
     @Override
     public void openImageInBrowser(String imageURL) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -279,6 +270,7 @@ public class CardShow_View extends BaseView implements
     public void goBack(@NonNull Card card) {
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, card);
+        intent.setAction(Intent.ACTION_VIEW);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -340,13 +332,7 @@ public class CardShow_View extends BaseView implements
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                if (null != data) {
-                    Card card = data.getParcelableExtra(Constants.CARD);
-                    presenter.onEditCardComplete(card);
-                }
-                else {
-                    showErrorMsg(R.string.data_error, "Edited card is null");
-                }
+                presenter.onEditCardComplete(data);
                 break;
             case RESULT_CANCELED:
                 showToast(R.string.CARD_SHOW_edit_cancelled);

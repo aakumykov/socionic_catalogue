@@ -68,9 +68,9 @@ public class CardsList_View
     private final iCardsList.ViewMode initialViewMode = iCardsList.ViewMode.LIST;
     private final iCardsList.ToolbarState initialToolbarState = iCardsList.ToolbarState.INITIAL;
 
-    private int lastActivityResult_RequestCode = -1;
-    private int lastActivityResult_ResultCode = -1;
-    private Intent lastActivityResult_Data = null;
+    private final int lastActivityResult_RequestCode = -1;
+    private final int lastActivityResult_ResultCode = -1;
+    private final Intent lastActivityResult_Data = null;
 
 
     // Activity
@@ -244,6 +244,7 @@ public class CardsList_View
     public void goShowCard(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD, card);
+        intent.setAction(Intent.ACTION_VIEW);
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
