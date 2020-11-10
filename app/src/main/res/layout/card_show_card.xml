@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:layout_marginBottom="2dp"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible"
@@ -40,15 +41,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
-        android:padding="2dp"
+        android:background="#80CBC4"
         android:scaleType="fitCenter"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[9]" />
+        android:visibility="gone"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[9]"
+        tools:visibility="visible" />
 
     <FrameLayout
         android:id="@+id/videoContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/videoThrobber"
@@ -88,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:padding="8dp"
+        android:layout_marginTop="16dp"
         android:textIsSelectable="true"
         android:textSize="18sp"
         tools:text="Для загрузки доступны iso-образы" />

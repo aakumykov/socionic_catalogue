@@ -197,12 +197,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         switch (currentCard.getType()) {
             case Card.TEXT_CARD:
-                quoteView.setText(currentCard.getQuote());
-                MyUtils.show(quoteView);
+                displayTextCard();
                 break;
 
             case Card.IMAGE_CARD:
-                displayImage();
+                displayImageCard();
                 break;
 
             case Card.VIDEO_CARD:
@@ -226,6 +225,18 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         presenter.onCardAlmostDisplayed(this);
     }
 
+    private void displayImageCard() {
+        displayImage();
+
+        MyUtils.hide(quoteView);
+        videoContainer.removeAllViews();
+    }
+
+    private void displayTextCard() {
+        quoteView.setText(currentCard.getQuote());
+        MyUtils.show(quoteView);
+    }
+
     private void displayQuoteSource() {
         String quoteSource = currentCard.getQuoteSource();
         if (!TextUtils.isEmpty(quoteSource)) {
@@ -235,6 +246,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void displayMedia(MediaType mediaType) {
+
+        MyUtils.hide(quoteView);
+        MyUtils.hide(imageView);
 
         switch (mediaType) {
             case AUDIO:
