@@ -28,22 +28,7 @@ public class AnimationUtils {
         alphaAnimation.setDuration(duration);
 
         alphaAnimation.setInterpolator(
-//                new AccelerateInterpolator()
-                new DecelerateInterpolator()
-//                new AccelerateDecelerateInterpolator()
-
-//                new LinearInterpolator()
-
-//                new AnticipateInterpolator()
-//                new AnticipateOvershootInterpolator()
-
-//                new FastOutSlowInInterpolator()
-//                new FastOutLinearInInterpolator()
-//                new LinearOutSlowInInterpolator()
-
-//                new BounceInterpolator()
-//                new CycleInterpolator(2f)
-//                new OvershootInterpolator()
+                (fadeOutFirst) ? new DecelerateInterpolator() : new AccelerateInterpolator()
         );
 
         return alphaAnimation;
