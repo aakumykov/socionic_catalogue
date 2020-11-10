@@ -5,7 +5,7 @@
     android:viewportHeight="100">
   <path
       android:pathData="M0,0h100v100H0z"
-      android:fillColor="#fff"/>
+      android:fillColor="@color/transparent"/>
   <path
       android:pathData="M100,100H0V0h100v100zM9.7,90h80.7V10H9.7"
       android:fillColor="@color/card_type_icon_audio"/>
