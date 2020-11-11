@@ -360,44 +360,40 @@ public class CardsList_DataAdapter
 
     @Override
     public void updateItemWithCard(@NonNull Card newCard) {
-        int position = -1;
 
-        position = findCardPosition(newCard, originalItemsList);
-        if (position >= 0)
-            originalItemsList.set(position, new DataItem<>(newCard));
+        findCardPositionWithCallback(newCard, originalItemsList, new iCardFoundCallback() {
+            @Override
+            public void onCardFound(int position) {
+                originalItemsList.set(position, new DataItem<>(newCard));
+            }
+        });
 
-        position = findCardPosition(newCard, visibleItemsList);
-        if (position >= 0) {
-            visibleItemsList.set(position, new DataItem<>(newCard));
-            notifyItemChanged(position);
-        }
+        findCardPositionWithCallback(newCard, visibleItemsList, new iCardFoundCallback() {
+            @Override
+            public void onCardFound(int position) {
+                visibleItemsList.set(position, new DataItem<>(newCard));
+                notifyItemChanged(position);
+            }
+        });
     }
 
     @Override
     public void deleteItemWithCard(@NonNull Card card) {
-        int position = -1;
 
-        position = findCardPosition(card, originalItemsList);
-        if (position >= 0)
-            originalItemsList.remove(position);
-
-        position = findCardPosition(card, visibleItemsList);
-        if (position >= 0) {
-            visibleItemsList.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
-    private int findCardPosition(@NonNull Card card, List<ListItem> targetList) {
-        for (ListItem listItem : targetList) {
-            if (listItem instanceof DataItem) {
-                Card cardInItem = (Card) ((DataItem) listItem).getPayload();
-                if (cardInItem.getKey().equals(card.getKey())) {
-                    return targetList.indexOf(listItem);
-                }
+        findCardPositionWithCallback(card, visibleItemsList, new iCardFoundCallback() {
+            @Override
+            public void onCardFound(int position) {
+                visibleItemsList.remove(position);
+                notifyItemRemoved(position);
             }
-        }
-        return -1;
+        });
+
+        /*findCardPositionWithCallback(card, originalItemsList, new iCardFoundCallback() {
+            @Override
+            public void onCardFound(int position) {
+                originalItemsList.remove(position);
+            }
+        });*/
     }
 
     @Override
@@ -479,6 +475,25 @@ public class CardsList_DataAdapter
 
         if (null != sortingListener)
             sortingListener.onSortingComplete();
+    }
+
+    private void findCardPositionWithCallback(@NonNull Card card, List<ListItem> searchedList, iCardFoundCallback callback) {
+
+        for (ListItem listItem : searchedList) {
+
+            if (listItem instanceof DataItem) {
+
+                Card cardInItem = (Card) ((DataItem) listItem).getPayload();
+
+                if (cardInItem.getKey().equals(card.getKey())) {
+                    callback.onCardFound(searchedList.indexOf(listItem));
+                }
+            }
+        }
+    }
+
+    private interface iCardFoundCallback {
+        void onCardFound(int position);
     }
 }
 
