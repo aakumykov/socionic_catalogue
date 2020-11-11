@@ -360,11 +360,17 @@ public class CardsList_DataAdapter
 
     @Override
     public void updateItemWithCard(@NonNull Card newCard) {
-        updateCardInList(newCard, originalItemsList);
+        int position = -1;
 
-        int position = updateCardInList(newCard, visibleItemsList);
+        position = findCardPosition(newCard, originalItemsList);
         if (position >= 0)
+            originalItemsList.set(position, new DataItem<>(newCard));
+
+        position = findCardPosition(newCard, visibleItemsList);
+        if (position >= 0) {
+            visibleItemsList.set(position, new DataItem<>(newCard));
             notifyItemChanged(position);
+        }
     }
 
     @Override
@@ -473,26 +479,6 @@ public class CardsList_DataAdapter
 
         if (null != sortingListener)
             sortingListener.onSortingComplete();
-    }
-
-    private int updateCardInList(@NonNull Card newCard, List<ListItem> updatedList) {
-        for (ListItem listItem : updatedList) {
-            if (listItem instanceof DataItem) {
-
-                Card oldCardInItem = (Card) ((DataItem) listItem).getPayload();
-
-                if (oldCardInItem.getKey().equals(newCard.getKey())) {
-
-                    int position = updatedList.indexOf(listItem);
-
-                    updatedList.set(position, new DataItem<>(newCard));
-
-                    return position;
-                }
-            }
-        }
-
-        return -1;
     }
 }
 
