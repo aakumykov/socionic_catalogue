@@ -84,6 +84,11 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
+    public void closeAfterCardDeleted(@NonNull Card currentCard) {
+
+    }
+
+    @Override
     public void refreshMenu() {
 
     }

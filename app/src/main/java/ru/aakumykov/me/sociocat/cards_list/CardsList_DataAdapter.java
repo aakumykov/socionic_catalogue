@@ -368,6 +368,33 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public void deleteItemWithCard(@NonNull Card card) {
+        int position = -1;
+
+        position = findCardPosition(card, originalItemsList);
+        if (position >= 0)
+            originalItemsList.remove(position);
+
+        position = findCardPosition(card, visibleItemsList);
+        if (position >= 0) {
+            visibleItemsList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    private int findCardPosition(@NonNull Card card, List<ListItem> targetList) {
+        for (ListItem listItem : targetList) {
+            if (listItem instanceof DataItem) {
+                Card cardInItem = (Card) ((DataItem) listItem).getPayload();
+                if (cardInItem.getKey().equals(card.getKey())) {
+                    return targetList.indexOf(listItem);
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Override
     public void filterList(CharSequence filterText) {
         getFilter().filter(filterText);
     }

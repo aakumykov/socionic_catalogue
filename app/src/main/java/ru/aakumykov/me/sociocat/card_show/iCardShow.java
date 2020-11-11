@@ -45,6 +45,8 @@ public interface iCardShow
 
         void showRefreshThrobber();
         void hideRefreshThrobber();
+
+        void closeAfterCardDeleted(@NonNull Card currentCard);
     }
 
     interface iDataAdapter {

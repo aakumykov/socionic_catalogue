@@ -136,6 +136,8 @@ public interface iCardsList {
         int addItem(@NonNull DataItem dataItem);
         void updateItem(@NonNull DataItem currentlyEditedItem);
         void updateItemWithCard(@NonNull Card card);
+
+        void deleteItemWithCard(@NonNull Card card);
     }
 
     interface iPresenter {

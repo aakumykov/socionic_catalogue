@@ -364,15 +364,21 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         if (activityResultCode == RESULT_OK) {
             if (null != activityResultData) {
 
+                Card card = activityResultData.getParcelableExtra(Constants.CARD);
+
                 String action = activityResultData.getAction();
-                Card card0 = activityResultData.getParcelableExtra(Constants.CARD);
 
-                if (Intent.ACTION_VIEW.equals(action)) {
+                switch (action) {
+                    // TODO: ACTION_EDIT
+                    case Intent.ACTION_VIEW:
+                        if (null != card)
+                            updateCardInList(card);
+                        break;
 
-                    Card card = activityResultData.getParcelableExtra(Constants.CARD);
-
-                    if (null != card)
-                        updateCardInList(card);
+                    case Intent.ACTION_DELETE:
+                        if (null != card)
+                            deleteCardFromList(card);
+                        break;
                 }
             }
         }
@@ -380,6 +386,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private void updateCardInList(@NonNull Card card) {
         dataAdapter.updateItemWithCard(card);
+    }
+
+    private void deleteCardFromList(@NonNull Card card) {
+        dataAdapter.deleteItemWithCard(card);
+        pageView.showToast(R.string.CARDS_LIST_card_has_been_deleted);
     }
 
 

@@ -690,6 +690,7 @@
     <string name="menu_item_sort">Sort</string>
     <string name="page_title_selected_items_count">Selected: %1$d</string>
     <string name="menu_item_sorted_by_cards_count">By cards count</string>
+    <string name="CARDS_LIST_card_has_been_deleted">Card has been deleted</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

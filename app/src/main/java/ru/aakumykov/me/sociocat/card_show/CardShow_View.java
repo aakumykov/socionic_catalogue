@@ -281,6 +281,15 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
+    public void closeAfterCardDeleted(@NonNull Card deletedCard) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_DELETE);
+        intent.putExtra(Constants.CARD, deletedCard);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public void refreshMenu() {
         invalidateOptionsMenu();
     }
