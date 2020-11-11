@@ -47,6 +47,8 @@ public interface iCardShow
         void hideRefreshThrobber();
 
         void closeAfterCardDeleted(@NonNull Card currentCard);
+
+        boolean isCommentFormDisabled();
     }
 
     interface iDataAdapter {
@@ -101,7 +103,6 @@ public interface iCardShow
 
         void onAuthorClicked();
         void onTagClicked(String tagName);
-        void onReplyClicked(iList_Item listItem);
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
         void onEditCardClicked();
@@ -110,11 +111,12 @@ public interface iCardShow
 
         void onLoadMoreClicked(iList_Item listItem);
 
+        void onAddCommentClicked(iList_Item listItem);
+        void onSendCommentClicked();
         void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onDeleteCommentConfirmed(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onEditCommentClicked(iList_Item listItem);
         void onRemoveCommentQuoteClicked();
-        void onSendCommentClicked();
         void onCommentAuthorClicked(iList_Item commentItem);
         void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);

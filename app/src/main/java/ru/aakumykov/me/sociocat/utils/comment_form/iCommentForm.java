@@ -27,6 +27,7 @@ public interface iCommentForm {
 
     void enable();
     void disable();
+    boolean isDisabled();
 
     boolean isVisible();
     boolean isEmpty();

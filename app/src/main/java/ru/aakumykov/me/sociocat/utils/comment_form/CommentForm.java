@@ -22,7 +22,7 @@ public class CommentForm implements
 {
     private final static String TAG = "CommentForm";
 
-    private Context context;
+    private final Context context;
     private ButtonListeners buttonListeners;
 
     private View commentForm;
@@ -144,6 +144,11 @@ public class CommentForm implements
         MyUtils.disable(sendCommentWidget);
 
         MyUtils.show(progressBar);
+    }
+
+    @Override
+    public boolean isDisabled() {
+        return !commentTextInput.isEnabled();
     }
 
     @Override

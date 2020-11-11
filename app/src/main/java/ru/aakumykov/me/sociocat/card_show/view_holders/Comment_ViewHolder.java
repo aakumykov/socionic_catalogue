@@ -76,7 +76,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
     @OnClick(R.id.replyWidget)
     void onReplyToCommentClicked() {
-        presenter.onReplyClicked(this.currentListItem);
+        presenter.onAddCommentClicked(this.currentListItem);
     }
 
     @OnClick(R.id.deleteWidget)

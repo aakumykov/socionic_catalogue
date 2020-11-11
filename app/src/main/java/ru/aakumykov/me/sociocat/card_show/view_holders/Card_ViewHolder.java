@@ -147,7 +147,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     // Нажатия
     @OnClick(R.id.replyWidget)
     void onReplyClicked() {
-        presenter.onReplyClicked(currentListItem);
+        presenter.onAddCommentClicked(currentListItem);
     }
 
     @OnClick(R.id.cardRateUpWidget)

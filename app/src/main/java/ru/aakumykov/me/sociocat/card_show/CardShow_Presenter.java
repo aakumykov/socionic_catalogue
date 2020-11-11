@@ -17,9 +17,6 @@ import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
-import ru.aakumykov.me.sociocat.utils.LogUtils;
-import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -31,9 +28,10 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
+import ru.aakumykov.me.sociocat.utils.LogUtils;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
-
-import static android.app.Activity.RESULT_OK;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 
 public class CardShow_Presenter implements iCardShow.iPresenter
 {
@@ -95,7 +93,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onReplyClicked(iList_Item listItem) {
+    public void onAddCommentClicked(iList_Item listItem) {
+
         if (AuthSingleton.isLoggedIn()) {
             this.repliedItem = (iCommentable) listItem.getPayload();
             pageView.showCommentForm(repliedItem);
@@ -123,6 +122,10 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     @Override
     public void onSendCommentClicked() {
+
+        if (commentIsNowProcessing())
+            return;
+
         if (!AuthSingleton.isLoggedIn()) {
             pageView.showToast(R.string.CARD_SHOW_login_required_to_comment);
             return;
@@ -136,6 +139,10 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             createComment();
         else
             updateComment();
+    }
+
+    private boolean commentIsNowProcessing() {
+        return pageView.isCommentFormDisabled();
     }
 
     @Override

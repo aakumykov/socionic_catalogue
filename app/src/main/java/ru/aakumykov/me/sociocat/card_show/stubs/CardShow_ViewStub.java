@@ -89,6 +89,11 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
+    public boolean isCommentFormDisabled() {
+        return false;
+    }
+
+    @Override
     public void refreshMenu() {
 
     }

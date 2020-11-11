@@ -290,6 +290,11 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
+    public boolean isCommentFormDisabled() {
+        return commentForm.isDisabled();
+    }
+
+    @Override
     public void refreshMenu() {
         invalidateOptionsMenu();
     }
