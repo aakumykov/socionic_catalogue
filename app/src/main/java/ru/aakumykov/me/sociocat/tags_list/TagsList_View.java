@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_View;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
@@ -81,7 +82,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         return BasicMVP_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new TagsList_Presenter();
+                return new TagsList_Presenter(eBasicSortingMode.BY_NAME);
             }
         });
     }

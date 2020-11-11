@@ -33,13 +33,9 @@ public abstract class BasicMVP_Presenter
     protected eSortingOrder mCurrentSortingOrder;
 
 
-    protected abstract iSortingMode getDefaultSortingMode();
-    protected abstract eSortingOrder getSortingOrderFor(iSortingMode sortingMode);
-
-
-    public BasicMVP_Presenter() {
-        mCurrentSortingMode = getDefaultSortingMode();
-        mCurrentSortingOrder = getSortingOrderFor(mCurrentSortingMode);
+    public BasicMVP_Presenter(iSortingMode defaultSortingMode) {
+        mCurrentSortingMode = defaultSortingMode;
+        mCurrentSortingOrder = getDefaultSortingOrderForSortingMode(mCurrentSortingMode);
     }
 
 
@@ -49,15 +45,6 @@ public abstract class BasicMVP_Presenter
     }
 
     public abstract void unbindViews();
-
-    protected void onResume() {
-        if (null != mCurrentViewState)
-            setViewState(mCurrentViewState, mCurrentViewStateData);
-    }
-
-    protected void onStop() {
-        unbindViews();
-    }
 
     public  void onMenuCreated() {
         if (isColdStart())
@@ -82,9 +69,34 @@ public abstract class BasicMVP_Presenter
         }
     }
 
+    public iSortingMode getCurrentSortingMode() {
+        return mCurrentSortingMode;
+    }
 
-    private boolean isColdStart() {
-        return mListView.isVirgin();
+    public eSortingOrder getCurrentSortingOrder() {
+        return mCurrentSortingOrder;
+    }
+
+    public void onSortMenuItemClicked(iSortingMode sortingMode) {
+
+        mCurrentSortingOrder = getSortingOrderForSortingMode(sortingMode);
+
+        // !Присваивание mCurrentSortingMode должно производиться после mCurrentSortingOrder!
+        mCurrentSortingMode = sortingMode;
+
+        mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
+
+        mPageView.refreshMenu();
+    }
+
+
+    protected void onResume() {
+        if (null != mCurrentViewState)
+            setViewState(mCurrentViewState, mCurrentViewStateData);
+    }
+
+    protected void onStop() {
+        unbindViews();
     }
 
     protected void onColdStart() {
@@ -109,30 +121,22 @@ public abstract class BasicMVP_Presenter
         setViewState(eBasicViewStates.ERROR, (BuildConfig.DEBUG) ? debugMessage : userMessageId);
     }
 
+    protected abstract eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode);
 
+    protected eSortingOrder getSortingOrderForSortingMode(iSortingMode sortingMode) {
+        if (null != mCurrentSortingOrder && mCurrentSortingMode.equals(sortingMode))
+            return mCurrentSortingOrder.reverse();
+        else
+            return getDefaultSortingOrderForSortingMode(sortingMode);
+    }
+
+
+    // iBasicMVP_ItemClickListener
     @Override
     public abstract void onItemLongClicked(BasicMVP_DataViewHolder basicViewHolder);
 
     @Override
     public abstract void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder);
-
-    public iSortingMode getCurrentSortingMode() {
-        return mCurrentSortingMode;
-    }
-
-    public eSortingOrder getCurrentSortingOrder() {
-        return mCurrentSortingOrder;
-    }
-
-    public void onSortMenuItemClicked(iSortingMode sortingMode) {
-        // Присваивание mCurrentSortingMode должно производиться после mCurrentSortingOrder.
-        mCurrentSortingOrder = getSortingOrderFor(sortingMode);
-        mCurrentSortingMode = sortingMode;
-
-        mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
-
-        mPageView.refreshMenu();
-    }
 
 
     // iSearchViewListener
@@ -189,5 +193,10 @@ public abstract class BasicMVP_Presenter
         setViewState(eBasicViewStates.SELECTION, mListView.getSelectedItemsCount());
     }
 
+
+    // Внутренние
+    private boolean isColdStart() {
+        return mListView.isVirgin();
+    }
 
 }

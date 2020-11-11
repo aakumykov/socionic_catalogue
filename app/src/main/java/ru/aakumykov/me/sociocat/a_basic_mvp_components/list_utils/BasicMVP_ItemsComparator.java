@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils;
 
 import android.util.Log;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iListBottomItem;
@@ -71,9 +71,9 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
     protected abstract int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2);
 
     private int sortMiddleItemsBasic(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        if (mSortingMode instanceof eBasic_SortingMode) {
+        if (mSortingMode instanceof eBasicSortingMode) {
 
-            switch ((eBasic_SortingMode) mSortingMode) {
+            switch ((eBasicSortingMode) mSortingMode) {
                 case BY_NAME:
                     return sortByName(o1, o2);
 
@@ -85,7 +85,7 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
             }
         }
         else {
-            Log.e(TAG, "Sorting mode is not eBasic_SortingMode instance: " + mSortingMode);
+            Log.e(TAG, "Sorting mode is not eBasicSortingMode instance: " + mSortingMode);
             return 0;
         }
     }

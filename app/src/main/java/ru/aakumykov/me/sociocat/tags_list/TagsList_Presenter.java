@@ -8,7 +8,7 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
@@ -31,23 +31,24 @@ public class TagsList_Presenter
 {
     private final TagsSingleton mTagsSingleton;
 
-    public TagsList_Presenter() {
+
+    public TagsList_Presenter(iSortingMode defaultSortingMode) {
+        super(defaultSortingMode);
         mTagsSingleton = TagsSingleton.getInstance();
     }
 
 
     @Override
-    public iSortingMode getDefaultSortingMode() {
-        return eBasic_SortingMode.BY_NAME;
-    }
+    protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
 
-    @Override
-    protected eSortingOrder getSortingOrderFor(iSortingMode sortingMode) {
-        if (null != mCurrentSortingOrder && mCurrentSortingMode.equals(sortingMode))
-            return mCurrentSortingOrder.reverse();
-        else {
-            return getDefaultSortingOrderFor(sortingMode);
-        }
+        Map<iSortingMode,eSortingOrder> sortingOrderMap = new HashMap<>();
+        sortingOrderMap.put(eTagsList_SortingMode.BY_CARDS_COUNT, eSortingOrder.REVERSE);
+        sortingOrderMap.put(eBasicSortingMode.BY_NAME, eSortingOrder.DIRECT);
+
+        if (sortingOrderMap.containsKey(sortingMode))
+            return sortingOrderMap.get(sortingMode);
+
+        return eSortingOrder.DIRECT;
     }
 
     @Override
@@ -124,18 +125,5 @@ public class TagsList_Presenter
         for (Tag tag : tagsList)
             dataItemList.add(new Tag_ListItem(tag));
         return dataItemList;
-    }
-
-    private eSortingOrder getDefaultSortingOrderFor(iSortingMode sortingMode) {
-
-        Map<iSortingMode,eSortingOrder> map = new HashMap<>();
-
-        map.put(eTagsList_SortingMode.BY_CARDS_COUNT, eSortingOrder.REVERSE);
-        map.put(eBasic_SortingMode.BY_NAME, eSortingOrder.DIRECT);
-
-        if (map.containsKey(sortingMode))
-            return map.get(sortingMode);
-
-        return eSortingOrder.DIRECT;
     }
 }

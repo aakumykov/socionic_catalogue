@@ -26,9 +26,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasic_SortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
@@ -130,19 +130,19 @@ public abstract class BasicMVP_Fragment
                 break;
 
             case R.id.actionSortByNameDirect:
-                mPresenter.onSortMenuItemClicked(eBasic_SortingMode.BY_NAME);
+                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
             case R.id.actionSortByNameReverse:
-                mPresenter.onSortMenuItemClicked(eBasic_SortingMode.BY_NAME);
+                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
             case R.id.actionSortByDateDirect:
-                mPresenter.onSortMenuItemClicked(eBasic_SortingMode.BY_DATE);
+                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
                 break;
 
             case R.id.actionSortByDateReverse:
-                mPresenter.onSortMenuItemClicked(eBasic_SortingMode.BY_DATE);
+                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
                 break;
 
             case R.id.actionSelectAll:
@@ -380,12 +380,12 @@ public abstract class BasicMVP_Fragment
                 .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eBasic_SortingMode;
+                        return sortingMode instanceof eBasicSortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eBasic_SortingMode) sortingMode) {
+                        switch ((eBasicSortingMode) sortingMode) {
                             case BY_NAME:
                                 return true;
                             default:
@@ -416,12 +416,12 @@ public abstract class BasicMVP_Fragment
                 .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eBasic_SortingMode;
+                        return sortingMode instanceof eBasicSortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eBasic_SortingMode) sortingMode) {
+                        switch ((eBasicSortingMode) sortingMode) {
                             case BY_DATE:
                                 return true;
                             default:
