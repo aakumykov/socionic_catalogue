@@ -82,6 +82,11 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     }
 
     @Override
+    public void inflateMenuItem(int menuResourceId) {
+
+    }
+
+    @Override
     public void showSelectionViewState(Object viewStateData) {
 
     }

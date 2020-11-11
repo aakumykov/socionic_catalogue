@@ -292,6 +292,12 @@ public abstract class BasicMVP_Fragment
         return getActivity().getApplicationContext();
     }
 
+    @Override
+    public void inflateMenuItem(int menuResourceId) {
+        if (null != mMenuInflater)
+            mMenuInflater.inflate(menuResourceId, mMenu);
+    }
+
 
     // Внутренние
     private void onBackPressed() {

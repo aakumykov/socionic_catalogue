@@ -27,6 +27,8 @@ public interface iBasicListPage {
 
     void refreshMenu();
 
+    void inflateMenuItem(int menuResourceId);
+
     void restoreSearchView(String filterText);
 
     void scroll2position(int position);
@@ -34,5 +36,4 @@ public interface iBasicListPage {
     // Эти два здесь неуместны
     Intent getInputIntent();
     Context getAppContext();
-
 }

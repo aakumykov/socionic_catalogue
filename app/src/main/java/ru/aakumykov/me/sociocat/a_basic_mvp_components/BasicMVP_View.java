@@ -285,6 +285,12 @@ public abstract class BasicMVP_View
         return getApplicationContext();
     }
 
+    @Override
+    public void inflateMenuItem(int menuResourceId) {
+        if (null != mMenuInflater && null != mMenu)
+            mMenuInflater.inflate(menuResourceId, mMenu);
+    }
+
 
     // Внутренние
     private void configureSwipeRefresh() {
@@ -300,7 +306,8 @@ public abstract class BasicMVP_View
     }
 
     private void clearMenu() {
-        mMenu.clear();
+        if (null != mMenu)
+            mMenu.clear();
     }
 
     private void addSearchView() {
@@ -473,9 +480,9 @@ public abstract class BasicMVP_View
 
     private void showSelectionMenu() {
         clearMenu();
-        mMenuInflater.inflate(R.menu.item_select_all, mMenu);
-        mMenuInflater.inflate(R.menu.item_invert_selection, mMenu);
-        mMenuInflater.inflate(R.menu.item_clear_selection, mMenu);
+        inflateMenuItem(R.menu.item_select_all);
+        inflateMenuItem(R.menu.item_invert_selection);
+        inflateMenuItem(R.menu.item_clear_selection);
     }
 
     private void showAllSelectedViewState(Object viewStateData) {

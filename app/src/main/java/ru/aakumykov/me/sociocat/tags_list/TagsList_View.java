@@ -87,7 +87,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     @Override
     public void showSelectionViewState(Object viewStateData) {
         super.showSelectionViewState(viewStateData);
-        mMenuInflater.inflate(R.menu.tags_list_delete, mMenu);
+        inflateMenuItem(R.menu.tags_list_delete);
     }
 
     @Override
@@ -140,10 +140,12 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
 
     private void makeSortingMenuVisible() {
-        MenuItem sortMenuItem = mMenu.findItem(R.id.actionSort);
-        if (null != sortMenuItem) {
-            sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            sortMenuItem.setIcon(R.drawable.ic_sort_visible);
+        if (null != mMenu) {
+            MenuItem sortMenuItem = mMenu.findItem(R.id.actionSort);
+            if (null != sortMenuItem) {
+                sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                sortMenuItem.setIcon(R.drawable.ic_sort_visible);
+            }
         }
     }
 
