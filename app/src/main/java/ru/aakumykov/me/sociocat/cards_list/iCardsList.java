@@ -134,7 +134,7 @@ public interface iCardsList {
         void setItemIsNowDeleting(DataItem dataItem, boolean value);
 
         int addItem(@NonNull DataItem dataItem);
-        void updateItem(@NonNull DataItem currentlyEditedItem);
+        void updateItem(@NonNull DataItem<Card> currentlyEditedItem);
         void updateItemWithCard(@NonNull Card card);
 
         void deleteItemWithCard(@NonNull Card card);

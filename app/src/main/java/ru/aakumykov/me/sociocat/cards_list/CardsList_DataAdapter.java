@@ -352,7 +352,7 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void updateItem(@NonNull DataItem dataItem) {
+    public void updateItem(@NonNull DataItem<Card> dataItem) {
         int index = visibleItemsList.indexOf(dataItem);
         visibleItemsList.set(index, dataItem);
         notifyItemChanged(index);
