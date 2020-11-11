@@ -130,8 +130,6 @@ public class TagsList_Presenter
 
     public void onDeleteMenuItemClicked() {
         int selectedItemsCount = mListView.getSelectedItemsCount();
-        mPageView.showToast(String.valueOf(selectedItemsCount));
-        mListView.clearSelection();
-        updateSelectionModeMenu();
+        List<BasicMVP_DataItem> selectedItemsList = mListView.getSelectedItems();
     }
 }

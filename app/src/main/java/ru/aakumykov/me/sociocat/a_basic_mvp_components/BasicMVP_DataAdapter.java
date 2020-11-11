@@ -391,6 +391,11 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
+    public List<BasicMVP_DataItem> getSelectedItems() {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void resetSelectionCounter() {
         mSelectedItemsCount = 0;
     }
