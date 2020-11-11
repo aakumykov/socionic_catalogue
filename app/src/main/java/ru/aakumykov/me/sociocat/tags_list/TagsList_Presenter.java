@@ -20,6 +20,7 @@ import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
@@ -90,9 +91,8 @@ public class TagsList_Presenter
         else {
             int position = tagViewHolder.getAdapterPosition();
             BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
-
             Tag tag = (Tag) basicDataItem.getPayload();
-            mPageView.showToast(tag.getName());
+            ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
         }
     }
 

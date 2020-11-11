@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
@@ -21,9 +23,12 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPrep
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.BasicMVP_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 
-public class TagsList_View extends BasicMVP_View {
+public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -111,6 +116,14 @@ public class TagsList_View extends BasicMVP_View {
 
     }
 
+    @Override
+    public void goShowCardsWithTag(@NonNull Tag tag) {
+        Intent intent = new Intent(this, CardsList_View.class);
+        intent.putExtra(Constants.TAG_NAME, tag.getName());
+        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
+        startActivity(intent);
+    }
+
 
     private void makeSortingMenuVisible() {
         MenuItem sortMenuItem = mMenu.findItem(R.id.actionSort);
@@ -154,4 +167,6 @@ public class TagsList_View extends BasicMVP_View {
                 })
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
+
+
 }
