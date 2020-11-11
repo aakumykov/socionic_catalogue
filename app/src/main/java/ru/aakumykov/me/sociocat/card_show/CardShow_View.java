@@ -218,6 +218,7 @@ public class CardShow_View extends BaseView implements
     @Override
     public void clearCommentForm() {
         this.commentForm.clear();
+        this.commentForm.enable();
     }
 
     @Override

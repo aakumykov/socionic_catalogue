@@ -95,6 +95,9 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onAddCommentClicked(iList_Item listItem) {
 
+        if (commentIsNowProcessing())
+            return;
+
         if (AuthSingleton.isLoggedIn()) {
             this.repliedItem = (iCommentable) listItem.getPayload();
             pageView.showCommentForm(repliedItem);
