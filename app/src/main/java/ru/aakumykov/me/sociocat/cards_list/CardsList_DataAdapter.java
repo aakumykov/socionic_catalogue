@@ -388,12 +388,12 @@ public class CardsList_DataAdapter
             }
         });
 
-        /*findCardPositionWithCallback(card, originalItemsList, new iCardFoundCallback() {
+        findCardPositionWithCallback(card, originalItemsList, new iCardFoundCallback() {
             @Override
             public void onCardFound(int position) {
                 originalItemsList.remove(position);
             }
-        });*/
+        });
     }
 
     @Override
@@ -487,6 +487,7 @@ public class CardsList_DataAdapter
 
                 if (cardInItem.getKey().equals(card.getKey())) {
                     callback.onCardFound(searchedList.indexOf(listItem));
+                    return;
                 }
             }
         }
