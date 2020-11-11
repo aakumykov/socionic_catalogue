@@ -162,6 +162,7 @@ public abstract class BasicMVP_View
     @Override
     public abstract void setDefaultPageTitle();
 
+    @Override
     public void compileMenu() {
         if (null != mMenu && null != mMenuInflater) {
             clearMenu();
@@ -233,6 +234,12 @@ public abstract class BasicMVP_View
             default:
                 throw new RuntimeException("Unknown viewState: "+viewState);
         }
+    }
+
+    @Override
+    public void showSelectionViewState(Object viewStateData) {
+        showSelectionMenu();
+        showSelectedItemsCount(viewStateData);
     }
 
     @Override
@@ -462,11 +469,6 @@ public abstract class BasicMVP_View
     private void setMessageColor(int colorId) {
         int color = getResources().getColor(colorId);
         messageView.setTextColor(color);
-    }
-
-    private void showSelectionViewState(Object viewStateData) {
-        showSelectionMenu();
-        showSelectedItemsCount(viewStateData);
     }
 
     private void showSelectionMenu() {

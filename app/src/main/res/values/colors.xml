@@ -108,5 +108,5 @@
 
     <color name="colorErrorText">#E6453A</color>
 
-    <color name="tags_list_selection_background_color">#CCCCCC</color>
+    <color name="tags_list_selection_background_color">#DFDFDF</color>
 </resources>

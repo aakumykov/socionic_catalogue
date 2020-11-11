@@ -63,18 +63,31 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         super.compileMenu();
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
+
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         int itemId = item.getItemId();
+
         if (R.id.actionSortByCardsCountDirect == itemId || R.id.actionSortByCardsCountReverse == itemId) {
             mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.BY_CARDS_COUNT);
-            return true;
+        }
+        else if (R.id.actionDelete == itemId) {
+            ((TagsList_Presenter) mPresenter).onDeleteMenuItemClicked();
         }
         else {
             return super.onOptionsItemSelected(item);
         }
+
+        return true;
+    }
+
+    @Override
+    public void showSelectionViewState(Object viewStateData) {
+        super.showSelectionViewState(viewStateData);
+        mMenuInflater.inflate(R.menu.tags_list_delete, mMenu);
     }
 
     @Override

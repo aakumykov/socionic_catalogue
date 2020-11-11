@@ -22,6 +22,9 @@ public interface iBasicListPage {
 
     void setViewState(@NonNull iViewState state, @Nullable Object data);
 
+    //TODO: вынести сюда другие методы установки вида...
+    void showSelectionViewState(Object viewStateData);
+
     void refreshMenu();
 
     void restoreSearchView(String filterText);
@@ -31,4 +34,5 @@ public interface iBasicListPage {
     // Эти два здесь неуместны
     Intent getInputIntent();
     Context getAppContext();
+
 }

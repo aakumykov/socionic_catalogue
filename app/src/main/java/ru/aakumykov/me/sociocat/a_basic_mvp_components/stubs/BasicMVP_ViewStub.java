@@ -80,4 +80,9 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     public Context getAppContext() {
         return null;
     }
+
+    @Override
+    public void showSelectionViewState(Object viewStateData) {
+
+    }
 }

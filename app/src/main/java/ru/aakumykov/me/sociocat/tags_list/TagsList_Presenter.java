@@ -126,4 +126,12 @@ public class TagsList_Presenter
             dataItemList.add(new Tag_ListItem(tag));
         return dataItemList;
     }
+
+
+    public void onDeleteMenuItemClicked() {
+        int selectedItemsCount = mListView.getSelectedItemsCount();
+        mPageView.showToast(String.valueOf(selectedItemsCount));
+        mListView.clearSelection();
+        updateSelectionModeMenu();
+    }
 }
