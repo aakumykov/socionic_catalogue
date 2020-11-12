@@ -36,6 +36,7 @@ public interface iBasicListPage {
     // Эти два здесь неуместны
     Intent getInputIntent();
     Context getAppContext();
+    Context getPageContext();
 
     String getText(int stringResourceId, Object... formatArgs);
 }

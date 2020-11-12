@@ -293,6 +293,11 @@ public abstract class BasicMVP_Fragment
     }
 
     @Override
+    public Context getPageContext() {
+        return getContext();
+    }
+
+    @Override
     public String getText(int stringResourceId, Object... formatArgs) {
         return TextUtils.getText(getContext(), stringResourceId, formatArgs);
     }

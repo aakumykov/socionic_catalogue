@@ -82,6 +82,11 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     }
 
     @Override
+    public Context getPageContext() {
+        return null;
+    }
+
+    @Override
     public String getText(int stringResourceId, Object... formatArgs) {
         return null;
     }

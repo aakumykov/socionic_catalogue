@@ -295,6 +295,11 @@ public abstract class BasicMVP_View
     }
 
     @Override
+    public Context getPageContext() {
+        return this;
+    }
+
+    @Override
     public String getText(int stringResourceId, Object... formatArgs) {
         return TextUtils.getText(this, stringResourceId, formatArgs);
     }
