@@ -221,6 +221,10 @@ public abstract class BasicMVP_Fragment
                 setProgressViewState(data);
                 break;
 
+            case PROGRESS_WITH_CANCEL_BUTTON:
+                showProgressWithCancelButton(data);
+                break;
+
             case ERROR:
                 setErrorViewState(data);
                 break;
@@ -470,6 +474,16 @@ public abstract class BasicMVP_Fragment
         showProgressBar();
     }
 
+    private void showProgressWithCancelButton(@Nullable Object data) {
+        showProgressMessage(data);
+        showInterruptButton();
+    }
+
+    private void showProgressMessage(@Nullable Object data) {
+        showMessage(data);
+        showProgressBar();
+    }
+
     protected void hideProgressMessage() {
         hideProgressBar();
         hideMessage();
@@ -502,6 +516,12 @@ public abstract class BasicMVP_Fragment
             return;
         }
         ViewUtils.show(messageView);
+    }
+
+    private void showInterruptButton() {
+        clearMenu();
+        inflateMenuItem(R.menu.progress_interrupt);
+        setPageTitle(R.string.interrupt);
     }
 
     protected void hideMessage() {

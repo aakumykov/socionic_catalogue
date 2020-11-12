@@ -445,7 +445,7 @@ public abstract class BasicMVP_View
 
     private void showInterruptButton() {
         clearMenu();
-        inflateMenuItem(R.menu.progress_cancel);
+        inflateMenuItem(R.menu.progress_interrupt);
         setPageTitle(R.string.interrupt);
     }
 

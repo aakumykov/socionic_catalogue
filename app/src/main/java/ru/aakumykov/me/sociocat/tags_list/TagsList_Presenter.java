@@ -161,25 +161,7 @@ public class TagsList_Presenter
         Tag tag = (Tag) dataItem.getPayload();
 
         String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
-        setViewState(eBasicViewStates.PROGRESS, msg);
-
-        /*mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
-            @Override
-            public void onDeleteSuccess(Tag tag) {
-                mListView.removeItem(dataItem);
-
-                deleteTagsFromList(tagsList);
-            }
-
-            @Override
-            public void onDeleteFail(String errorMsg) {
-                String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
-                mPageView.showToast(msg);
-                Log.e(TAG, errorMsg);
-
-                deleteTagsFromList(tagsList);
-            }
-        });*/
+        setViewState(eBasicViewStates.PROGRESS_WITH_CANCEL_BUTTON, msg);
 
         mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
             @Override
