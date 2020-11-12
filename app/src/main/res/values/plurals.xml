@@ -23,4 +23,9 @@
         <item quantity="few">Удалить %1$d выбранные метки?</item>
         <item quantity="many">Удалить %1$d выбранных меток?</item>
     </plurals>
+
+    <plurals name="TAGS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Нельзя удалить больше %1$d метки за раз</item>
+        <item quantity="many">Нельзя удалить больше %1$d меток за раз</item>
+    </plurals>
 </resources>

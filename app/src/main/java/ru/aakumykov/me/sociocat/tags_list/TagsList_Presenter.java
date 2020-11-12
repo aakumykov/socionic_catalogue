@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
@@ -147,18 +148,30 @@ public class TagsList_Presenter
 
     public void onDeleteMenuItemClicked() {
 
+        int count = mListView.getSelectedItemsCount();
+
+        if (count > Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT) {
+            String msg = MyUtils.getPluralString(
+                    mPageView.getAppContext(),
+                    R.plurals.TAGS_LIST_cannot_delete_more_tags_at_once,
+                    Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT
+            );
+            mPageView.showToast(msg);
+            return;
+        }
+
         List<BasicMVP_DataItem> selectedItems = mListView.getSelectedItems();
         StringBuilder messageBuilder = new StringBuilder();
         for (BasicMVP_DataItem dataItem : selectedItems) {
             Tag tag = (Tag) dataItem.getPayload();
             messageBuilder.append(tag.getName());
-            messageBuilder.append(", ");
+            messageBuilder.append("\n");
         }
 
         String title = MyUtils.getPluralString(
                 mPageView.getAppContext(),
                 R.plurals.TAGS_LIST_deleting_dialog_title,
-                mListView.getSelectedItemsCount()
+                count
         );
 
         SimpleYesNoDialog.show(

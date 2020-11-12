@@ -14,4 +14,9 @@
         <item quantity="one">Delete %1$d selected tag?</item>
         <item quantity="other">Delete %1$d selected tags?</item>
     </plurals>
+
+    <plurals name="TAGS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Cannot delete more then %1$d tag at once</item>
+        <item quantity="other">Cannot delete more then %1$d tags at once</item>
+    </plurals>
 </resources>
