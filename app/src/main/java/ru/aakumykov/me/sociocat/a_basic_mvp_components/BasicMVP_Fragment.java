@@ -27,13 +27,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.PageUtils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModelFactory;
@@ -290,6 +291,11 @@ public abstract class BasicMVP_Fragment
     public Context getAppContext() {
         // FIXME: исправить это. Только как?
         return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return TextUtils.getText(getContext(), stringResourceId, formatArgs);
     }
 
     @Override

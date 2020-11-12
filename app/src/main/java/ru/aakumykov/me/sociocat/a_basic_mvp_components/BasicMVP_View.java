@@ -32,6 +32,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_model.BasicMVP_ViewModelFactory;
@@ -283,6 +284,11 @@ public abstract class BasicMVP_View
     @Override
     public Context getAppContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return TextUtils.getText(this, stringResourceId, formatArgs);
     }
 
     @Override
