@@ -322,8 +322,8 @@ public final class MyUtils {
         return getStringWithString(context, baseStringResourceId, innerString);
     }
 
-    public static String getStringWithString(Context context, int stringResourceId, String insertedText) {
-        return context.getResources().getString(stringResourceId, insertedText);
+    public static String getStringWithString(Context context, int stringResourceId, Object... formatArgs) {
+        return context.getResources().getString(stringResourceId, formatArgs);
     }
 
     public static String getStringWithNumber(Context context, int stringResourceId, int number) {
@@ -514,6 +514,15 @@ public final class MyUtils {
 
     public static long getCurrentTimeInSeconds() {
         return new Date().getTime() / 1000;
+    }
+
+    public static String getPluralString(@NonNull Context context, int pluralResourceId, int count) {
+        return context.getResources()
+                .getQuantityString(
+                        pluralResourceId,
+                        count,
+                        count
+                );
     }
 
     /*public static long getCurrentTime(TimeUnit timeUnit) {
