@@ -99,6 +99,15 @@ public abstract class BasicMVP_Presenter
         unbindViews();
     }
 
+    public boolean onBackPressed() {
+        if (mListView.isSelectionMode()) {
+            mListView.clearSelection();
+            setViewState(eBasicViewStates.NEUTRAL, null);
+            return true;
+        }
+        return false;
+    }
+
     protected void onColdStart() {
         setViewState(eBasicViewStates.NEUTRAL, null);
 //        mPageView.setDefaultPageTitle();

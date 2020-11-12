@@ -165,6 +165,12 @@ public abstract class BasicMVP_View
     }
 
     @Override
+    public void onBackPressed() {
+        if (!mPresenter.onBackPressed())
+            super.onBackPressed();
+    }
+
+    @Override
     public abstract void setDefaultPageTitle();
 
     @Override
