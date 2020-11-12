@@ -525,6 +525,11 @@ public final class MyUtils {
                 );
     }
 
+    public static void setVisibility(@Nullable View view, boolean isVisible) {
+        if (null != view)
+            view.setVisibility((isVisible) ? View.VISIBLE : View.GONE);
+    }
+
     /*public static long getCurrentTime(TimeUnit timeUnit) {
         long time = new Date().getTime();
 
