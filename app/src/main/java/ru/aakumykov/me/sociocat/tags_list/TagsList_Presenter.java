@@ -147,6 +147,14 @@ public class TagsList_Presenter
 
     public void onDeleteMenuItemClicked() {
 
+        List<BasicMVP_DataItem> selectedItems = mListView.getSelectedItems();
+        StringBuilder messageBuilder = new StringBuilder();
+        for (BasicMVP_DataItem dataItem : selectedItems) {
+            Tag tag = (Tag) dataItem.getPayload();
+            messageBuilder.append(tag.getName());
+            messageBuilder.append(", ");
+        }
+
         String title = MyUtils.getPluralString(
                 mPageView.getAppContext(),
                 R.plurals.TAGS_LIST_deleting_dialog_title,
@@ -156,7 +164,7 @@ public class TagsList_Presenter
         SimpleYesNoDialog.show(
                 mPageView.getPageContext(),
                 title,
-                null,
+                messageBuilder.toString(),
                 new SimpleYesNoDialog.AbstractCallbacks() {
                     @Override
                     public void onYes() {
