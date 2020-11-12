@@ -36,18 +36,17 @@ public abstract class BasicMVP_DataAdapter
     private boolean mIsSorted = false;
 
     private final List<BasicMVP_ListItem> mItemsList;
-
-    private String mFilterPattern;
     private final List<BasicMVP_ListItem> mOriginalItemsList;
+    private final List<BasicMVP_DataItem> mSelectedItemsList;
 
     protected BasicMVP_ViewHolderCreator mViewHolderCreator;
     protected BasicMVP_ViewHolderBinder mViewHolderBinder;
     protected BasicMVP_ViewTypeDetector mViewTypeDetector;
 
     protected iBasicMVP_ItemClickListener mItemClickListener;
-    private Filter mFilter;
 
-    private int mSelectedItemsCount;
+    private String mFilterPattern;
+    private Filter mFilter;
 
 
     public BasicMVP_DataAdapter(
@@ -58,6 +57,7 @@ public abstract class BasicMVP_DataAdapter
 
         mItemsList = new ArrayList<>();
         mOriginalItemsList = new ArrayList<>();
+        mSelectedItemsList = new ArrayList<>();
 
         mViewHolderCreator = prepareViewHolderCreator();
         mViewHolderBinder = prepareViewHolderBinder();
@@ -154,6 +154,18 @@ public abstract class BasicMVP_DataAdapter
     public void addItem(BasicMVP_ListItem listItem) {
         mItemsList.add(listItem);
         notifyItemInserted(getMaxIndex());
+    }
+
+    @Override
+    public void removeItem(BasicMVP_ListItem item) {
+        mOriginalItemsList.remove(item);
+
+        if (item instanceof BasicMVP_DataItem)
+            mSelectedItemsList.remove(item);
+
+        int itemsListIndex = mItemsList.indexOf(item);
+        mItemsList.remove(itemsListIndex);
+        notifyItemRemoved(itemsListIndex);
     }
 
     @Override
@@ -310,7 +322,7 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public boolean isSelectionMode() {
-        return mSelectedItemsCount > 0;
+        return mSelectedItemsList.size() > 0;
     }
 
 
@@ -326,13 +338,13 @@ public abstract class BasicMVP_DataAdapter
     public void toggleItemSelection(int position) {
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) getItem(position);
 
-        if (dataItem.isSelected()) {
-            dataItem.setSelected(false);
-            decreaseSelectedItemsCount();
+        if (!dataItem.isSelected()) {
+            dataItem.setSelected(true);
+            addToSelectedItemsList(dataItem);
         }
         else {
-            dataItem.setSelected(true);
-            increaseSelectedItemsCount();
+            dataItem.setSelected(false);
+            removeFromSelectedItemsList(dataItem);
         }
 
         refreshItem(position);
@@ -340,7 +352,7 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public Integer getSelectedItemsCount() {
-        return mSelectedItemsCount;
+        return mSelectedItemsList.size();
     }
 
     @Override
@@ -350,7 +362,7 @@ public abstract class BasicMVP_DataAdapter
                 BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
                 if (!dataItem.isSelected()) {
                     dataItem.setSelected(true);
-                    increaseSelectedItemsCount();
+                    addToSelectedItemsList(dataItem);
                 }
             }
         }
@@ -363,7 +375,7 @@ public abstract class BasicMVP_DataAdapter
             if (listItem instanceof BasicMVP_DataItem)
                 ((BasicMVP_DataItem) listItem).setSelected(false);
 
-        resetSelectionCounter();
+        mSelectedItemsList.clear();
 
         notifyDataSetChanged();
     }
@@ -378,11 +390,11 @@ public abstract class BasicMVP_DataAdapter
 
                 if (dataItem.isSelected()) {
                     dataItem.setSelected(false);
-                    decreaseSelectedItemsCount();
+                    removeFromSelectedItemsList(dataItem);
                 }
                 else {
                     dataItem.setSelected(true);
-                    increaseSelectedItemsCount();
+                    addToSelectedItemsList(dataItem);
                 }
             }
         }
@@ -392,12 +404,7 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public List<BasicMVP_DataItem> getSelectedItems() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public void resetSelectionCounter() {
-        mSelectedItemsCount = 0;
+        return new ArrayList<>(mSelectedItemsList);
     }
 
 
@@ -441,19 +448,6 @@ public abstract class BasicMVP_DataAdapter
         return mItemsList.get(maxIndex);
     }
 
-
-    private void increaseSelectedItemsCount() {
-        mSelectedItemsCount++;
-
-    }
-
-    private void decreaseSelectedItemsCount() {
-        mSelectedItemsCount--;
-        if (mSelectedItemsCount < 0)
-            throw new RuntimeException("Selected items count becomes negative ("+ mSelectedItemsCount +")");
-    }
-
-
     private void performSorting(List<BasicMVP_ListItem> itemsList, iItemsComparator comparator) {
         Collections.sort(itemsList, comparator);
         notifyDataSetChanged();
@@ -492,4 +486,12 @@ public abstract class BasicMVP_DataAdapter
         filter.filter(mFilterPattern);
     }
 
+    private void addToSelectedItemsList(BasicMVP_DataItem dataItem) {
+        if (!mSelectedItemsList.contains(dataItem))
+            mSelectedItemsList.add(dataItem);
+    }
+
+    private void removeFromSelectedItemsList(BasicMVP_DataItem dataItem) {
+        mSelectedItemsList.remove(dataItem);
+    }
 }
