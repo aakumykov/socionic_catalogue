@@ -11,7 +11,6 @@ public interface iBasicSelectableList {
     void toggleItemSelection(int position);
 
     Integer getSelectedItemsCount();
-    void resetSelectionCounter();
 
     void selectAll();
     void clearSelection();

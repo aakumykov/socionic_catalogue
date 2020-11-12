@@ -82,6 +82,11 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     }
 
     @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return null;
+    }
+
+    @Override
     public void inflateMenuItem(int menuResourceId) {
 
     }

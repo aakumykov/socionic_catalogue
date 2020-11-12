@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,16 +9,18 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
@@ -29,12 +33,14 @@ public class TagsList_Presenter
         extends BasicMVP_Presenter
         implements iTagsList_ClickListener
 {
+    private static final String TAG = TagsList_Presenter.class.getSimpleName();
     private final TagsSingleton mTagsSingleton;
-
+    private final UsersSingleton mUsersSingleton;
 
     public TagsList_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
         mTagsSingleton = TagsSingleton.getInstance();
+        mUsersSingleton = UsersSingleton.getInstance();
     }
 
 
@@ -129,7 +135,60 @@ public class TagsList_Presenter
 
 
     public void onDeleteMenuItemClicked() {
-        int selectedItemsCount = mListView.getSelectedItemsCount();
         List<BasicMVP_DataItem> selectedItemsList = mListView.getSelectedItems();
+
+        // TODO: проверять право удаления здесь или на уровне БД?
+        if (!mUsersSingleton.currentUserIsAdmin()) {
+            mPageView.showToast(R.string.action_denied);
+            return;
+        }
+
+        deleteTagsFromList(selectedItemsList);
+    }
+
+    private void deleteTagsFromList(List<BasicMVP_DataItem> tagsList) {
+
+        if (0 == tagsList.size()) {
+            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_deleted);
+            setViewState(eBasicViewStates.NEUTRAL, null);
+            return;
+        }
+
+        BasicMVP_DataItem dataItem = tagsList.get(0);
+        tagsList.remove(0);
+        Tag tag = (Tag) dataItem.getPayload();
+
+        if (0 == tag.getCardsCount()) {
+
+            String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
+            setViewState(eBasicViewStates.PROGRESS, msg);
+
+            mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
+                @Override
+                public void onDeleteSuccess(Tag tag) {
+                    mListView.removeItem(dataItem);
+
+                    deleteTagsFromList(tagsList);
+                }
+
+                @Override
+                public void onDeleteFail(String errorMsg) {
+                    String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
+                    mPageView.showToast(msg);
+                    Log.e(TAG, errorMsg);
+
+                    deleteTagsFromList(tagsList);
+                }
+            });
+        }
     }
 }
+
+
+
+
+
+
+
+
+
