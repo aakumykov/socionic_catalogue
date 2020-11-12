@@ -10,24 +10,37 @@
         android:id="@+id/titleView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="12dp"
-        tools:text="Название метки" />
+        tools:text="Название метки, очень длинное название очень длинной метки" />
 
     <TextView
         android:id="@+id/commentsCountView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:padding="10dp"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tagEditButton"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="300" />
+
+    <ImageView
+        android:id="@+id/tagEditButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="10dp"
-        tools:text="300" />
+        tools:visibility="visible"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_edit_grey" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

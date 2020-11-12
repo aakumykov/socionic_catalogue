@@ -100,7 +100,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/emailView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/emailView"
-            app:srcCompat="@drawable/ic_email_edit"
+            app:srcCompat="@drawable/ic_edit_grey"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

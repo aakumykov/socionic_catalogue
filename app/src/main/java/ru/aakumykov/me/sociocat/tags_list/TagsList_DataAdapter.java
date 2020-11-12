@@ -9,6 +9,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparat
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
 import ru.aakumykov.me.sociocat.tags_list.list_utils.TagsList_ItemsComparator;
 
 public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
@@ -19,7 +20,7 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
     @Override
     protected BasicMVP_ViewHolderCreator prepareViewHolderCreator() {
-        return new TagsList_ViewHolderCreator(mItemClickListener);
+        return new TagsList_ViewHolderCreator((iTagsList_ClickListener) mItemClickListener);
     }
 
     @Override

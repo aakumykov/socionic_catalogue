@@ -49,9 +49,7 @@ public abstract class BasicMVP_DataAdapter
     private Filter mFilter;
 
 
-    public BasicMVP_DataAdapter(
-            iBasicMVP_ItemClickListener itemClickListener
-    )
+    public BasicMVP_DataAdapter(iBasicMVP_ItemClickListener itemClickListener)
     {
         mItemClickListener = itemClickListener;
 
