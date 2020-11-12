@@ -4,6 +4,8 @@ package ru.aakumykov.me.sociocat.singletons;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.CollectionReference;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public interface iTagsSingleton {
     void saveTag(Tag tag, SaveCallbacks callbacks);
     void deleteTag(@NonNull Tag tag, DeleteCallbacks callbacks);
     void listTags(ListCallbacks callbacks);
+
+    CollectionReference getTagsCollection();
 
     void processTags(String cardKey,
                      @Nullable List<String> oldTagsNames,

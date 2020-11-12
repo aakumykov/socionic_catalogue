@@ -124,26 +124,11 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void deleteTag(@NonNull Tag tag, DeleteCallbacks callbacks) {
-        /*tagsCollection.document(tag.getKey()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onDeleteSuccess(tag);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        callbacks.onDeleteFail(e.getMessage());
-                    }
-                });*/
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
-//        CollectionReference cardsCollection = CardsSingleton.getInstance().getCardsCollection();
-        CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-        CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
+        CollectionReference cardsCollection = CardsSingleton.getInstance().getCardsCollection();
+        CollectionReference tagsCollection = getTagsCollection();
 
         for (String cardKey : tag.getCards()) {
             String tagKey = tag.getKey();
@@ -175,6 +160,11 @@ public class TagsSingleton implements iTagsSingleton {
                 Log.e(TAG, e.getMessage(), e);
             }
         });
+    }
+
+    @Override
+    public CollectionReference getTagsCollection() {
+        return firebaseFirestore.collection(Constants.TAGS_PATH);
     }
 
     @Override
