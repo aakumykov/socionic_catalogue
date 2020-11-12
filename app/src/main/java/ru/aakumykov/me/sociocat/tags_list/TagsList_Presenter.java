@@ -41,6 +41,7 @@ public class TagsList_Presenter
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
+    private boolean mInterruptFlag = false;
 
     public TagsList_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
@@ -89,6 +90,12 @@ public class TagsList_Presenter
     @Override
     protected void onConfigChanged() {
         super.onConfigChanged();
+    }
+
+    @Override
+    public void onInterruptRunningProcessClicked() {
+        super.onInterruptRunningProcessClicked();
+        mInterruptFlag = true;
     }
 
 
@@ -164,6 +171,13 @@ public class TagsList_Presenter
     }
 
     private void deleteTagsFromList(List<BasicMVP_DataItem> tagsList) {
+
+        if (mInterruptFlag) {
+            mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
+            mListView.clearSelection();
+            setViewState(eBasicViewStates.NEUTRAL, null);
+            return;
+        }
 
         if (0 == tagsList.size()) {
             mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
