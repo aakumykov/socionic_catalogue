@@ -10,21 +10,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Transaction;
-import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -120,46 +117,6 @@ public class TagsSingleton implements iTagsSingleton {
                         callbacks.onSaveFail(e.getMessage());
                     }
                 });
-    }
-
-    @Override
-    public void deleteTag(@NonNull Tag tag, DeleteCallbacks callbacks) {
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        CollectionReference cardsCollection = CardsSingleton.getInstance().getCardsCollection();
-        CollectionReference tagsCollection = getTagsCollection();
-
-        for (String cardKey : tag.getCards()) {
-            String tagKey = tag.getKey();
-            String tagName = tag.getName();
-            String ghostTagName = Card.GHOST_TAG_PREFIX + tagName;
-
-            DocumentReference cardRef = cardsCollection.document(cardKey);
-
-            // Удаляю метку-призрак
-            writeBatch.update(cardRef, FieldPath.of(ghostTagName), FieldValue.delete());
-
-            // Удаляю метку из списка меток карточки
-            writeBatch.update(cardRef, Card.KEY_TAGS, FieldValue.arrayRemove(tagName));
-
-            // Удаляю метку из коллекции меток
-            writeBatch.delete(tagsCollection.document(tagKey));
-        }
-
-        writeBatch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                callbacks.onDeleteSuccess(tag);
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callbacks.onDeleteFail(e.getMessage());
-                Log.e(TAG, e.getMessage(), e);
-            }
-        });
     }
 
     @Override

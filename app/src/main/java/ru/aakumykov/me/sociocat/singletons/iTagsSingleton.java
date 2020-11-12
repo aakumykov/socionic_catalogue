@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.singletons;
 
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -16,7 +15,7 @@ public interface iTagsSingleton {
     void createTag(Tag tag, TagCallbacks callbacks);
     void readTag(String key, TagCallbacks callbacks);
     void saveTag(Tag tag, SaveCallbacks callbacks);
-    void deleteTag(@NonNull Tag tag, DeleteCallbacks callbacks);
+
     void listTags(ListCallbacks callbacks);
 
     CollectionReference getTagsCollection();
