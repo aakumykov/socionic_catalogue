@@ -13,6 +13,7 @@
     <color name="black">#000000</color>
 
     <color name="icon_grey">@color/grey</color>
+    <color name="icon_lightgrey">#ccc</color>
 
     <color name="undefined">#a4a4a4</color>
     <color name="debug">#a4a4a4</color>
@@ -109,4 +110,5 @@
     <color name="colorErrorText">#E6453A</color>
 
     <color name="tags_list_selection_background_color">#DFDFDF</color>
+
 </resources>
