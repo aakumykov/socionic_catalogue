@@ -31,6 +31,7 @@ import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
@@ -145,9 +146,16 @@ public class TagsList_Presenter
 
 
     public void onDeleteMenuItemClicked() {
+
+        String title = MyUtils.getPluralString(
+                mPageView.getAppContext(),
+                R.plurals.TAGS_LIST_deleting_dialog_title,
+                mListView.getSelectedItemsCount()
+        );
+
         SimpleYesNoDialog.show(
                 mPageView.getPageContext(),
-                R.string.TAGS_LIST_deleting_dialog_title,
+                title,
                 null,
                 new SimpleYesNoDialog.AbstractCallbacks() {
                     @Override

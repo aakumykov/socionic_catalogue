@@ -17,4 +17,10 @@
         <item quantity="many">Удалить %1$d выбранных элементов?</item>
         <item quantity="other">Удалить %1$d выбранных элементов?</item>
     </plurals>
+
+    <plurals name="TAGS_LIST_deleting_dialog_title">
+        <item quantity="one">Удалить %1$d выбранную метку?</item>
+        <item quantity="few">Удалить %1$d выбранные метки?</item>
+        <item quantity="many">Удалить %1$d выбранных меток?</item>
+    </plurals>
 </resources>

@@ -703,7 +703,6 @@
     <string name="TAGS_LIST_selected_tags_are_processed">Выбранные метки обработаны</string>
     <string name="MENU_interrupt_running_action">Прервать выполняющееся действие</string>
     <string name="interrupt">Прервать</string>
-    <string name="TAGS_LIST_deleting_dialog_title">Удалить выбранные метки?</string>
     <string name="TAGS_LIST_deletion_process_interrupted">Процесс удаления прерван</string>
 
 
