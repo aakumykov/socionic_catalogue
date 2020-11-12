@@ -31,6 +31,7 @@ import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
+import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
         extends BasicMVP_Presenter
@@ -137,9 +138,23 @@ public class TagsList_Presenter
 
 
     public void onDeleteMenuItemClicked() {
+        SimpleYesNoDialog.show(
+                mPageView.getPageContext(),
+                R.string.TAGS_LIST_deleting_dialog_title,
+                null,
+                new SimpleYesNoDialog.AbstractCallbacks() {
+                    @Override
+                    public void onYes() {
+                        super.onYes();
+                        onTagsDeletionConfirmed();
+                    }
+                }
+        );
+    }
+
+    private void onTagsDeletionConfirmed() {
         List<BasicMVP_DataItem> selectedItemsList = mListView.getSelectedItems();
 
-        // TODO: проверять право удаления здесь или на уровне БД?
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showToast(R.string.action_denied);
             return;
