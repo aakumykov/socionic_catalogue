@@ -14,7 +14,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataI
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
 
 public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
@@ -51,9 +50,7 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
     @OnClick(R.id.listItem)
     void onItemClicked() {
-        iTagsList_ClickListener tagsListClickListener =
-                (iTagsList_ClickListener) getItemClickListener();
-        tagsListClickListener.onTagClicked(this);
+        mItemClickListener.onItemClicked(this);
     }
 
     @OnLongClick(R.id.listItem)

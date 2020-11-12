@@ -27,7 +27,6 @@ import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
@@ -37,7 +36,6 @@ import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
         extends BasicMVP_Presenter
-        implements iTagsList_ClickListener
 {
     private static final String TAG = TagsList_Presenter.class.getSimpleName();
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
@@ -69,13 +67,29 @@ public class TagsList_Presenter
     }
 
     @Override
+    public void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+
+        Tag_ViewHolder tagViewHolder = (Tag_ViewHolder) basicDataViewHolder;
+
+        if (mListView.isSelectionMode()) {
+            onSelectItemClicked(tagViewHolder);
+        }
+        else {
+            int position = tagViewHolder.getAdapterPosition();
+            BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
+            Tag tag = (Tag) basicDataItem.getPayload();
+            ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
+        }
+    }
+
+    @Override
     protected void onRefreshRequested() {
         loadList();
     }
 
     @Override
-    public void onItemLongClicked(BasicMVP_DataViewHolder basicViewHolder) {
-        onSelectItemClicked(basicViewHolder);
+    public void onItemLongClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+        onSelectItemClicked(basicDataViewHolder);
     }
 
     @Override
@@ -98,21 +112,6 @@ public class TagsList_Presenter
     public void onInterruptRunningProcessClicked() {
         super.onInterruptRunningProcessClicked();
         mInterruptFlag = true;
-    }
-
-
-    // iTagsList_ClickListener
-    @Override
-    public void onTagClicked(Tag_ViewHolder tagViewHolder) {
-        if (mListView.isSelectionMode()) {
-            onSelectItemClicked(tagViewHolder);
-        }
-        else {
-            int position = tagViewHolder.getAdapterPosition();
-            BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
-            Tag tag = (Tag) basicDataItem.getPayload();
-            ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
-        }
     }
 
 

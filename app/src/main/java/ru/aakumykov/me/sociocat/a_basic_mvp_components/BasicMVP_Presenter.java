@@ -142,7 +142,10 @@ public abstract class BasicMVP_Presenter
 
     // iBasicMVP_ItemClickListener
     @Override
-    public abstract void onItemLongClicked(BasicMVP_DataViewHolder basicViewHolder);
+    public abstract void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder);
+
+    @Override
+    public abstract void onItemLongClicked(BasicMVP_DataViewHolder basicDataViewHolder);
 
     @Override
     public abstract void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder);
