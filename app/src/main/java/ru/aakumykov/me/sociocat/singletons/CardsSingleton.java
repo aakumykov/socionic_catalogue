@@ -73,6 +73,26 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
+    public void checkCardExists(@NonNull String cardKey, CardCheckExistingCallbacks callbacks) {
+        getCardsCollection().document(cardKey).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists())
+                            callbacks.onCardExists(cardKey);
+                        else
+                            callbacks.onCardNotExists(cardKey);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardNotExists(cardKey);
+                    }
+                });
+    }
+
+    @Override
     public void loadFirstPortion(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,

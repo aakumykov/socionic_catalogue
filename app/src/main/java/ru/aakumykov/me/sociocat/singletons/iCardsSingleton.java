@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -30,6 +31,8 @@ public interface iCardsSingleton {
     }
 
     CollectionReference getCardsCollection();
+
+    void checkCardExists(@NonNull String cardKey, CardCheckExistingCallbacks callbacks);
 
     void loadFirstPortion(ListCallbacks callbacks);
     void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);
@@ -86,5 +89,10 @@ public interface iCardsSingleton {
 
     interface ChangeRatingCallbacks {
         void onRatingChangeComplete(int value, @Nullable String errorMsg);
+    }
+
+    interface CardCheckExistingCallbacks {
+        void onCardExists(@NonNull String cardKey);
+        void onCardNotExists(@NonNull String notExistingCardKey);
     }
 }

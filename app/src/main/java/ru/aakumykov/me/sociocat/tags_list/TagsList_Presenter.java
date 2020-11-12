@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.tags_list;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
@@ -34,13 +37,12 @@ public class TagsList_Presenter
         implements iTagsList_ClickListener
 {
     private static final String TAG = TagsList_Presenter.class.getSimpleName();
-    private final TagsSingleton mTagsSingleton;
-    private final UsersSingleton mUsersSingleton;
+    private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
+    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
+    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
 
     public TagsList_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
-        mTagsSingleton = TagsSingleton.getInstance();
-        mUsersSingleton = UsersSingleton.getInstance();
     }
 
 
@@ -161,7 +163,7 @@ public class TagsList_Presenter
         String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
         setViewState(eBasicViewStates.PROGRESS, msg);
 
-        mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
+        /*mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
             @Override
             public void onDeleteSuccess(Tag tag) {
                 mListView.removeItem(dataItem);
@@ -173,6 +175,22 @@ public class TagsList_Presenter
             public void onDeleteFail(String errorMsg) {
                 String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
                 mPageView.showToast(msg);
+                Log.e(TAG, errorMsg);
+
+                deleteTagsFromList(tagsList);
+            }
+        });*/
+
+        mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
+            @Override
+            public void onTagDeleteSuccess(@NonNull Tag tag) {
+                mListView.removeItem(dataItem);
+                deleteTagsFromList(tagsList);
+            }
+
+            @Override
+            public void onTagDeleteError(@NonNull String errorMsg) {
+                mPageView.showToast(mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName()));
                 Log.e(TAG, errorMsg);
 
                 deleteTagsFromList(tagsList);
