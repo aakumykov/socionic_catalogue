@@ -11,12 +11,6 @@ import ru.aakumykov.me.sociocat.R;
 
 public class SimpleYesNoDialog {
 
-    public interface Callbacks {
-        void onYes();
-        void onNo();
-        void onCancel();
-    }
-
     /* Context должен быть контекстом страницы (Activity),
     а не приложения (т.е. ApplicationContext).
     Иначе не определяется тема и вываливается исключение. */
@@ -59,4 +53,30 @@ public class SimpleYesNoDialog {
 
         alertDialog.show();
     }
+
+
+    public interface Callbacks {
+        void onYes();
+        void onNo();
+        void onCancel();
+    }
+
+    public static class AbstractCallbacks implements Callbacks {
+
+        @Override
+        public void onYes() {
+
+        }
+
+        @Override
+        public void onNo() {
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+    }
+
 }
