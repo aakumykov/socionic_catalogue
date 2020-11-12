@@ -92,7 +92,7 @@ public class BasicMVP_ViewStub implements iBasicListPage {
     }
 
     @Override
-    public void showSelectionViewState(Object viewStateData) {
+    public void setSelectionViewState(Object viewStateData) {
 
     }
 }

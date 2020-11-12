@@ -233,7 +233,7 @@ public abstract class BasicMVP_View
                 break;
 
             case SELECTION:
-                showSelectionViewState(data);
+                setSelectionViewState(data);
                 break;
 
             case SELECTION_ALL:
@@ -246,7 +246,7 @@ public abstract class BasicMVP_View
     }
 
     @Override
-    public void showSelectionViewState(Object viewStateData) {
+    public void setSelectionViewState(Object viewStateData) {
         showSelectionMenu();
         showSelectedItemsCount(viewStateData);
     }

@@ -63,7 +63,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         super.compileMenu();
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
-
     }
 
     @Override
@@ -85,8 +84,8 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
-    public void showSelectionViewState(Object viewStateData) {
-        super.showSelectionViewState(viewStateData);
+    public void setSelectionViewState(Object viewStateData) {
+        super.setSelectionViewState(viewStateData);
         inflateMenuItem(R.menu.tags_list_delete);
     }
 

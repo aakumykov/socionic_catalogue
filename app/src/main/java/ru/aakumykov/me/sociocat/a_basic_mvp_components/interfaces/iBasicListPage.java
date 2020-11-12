@@ -23,7 +23,7 @@ public interface iBasicListPage {
     void setViewState(@NonNull iViewState state, @Nullable Object data);
 
     //TODO: вынести сюда другие методы установки вида...
-    void showSelectionViewState(Object viewStateData);
+    void setSelectionViewState(Object viewStateData);
 
     void refreshMenu();
 

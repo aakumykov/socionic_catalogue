@@ -247,11 +247,6 @@ public abstract class BasicMVP_Fragment
     }
 
     @Override
-    public void showSelectionViewState(Object viewStateData) {
-        throw new RuntimeException("Не реализовано!");
-    }
-
-    @Override
     public void showToast(int messageId) {
         showToast(getString(messageId));
     }
@@ -542,7 +537,8 @@ public abstract class BasicMVP_Fragment
     }
 
 
-    protected void setSelectionViewState(Object viewStateData) {
+    @Override
+    public void setSelectionViewState(Object viewStateData) {
         showSelectionMenu();
         showSelectedItemsCount(viewStateData);
     }
