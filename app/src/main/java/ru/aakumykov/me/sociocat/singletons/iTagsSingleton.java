@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.singletons;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public interface iTagsSingleton {
     void createTag(Tag tag, TagCallbacks callbacks);
     void readTag(String key, TagCallbacks callbacks);
     void saveTag(Tag tag, SaveCallbacks callbacks);
-    void deleteTag(Tag tag, DeleteCallbacks callbacks);
+    void deleteTag(@NonNull Tag tag, DeleteCallbacks callbacks);
     void listTags(ListCallbacks callbacks);
 
     void processTags(String cardKey,

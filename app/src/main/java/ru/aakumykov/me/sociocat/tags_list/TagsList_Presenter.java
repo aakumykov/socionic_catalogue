@@ -149,7 +149,7 @@ public class TagsList_Presenter
     private void deleteTagsFromList(List<BasicMVP_DataItem> tagsList) {
 
         if (0 == tagsList.size()) {
-            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_deleted);
+            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
             setViewState(eBasicViewStates.NEUTRAL, null);
             return;
         }
@@ -158,29 +158,26 @@ public class TagsList_Presenter
         tagsList.remove(0);
         Tag tag = (Tag) dataItem.getPayload();
 
-        if (0 == tag.getCardsCount()) {
+        String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
+        setViewState(eBasicViewStates.PROGRESS, msg);
 
-            String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
-            setViewState(eBasicViewStates.PROGRESS, msg);
+        mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
+            @Override
+            public void onDeleteSuccess(Tag tag) {
+                mListView.removeItem(dataItem);
 
-            mTagsSingleton.deleteTag(tag, new iTagsSingleton.DeleteCallbacks() {
-                @Override
-                public void onDeleteSuccess(Tag tag) {
-                    mListView.removeItem(dataItem);
+                deleteTagsFromList(tagsList);
+            }
 
-                    deleteTagsFromList(tagsList);
-                }
+            @Override
+            public void onDeleteFail(String errorMsg) {
+                String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
+                mPageView.showToast(msg);
+                Log.e(TAG, errorMsg);
 
-                @Override
-                public void onDeleteFail(String errorMsg) {
-                    String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
-                    mPageView.showToast(msg);
-                    Log.e(TAG, errorMsg);
-
-                    deleteTagsFromList(tagsList);
-                }
-            });
-        }
+                deleteTagsFromList(tagsList);
+            }
+        });
     }
 }
 

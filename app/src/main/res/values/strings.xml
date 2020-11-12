@@ -700,7 +700,7 @@
     <string name="CARDS_LIST_card_has_been_deleted">Карточка удалена</string>
     <string name="TAGS_LIST_deleting_tag">Удаляем метку %1$s</string>
     <string name="TAGS_LIST_error_deleting_tag">Ошибка удаления метки «%1$s»</string>
-    <string name="TAGS_LIST_selected_tags_are_deleted">Выбранные метки удалены</string>
+    <string name="TAGS_LIST_selected_tags_are_processed">Выбранные метки обработаны</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
