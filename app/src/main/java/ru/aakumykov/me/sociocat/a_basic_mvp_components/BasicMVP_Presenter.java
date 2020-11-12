@@ -193,10 +193,15 @@ public abstract class BasicMVP_Presenter
         setViewState(eBasicViewStates.SELECTION, mListView.getSelectedItemsCount());
     }
 
+    public void onInterruptRunningProcessClicked() {
+
+    }
+
 
     // Внутренние
     private boolean isColdStart() {
         return mListView.isVirgin();
     }
+
 
 }

@@ -135,7 +135,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/delete_outline/baseline_delete_outline_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/not_interested/baseline_not_interested_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -145,8 +145,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_delete_tags_list" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_menu_item_interrupt" />
                             <entry key="sourceFile" value="C:\Users\Andrey\Pictures\ic_youtube_video_error.svg" />
                           </map>
                         </option>

@@ -154,6 +154,10 @@ public abstract class BasicMVP_View
                 mPresenter.onInvertSelectionClicked();
                 break;
 
+            case R.id.actionInterrupt:
+                mPresenter.onInterruptRunningProcessClicked();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -214,6 +218,10 @@ public abstract class BasicMVP_View
 
             case PROGRESS:
                 showProgressMessage(data);
+                break;
+
+            case PROGRESS_WITH_CANCEL_BUTTON:
+                showProgressWithCancelButton(data);
                 break;
 
             case ERROR:
@@ -435,6 +443,12 @@ public abstract class BasicMVP_View
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
+    private void showInterruptButton() {
+        clearMenu();
+        inflateMenuItem(R.menu.progress_cancel);
+        setPageTitle(R.string.interrupt);
+    }
+
 
     // ViewState
     private void setNeutralViewState() {
@@ -445,9 +459,14 @@ public abstract class BasicMVP_View
         hideProgressMessage();
     }
 
-    private void showProgressMessage(Object data) {
+    private void showProgressMessage(@Nullable Object data) {
         showMessage(data);
         showProgressBar();
+    }
+
+    private void showProgressWithCancelButton(@Nullable Object data) {
+        showProgressMessage(data);
+        showInterruptButton();
     }
 
     public void showRefreshThrobber() {
@@ -467,7 +486,7 @@ public abstract class BasicMVP_View
         setMessageColor(R.color.colorErrorText);
     }
 
-    private void showMessage(Object data) {
+    private void showMessage(@Nullable Object data) {
         if (data instanceof Integer)
             messageView.setText((int) data);
         else if (data instanceof String)
