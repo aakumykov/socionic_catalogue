@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.CollectionReference;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
@@ -27,6 +29,7 @@ public interface iCardsSingleton {
         UNRATE_DOWN
     }
 
+    CollectionReference getCardsCollection();
 
     void loadFirstPortion(ListCallbacks callbacks);
     void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);

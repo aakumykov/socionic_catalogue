@@ -68,6 +68,11 @@ public class CardsSingleton implements iCardsSingleton {
 
 
     @Override
+    public CollectionReference getCardsCollection() {
+        return firebaseFirestore.collection(Constants.CARDS_PATH);
+    }
+
+    @Override
     public void loadFirstPortion(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
