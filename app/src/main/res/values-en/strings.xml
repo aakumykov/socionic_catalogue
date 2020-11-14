@@ -703,6 +703,9 @@
     <string name="TAG_EDIT_cancel_editing_tag">Cancel editing tag?</string>
     <string name="TAG_EDIT_page_title">Editing tag</string>
     <string name="TAG_EDIT_page_title_extended">Editing tag «%1$s»</string>
+    <string name="TAG_EDIT_you_cannot_edit_tag">Tag edition denied</string>
+    <string name="TAG_EDIT_saving_tag">Saving tag</string>
+    <string name="TAG_EDIT_tag_is_not_changed">Tag is not changed</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

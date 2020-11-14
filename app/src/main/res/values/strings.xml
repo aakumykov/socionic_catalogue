@@ -710,6 +710,9 @@
     <string name="TAG_EDIT_cancel_editing_tag">Отменить изменения метки?</string>
     <string name="TAG_EDIT_page_title">Правка метки</string>
     <string name="TAG_EDIT_page_title_extended">Правка метки «%1$s»</string>
+    <string name="TAG_EDIT_you_cannot_edit_tag">Редактирование запрещено</string>
+    <string name="TAG_EDIT_saving_tag">Сохраняем метку</string>
+    <string name="TAG_EDIT_tag_is_not_changed">Метка не менялась</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
