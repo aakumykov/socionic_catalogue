@@ -15,6 +15,7 @@ import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
@@ -29,6 +30,7 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
     private iBasicViewState mCurrentViewState;
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
+    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -111,9 +113,11 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
 
         setViewState(new ProgressViewState(R.string.TAG_EDIT_saving_tag));
 
-        mCurrentTag.setName(mPageView.getTagName());
+        Tag newTag = new Tag();
+        newTag.setName(mPageView.getTagName());
+        newTag.setKey(mCurrentTag);
 
-        /*mTagsSingleton.saveTag(mCurrentTag, new iTagsSingleton.SaveCallbacks() {
+        mComplexSingleton.updateTag(mCurrentTag, new iTagsSingleton.SaveCallbacks() {
             @Override
             public void onSaveSuccess(Tag tag) {
 
@@ -123,7 +127,7 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
             public void onSaveFail(String errorMsg) {
 
             }
-        });*/
+        });
     }
 
     public void onCancelClicked() {
