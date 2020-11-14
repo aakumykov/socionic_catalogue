@@ -704,6 +704,7 @@
     <string name="MENU_interrupt_running_action">Прервать выполняющееся действие</string>
     <string name="interrupt">Прервать</string>
     <string name="TAGS_LIST_deletion_process_interrupted">Процесс удаления прерван</string>
+    <string name="TAG_EDIT_name_input_hint">Имя метки</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

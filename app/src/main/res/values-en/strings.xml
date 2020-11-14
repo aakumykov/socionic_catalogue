@@ -697,6 +697,7 @@
     <string name="MENU_interrupt_running_action">Interrupt running action</string>
     <string name="interrupt">Interrupt</string>
     <string name="TAGS_LIST_deletion_process_interrupted">Deletion process is interrupted</string>
+    <string name="TAG_EDIT_name_input_hint">Tag name</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

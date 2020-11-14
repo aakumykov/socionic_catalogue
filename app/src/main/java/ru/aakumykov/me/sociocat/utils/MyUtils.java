@@ -530,6 +530,10 @@ public final class MyUtils {
             view.setVisibility((isVisible) ? View.VISIBLE : View.GONE);
     }
 
+    public static String getString(Context context, int stringResourceId, Object... formatArguments) {
+        return context.getResources().getString(stringResourceId, formatArguments);
+    }
+
     /*public static long getCurrentTime(TimeUnit timeUnit) {
         long time = new Date().getTime();
 

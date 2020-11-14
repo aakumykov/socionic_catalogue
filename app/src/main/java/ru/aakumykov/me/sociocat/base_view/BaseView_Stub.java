@@ -8,6 +8,8 @@ import android.view.Menu;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
+
 public class BaseView_Stub implements iBaseView {
 
     @Override
@@ -18,6 +20,11 @@ public class BaseView_Stub implements iBaseView {
     @Override
     public Activity getActivity() {
         return null;
+    }
+
+    @Override
+    public void setViewState(iBasicViewState viewState, Object... arguments) {
+
     }
 
     @Override

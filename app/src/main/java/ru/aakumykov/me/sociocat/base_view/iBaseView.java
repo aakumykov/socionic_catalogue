@@ -6,8 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 
 public interface iBaseView {
 
@@ -15,9 +16,13 @@ public interface iBaseView {
     Context getAppContext();
     Activity getActivity();
 
+    // Состояние страницы
+    void setViewState(iBasicViewState viewState);
+
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);
-    void showProgressMessage(int messageId, String insertedText);
+    void showProgressMessage(String msg);
+
     void hideProgressMessage();
 
     void showProgressBar();

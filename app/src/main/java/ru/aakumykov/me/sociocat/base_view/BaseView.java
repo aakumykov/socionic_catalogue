@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,6 +34,11 @@ import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
+import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.NeutralViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.RefreshingViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
@@ -200,6 +206,52 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         return this;
     }
 
+    @Override
+    public void setViewState(iBasicViewState viewState) {
+        if (viewState instanceof NeutralViewState)
+            setNeutralViewState();
+        else if (viewState instanceof ProgressViewState)
+            setProgressViewState((ProgressViewState) viewState);
+        else if (viewState instanceof RefreshingViewState)
+            setRefreshingViewState();
+        else if (viewState instanceof ErrorViewState)
+            setErrorViewState((ErrorViewState) viewState);
+        else
+            throw new RuntimeException("Unknown view state: "+viewState);
+    }
+
+    protected void setNeutralViewState() {
+        hideProgressMessage();
+        hideRefreshThrobber();
+    }
+
+    protected void setProgressViewState(ProgressViewState progressViewState) {
+        if (progressViewState.hasStringMessage())
+            showProgressMessage(progressViewState.getStringMessage());
+        else
+            showProgressMessage(progressViewState.getMessageId());
+    }
+
+    protected void setRefreshingViewState() {
+        showRefreshThrobber();
+    }
+
+    protected void showRefreshThrobber() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        if (null != swipeRefreshLayout)
+            swipeRefreshLayout.setRefreshing(true);
+    }
+
+    protected void hideRefreshThrobber() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        if (null != swipeRefreshLayout)
+            swipeRefreshLayout.setRefreshing(false);
+    }
+
+    protected void setErrorViewState(ErrorViewState errorViewState) {
+        setNeutralViewState();
+        showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
+    }
 
     // Сообщения вверху страницы
     @Override
@@ -208,10 +260,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         showProgressMessage(msg);
     }
 
-    @Override
-    public void showProgressMessage(int messageId, String insertedText) {
-        String msg = getResources().getString(messageId, insertedText);
-        showProgressMessage(msg);
+    public void showProgressMessage(String msg) {
+        Resources resources = getResources();
+        showMsg(msg, R.color.info, R.color.info_background);
+        showProgressBar();
     }
 
     @Override
@@ -429,16 +481,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
-    private void showProgressMessage(String msg) {
-        Resources resources = getResources();
-        showMsg(
-                msg,
-                R.color.info,
-                R.color.info_background
-        );
-        showProgressBar();
-    }
-
     private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
 

@@ -346,7 +346,13 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
 
-        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
+        String msg = MyUtils.getString(
+                pageView.getAppContext(),
+                R.string.CARDS_GRID_loading_cards_with_tag,
+                filterTag
+        );
+
+        pageView.showProgressMessage(msg);
 
         try {
             cardsSingleton.loadCardsWithTag(filterTag, new iCardsSingleton.ListCallbacks() {
