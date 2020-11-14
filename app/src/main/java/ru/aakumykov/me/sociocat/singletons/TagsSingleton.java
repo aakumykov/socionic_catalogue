@@ -67,14 +67,17 @@ public class TagsSingleton implements iTagsSingleton {
     }
 
     @Override
-    public void readTag(String key, TagCallbacks callbacks) {
+    public void getTag(String key, TagCallbacks callbacks) {
         tagsCollection.document(key).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         try {
                             Tag tag = documentSnapshot.toObject(Tag.class);
-                            callbacks.onTagSuccess(tag);
+                            if (null != tag)
+                                callbacks.onTagSuccess(tag);
+                            else
+                                callbacks.onTagFail("Tag is null");
                         }
                         catch (Exception e) {
                             e.printStackTrace();

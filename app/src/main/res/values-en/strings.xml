@@ -698,6 +698,11 @@
     <string name="interrupt">Interrupt</string>
     <string name="TAGS_LIST_deletion_process_interrupted">Deletion process is interrupted</string>
     <string name="TAG_EDIT_name_input_hint">Tag name</string>
+    <string name="TAG_EDIT_loading_tag">Loading tag</string>
+    <string name="TAG_EDIT_error_loading_tag">Error loading tag</string>
+    <string name="TAG_EDIT_cancel_editing_tag">Cancel editing tag?</string>
+    <string name="TAG_EDIT_page_title">Editing tag</string>
+    <string name="TAG_EDIT_page_title_extended">Editing tag «%1$s»</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

@@ -1,5 +1,14 @@
 package ru.aakumykov.me.sociocat.tag_edit;
 
-public interface iTagEdit_View {
-    Object getIntent();
+import android.content.Intent;
+
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
+
+public interface iTagEdit_View extends iBaseView {
+
+    Intent getIntent();
+
+    String getTagName();
+
+    void confirmCancel();
 }

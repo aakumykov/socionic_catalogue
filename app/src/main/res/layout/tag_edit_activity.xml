@@ -22,9 +22,18 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/main_button"
+        android:padding="8dp"
         android:text="@string/save" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/cancel_button"
+        android:padding="8dp"
+        android:text="@string/cancel" />
 
 </LinearLayout>

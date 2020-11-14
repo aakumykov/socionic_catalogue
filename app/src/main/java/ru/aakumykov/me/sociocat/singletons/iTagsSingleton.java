@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 public interface iTagsSingleton {
 
     void createTag(Tag tag, TagCallbacks callbacks);
-    void readTag(String key, TagCallbacks callbacks);
+    void getTag(String key, TagCallbacks callbacks);
     void saveTag(Tag tag, SaveCallbacks callbacks);
 
     void listTags(ListCallbacks callbacks);
