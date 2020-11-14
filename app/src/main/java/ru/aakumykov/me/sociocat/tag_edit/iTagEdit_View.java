@@ -1,4 +1,5 @@
 package ru.aakumykov.me.sociocat.tag_edit;
 
-public class iTagEdit_View {
+public interface iTagEdit_View {
+    Object getIntent();
 }

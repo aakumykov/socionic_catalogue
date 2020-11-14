@@ -462,7 +462,7 @@ public abstract class BasicMVP_View
 
 
     // ViewState
-    private void setNeutralViewState() {
+    protected void setNeutralViewState() {
         setDefaultPageTitle();
         compileMenu();
 

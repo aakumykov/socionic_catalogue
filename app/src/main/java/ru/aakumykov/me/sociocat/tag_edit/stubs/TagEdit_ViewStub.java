@@ -1,4 +1,11 @@
 package ru.aakumykov.me.sociocat.tag_edit.stubs;
 
-public class TagEdit_ViewStub {
+import ru.aakumykov.me.sociocat.tag_edit.iTagEdit_View;
+
+public class TagEdit_ViewStub implements iTagEdit_View {
+
+    @Override
+    public Object getIntent() {
+        return null;
+    }
 }

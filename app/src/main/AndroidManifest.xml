@@ -163,6 +163,7 @@
             android:name=".user_change_password.UserChangePassword_View"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity android:name=".tag_edit.TagEdit_View" />
 
 
         <!--

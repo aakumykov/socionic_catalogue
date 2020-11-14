@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.BasicMVP_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 
@@ -139,12 +140,12 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
     @Override
     public void goEditTag(@NonNull Tag tag) {
-        /*Intent intent = new Intent(this, TagEdit_View.class);
+        Intent intent = new Intent(this, TagEdit_View.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
-        startActivityForResult(intent, Constants.CODE_EDIT_TAG);*/
+        startActivityForResult(intent, Constants.CODE_EDIT_TAG);
 
-        showToast(tag.getName());
+        //showToast(tag.getName());
     }
 
 

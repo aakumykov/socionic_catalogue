@@ -23,7 +23,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState, Object... arguments) {
+    public void setViewState(iBasicViewState viewState) {
 
     }
 
@@ -33,7 +33,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showProgressMessage(int messageId, String insertedText) {
+    public void showProgressMessage(String msg) {
 
     }
 

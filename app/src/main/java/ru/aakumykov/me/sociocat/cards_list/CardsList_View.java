@@ -585,11 +585,11 @@ public class CardsList_View
         return true;
     }
 
-    private void showRefreshThrobber() {
+    protected void showRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-    private void hideRefreshThrobber() {
+    protected void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }
 

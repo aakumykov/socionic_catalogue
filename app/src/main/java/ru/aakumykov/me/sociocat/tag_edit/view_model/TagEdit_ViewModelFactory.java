@@ -1,4 +1,6 @@
 package ru.aakumykov.me.sociocat.tag_edit.view_model;
 
-public class TagEdit_ViewModelFactory {
+import androidx.lifecycle.ViewModelProvider;
+
+public class TagEdit_ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 }
