@@ -121,34 +121,60 @@ public class ComplexSingleton {
                 });
     }
 
-    private void updateTagWithCheckedListOfCards(@NonNull Tag oldTag, @NonNull Tag tag, List<String> existedCardsList, iComplexSingleton_TagSaveCallbacks saveCallbacks) {
+    private void updateTagWithCheckedListOfCards(@NonNull Tag oldTag, @NonNull Tag newTag, List<String> existedCardsList, iComplexSingleton_TagSaveCallbacks saveCallbacks) {
 
         WriteBatch writeBatch = mFirebaseFirestore.batch();
 
         CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
         CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
 
-        String tagKey = tag.getKey();
+        String oldTagKey = oldTag.getKey();
         String oldTagName = oldTag.getName();
         String oldGhostTagName = Card.GHOST_TAG_PREFIX + oldTagName;
 
+        String newTagKey = newTag.getKey();
+        String newTagName = newTag.getName();
+        String newGhostTagName = Card.GHOST_TAG_PREFIX + newTagName;
+
         // 1. Метка:
-        // удаляю старую
-        // создаю новую
+        // Удаляю старую
+        writeBatch.delete(tagsCollection.document(oldTagKey));
+
+        // Создаю новую
+        writeBatch.set(tagsCollection.document(newTagKey), newTag);
 
         // 2. Каждая карточка метки:
-        // Удалить старую метку-призрак
-        // Добавить новую метку-призрак
-        // Удалить старую метку из списка меток
-        // Добавить новую метку в список меток
-
-        /*for (String cardKey : existedCardsList) {
-            // Получаю ссылку на карточку
+        for (String cardKey : existedCardsList) {
             DocumentReference cardRef = cardsCollection.document(cardKey);
 
+            // Добавляю новую метку-призрак
+            writeBatch.update(cardRef, FieldPath.of(newGhostTagName), true);
+
             // Удаляю старую метку-призрак
-            writeBatch.update(cardRef, FieldPath.of(ghostTagName), FieldValue.delete());
-        }*/
+            writeBatch.update(cardRef, FieldPath.of(oldGhostTagName), FieldValue.delete());
+
+            // Добаляю новую метку в список меток карточки
+            writeBatch.update(cardRef, Card.KEY_TAGS, FieldValue.arrayUnion(newTagName));
+
+            // Удаляю старую метку из списка меток карточки
+            writeBatch.update(cardRef, Card.KEY_TAGS, FieldValue.arrayRemove(oldTagName));
+        }
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        saveCallbacks.onTagSaveSuccess(newTag);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String errorMsg = (null != e.getMessage()) ? e.getMessage() : "Tag saving error";
+                        saveCallbacks.onTagSaveError(errorMsg);
+                        Log.e(TAG, errorMsg, e);
+                    }
+                });
     }
 
 
