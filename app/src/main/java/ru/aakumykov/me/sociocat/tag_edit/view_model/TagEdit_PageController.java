@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModel;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
-import ru.aakumykov.me.sociocat.basic_view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -157,8 +156,7 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
 
             @Override
             public void onTagFail(String errorMsg) {
-                setViewState(new NeutralViewState());
-                mPageView.showToast("Можно сохранять");
+                updateTag(newTag, mCurrentTag);
             }
         });
     }
@@ -168,12 +166,16 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
         mComplexSingleton.updateTag(mCurrentTag, newTag, new ComplexSingleton.iComplexSingleton_TagSaveCallbacks() {
             @Override
             public void onTagSaveSuccess(@NonNull Tag tag) {
-
+                mPageView.showToast(R.string.TAG_EDIT_tag_is_saved);
+                mPageView.finishWithSuccess(tag);
             }
 
             @Override
             public void onTagSaveError(@NonNull String errorMsg) {
-
+                setViewState(new ErrorViewState(
+                        R.string.TAG_EDIT_error_saving_tag,
+                        errorMsg
+                ));
             }
         });
     }

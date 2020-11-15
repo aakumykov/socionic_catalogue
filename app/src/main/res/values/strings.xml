@@ -715,6 +715,8 @@
     <string name="TAG_EDIT_tag_is_not_changed">Метка не менялась</string>
     <string name="TAG_EDIT_name_is_too_long">Максимум %1$d символов (сейчас %2$d)</string>
     <string name="TAG_EDIT_duplicate_found">Такая метка уже есть</string>
+    <string name="TAG_EDIT_tag_is_saved">Метка сохранена</string>
+    <string name="TAG_EDIT_error_saving_tag">Ошибка сохранения метки</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

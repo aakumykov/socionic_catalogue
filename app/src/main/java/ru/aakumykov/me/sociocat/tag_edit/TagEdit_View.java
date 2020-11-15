@@ -1,9 +1,11 @@
 package ru.aakumykov.me.sociocat.tag_edit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
@@ -165,5 +168,15 @@ public class TagEdit_View extends BaseView
     @Override
     public void showTagError(String msg) {
         tagNameInput.setError(msg);
+    }
+
+    @Override
+    public void finishWithSuccess(@NonNull Tag tag) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.TAG_NAME, tag.getName());
+        intent.setAction(Intent.ACTION_EDIT);
+
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

@@ -2,7 +2,10 @@ package ru.aakumykov.me.sociocat.tag_edit.stubs;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
 import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.iTagEdit_View;
 
 public class TagEdit_ViewStub extends BaseView_Stub implements iTagEdit_View {
@@ -34,6 +37,11 @@ public class TagEdit_ViewStub extends BaseView_Stub implements iTagEdit_View {
 
     @Override
     public void showTagError(String msg) {
+
+    }
+
+    @Override
+    public void finishWithSuccess(@NonNull Tag tag) {
 
     }
 }

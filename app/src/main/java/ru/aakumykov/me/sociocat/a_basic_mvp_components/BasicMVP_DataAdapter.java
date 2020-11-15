@@ -35,7 +35,7 @@ public abstract class BasicMVP_DataAdapter
     private boolean mIsVirgin = true;
     private boolean mIsSorted = false;
 
-    private final List<BasicMVP_ListItem> mItemsList;
+    protected final List<BasicMVP_ListItem> mItemsList;
     private final List<BasicMVP_ListItem> mOriginalItemsList;
     private final List<BasicMVP_DataItem> mSelectedItemsList;
 

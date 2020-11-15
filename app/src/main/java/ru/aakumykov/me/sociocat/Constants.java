@@ -43,6 +43,7 @@ public final class Constants
     public static final String TRANSIT_INTENT = "TRANSIT_INTENT";
     public final static String REPLIED_ITEM = "REPLIED_ITEM";
 
+    public static final String TAG = "TAG";
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_NAME = "TAG_NAME";
 

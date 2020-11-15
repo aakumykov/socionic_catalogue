@@ -1,11 +1,16 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
+import androidx.annotation.NonNull;
+
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;
@@ -36,5 +41,17 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
     @Override
     protected iItemsComparator getItemsComparator() {
         return new TagsList_ItemsComparator();
+    }
+
+
+    public int findTagPosition(@NonNull Tag tag) {
+        for (BasicMVP_ListItem listItem : mItemsList) {
+            if (listItem instanceof BasicMVP_DataItem) {
+                Tag tagFromList = (Tag) ((BasicMVP_DataItem) listItem).getPayload();
+                if (tagFromList.equals(tag))
+                    return mItemsList.indexOf(listItem);
+            }
+        }
+        return -1;
     }
 }

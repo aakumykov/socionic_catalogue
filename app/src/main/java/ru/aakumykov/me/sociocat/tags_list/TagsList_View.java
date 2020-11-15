@@ -60,6 +60,17 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case Constants.CODE_EDIT_TAG:
+                processTagEditionResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public void compileMenu() {
         super.compileMenu();
         makeSortingMenuVisible();
@@ -194,5 +205,10 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
-
+    private void processTagEditionResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode && null != data) {
+            Tag tag = data.getParcelableExtra(Constants.TAG);
+            ((TagsList_Presenter) mPresenter).onTagEdited(tag);
+        }
+    }
 }
