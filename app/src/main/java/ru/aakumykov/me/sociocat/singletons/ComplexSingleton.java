@@ -43,7 +43,7 @@ public class ComplexSingleton {
 
     public void updateTag(@NonNull Tag oldTag, @NonNull Tag newTag, iComplexSingleton_TagSaveCallbacks saveCallbacks) {
 
-        List<String> initialCardsList = newTag.getCards();
+        List<String> initialCardsList = new ArrayList<>(newTag.getCards());
         List<String> existedCardsList = new ArrayList<>();
 
         checkCardsExistance(initialCardsList, existedCardsList, new CheckCardsExistanceCallback() {
@@ -53,7 +53,6 @@ public class ComplexSingleton {
             }
         });
     }
-
 
     private void checkCardsExistance(List<String> initialCardsList, List<String> existingCardsList, CheckCardsExistanceCallback callback) {
 
