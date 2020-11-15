@@ -59,19 +59,12 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         );
     }
 
-    protected void processActivityResult() {
-        switch (mActivityRequestCode) {
-            case Constants.CODE_EDIT_TAG:
-                processTagEditionResult(mActivityResultCode, mActivityResultData);
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     public void compileMenu() {
         super.compileMenu();
+
+//        getMenuInflater().inflate(R.menu.save, mMenu);
+
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
     }
@@ -87,6 +80,9 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         else if (R.id.actionDelete == itemId) {
             ((TagsList_Presenter) mPresenter).onDeleteMenuItemClicked();
         }
+        /*else if (R.id.actionSave == itemId) {
+            scroll2position(10);
+        }*/
         else {
             return super.onOptionsItemSelected(item);
         }
@@ -156,6 +152,17 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         startActivityForResult(intent, Constants.CODE_EDIT_TAG);
 
         //showToast(tag.getName());
+    }
+
+
+    protected void processActivityResult() {
+        switch (mActivityRequestCode) {
+            case Constants.CODE_EDIT_TAG:
+                processTagEditionResult(mActivityResultCode, mActivityResultData);
+                break;
+            default:
+                break;
+        }
     }
 
 

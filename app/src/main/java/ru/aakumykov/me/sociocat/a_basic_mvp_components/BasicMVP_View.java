@@ -307,8 +307,7 @@ public abstract class BasicMVP_View
     public void scroll2position(int position) {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         if (null != recyclerView) {
-            //position = -1;
-            recyclerView.scrollToPosition(10);
+            recyclerView.scrollToPosition(position);
         }
     }
 
