@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.tag_edit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -64,7 +65,18 @@ public class TagEdit_View extends BaseView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
+        getMenuInflater().inflate(R.menu.save_tag, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (R.id.actionSave == item.getItemId()) {
+            mPageController.onSaveClicked();
+            return true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
     }
 
     @Override
