@@ -19,5 +19,5 @@ public interface iTagEdit_View extends iBaseView {
     void showTagError(int messageId);
     void showTagError(String msg);
 
-    void finishWithSuccess(@NonNull Tag tag);
+    void finishWithSuccess(@NonNull Tag oldTag, @NonNull Tag newTag);
 }

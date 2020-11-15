@@ -171,9 +171,12 @@ public class TagEdit_View extends BaseView
     }
 
     @Override
-    public void finishWithSuccess(@NonNull Tag tag) {
+    public void finishWithSuccess(@NonNull Tag oldTag, @NonNull Tag newTag) {
         Intent intent = new Intent();
-        intent.putExtra(Constants.TAG_NAME, tag.getName());
+
+        intent.putExtra(Constants.OLD_TAG, oldTag);
+        intent.putExtra(Constants.NEW_TAG, newTag);
+
         intent.setAction(Intent.ACTION_EDIT);
 
         setResult(RESULT_OK, intent);

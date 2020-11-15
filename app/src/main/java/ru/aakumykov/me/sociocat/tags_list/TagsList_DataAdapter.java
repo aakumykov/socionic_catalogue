@@ -6,15 +6,15 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.adapter_utils.BasicMVP_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iItemsComparator;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_utils.TagsList_ItemsComparator;
 
 public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
@@ -44,14 +44,24 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
     }
 
 
-    public int findTagPosition(@NonNull Tag tag) {
-        for (BasicMVP_ListItem listItem : mItemsList) {
-            if (listItem instanceof BasicMVP_DataItem) {
-                Tag tagFromList = (Tag) ((BasicMVP_DataItem) listItem).getPayload();
-                if (tagFromList.equals(tag))
-                    return mItemsList.indexOf(listItem);
+    public int updateTagInList(@NonNull Tag oldTag, @NonNull Tag newTag) {
+
+        Tag_ListItem tagListItem = new Tag_ListItem(newTag);
+
+        iBasicList.iComparisionCallback comparisionCallback = new iComparisionCallback() {
+            @Override
+            public boolean onCompare(Object objectFromList) {
+                Tag tagFromList = (Tag) objectFromList;
+                return tagFromList.getKey().equals(oldTag.getKey());
             }
-        }
-        return -1;
+        };
+
+        int visiblePosition = findVisibleObjectPosition(comparisionCallback);
+        updateItemInVisibleList(visiblePosition, tagListItem);
+
+        int originalPosition = findOriginalObjectPosition(comparisionCallback);
+        updateItemInOriginalList(originalPosition, tagListItem);
+
+        return visiblePosition;
     }
 }

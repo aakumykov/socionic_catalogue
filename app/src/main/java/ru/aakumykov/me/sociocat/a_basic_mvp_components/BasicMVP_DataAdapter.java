@@ -35,8 +35,9 @@ public abstract class BasicMVP_DataAdapter
     private boolean mIsVirgin = true;
     private boolean mIsSorted = false;
 
-    protected final List<BasicMVP_ListItem> mItemsList;
+    private final List<BasicMVP_ListItem> mItemsList;
     private final List<BasicMVP_ListItem> mOriginalItemsList;
+
     private final List<BasicMVP_DataItem> mSelectedItemsList;
 
     protected BasicMVP_ViewHolderCreator mViewHolderCreator;
@@ -167,6 +168,20 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
+    public void updateItemInVisibleList(int position, BasicMVP_ListItem item) {
+        if (position > 0 && mItemsList.size() > position) {
+            mItemsList.set(position, item);
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void updateItemInOriginalList(int position, BasicMVP_ListItem item) {
+        if (position > 0 && mOriginalItemsList.size() > position)
+            mOriginalItemsList.set(position, item);
+    }
+
+    @Override
     public int getAllItemsCount() {
 //        return (isFiltered()) ? mOriginalItemsList.size() : mItemsList.size();
         int size = 0;
@@ -197,6 +212,34 @@ public abstract class BasicMVP_DataAdapter
         }
 
         return 0;
+    }
+
+    @Override
+    public int findVisibleObjectPosition(iComparisionCallback callback) {
+        for (BasicMVP_ListItem listItem : mItemsList)
+        {
+            if (listItem instanceof BasicMVP_DataItem)
+            {
+                Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
+                if (callback.onCompare(objectFromList))
+                    return mItemsList.indexOf(listItem);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int findOriginalObjectPosition(iComparisionCallback callback) {
+        for (BasicMVP_ListItem listItem : mOriginalItemsList)
+        {
+            if (listItem instanceof BasicMVP_DataItem)
+            {
+                Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
+                if (callback.onCompare(objectFromList))
+                    return mOriginalItemsList.indexOf(listItem);
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -492,4 +535,5 @@ public abstract class BasicMVP_DataAdapter
     private void removeFromSelectedItemsList(BasicMVP_DataItem dataItem) {
         mSelectedItemsList.remove(dataItem);
     }
+
 }

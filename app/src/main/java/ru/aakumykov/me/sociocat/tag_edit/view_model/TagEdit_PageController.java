@@ -163,11 +163,11 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
 
     private void updateTag(@NonNull Tag newTag, @NonNull Tag oldTag) {
 
-        mComplexSingleton.updateTag(mCurrentTag, newTag, new ComplexSingleton.iComplexSingleton_TagSaveCallbacks() {
+        mComplexSingleton.updateTag(oldTag, newTag, new ComplexSingleton.iComplexSingleton_TagSaveCallbacks() {
             @Override
             public void onTagSaveSuccess(@NonNull Tag tag) {
                 mPageView.showToast(R.string.TAG_EDIT_tag_is_saved);
-                mPageView.finishWithSuccess(tag);
+                mPageView.finishWithSuccess(oldTag, tag);
             }
 
             @Override

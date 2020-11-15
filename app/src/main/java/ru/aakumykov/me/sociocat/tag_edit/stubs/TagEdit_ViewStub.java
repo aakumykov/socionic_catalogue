@@ -41,7 +41,7 @@ public class TagEdit_ViewStub extends BaseView_Stub implements iTagEdit_View {
     }
 
     @Override
-    public void finishWithSuccess(@NonNull Tag tag) {
+    public void finishWithSuccess(@NonNull Tag oldTag, @NonNull Tag newTag) {
 
     }
 }

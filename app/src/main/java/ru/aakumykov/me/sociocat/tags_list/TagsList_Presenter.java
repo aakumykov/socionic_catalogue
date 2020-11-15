@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.tags_list;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -258,13 +257,13 @@ public class TagsList_Presenter
     }
 
 
-    public void onTagEdited(@Nullable Tag tag) {
-        if (null != tag) {
-            int position = ((TagsList_DataAdapter) mListView).findTagPosition(tag);
-            if (position >= 0)
-                mPageView.scroll2position(position);
+    public void onTagEdited(Tag oldTag, Tag newTag) {
+        if (null != oldTag && null != newTag) {
+            int position = ((TagsList_DataAdapter) mListView).updateTagInList(oldTag, newTag);
+            mPageView.scroll2position(position);
         }
     }
+
 }
 
 

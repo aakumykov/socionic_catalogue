@@ -618,7 +618,7 @@ public class CardsGrid_View extends BaseView implements
                     break;
 
                 /*case Constants.ACTION_EDIT:
-                    dataAdapter.updateItem(positionInWork, card);
+                    dataAdapter.updateItemInVisibleList(positionInWork, card);
                     positionInWork = -1;
                     break;*/
 

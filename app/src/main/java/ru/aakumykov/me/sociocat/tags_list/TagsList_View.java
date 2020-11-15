@@ -59,14 +59,13 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         );
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
+    protected void processActivityResult() {
+        switch (mActivityRequestCode) {
             case Constants.CODE_EDIT_TAG:
-                processTagEditionResult(resultCode, data);
+                processTagEditionResult(mActivityResultCode, mActivityResultData);
                 break;
             default:
-                super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
 
@@ -206,9 +205,13 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     private void processTagEditionResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK == resultCode && null != data) {
-            Tag tag = data.getParcelableExtra(Constants.TAG);
-            ((TagsList_Presenter) mPresenter).onTagEdited(tag);
+        if (RESULT_OK == resultCode) {
+            if (null != data) {
+                Tag oldTag = data.getParcelableExtra(Constants.OLD_TAG);
+                Tag newTag = data.getParcelableExtra(Constants.NEW_TAG);
+
+                ((TagsList_Presenter) mPresenter).onTagEdited(oldTag, newTag);
+            }
         }
     }
 }

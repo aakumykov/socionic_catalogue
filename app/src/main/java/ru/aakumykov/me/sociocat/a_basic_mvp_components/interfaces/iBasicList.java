@@ -20,9 +20,14 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     void addItem(BasicMVP_ListItem item);
     void removeItem(BasicMVP_ListItem item);
+    void updateItemInVisibleList(int position, BasicMVP_ListItem item);
+    void updateItemInOriginalList(int position, BasicMVP_ListItem item);
 
     int getAllItemsCount();
     int getDataItemsCount();
+
+    int findVisibleObjectPosition(iComparisionCallback callback);
+    int findOriginalObjectPosition(iComparisionCallback callback);
 
     BasicMVP_ListItem getItem(int position);
     BasicMVP_DataItem getLastDataItem();
@@ -39,4 +44,9 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder);
     boolean isSorted();
+
+
+    interface iComparisionCallback {
+        boolean onCompare(Object objectFromList);
+    }
 }

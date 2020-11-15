@@ -46,6 +46,8 @@ public final class Constants
     public static final String TAG = "TAG";
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_NAME = "TAG_NAME";
+    public static final String OLD_TAG = "OLD_TAG";
+    public static final String NEW_TAG = "NEW_TAG";
 
     public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";
