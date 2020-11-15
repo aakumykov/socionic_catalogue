@@ -706,6 +706,8 @@
     <string name="TAG_EDIT_you_cannot_edit_tag">Tag edition denied</string>
     <string name="TAG_EDIT_saving_tag">Saving tag</string>
     <string name="TAG_EDIT_tag_is_not_changed">Tag is not changed</string>
+    <string name="TAG_EDIT_name_is_too_long">Maximum %1$d symbols (current is %2$d)</string>
+    <string name="TAG_EDIT_duplicate_found">Tag already exists</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

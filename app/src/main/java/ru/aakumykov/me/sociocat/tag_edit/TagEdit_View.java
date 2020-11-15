@@ -138,6 +138,11 @@ public class TagEdit_View extends BaseView
     }
 
     @Override
+    public void setTagName(String name) {
+        tagNameInput.setText(name);
+    }
+
+    @Override
     public void confirmCancel() {
         SimpleYesNoDialog.show(
                 this,
@@ -150,5 +155,15 @@ public class TagEdit_View extends BaseView
                     }
                 }
         );
+    }
+
+    @Override
+    public void showTagError(int messageId) {
+        showTagError(MyUtils.getString(this, messageId));
+    }
+
+    @Override
+    public void showTagError(String msg) {
+        tagNameInput.setError(msg);
     }
 }

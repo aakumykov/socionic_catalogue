@@ -36,7 +36,7 @@ public class ComplexSingleton {
         checkCardsExistance(initialCardsList, existedCardsList, new CheckCardsExistanceCallback() {
             @Override
             public void onComplete() {
-                deleteTagWithCheckListOfCards(tag, existedCardsList, deleteCallbacks);
+                deleteTagWithCheckedListOfCards(tag, existedCardsList, deleteCallbacks);
             }
         });
     }
@@ -79,7 +79,7 @@ public class ComplexSingleton {
         });
     }
 
-    private void deleteTagWithCheckListOfCards(@NonNull Tag tag, List<String> cardsList, iComplexSingleton_TagDeletionCallbacks callbacks) {
+    private void deleteTagWithCheckedListOfCards(@NonNull Tag tag, List<String> cardsList, iComplexSingleton_TagDeletionCallbacks callbacks) {
 
         WriteBatch writeBatch = mFirebaseFirestore.batch();
 
@@ -132,14 +132,23 @@ public class ComplexSingleton {
         String oldTagName = oldTag.getName();
         String oldGhostTagName = Card.GHOST_TAG_PREFIX + oldTagName;
 
+        // 1. Метка:
+        // удаляю старую
+        // создаю новую
 
-        for (String cardKey : existedCardsList) {
+        // 2. Каждая карточка метки:
+        // Удалить старую метку-призрак
+        // Добавить новую метку-призрак
+        // Удалить старую метку из списка меток
+        // Добавить новую метку в список меток
+
+        /*for (String cardKey : existedCardsList) {
             // Получаю ссылку на карточку
             DocumentReference cardRef = cardsCollection.document(cardKey);
 
             // Удаляю старую метку-призрак
             writeBatch.update(cardRef, FieldPath.of(ghostTagName), FieldValue.delete());
-        }
+        }*/
     }
 
 

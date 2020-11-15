@@ -94,10 +94,12 @@ public class Tag implements Parcelable, iSortableData {
     }
     public void setKey(String key) {
         this.key = key;
+        this.name = key;
     }
 
     public void setName(String name) {
         this.name = name;
+        this.key = name;
     }
 
     public List<String> getCards() {
@@ -107,7 +109,6 @@ public class Tag implements Parcelable, iSortableData {
         if (null != cards) {
             this.cards.addAll(cards);
         }
-
     }
 
     public void addCard(String cardKey) {
@@ -132,5 +133,27 @@ public class Tag implements Parcelable, iSortableData {
     @Override
     public Long getDate() {
         return 0L;
+    }
+
+    // ========== Клонирование ===========
+    // Вариант 1: конструктор клонирования
+    public Tag(Tag clonedTag) {
+        this(clonedTag.getKey(), clonedTag.getName(), clonedTag.getCards());
+    }
+
+    // Внутренний конструктор, использующийся в конструкторе клонирования
+    private Tag(String key, String name, List<String> cardKeys) {
+        setKey(key);
+        setName(name);
+        setCards(cardKeys);
+    }
+
+    // Вариант 2: статический метод клонирования
+    public static Tag getCloneOf(Tag existingTag) {
+        return new Tag(
+                existingTag.getKey(),
+                existingTag.getName(),
+                existingTag.getCards()
+        );
     }
 }

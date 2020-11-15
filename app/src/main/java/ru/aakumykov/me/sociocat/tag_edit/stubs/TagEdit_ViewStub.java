@@ -18,7 +18,22 @@ public class TagEdit_ViewStub extends BaseView_Stub implements iTagEdit_View {
     }
 
     @Override
+    public void setTagName(String name) {
+
+    }
+
+    @Override
     public void confirmCancel() {
+
+    }
+
+    @Override
+    public void showTagError(int messageId) {
+
+    }
+
+    @Override
+    public void showTagError(String msg) {
 
     }
 }

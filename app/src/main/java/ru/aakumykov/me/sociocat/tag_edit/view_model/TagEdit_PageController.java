@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.tag_edit.view_model;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModel;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -22,6 +24,7 @@ import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tag_edit.TagEditViewState;
 import ru.aakumykov.me.sociocat.tag_edit.iTagEdit_View;
 import ru.aakumykov.me.sociocat.tag_edit.stubs.TagEdit_ViewStub;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagEdit_PageController extends ViewModel implements LifecycleObserver {
 
@@ -101,30 +104,75 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
     }
 
     public void onSaveClicked() {
+        // Проверка права редактировать метку
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showToast(R.string.TAG_EDIT_you_cannot_edit_tag);
             return;
         }
 
+        // Проверка изменения метки
         if (!tagIsEdited()) {
             mPageView.showToast(R.string.TAG_EDIT_tag_is_not_changed);
             return;
         }
 
+        // Удаление концевых пробелов
+        String newTagName = mPageView.getTagName().trim();
+        mPageView.setTagName(newTagName);
+
+        // Проверка на "пустоту"
+        if (TextUtils.isEmpty(newTagName)) {
+            mPageView.showTagError(R.string.cannot_be_empty);
+            return;
+        }
+
+        // Проверка длины
+        int len = newTagName.length();
+        if (len > Constants.TAG_NAME_MAX_LENGTH) {
+            String msg = MyUtils.getString(
+                    mPageView.getAppContext(),
+                    R.string.TAG_EDIT_name_is_too_long,
+                    Constants.TAG_NAME_MAX_LENGTH,
+                    len
+                );
+            mPageView.showTagError(msg);
+            return;
+        }
+
+        // Сохранение...
         setViewState(new ProgressViewState(R.string.TAG_EDIT_saving_tag));
 
-        Tag newTag = new Tag();
+        Tag newTag = Tag.getCloneOf(mCurrentTag);
         newTag.setName(mPageView.getTagName());
-        newTag.setKey(mCurrentTag);
 
-        mComplexSingleton.updateTag(mCurrentTag, new iTagsSingleton.SaveCallbacks() {
+        // Проверка на дубликат
+        // TODO: сделать запрет на уровне БД!
+        mTagsSingleton.getTag(newTag.getKey(), new iTagsSingleton.TagCallbacks() {
             @Override
-            public void onSaveSuccess(Tag tag) {
+            public void onTagSuccess(Tag tag) {
+                setViewState(new ErrorViewState(
+                        R.string.TAG_EDIT_duplicate_found,
+                        "Tag «"+newTag.getName()+"» already exists"));
+            }
+
+            @Override
+            public void onTagFail(String errorMsg) {
+                setViewState(new NeutralViewState());
+                mPageView.showToast("Можно сохранять");
+            }
+        });
+    }
+
+    private void updateTag(@NonNull Tag newTag, @NonNull Tag oldTag) {
+
+        mComplexSingleton.updateTag(mCurrentTag, newTag, new ComplexSingleton.iComplexSingleton_TagSaveCallbacks() {
+            @Override
+            public void onTagSaveSuccess(@NonNull Tag tag) {
 
             }
 
             @Override
-            public void onSaveFail(String errorMsg) {
+            public void onTagSaveError(@NonNull String errorMsg) {
 
             }
         });

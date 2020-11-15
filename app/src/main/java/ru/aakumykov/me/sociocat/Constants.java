@@ -147,4 +147,5 @@ public final class Constants
     public final static String COMMENT_KEY_CREATED_AT = "createdAt";
 
     public static final int MAX_TAGS_AT_ONCE_DELETE_COUNT = 10;
+    public static final int TAG_NAME_MAX_LENGTH = 20;
 }
