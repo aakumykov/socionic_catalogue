@@ -35,6 +35,8 @@ public class TagEdit_View extends BaseView
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private TagEdit_PageController mPageController;
+    private Menu mMenu;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class TagEdit_View extends BaseView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
         getMenuInflater().inflate(R.menu.save_tag, menu);
         return true;
     }
@@ -139,13 +142,14 @@ public class TagEdit_View extends BaseView
     private void enableForm() {
         MyUtils.enable(tagNameInput);
         MyUtils.enable(saveButton);
+        enableMenuItem(R.id.actionSave);
     }
 
     private void disableForm() {
         MyUtils.disable(tagNameInput);
         MyUtils.disable(saveButton);
+        disableMenuItem(R.id.actionSave);
     }
-
 
     @Override
     public String getTagName() {
