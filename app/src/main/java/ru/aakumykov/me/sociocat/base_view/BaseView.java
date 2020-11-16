@@ -58,6 +58,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     private final static String TAG = "BaseView";
     private boolean intentMessageAlreadyShown = false;
+    private Menu mMenu;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -123,6 +124,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override @SuppressLint("RestrictedApi")
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        mMenu = menu;
 
         if(menu instanceof MenuBuilder){
             MenuBuilder menuBuilder = (MenuBuilder) menu;
@@ -480,6 +483,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
+    // Защищённые методы
+    protected void enableMenuItem(int itemId) {
+        setMenuItemEnabled(itemId, true);
+    }
+
+    protected void disableMenuItem(int itemId) {
+        setMenuItemEnabled(itemId, false);
+    }
+
+
     // Внутренние методы
     private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
@@ -643,6 +656,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                     Log.e(TAG, e.getMessage());
                 }
             }
+        }
+    }
+
+    private void setMenuItemEnabled(int menuItemId, boolean isEnabled) {
+        if (null != mMenu) {
+            MenuItem menuItemSave = mMenu.findItem(menuItemId);
+            if (null != menuItemSave)
+                menuItemSave.setEnabled(isEnabled);
         }
     }
 }
