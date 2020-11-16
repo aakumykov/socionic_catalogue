@@ -26,9 +26,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iBasicListPage;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iViewState;
@@ -305,10 +305,7 @@ public abstract class BasicMVP_View
 
     @Override
     public void scroll2position(int position) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        if (null != recyclerView) {
-            recyclerView.scrollToPosition(position);
-        }
+        mLayoutManager.scrollToPosition(position);
     }
 
     @Override

@@ -150,8 +150,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivityForResult(intent, Constants.CODE_EDIT_TAG);
-
-        //showToast(tag.getName());
     }
 
 
