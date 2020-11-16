@@ -3,9 +3,11 @@ package ru.aakumykov.me.sociocat.tags_list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,8 @@ import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 
 public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.editTextNumberDecimal) EditText editTextNumberDecimal;
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
@@ -39,6 +43,8 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tags_list);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         activateUpButton();
     }
@@ -63,7 +69,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     public void compileMenu() {
         super.compileMenu();
 
-//        getMenuInflater().inflate(R.menu.save, mMenu);
+        getMenuInflater().inflate(R.menu.up_down_arrows, mMenu);
 
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
@@ -80,9 +86,15 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         else if (R.id.actionDelete == itemId) {
             ((TagsList_Presenter) mPresenter).onDeleteMenuItemClicked();
         }
-        /*else if (R.id.actionSave == itemId) {
-            scroll2position(10);
-        }*/
+        else if (R.id.actionScrollDown == itemId) {
+            int lastItemIndex = mDataAdapter.getAllItemsCount() - 1;
+            int num = Integer.parseInt(editTextNumberDecimal.getText().toString());
+            showToast(String.valueOf(num));
+            mRecyclerView.scrollToPosition(num);
+        }
+        else if (R.id.actionScrollUp == itemId) {
+            mRecyclerView.scrollToPosition(0);
+        }
         else {
             return super.onOptionsItemSelected(item);
         }

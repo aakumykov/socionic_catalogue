@@ -4,6 +4,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+
 public abstract class BasicMVP_DataViewHolder extends BasicMVP_ViewHolder {
     
     public BasicMVP_DataViewHolder(@NonNull View itemView) {
@@ -11,4 +13,6 @@ public abstract class BasicMVP_DataViewHolder extends BasicMVP_ViewHolder {
     }
 
     public abstract void displayIsChecked(boolean selected);
+
+    public abstract void fillWithData(BasicMVP_ListItem basicListItem, int index);
 }

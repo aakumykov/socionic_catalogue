@@ -31,6 +31,11 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
+    public void fillWithData(BasicMVP_ListItem basicListItem) {
+
+    }
+
+    @Override
     public void displayIsChecked(boolean selected) {
         if (selected) {
             int color = listItem.getResources().getColor(R.color.tags_list_selection_background_color);
@@ -41,12 +46,12 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void fillWithData(BasicMVP_ListItem basicListItem, int index) {
         BasicMVP_DataItem basicMVPDataItem = (BasicMVP_DataItem) basicListItem;
 
         Tag tag = (Tag) basicMVPDataItem.getPayload();
 
-        titleView.setText(tag.getName());
+        titleView.setText(index + ": " + tag.getName());
         commentsCountView.setText(String.valueOf(tag.getCardsCount()));
 
         displayIsChecked(basicMVPDataItem.isSelected());
