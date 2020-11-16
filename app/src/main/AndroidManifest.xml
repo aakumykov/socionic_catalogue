@@ -42,10 +42,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".tags_list.TagsList_View"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="true">
+        <activity android:name=".tags_list.TagsList_View" android:exported="true">
 
         </activity>
 
