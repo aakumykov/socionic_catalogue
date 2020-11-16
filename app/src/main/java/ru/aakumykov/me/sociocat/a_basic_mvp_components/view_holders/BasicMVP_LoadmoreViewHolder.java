@@ -22,7 +22,7 @@ public class BasicMVP_LoadmoreViewHolder extends BasicMVP_ViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void fillWithData(BasicMVP_ListItem basicListItem, int position) {
         BasicMVP_LoadmoreItem loadmoreItem = (BasicMVP_LoadmoreItem) basicListItem;
         if (loadmoreItem.hasTitleId())
             titleView.setText(loadmoreItem.getTitleId());

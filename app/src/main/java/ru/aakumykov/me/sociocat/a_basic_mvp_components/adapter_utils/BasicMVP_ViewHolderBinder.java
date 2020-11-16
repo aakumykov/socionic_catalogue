@@ -17,7 +17,7 @@ public class BasicMVP_ViewHolderBinder {
 
         if (holder instanceof BasicMVP_LoadmoreViewHolder) {
             BasicMVP_LoadmoreViewHolder loadmoreItemViewHolder = ((BasicMVP_LoadmoreViewHolder) holder);
-            loadmoreItemViewHolder.fillWithData(listItem);
+            loadmoreItemViewHolder.fillWithData(listItem, position);
         }
         else if (holder instanceof BasicMVP_ThrobberViewHolder) {
 

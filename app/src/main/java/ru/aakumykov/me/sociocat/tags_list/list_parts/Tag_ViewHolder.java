@@ -41,12 +41,12 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void fillWithData(BasicMVP_ListItem basicListItem, int position) {
         BasicMVP_DataItem basicMVPDataItem = (BasicMVP_DataItem) basicListItem;
 
         Tag tag = (Tag) basicMVPDataItem.getPayload();
 
-        titleView.setText(tag.getName());
+        titleView.setText(position+": "+tag.getName());
         commentsCountView.setText(String.valueOf(tag.getCardsCount()));
 
         displayIsChecked(basicMVPDataItem.isSelected());

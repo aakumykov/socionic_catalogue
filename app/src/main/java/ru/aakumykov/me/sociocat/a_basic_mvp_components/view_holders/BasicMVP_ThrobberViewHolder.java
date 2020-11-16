@@ -14,7 +14,7 @@ public class BasicMVP_ThrobberViewHolder extends BasicMVP_ViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void fillWithData(BasicMVP_ListItem basicListItem, int position) {
 
     }
 
