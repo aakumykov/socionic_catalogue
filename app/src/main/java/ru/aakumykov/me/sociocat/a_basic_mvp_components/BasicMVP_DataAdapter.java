@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListI
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_LoadmoreItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ThrobberItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_utils.BasicMVP_ItemsFilter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 
 
 public abstract class BasicMVP_DataAdapter
@@ -37,8 +38,9 @@ public abstract class BasicMVP_DataAdapter
 
     private final List<BasicMVP_ListItem> mItemsList;
     private final List<BasicMVP_ListItem> mOriginalItemsList;
-
     private final List<BasicMVP_DataItem> mSelectedItemsList;
+
+    protected int mHighlightedPosition = -1;
 
     protected BasicMVP_ViewHolderCreator mViewHolderCreator;
     protected BasicMVP_ViewHolderBinder mViewHolderBinder;
@@ -79,6 +81,7 @@ public abstract class BasicMVP_DataAdapter
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BasicMVP_ListItem listItem = getItem(position);
         mViewHolderBinder.bindViewHolder(holder, position, listItem);
+        highlightViewHolder(holder, position);
     }
 
     @Override
@@ -99,6 +102,14 @@ public abstract class BasicMVP_DataAdapter
     @Override
     public boolean isSorted() {
         return mIsSorted;
+    }
+
+    @Override
+    public void highlightItem(int position) {
+        if (position >=0 && mItemsList.size() > position) {
+            mHighlightedPosition = position;
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -536,4 +547,9 @@ public abstract class BasicMVP_DataAdapter
         mSelectedItemsList.remove(dataItem);
     }
 
+    private void highlightViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof BasicMVP_DataViewHolder) {
+            ((BasicMVP_DataViewHolder) holder).setHighlighted(position == mHighlightedPosition);
+        }
+    }
 }

@@ -11,4 +11,6 @@ public abstract class BasicMVP_DataViewHolder extends BasicMVP_ViewHolder {
     }
 
     public abstract void displayIsChecked(boolean selected);
+
+    public abstract void setHighlighted(boolean isHighLighted);
 }
