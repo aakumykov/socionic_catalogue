@@ -22,8 +22,8 @@ import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tag_edit.view_model.TagEdit_PageController;
-import ru.aakumykov.me.sociocat.tag_edit.view_model.TagEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.tag_edit.other.TagEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
@@ -97,7 +97,7 @@ public class TagEdit_View extends BaseView
 
     @Override
     public void setViewState(iBasicViewState viewState) {
-        if (viewState instanceof  TagEditViewState)
+        if (viewState instanceof TagEditViewState)
             setTagEditViewState((TagEditViewState) viewState);
         else
             super.setViewState(viewState);

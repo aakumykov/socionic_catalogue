@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tag_edit.view_model;
+package ru.aakumykov.me.sociocat.tag_edit.other;
 
 import androidx.lifecycle.ViewModelProvider;
 

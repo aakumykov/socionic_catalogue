@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tag_edit.stubs;
+package ru.aakumykov.me.sociocat.tag_edit.other;
 
 import android.content.Intent;
 

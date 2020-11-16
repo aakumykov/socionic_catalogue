@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tag_edit.view_model;
+package ru.aakumykov.me.sociocat.tag_edit;
 
 import android.content.Intent;
 import android.text.TextUtils;
@@ -20,9 +20,8 @@ import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
-import ru.aakumykov.me.sociocat.tag_edit.TagEditViewState;
-import ru.aakumykov.me.sociocat.tag_edit.iTagEdit_View;
-import ru.aakumykov.me.sociocat.tag_edit.stubs.TagEdit_ViewStub;
+import ru.aakumykov.me.sociocat.tag_edit.other.TagEdit_ViewStub;
+import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagEdit_PageController extends ViewModel implements LifecycleObserver {

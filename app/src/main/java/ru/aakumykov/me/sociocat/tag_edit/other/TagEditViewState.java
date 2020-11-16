@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tag_edit;
+package ru.aakumykov.me.sociocat.tag_edit.other;
 
 import androidx.annotation.NonNull;
 
