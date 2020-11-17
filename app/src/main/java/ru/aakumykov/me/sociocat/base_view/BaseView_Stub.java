@@ -178,6 +178,16 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void clearMenu() {
+
+    }
+
+    @Override
+    public void inflateMenu(int menuId) {
+
+    }
+
+    @Override
     public void showUserProfile(String userId) {
 
     }

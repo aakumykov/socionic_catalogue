@@ -59,6 +59,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private final static String TAG = "BaseView";
     private boolean intentMessageAlreadyShown = false;
     private Menu mMenu;
+    private MenuInflater mMenuInflater;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -126,6 +127,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public boolean onCreateOptionsMenu(Menu menu) {
 
         mMenu = menu;
+        mMenuInflater = getMenuInflater();
 
         if(menu instanceof MenuBuilder){
             MenuBuilder menuBuilder = (MenuBuilder) menu;
@@ -463,6 +465,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuItem menuItem = menu.findItem(R.id.actionNewCards);
         if (null != menuItem)
             menuItem.setVisible(false);
+    }
+
+    @Override
+    public void clearMenu() {
+        if (null != mMenu)
+            mMenu.clear();
+    }
+
+    @Override
+    public void inflateMenu(int menuId) {
+        if (null != mMenu && null != mMenuInflater)
+            mMenuInflater.inflate(menuId, mMenu);
     }
 
     @Override
