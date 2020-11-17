@@ -1,9 +1,11 @@
 package ru.aakumykov.me.sociocat.tags_list.list_parts;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -12,6 +14,7 @@ import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -21,9 +24,12 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
     @BindView(R.id.listItem) View listItem;
+    @BindView(R.id.checkMark) ImageView checkMark;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.commentsCountView) TextView commentsCountView;
     @BindView(R.id.tagEditButton) View tagEditButton;
+    @Nullable @BindView(R.id.highlightingOverlay) View highlightingOverlay;
+
 
     public Tag_ViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -32,12 +38,21 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
     @Override
     public void displayIsChecked(boolean selected) {
-        if (selected) {
-            int color = listItem.getResources().getColor(R.color.tags_list_selection_background_color);
-            listItem.setBackgroundColor(color);
+        ViewUtils.setVisibility(checkMark, selected);
+    }
+
+    @Override
+    public void displayIsHighlighted(boolean isHighLighted) {
+        if (null != highlightingOverlay) {
+            if (isHighLighted) {
+                highlightingOverlay.setBackgroundResource(R.drawable.simple_list_item_background_highlighted);
+                ViewUtils.show(highlightingOverlay);
+            }
+            else {
+                highlightingOverlay.setBackground(null);
+                ViewUtils.hide(highlightingOverlay);
+            }
         }
-        else
-            listItem.setBackground(null);
     }
 
     @Override

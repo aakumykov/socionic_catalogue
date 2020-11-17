@@ -6,6 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/checkMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_tag_item_checked"
+        tools:visibility="visible" />
+
     <TextView
         android:id="@+id/titleView"
         android:layout_width="0dp"
@@ -15,15 +27,14 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkMark"
         tools:text="Название метки, очень длинное название очень длинной метки" />
 
     <TextView
         android:id="@+id/commentsCountView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:padding="10dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,12 +46,24 @@
         android:id="@+id/tagEditButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"
+        app:srcCompat="@drawable/ic_edit_grey"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/highlightingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/simple_list_item_background_highlighted"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_edit_grey" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
 
     // Своейства
     private boolean isSelected = false;
+    private boolean isHighLighted = false;
     private Object payload;
 
 
@@ -25,6 +26,13 @@ public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
     }
     public void setSelected(boolean selected) {
         this.isSelected = selected;
+    }
+
+    public void setHighLighted(boolean highLighted) {
+        isHighLighted = highLighted;
+    }
+    public boolean isHighLighted() {
+        return this.isHighLighted;
     }
 
     public iSortableData getBasicData() {

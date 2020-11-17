@@ -49,6 +49,8 @@ public abstract class BasicMVP_DataAdapter
     private String mFilterPattern;
     private Filter mFilter;
 
+    private BasicMVP_DataItem mCurrentHighlightedItem;
+
 
     public BasicMVP_DataAdapter(iBasicMVP_ItemClickListener itemClickListener)
     {
@@ -99,6 +101,22 @@ public abstract class BasicMVP_DataAdapter
     @Override
     public boolean isSorted() {
         return mIsSorted;
+    }
+
+    @Override
+    public void highlightItem(int position) {
+        int oldHighlightedPosition = mItemsList.indexOf(mCurrentHighlightedItem);
+
+        BasicMVP_DataItem newHighlightedItem = (BasicMVP_DataItem) getItem(position);
+        newHighlightedItem.setHighLighted(true);
+
+        if (null != mCurrentHighlightedItem)
+            mCurrentHighlightedItem.setHighLighted(false);
+
+        mCurrentHighlightedItem = newHighlightedItem;
+
+        refreshItem(oldHighlightedPosition);
+        refreshItem(position);
     }
 
     @Override
