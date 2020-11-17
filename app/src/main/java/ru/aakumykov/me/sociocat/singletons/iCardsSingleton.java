@@ -36,7 +36,7 @@ public interface iCardsSingleton {
 
     void loadFirstPortion(ListCallbacks callbacks);
     void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);
-    void loadCardsWithTag(String tagName, ListCallbacks callbacks) throws Exception;
+    void loadCardsWithTag(String tagName, ListCallbacks callbacks);
     void loadCardsWithTagAfter(String tagName, Card cardToLoadAfter, ListCallbacks callbacks);
     void loadCardsFromNewestTo(Card endAtCard, ListCallbacks callbacks);
     void loadCardsWithTagFromNewestTo(String tag, Card endAtCard, ListCallbacks callbacks);

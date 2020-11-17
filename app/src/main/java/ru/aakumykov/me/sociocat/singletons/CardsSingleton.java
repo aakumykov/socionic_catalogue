@@ -125,7 +125,7 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void loadCardsWithTag(String tagName, ListCallbacks callbacks) throws LoadCardsWithTagException {
+    public void loadCardsWithTag(String tagName, ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
