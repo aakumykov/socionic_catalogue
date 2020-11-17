@@ -57,16 +57,18 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
     @Override
     public void fillWithData(BasicMVP_ListItem basicListItem, int position) {
-        BasicMVP_DataItem basicMVPDataItem = (BasicMVP_DataItem) basicListItem;
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
 
-        Tag tag = (Tag) basicMVPDataItem.getPayload();
+        Tag tag = (Tag) dataItem.getPayload();
 
         titleView.setText(position+": "+tag.getName());
         commentsCountView.setText(String.valueOf(tag.getCardsCount()));
 
-        displayIsChecked(basicMVPDataItem.isSelected());
+        MyUtils.setVisibility(tagEditButton,
+                UsersSingleton.getInstance().currentUserIsAdmin());
 
-        MyUtils.setVisibility(tagEditButton, UsersSingleton.getInstance().currentUserIsAdmin());
+        displayIsChecked(dataItem.isSelected());
+        displayIsHighlighted(dataItem.isHighLighted());
     }
 
 

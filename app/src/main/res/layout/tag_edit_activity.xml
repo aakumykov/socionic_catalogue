@@ -17,7 +17,8 @@
             android:id="@+id/tagNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/TAG_EDIT_name_input_hint" />
+            android:hint="@string/TAG_EDIT_name_input_hint"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
