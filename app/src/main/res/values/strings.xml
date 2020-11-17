@@ -718,6 +718,9 @@
     <string name="TAG_EDIT_tag_is_saved">Метка сохранена</string>
     <string name="TAG_EDIT_error_saving_tag">Ошибка сохранения метки</string>
     <string name="ERROR_cannot_save_without_internet">Нельзя сохранить без подключения к интернету</string>
+    <string name="CARDS_LIST_loading_cards_with_tag">Получаем карточки с меткой «%1$s»</string>
+    <string name="CARDS_LIST_error_loading_list">Ошибка загрузки карточек</string>
+    <string name="CARDS_LIST_cards_with_tag">Карточки с меткой «%1$s»</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

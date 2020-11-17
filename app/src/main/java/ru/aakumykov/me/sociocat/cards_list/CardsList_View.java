@@ -33,10 +33,12 @@ import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.cards_list.view_states.FilteredListViewState;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -377,6 +379,19 @@ public class CardsList_View
 
     }
 
+    @Override
+    public void setViewState(iBasicViewState viewState) {
+        if (viewState instanceof FilteredListViewState)
+            processFilteredListViewState((FilteredListViewState) viewState);
+        else
+            super.setViewState(viewState);
+    }
+
+    @Override
+    protected void setNeutralViewState() {
+        super.setNeutralViewState();
+        hideTagFilter();
+    }
 
     // Нажатия
     @OnClick(R.id.floatingActionButton)
@@ -672,6 +687,22 @@ public class CardsList_View
                 //refreshMenu();
             }
         });
+    }
+
+    private void processFilteredListViewState(@NonNull FilteredListViewState filteredListViewState) {
+        setNeutralViewState();
+        String text = MyUtils.getString(this, R.string.CARDS_LIST_cards_with_tag, filteredListViewState.getTagName());
+        showTagFilter(text);
+    }
+
+    private void showTagFilter(@NonNull String tagName) {
+        tagFilterText.setText(tagName);
+        MyUtils.show(tagFilterContainer);
+    }
+
+    private void hideTagFilter() {
+        tagFilterText.setText("");
+        MyUtils.hide(tagFilterContainer);
     }
 
 

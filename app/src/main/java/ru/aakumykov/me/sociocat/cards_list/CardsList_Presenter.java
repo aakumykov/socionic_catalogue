@@ -13,8 +13,11 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.CardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
+import ru.aakumykov.me.sociocat.cards_list.view_states.FilteredListViewState;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -79,7 +82,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         String tagName = intent.getStringExtra(Constants.TAG_NAME);
 
-        loadList();
+        if (null != tagName)
+            loadCardsWithTag(tagName);
+        else
+            loadList();
     }
 
     @Override
@@ -468,6 +474,24 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             public void onListLoadFail(String errorMessage) {
                 setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
+            }
+        });
+    }
+
+    private void loadCardsWithTag(@NonNull String tagName) {
+        String msg = MyUtils.getString(pageView.getAppContext(), R.string.CARDS_LIST_loading_cards_with_tag, tagName);
+        pageView.setViewState(new ProgressViewState(msg));
+
+        cardsSingleton.loadCardsWithTag(tagName, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                pageView.setViewState(new FilteredListViewState(tagName));
+                dataAdapter.setList(incapsulateObjects2DataItems(list));
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.setViewState(new ErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage));
             }
         });
     }
