@@ -269,12 +269,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onNewCardMenuClicked() {
+    public void onCreateCardClicked() {
         pageView.showAddNewCardMenu();
     }
 
     @Override
-    public void onNewCardTypeSelected(CardType cardType) {
+    public void onCardTypeSelected(CardType cardType) {
         pageView.goCreateCard(cardType);
     }
 

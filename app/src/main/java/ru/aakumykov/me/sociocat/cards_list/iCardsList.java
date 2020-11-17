@@ -186,8 +186,8 @@ public interface iCardsList {
 
         void onChangeViewModeClicked(ViewMode viewMode);
 
-        void onNewCardMenuClicked();
-        void onNewCardTypeSelected(CardType cardType);
+        void onCreateCardClicked();
+        void onCardTypeSelected(CardType cardType);
 
         boolean isLoggedIn();
 

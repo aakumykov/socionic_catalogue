@@ -13,15 +13,20 @@ public class NetworkUtils {
 
     }
 
-    public static boolean isNetworkAvailable(Context context) {
+    public static boolean isOffline(Context context) {
+
         if (isAirplaneModeOn(context))
-            return false;
+            return true;
 
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        if (null == activeNetworkInfo)
+            return true;
+
+        return !activeNetworkInfo.isConnected();
     }
+
 }

@@ -84,7 +84,7 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-        if (!NetworkUtils.isNetworkAvailable(view.getAppContext())) {
+        if (NetworkUtils.isOffline(view.getAppContext())) {
             view.showToast(R.string.CARD_EDIT_impossible_without_network_connection);
             view.closePage();
             return;

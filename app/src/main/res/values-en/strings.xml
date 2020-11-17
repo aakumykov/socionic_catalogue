@@ -710,6 +710,7 @@
     <string name="TAG_EDIT_duplicate_found">Tag already exists</string>
     <string name="TAG_EDIT_tag_is_saved">Tag is saved</string>
     <string name="TAG_EDIT_error_saving_tag">Ошибка сохранения метки</string>
+    <string name="ERROR_cannot_save_without_internet">Cannot save without internet</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

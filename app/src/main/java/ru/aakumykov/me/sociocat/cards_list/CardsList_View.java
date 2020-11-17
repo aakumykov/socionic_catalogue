@@ -375,7 +375,7 @@ public class CardsList_View
     // Нажатия
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
-        presenter.onNewCardMenuClicked();
+        presenter.onCreateCardClicked();
     }
 
 
@@ -470,19 +470,19 @@ public class CardsList_View
                                             @NotNull MenuItem menuItem, @org.jetbrains.annotations.Nullable Object o) {
                 switch (menuItem.getItemId()) {
                     case R.id.actionAddTextCard:
-                        presenter.onNewCardTypeSelected(CardType.TEXT_CARD);
+                        presenter.onCardTypeSelected(CardType.TEXT_CARD);
                         break;
 
                     case R.id.actionAddImageCard:
-                        presenter.onNewCardTypeSelected(CardType.IMAGE_CARD);
+                        presenter.onCardTypeSelected(CardType.IMAGE_CARD);
                         break;
 
                     case R.id.actionAddAudioCard:
-                        presenter.onNewCardTypeSelected(CardType.AUDIO_CARD);
+                        presenter.onCardTypeSelected(CardType.AUDIO_CARD);
                         break;
 
                     case R.id.actionAddVideoCard:
-                        presenter.onNewCardTypeSelected(CardType.VIDEO_CARD);
+                        presenter.onCardTypeSelected(CardType.VIDEO_CARD);
                         break;
 
                     default:

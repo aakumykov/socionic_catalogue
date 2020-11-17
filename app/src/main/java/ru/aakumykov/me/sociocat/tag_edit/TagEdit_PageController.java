@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEdit_ViewStub;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.NetworkUtils;
 
 public class TagEdit_PageController extends ViewModel implements LifecycleObserver {
 
@@ -102,6 +103,12 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
     }
 
     public void onSaveClicked() {
+        // Проверка подключения к интернету
+        if (NetworkUtils.isOffline(mPageView.getAppContext())) {
+            mPageView.showToast(R.string.ERROR_cannot_save_without_internet);
+            return;
+        }
+
         // Проверка права редактировать метку
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showToast(R.string.TAG_EDIT_you_cannot_edit_tag);
