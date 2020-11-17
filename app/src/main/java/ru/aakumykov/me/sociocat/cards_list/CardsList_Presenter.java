@@ -77,6 +77,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
+        String tagName = intent.getStringExtra(Constants.TAG_NAME);
+
         loadList();
     }
 

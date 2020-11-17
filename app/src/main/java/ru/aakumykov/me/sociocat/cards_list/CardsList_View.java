@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,10 +45,13 @@ public class CardsList_View
         extends BaseView
         implements iCardsList.iPageView, iCardsList.ListEdgeReachedListener
 {
-    private static final String TAG = CardShow_View.class.getSimpleName();
-
+    @BindView(R.id.tagFilterContainer) ViewGroup tagFilterContainer;
+    @BindView(R.id.tagFilterText) TextView tagFilterText;
+    @BindView(R.id.tagFilterCloseWidget) View tagFilterCloseWidget;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
+    private static final String TAG = CardShow_View.class.getSimpleName();
 
     private SearchView searchWidget;
 

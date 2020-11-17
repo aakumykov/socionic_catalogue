@@ -75,13 +75,14 @@ public class TagsList_Presenter
 
         if (mListView.isSelectionMode()) {
             onSelectItemClicked(tagViewHolder);
+            return;
         }
-        else {
-            int position = tagViewHolder.getAdapterPosition();
-            BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
-            Tag tag = (Tag) basicDataItem.getPayload();
-            ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
-        }
+
+        int position = tagViewHolder.getAdapterPosition();
+        BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
+        Tag tag = (Tag) basicDataItem.getPayload();
+
+        ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
     }
 
     @Override
