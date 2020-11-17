@@ -261,7 +261,6 @@ public class TagsList_Presenter
         if (null != oldTag && null != newTag) {
             int position = ((TagsList_DataAdapter) mListView).updateTagInList(oldTag, newTag);
             mPageView.scroll2position(position);
-            mListView.highlightItem(position);
         }
     }
 

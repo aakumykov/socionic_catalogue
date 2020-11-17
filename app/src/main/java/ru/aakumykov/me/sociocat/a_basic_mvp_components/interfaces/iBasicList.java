@@ -45,8 +45,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder);
     boolean isSorted();
 
-    void highlightItem(int position);
-
 
     interface iComparisionCallback {
         boolean onCompare(Object objectFromList);

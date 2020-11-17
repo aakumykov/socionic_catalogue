@@ -343,10 +343,10 @@ public abstract class BasicMVP_View
         });
     }
 
-    /*protected void clearMenu() {
+    private void clearMenu() {
         if (null != mMenu)
             mMenu.clear();
-    }*/
+    }
 
     private void addSearchView() {
 

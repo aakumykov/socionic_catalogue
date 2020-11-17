@@ -24,7 +24,6 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.commentsCountView) TextView commentsCountView;
     @BindView(R.id.tagEditButton) View tagEditButton;
-    @BindView(R.id.markOverlay) View markOverlay;
 
     public Tag_ViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -34,26 +33,11 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     @Override
     public void displayIsChecked(boolean selected) {
         if (selected) {
-            int color = listItem.getResources().getColor(R.color.tags_list_selection_background_color, null);
-            markOverlay.setBackgroundColor(color);
-            MyUtils.show(markOverlay);
+            int color = listItem.getResources().getColor(R.color.tags_list_selection_background_color);
+            listItem.setBackgroundColor(color);
         }
-        else {
-            markOverlay.setBackground(null);
-            MyUtils.hide(markOverlay);
-        }
-    }
-
-    @Override
-    public void setHighlighted(boolean isHighlighted) {
-        if (isHighlighted) {
-            markOverlay.setBackgroundResource(R.drawable.tags_list_item_background_highlighted);
-            MyUtils.show(markOverlay);
-        }
-        else {
-            markOverlay.setBackground(null);
-            MyUtils.hide(markOverlay);
-        }
+        else
+            listItem.setBackground(null);
     }
 
     @Override

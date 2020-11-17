@@ -35,6 +35,7 @@ public class TagEdit_View extends BaseView
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private TagEdit_PageController mPageController;
+    private Menu mMenu;
 
 
     @Override
@@ -66,11 +67,8 @@ public class TagEdit_View extends BaseView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        clearMenu();
-        inflateMenu(R.menu.save_tag);
-
+        mMenu = menu;
+        getMenuInflater().inflate(R.menu.save_tag, menu);
         return true;
     }
 
