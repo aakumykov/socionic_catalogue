@@ -51,10 +51,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private final iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     private DataItem<Card> currentlyEditedItem;
+    private String tagName;
 
     private int activityRequestCode;
     private int activityResultCode;
     private Intent activityResultData;
+
 
 
     @Override
@@ -80,7 +82,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        String tagName = intent.getStringExtra(Constants.TAG_NAME);
+        tagName = intent.getStringExtra(Constants.TAG_NAME);
 
         if (null != tagName)
             loadCardsWithTag(tagName);
@@ -166,13 +168,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         DataItem lastDataItem = dataAdapter.getLastOriginalDataItem();
 
-        if (null != lastDataItem) {
-            Card card = (Card) lastDataItem.getPayload();
-            loadMoreCards(card);
-        }
-        else {
+        if (null == lastDataItem) {
             loadList();
+            return;
         }
+
+        Card card = (Card) lastDataItem.getPayload();
+        loadMoreCards(card, tagName);
     }
 
     @Override
@@ -450,10 +452,9 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         });
     }
 
-    private void loadMoreCards(Card startingFromCard) {
-        dataAdapter.showThrobberItem();
+    private void loadMoreCards(Card startingFromCard, @Nullable String tagName) {
 
-        cardsSingleton.loadCardsAfter(startingFromCard, new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobberItem();
@@ -475,7 +476,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
                 setErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
-        });
+        };
+
+        dataAdapter.showThrobberItem();
+
+        if (null != tagName)
+            cardsSingleton.loadCardsWithTagAfter(tagName, startingFromCard, listCallbacks);
+        else
+            cardsSingleton.loadCardsAfter(startingFromCard, listCallbacks);
     }
 
     private void loadCardsWithTag(@NonNull String tagName) {
@@ -487,6 +495,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             public void onListLoadSuccess(List<Card> list) {
                 pageView.setViewState(new FilteredListViewState(tagName));
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
+                dataAdapter.showLoadmoreItem();
             }
 
             @Override
