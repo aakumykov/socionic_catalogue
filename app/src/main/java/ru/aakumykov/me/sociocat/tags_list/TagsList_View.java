@@ -30,6 +30,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
+import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
 
 public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
@@ -139,7 +140,10 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
     @Override
     public void setViewState(iBasicViewState viewState) {
-        super.setViewState(viewState);
+        if (viewState instanceof CancelableProgress)
+            setCancelableProgressViewState((CancelableProgress) viewState);
+        else
+            super.setViewState(viewState);
     }
 
     @Override
@@ -223,5 +227,9 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
                 ((TagsList_Presenter) mPresenter).onTagEdited(oldTag, newTag);
             }
         }
+    }
+
+    private void setCancelableProgressViewState(CancelableProgress viewState) {
+        setProgressViewState(viewState);
     }
 }
