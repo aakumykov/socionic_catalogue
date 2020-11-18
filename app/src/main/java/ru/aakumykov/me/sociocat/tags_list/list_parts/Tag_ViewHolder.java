@@ -61,7 +61,9 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
         Tag tag = (Tag) dataItem.getPayload();
 
-        titleView.setText(position+": "+tag.getName());
+//        titleView.setText(position+": "+tag.getName());
+        titleView.setText(tag.getName());
+
         commentsCountView.setText(String.valueOf(tag.getCardsCount()));
 
         MyUtils.setVisibility(tagEditButton,

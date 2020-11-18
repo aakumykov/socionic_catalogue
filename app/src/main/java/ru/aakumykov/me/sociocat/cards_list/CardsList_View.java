@@ -691,6 +691,8 @@ public class CardsList_View
 
     private void processFilteredListViewState(@NonNull FilteredListViewState filteredListViewState) {
         setNeutralViewState();
+        activateUpButton();
+
         String text = MyUtils.getString(this, R.string.CARDS_LIST_cards_with_tag, filteredListViewState.getTagName());
         showTagFilter(text);
     }
