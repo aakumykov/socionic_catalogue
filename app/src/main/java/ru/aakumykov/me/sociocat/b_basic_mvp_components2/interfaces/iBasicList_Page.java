@@ -4,9 +4,6 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 public interface iBasicList_Page {
 
     void setPageTitle(int titleId);
@@ -21,7 +18,6 @@ public interface iBasicList_Page {
 
     void activateUpButton();
 
-    void setViewState(@NonNull iBasicViewState state, @Nullable Object data);
     void setViewState(iBasicViewState viewState);
 
     void refreshMenu();
@@ -34,4 +30,6 @@ public interface iBasicList_Page {
     Intent getInputIntent();
     Context getAppContext();
     Context getPageContext();
+
+    String getText(int stringResourceId, Object... formatArgs);
 }

@@ -12,10 +12,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
@@ -56,12 +56,11 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem, int position) {
+    public void fillWithData(BasicMVP_ListItem basicListItem) {
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
 
         Tag tag = (Tag) dataItem.getPayload();
 
-//        titleView.setText(position+": "+tag.getName());
         titleView.setText(tag.getName());
 
         commentsCountView.setText(String.valueOf(tag.getCardsCount()));

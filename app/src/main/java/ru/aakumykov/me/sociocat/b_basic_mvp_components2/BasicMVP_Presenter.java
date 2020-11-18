@@ -2,20 +2,21 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.BuildConfig;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.AllSelectedViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.NeutralViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 
 public abstract class BasicMVP_Presenter
         implements
@@ -27,7 +28,6 @@ public abstract class BasicMVP_Presenter
     protected iBasicList mListView;
 
     protected iBasicViewState mCurrentViewState;
-    protected Object mCurrentViewStateData;
 
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
@@ -58,13 +58,13 @@ public abstract class BasicMVP_Presenter
         int selectedItemsCount = mListView.getSelectedItemsCount();
 
         if (selectedItemsCount == visibleDataItemsCount) {
-            setViewState(eBasicViewStates.SELECTION_ALL, selectedItemsCount);
+            setViewState(new AllSelectedViewState(selectedItemsCount));
         }
         else if (0 == selectedItemsCount) {
-            setViewState(eBasicViewStates.NEUTRAL, null);
+            setViewState(new NeutralViewState());
         }
         else {
-            setViewState(eBasicViewStates.SELECTION, selectedItemsCount);
+            setViewState(new SelectionViewState(selectedItemsCount));
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class BasicMVP_Presenter
 
     protected void onResume() {
         if (null != mCurrentViewState)
-            setViewState(mCurrentViewState, mCurrentViewStateData);
+            setViewState(mCurrentViewState);
     }
 
     protected void onStop() {
@@ -101,7 +101,7 @@ public abstract class BasicMVP_Presenter
     public boolean onBackPressed() {
         if (mListView.isSelectionMode()) {
             mListView.clearSelection();
-            setViewState(eBasicViewStates.NEUTRAL, null);
+            setViewState(new NeutralViewState());
             return true;
         }
         return false;
@@ -117,25 +117,26 @@ public abstract class BasicMVP_Presenter
     }
 
     protected void onColdStart() {
-        setViewState(eBasicViewStates.NEUTRAL, null);
-//        mPageView.setDefaultPageTitle();
-//        mPageView.compileMenu();
+        setViewState(new NeutralViewState());
     }
 
     protected void onConfigChanged() {
-        mPageView.setViewState(mCurrentViewState, mCurrentViewStateData);
+        mPageView.setViewState(mCurrentViewState);
     }
 
     protected abstract void onRefreshRequested();
 
-    protected void setViewState(@NonNull iBasicViewState newViewState, @Nullable Object data) {
-        mCurrentViewState = newViewState;
-        mCurrentViewStateData = data;
-        mPageView.setViewState(newViewState, data);
+    protected void setViewState(@NonNull iBasicViewState viewState) {
+        mCurrentViewState = viewState;
+        mPageView.setViewState(viewState);
+    }
+
+    protected void setNeutralViewState() {
+        setViewState(new NeutralViewState());
     }
 
     protected void setErrorViewState(int userMessageId, String debugMessage) {
-        setViewState(eBasicViewStates.ERROR, (BuildConfig.DEBUG) ? debugMessage : userMessageId);
+        mPageView.setViewState(new ErrorViewState(userMessageId, debugMessage));
     }
 
 
@@ -188,25 +189,24 @@ public abstract class BasicMVP_Presenter
     @Override
     public void onSelectAllClicked() {
         mListView.selectAll();
-        setViewState(eBasicViewStates.SELECTION_ALL, mListView.getSelectedItemsCount());
+        setViewState(new AllSelectedViewState(mListView.getSelectedItemsCount()));
     }
 
     @Override
     public void onClearSelectionClicked() {
         mListView.clearSelection();
-        setViewState(eBasicViewStates.NEUTRAL, null);
+        setViewState(new NeutralViewState());
     }
 
     @Override
     public void onInvertSelectionClicked() {
         mListView.invertSelection();
-        setViewState(eBasicViewStates.SELECTION, mListView.getSelectedItemsCount());
+        setViewState(new SelectionViewState(mListView.getSelectedItemsCount()));
     }
 
 
     private boolean isColdStart() {
         return mListView.isVirgin();
     }
-
 
 }

@@ -11,16 +11,16 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicViewStates;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.TextUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_DataViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
@@ -32,6 +32,7 @@ import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
+import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
@@ -43,7 +44,7 @@ public class TagsList_Presenter
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
-    private boolean mInterruptFlag = false;
+    private final boolean mInterruptFlag = false;
 
     public TagsList_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
@@ -111,11 +112,11 @@ public class TagsList_Presenter
         super.onConfigChanged();
     }
 
-    @Override
+    /*@Override
     public void onInterruptRunningProcessClicked() {
         super.onInterruptRunningProcessClicked();
         mInterruptFlag = true;
-    }
+    }*/
 
 
     // iTagsList_ClickListener
@@ -138,12 +139,12 @@ public class TagsList_Presenter
     // Внутренние
     private void loadList() {
         //        setViewState(eBasicViewStates.PROGRESS, R.string.TAGS_LIST_loading_list);
-        setViewState(eBasicViewStates.REFRESHING, R.string.TAGS_LIST_loading_list);
+        setViewState(new RefreshingViewState());
 
         mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
             @Override
             public void onTagsListSuccess(List<Tag> tagsList) {
-                setViewState(eBasicViewStates.NEUTRAL, null);
+                setNeutralViewState();
 
                 mListView.setList(
                         incapsulate2dataListItems(tagsList)
@@ -223,13 +224,13 @@ public class TagsList_Presenter
         if (mInterruptFlag) {
             mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
             mListView.clearSelection();
-            setViewState(eBasicViewStates.NEUTRAL, null);
+            setNeutralViewState();
             return;
         }
 
         if (0 == tagsList.size()) {
             mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
-            setViewState(eBasicViewStates.NEUTRAL, null);
+            setNeutralViewState();
             return;
         }
 
@@ -238,7 +239,7 @@ public class TagsList_Presenter
         Tag tag = (Tag) dataItem.getPayload();
 
         String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
-        setViewState(eBasicViewStates.PROGRESS_WITH_CANCEL_BUTTON, msg);
+        setViewState(new CancelableProgress(msg));
 
         mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
             @Override

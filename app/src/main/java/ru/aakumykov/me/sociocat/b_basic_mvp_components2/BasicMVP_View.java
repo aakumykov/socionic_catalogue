@@ -29,7 +29,6 @@ import butterknife.BindView;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
@@ -44,10 +43,11 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewSta
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectedViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 
 public abstract class BasicMVP_View
-        extends BasicMVP_Activity
+        extends BaseView
         implements iBasicList_Page
 {
     @Nullable @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
@@ -64,6 +64,11 @@ public abstract class BasicMVP_View
     protected Menu mMenu;
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
+
+    protected int mActivityRequestCode;
+    protected int mActivityResultCode;
+    protected Intent mActivityResultData;
+
     private SearchView mSearchView;
 
 
@@ -212,41 +217,6 @@ public abstract class BasicMVP_View
     }
 
     @Override
-    public void setViewState(@NonNull iBasicViewState state, @Nullable Object data) {
-
-        eBasicViewStates viewState = (eBasicViewStates) state;
-
-        switch (viewState) {
-            case NEUTRAL:
-                setNeutralViewState();
-                break;
-
-            case PROGRESS:
-                showProgressMessage(data);
-                break;
-
-            case ERROR:
-                showErrorMsg(data);
-                break;
-
-            case REFRESHING:
-                showRefreshThrobber();
-                break;
-
-            case SELECTION:
-                showSelectionViewState(data);
-                break;
-
-            case SELECTION_ALL:
-                showAllSelectedViewState(data);
-                break;
-
-            default:
-                throw new RuntimeException("Unknown viewState: "+viewState);
-        }
-    }
-
-    @Override
     public void setViewState(iBasicViewState viewState) {
         if (viewState instanceof NeutralViewState) {
             setNeutralViewState((NeutralViewState) viewState);
@@ -260,7 +230,7 @@ public abstract class BasicMVP_View
         else if (viewState instanceof ErrorViewState) {
             setErrorViewState((ErrorViewState) viewState);
         }
-        else if (viewState instanceof SelectedViewState) {
+        else if (viewState instanceof SelectionViewState) {
             setSelectedViewState();
         }
         else if (viewState instanceof AllSelectedViewState) {
@@ -319,6 +289,11 @@ public abstract class BasicMVP_View
         return this;
     }
 
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return TextUtils.getText(this, stringResourceId, formatArgs);
+    }
+
 
     // Внутренние
     private void configureSwipeRefresh() {
@@ -331,16 +306,6 @@ public abstract class BasicMVP_View
                 mPresenter.onRefreshRequested();
             }
         });
-    }
-
-    private void clearMenu() {
-        if (null != mMenu)
-            mMenu.clear();
-    }
-
-    private void inflateMenu(int menuResourceId) {
-        if (null != mMenuInflater && null != mMenu)
-            mMenuInflater.inflate(menuResourceId, mMenu);
     }
 
     private void addSearchView() {
@@ -497,7 +462,7 @@ public abstract class BasicMVP_View
 
 
     // ViewState
-    private void setNeutralViewState() {
+    protected void setNeutralViewState() {
         setDefaultPageTitle();
         compileMenu();
 
@@ -505,16 +470,16 @@ public abstract class BasicMVP_View
         hideProgressMessage();
     }
 
-    private void hideProgressMessage() {
+    public void hideProgressMessage() {
         hideProgressBar();
         hideMessage();
     }
 
-    private void hideMessage() {
+    public void hideMessage() {
         ViewUtils.hide(messageView);
     }
 
-    private void hideProgressBar() {
+    public void hideProgressBar() {
         ViewUtils.hide(progressBar);
     }
 
@@ -523,7 +488,7 @@ public abstract class BasicMVP_View
         showProgressBar();
     }
 
-    private void showProgressBar() {
+    public void showProgressBar() {
         View progressBar = findViewById(R.id.progressBar);
         if (null != progressBar)
             ViewUtils.show(progressBar);

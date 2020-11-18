@@ -9,12 +9,13 @@ import androidx.annotation.Nullable;
 
 import com.vk.api.sdk.VK;
 import com.vk.api.sdk.VKApiCallback;
+import com.vk.api.sdk.VKApiConfig;
 import com.vk.api.sdk.VKTokenExpiredHandler;
 import com.vk.api.sdk.auth.VKAccessToken;
 import com.vk.api.sdk.auth.VKAuthCallback;
-import com.vk.api.sdk.exceptions.VKApiExecutionException;
 import com.vk.api.sdk.requests.VKRequest;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,11 +109,14 @@ public class VKAuthHelper {
     public static void getUserInfo(@Nullable Integer userId, GetVKUserInfo_Callbacks callbacks) {
 
         VKUserInfoRequest vkUserInfoRequest = new VKUserInfoRequest("users.get");
+
         vkUserInfoRequest.addParam("lang", 1);
+
         if (null != userId)
             vkUserInfoRequest.addParam("user_ids", userId);
 
         VK.execute(vkUserInfoRequest, new VKApiCallback<Object>() {
+
             @Override
             public void success(Object o) {
                 try {
@@ -133,7 +137,7 @@ public class VKAuthHelper {
             }
 
             @Override
-            public void fail(@NonNull VKApiExecutionException e) {
+            public void fail(@NotNull Exception e) {
                 String errorMsg = e.getMessage();
                 Log.e(TAG, errorMsg);
                 e.printStackTrace();
@@ -144,9 +148,11 @@ public class VKAuthHelper {
 
 
     // Внутренние классы
-    private static class VKUserInfoRequest extends VKRequest {
-        public VKUserInfoRequest(@NonNull String method) {
-            super(method);
+    private static class VKUserInfoRequest extends VKRequest<String> {
+        public VKUserInfoRequest(
+                @NotNull String method
+        ) {
+            super(method, VKApiConfig.DEFAULT_API_VERSION);
         }
     }
 
@@ -170,9 +176,9 @@ public class VKAuthHelper {
             }
         }
 
-        private int id;
-        private String firstName;
-        private String lastName;
+        private final int id;
+        private final String firstName;
+        private final String lastName;
 
         public VKUser(int id, String firstName, String lastName) {
             this.id = id;

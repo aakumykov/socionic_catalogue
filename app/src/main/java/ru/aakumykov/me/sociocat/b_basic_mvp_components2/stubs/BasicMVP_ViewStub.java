@@ -4,8 +4,6 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.stubs;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 
@@ -38,11 +36,6 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
 
     @Override
     public void activateUpButton() {
-
-    }
-
-    @Override
-    public void setViewState(@NonNull iBasicViewState state, Object data) {
 
     }
 
@@ -90,4 +83,10 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
     public Context getPageContext() {
         return null;
     }
+
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return null;
+    }
+
 }

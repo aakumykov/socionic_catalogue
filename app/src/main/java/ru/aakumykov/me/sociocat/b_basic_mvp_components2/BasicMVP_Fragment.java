@@ -29,13 +29,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewStates;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.PageUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModelFactory;
@@ -207,41 +207,6 @@ public abstract class BasicMVP_Fragment
     }
 
     @Override
-    public void setViewState(@NonNull iBasicViewState state, @Nullable Object data) {
-
-        eBasicViewStates viewState = (eBasicViewStates) state;
-
-        switch (viewState) {
-            case NEUTRAL:
-                setNeutralViewState();
-                break;
-
-            case PROGRESS:
-                setProgressViewState(data);
-                break;
-
-            case ERROR:
-                setErrorViewState(data);
-                break;
-
-            case REFRESHING:
-                setRefreshViewState();
-                break;
-
-            case SELECTION:
-                setSelectionViewState(data);
-                break;
-
-            case SELECTION_ALL:
-                setAllSelectedViewState(data);
-                break;
-
-            default:
-                throw new RuntimeException("Unknown viewState: "+viewState);
-        }
-    }
-
-    @Override
     public void setViewState(iBasicViewState viewState) {
 
     }
@@ -298,6 +263,11 @@ public abstract class BasicMVP_Fragment
     @Override
     public Context getPageContext() {
         return getContext();
+    }
+
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return TextUtils.getText(getContext(), stringResourceId, formatArgs);
     }
 
 

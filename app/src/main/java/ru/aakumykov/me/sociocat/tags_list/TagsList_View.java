@@ -13,17 +13,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_DataAdapter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.BasicMVP_View;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.helpers.SortingMenuItemConstructor;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iDataAdapterPreparationCallback;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iPresenterPreparationCallback;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.BasicMVP_Utils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVP_Utils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
@@ -90,11 +91,11 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         return true;
     }
 
-    @Override
+    /*@Override
     public void setSelectionViewState(Object viewStateData) {
         super.setSelectionViewState(viewStateData);
         inflateMenuItem(R.menu.tags_list_delete);
-    }
+    }*/
 
     @Override
     protected BasicMVP_Presenter preparePresenter() {
@@ -134,6 +135,11 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public void setViewState(iBasicViewState viewState) {
+        super.setViewState(viewState);
     }
 
     @Override

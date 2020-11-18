@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.tags_list.list_parts;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_components.list_Items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.models.Tag;
 
 public class Tag_ListItem extends BasicMVP_DataItem {
