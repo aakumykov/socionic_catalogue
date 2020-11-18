@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_list.list_utils;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_utils.BasicMVP_ItemsComparator;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;

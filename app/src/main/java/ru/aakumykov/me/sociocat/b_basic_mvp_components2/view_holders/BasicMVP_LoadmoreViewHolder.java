@@ -10,8 +10,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_LoadmoreItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_LoadmoreItem;
 
 public class BasicMVP_LoadmoreViewHolder extends BasicMVP_ViewHolder {
 

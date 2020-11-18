@@ -7,8 +7,8 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 
 public class BasicMVP_ItemsFilter extends Filter {
 

@@ -10,8 +10,8 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iListBottomIt
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iListTopItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 
 public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
 

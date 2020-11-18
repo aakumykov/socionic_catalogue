@@ -22,10 +22,10 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_LoadmoreItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ThrobberItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_LoadmoreItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ThrobberItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_utils.BasicMVP_ItemsFilter;
 
 public abstract class BasicMVP_DataAdapter

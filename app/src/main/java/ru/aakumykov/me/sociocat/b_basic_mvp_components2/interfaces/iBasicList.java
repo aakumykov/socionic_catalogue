@@ -4,8 +4,8 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_Items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 
 public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 {
