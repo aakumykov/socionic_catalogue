@@ -38,7 +38,7 @@ import ru.aakumykov.me.sociocat.basic_view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.basic_view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;

@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.basic_view_states.ProgressViewState;
-import ru.aakumykov.me.sociocat.basic_view_states.iBasicViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEdit_ViewModelFactory;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
