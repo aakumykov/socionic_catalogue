@@ -145,9 +145,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_tag_filter_close" />
-                            <entry key="sourceFile" value="C:\Users\Andrey\Pictures\ic_youtube_video_error.svg" />
+                            <entry key="outputName" value="ic_tag_item_checked2" />
+                            <entry key="sourceFile" value="C:\Users\Andrey\Pictures\ic_tag_item_checked2.svg" />
                           </map>
                         </option>
                       </PersistentState>
