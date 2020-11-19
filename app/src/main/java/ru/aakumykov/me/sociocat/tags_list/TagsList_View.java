@@ -25,6 +25,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPre
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVP_Utils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
@@ -92,11 +93,11 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         return true;
     }
 
-    /*@Override
-    public void setSelectionViewState(Object viewStateData) {
-        super.setSelectionViewState(viewStateData);
-        inflateMenuItem(R.menu.tags_list_delete);
-    }*/
+    @Override
+    protected void setSelectedViewState(SelectionViewState viewState) {
+        super.setSelectedViewState(viewState);
+        inflateMenu(R.menu.tags_list_delete);
+    }
 
     @Override
     protected BasicMVP_Presenter preparePresenter() {
