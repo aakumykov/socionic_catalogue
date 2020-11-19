@@ -6,6 +6,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -13,6 +14,7 @@ import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinde
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_utils.TagsList_ItemsComparator;
 
 public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
@@ -44,9 +46,7 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
     public int updateTagInList(@NonNull Tag oldTag, @NonNull Tag newTag) {
 
-        return 0;
-
-        /*Tag_ListItem tagListItem = new Tag_ListItem(newTag);
+        Tag_ListItem tagListItem = new Tag_ListItem(newTag);
 
         iBasicList.iComparisionCallback comparisionCallback = new iComparisionCallback() {
             @Override
@@ -62,6 +62,6 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
         int originalPosition = findOriginalObjectPosition(comparisionCallback);
         updateItemInOriginalList(originalPosition, tagListItem);
 
-        return visiblePosition;*/
+        return visiblePosition;
     }
 }

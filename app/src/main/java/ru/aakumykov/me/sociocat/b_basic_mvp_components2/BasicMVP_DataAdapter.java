@@ -193,14 +193,41 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void updateItem(int index, BasicMVP_ListItem newItem) {
-        mCurrentItemsList.set(index, newItem);
-        notifyItemChanged(index);
+    public void updateItemInVisibleList(int position, BasicMVP_ListItem item) {
+        if (positionIsInListRange(position, mCurrentItemsList)) {
+            mCurrentItemsList.set(position, item);
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void updateItemInOriginalList(int position, BasicMVP_ListItem item) {
+        if (positionIsInListRange(position, mOriginalItemsList))
+            mOriginalItemsList.set(position, item);
     }
 
     @Override
     public int getVisibleItemsCount() {
         return mCurrentItemsList.size();
+    }
+
+    @Override
+    public int findVisibleObjectPosition(iComparisionCallback callback) {
+        for (BasicMVP_ListItem listItem : mCurrentItemsList)
+        {
+            if (listItem instanceof BasicMVP_DataItem)
+            {
+                Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
+                if (callback.onCompare(objectFromList))
+                    return mCurrentItemsList.indexOf(listItem);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int findOriginalObjectPosition(iComparisionCallback callback) {
+        return 0;
     }
 
     @Override
@@ -534,5 +561,9 @@ public abstract class BasicMVP_DataAdapter
                 dataItems.add((BasicMVP_DataItem) listItem);
 
         return dataItems;
+    }
+
+    private boolean positionIsInListRange(int position, List<BasicMVP_ListItem> list) {
+        return position >= 0 && list.size() > position;
     }
 }
