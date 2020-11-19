@@ -221,10 +221,11 @@ public class TagsList_Presenter
 
     private void deleteTagsFromList(List<BasicMVP_DataItem> tagsList) {
 
-        if (mInterruptFlag) {
+        if (hasInterruptFlag()) {
             mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
             mListView.clearSelection();
             setNeutralViewState();
+            clearInterruptFlag();
             return;
         }
 

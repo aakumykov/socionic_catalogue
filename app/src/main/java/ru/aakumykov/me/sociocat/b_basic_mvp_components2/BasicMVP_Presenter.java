@@ -32,7 +32,7 @@ public abstract class BasicMVP_Presenter
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
 
-    protected boolean mInterruptFlag;
+    private boolean mInterruptFlag = false;
 
 
     public BasicMVP_Presenter(iSortingMode defaultSortingMode) {
@@ -142,7 +142,19 @@ public abstract class BasicMVP_Presenter
     }
 
     protected void onInterruptRunningProcessClicked() {
+        setInterruptFlag();
+    }
+
+    protected final void setInterruptFlag() {
         mInterruptFlag = true;
+    }
+
+    protected final void clearInterruptFlag() {
+        mInterruptFlag = false;
+    }
+
+    protected boolean hasInterruptFlag() {
+        return mInterruptFlag;
     }
 
 
