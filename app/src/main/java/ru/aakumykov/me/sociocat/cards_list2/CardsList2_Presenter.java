@@ -8,6 +8,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ListUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
@@ -71,12 +72,17 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 mListView.hideThrobberItem();
+
                 mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVP_DataItem createDataItem(Object object) {
                         return new Card_ListItem((Card) object);
                     }
                 }));
+
+                String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
+                mPageView.showToast(msg);
+
                 mListView.showLoadmoreItem();
             }
 

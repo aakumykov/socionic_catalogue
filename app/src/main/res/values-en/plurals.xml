@@ -19,4 +19,9 @@
         <item quantity="one">Cannot delete more then %1$d tag at once</item>
         <item quantity="other">Cannot delete more then %1$d tags at once</item>
     </plurals>
+
+    <plurals name="CARDS_LIST_n_cards_mode_loaded">
+        <item quantity="one">%1$d more card loaded</item>
+        <item quantity="other">%1$d more cards loaded</item>
+    </plurals>
 </resources>

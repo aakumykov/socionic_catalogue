@@ -28,4 +28,11 @@
         <item quantity="one">Нельзя удалить больше %1$d метки за раз</item>
         <item quantity="many">Нельзя удалить больше %1$d меток за раз</item>
     </plurals>
+
+    <plurals name="CARDS_LIST_n_cards_mode_loaded">
+        <item quantity="zero">Загружено ещё %1$d карточек</item>
+        <item quantity="one">Загружена ещё %1$d карточка</item>
+        <item quantity="two">Загружено ещё %1$d карточки</item>
+        <item quantity="many">Загружено ещё %1$d карточек</item>
+    </plurals>
 </resources>
