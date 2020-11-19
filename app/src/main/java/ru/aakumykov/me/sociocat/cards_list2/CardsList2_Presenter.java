@@ -60,6 +60,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
+
+        mListView.hideLoadmoreItem();
         mListView.showThrobberItem();
 
         BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
