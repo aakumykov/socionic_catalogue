@@ -250,7 +250,7 @@ public abstract class BasicMVP_View
     @Override
     public void setViewState(iBasicViewState viewState) {
         if (viewState instanceof NeutralViewState) {
-            setNeutralViewState((NeutralViewState) viewState);
+            setNeutralViewState();
         }
         else if (viewState instanceof CancelableProgressViewState) {
             setCancelableProgressViewState((CancelableProgressViewState) viewState);
@@ -487,14 +487,6 @@ public abstract class BasicMVP_View
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
-    // ViewState (новые)
-    protected void setNeutralViewState(NeutralViewState viewState) {
-        setDefaultPageTitle();
-        compileMenu();
-
-        hideRefreshThrobber();
-        hideProgressMessage();
-    }
 
     protected void setCancelableProgressViewState(CancelableProgressViewState viewState) {
         setProgressViewState(viewState);
