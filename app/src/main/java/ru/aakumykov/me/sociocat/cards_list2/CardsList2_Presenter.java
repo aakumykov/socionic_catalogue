@@ -1,25 +1,46 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
+import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
+import ru.aakumykov.me.sociocat.cards_list2.list_parts.Card_ListItem;
+import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 
-public class CardsList2_Presenter extends BasicMVP_Presenter {
+public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
+
+    private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
 
     public CardsList2_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
     }
 
     @Override
-    public void unbindViews() {
+    protected void onColdStart() {
+        super.onColdStart();
+        loadCardsFromBeginning();
+    }
 
+    @Override
+    public void unbindViews() {
+        mPageView = new CardsList2_ViewStub();
     }
 
     @Override
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
-        return null;
+        return eSortingOrder.DIRECT;
     }
 
     @Override
@@ -40,5 +61,44 @@ public class CardsList2_Presenter extends BasicMVP_Presenter {
     @Override
     public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
 
+    }
+
+
+    private void loadCardsFromBeginning() {
+        setViewState(new RefreshingViewState());
+
+        mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setNeutralViewState();
+
+                mListView.setList(
+                    convertList2basicItemsList(list, new iIncapsulationCallback() {
+                        @Override
+                        public BasicMVP_DataItem createDataItem(Object payload) {
+                            return new Card_ListItem((Card) payload);
+                        }
+                    })
+                );
+
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private interface iIncapsulationCallback {
+        BasicMVP_DataItem createDataItem(Object payload);
+    }
+
+    private <T> List<BasicMVP_ListItem> convertList2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
+        List<BasicMVP_ListItem> outputList = new ArrayList<>();
+        for (Object object : inputList)
+            outputList.add(callback.createDataItem(object));
+        return outputList;
     }
 }

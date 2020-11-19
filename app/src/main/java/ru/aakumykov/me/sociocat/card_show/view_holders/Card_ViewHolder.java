@@ -72,7 +72,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private enum MediaType { AUDIO, VIDEO }
 
-    private static final String TAG = "Card_ViewHolder";
+    private static final String TAG = "CardInList_ViewHolder";
     private iList_Item currentListItem = null;
     private Card currentCard = null;
     private iCardShow.iPresenter presenter = null;

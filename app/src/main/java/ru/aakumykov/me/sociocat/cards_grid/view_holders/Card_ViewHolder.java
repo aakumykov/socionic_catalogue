@@ -20,13 +20,13 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class Card_ViewHolder extends BaseViewHolder
 {
-    private final static String TAG = "Card_ViewHolder";
+    private final static String TAG = "CardInList_ViewHolder";
 
     @BindView(R.id.mainView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageView) ImageView mImageView;
 
-    private iCardsGrid.iPresenter mPresenter;
+    private final iCardsGrid.iPresenter mPresenter;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {

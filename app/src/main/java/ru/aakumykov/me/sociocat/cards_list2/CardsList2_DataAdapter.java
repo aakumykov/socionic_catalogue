@@ -5,26 +5,30 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_V
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
+import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderBinder;
+import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 
-public class BasicMVP_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter {
+public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter {
 
-    public BasicMVP_DataAdapter(iBasicMVP_ItemClickListener itemClickListener) {
+    public CardsList2_DataAdapter(iBasicMVP_ItemClickListener itemClickListener) {
         super(itemClickListener);
     }
 
     @Override
     protected BasicMVP_ViewHolderCreator prepareViewHolderCreator() {
-        return null;
+        return new CardsList2_ViewHolderCreator(mItemClickListener);
     }
 
     @Override
     protected BasicMVP_ViewHolderBinder prepareViewHolderBinder() {
-        return null;
+        return new CardsList2_ViewHolderBinder();
     }
 
     @Override
     protected BasicMVP_ViewTypeDetector prepareViewTypeDetector() {
-        return null;
+        return new CardsList2_ViewTypeDetector();
     }
 
     @Override
