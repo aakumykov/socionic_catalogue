@@ -242,11 +242,13 @@ public abstract class BasicMVP_View
         else if (viewState instanceof ErrorViewState) {
             setErrorViewState((ErrorViewState) viewState);
         }
-        else if (viewState instanceof SelectionViewState) {
-            setSelectedViewState();
-        }
+        // AllSelectedViewState - частный случай SelectionViewState,
+        // поэтому должен идти перед ним.
         else if (viewState instanceof AllSelectedViewState) {
-            setAllSelectedViewState();
+            setAllSelectedViewState((AllSelectedViewState) viewState);
+        }
+        else if (viewState instanceof SelectionViewState) {
+            setSelectedViewState((SelectionViewState) viewState);
         }
         else
             throw new RuntimeException("Unknown view state: "+viewState);
@@ -464,12 +466,14 @@ public abstract class BasicMVP_View
         showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
     }
 
-    protected void setSelectedViewState() {
-
+    protected void setSelectedViewState(SelectionViewState viewState) {
+        showSelectionMenu();
+        showSelectedItemsCount(viewState.getSelectedItemsCount());
     }
 
-    protected void setAllSelectedViewState() {
-
+    protected void setAllSelectedViewState(AllSelectedViewState viewState) {
+        showAllSelectedMenu();
+        showSelectedItemsCount(viewState.getSelectedItemsCount());
     }
 
 
