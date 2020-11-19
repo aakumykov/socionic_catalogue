@@ -6,7 +6,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
@@ -17,6 +16,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
@@ -102,7 +102,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         return BasicMVP_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new TagsList_Presenter(eBasicSortingMode.BY_NAME);
+                return new TagsList_Presenter(eBasicViewMode.LIST, eBasicSortingMode.BY_NAME);
             }
         });
     }
@@ -115,11 +115,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
                 return new TagsList_DataAdapter(mPresenter);
             }
         });
-    }
-
-    @Override
-    protected RecyclerView.LayoutManager prepareLayoutManager() {
-        return new LinearLayoutManager(this);
     }
 
     @Override

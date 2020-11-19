@@ -53,6 +53,8 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     void highlightItem(int position);
 
+    void setViewMode(iViewMode viewMode);
+
 
     interface iComparisionCallback {
         boolean onCompare(Object objectFromList);

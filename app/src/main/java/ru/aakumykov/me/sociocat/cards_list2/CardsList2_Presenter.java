@@ -6,6 +6,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ListUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
@@ -23,8 +24,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
 
 
-    public CardsList2_Presenter(iSortingMode defaultSortingMode) {
-        super(defaultSortingMode);
+    public CardsList2_Presenter(iViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+        super(defaultViewMode, defaultSortingMode);
     }
 
 

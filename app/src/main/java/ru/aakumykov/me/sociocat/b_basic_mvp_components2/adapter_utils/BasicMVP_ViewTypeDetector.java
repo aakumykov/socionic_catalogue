@@ -22,5 +22,4 @@ public abstract class BasicMVP_ViewTypeDetector {
             throw new RuntimeException("Объект iListItem неизвестного типа: "+listItem);
         }
     }
-
 }

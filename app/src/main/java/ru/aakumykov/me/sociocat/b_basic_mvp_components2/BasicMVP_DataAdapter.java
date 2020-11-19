@@ -22,6 +22,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_LoadmoreItem;
@@ -124,6 +125,11 @@ public abstract class BasicMVP_DataAdapter
 
         refreshItem(oldHighlightedPosition);
         refreshItem(position);
+    }
+
+    @Override
+    public void setViewMode(iViewMode viewMode) {
+        mViewHolderCreator.setVideMode(viewMode);
     }
 
     @Override

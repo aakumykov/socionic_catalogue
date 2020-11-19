@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.data_types.BasicMVP_ItemTypes;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_LoadmoreViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ThrobberViewHolder;
 
 public class BasicMVP_ViewHolderCreator {
 
     protected iBasicMVP_ItemClickListener mItemClickListener;
+    private iViewMode mCurrentViewMode;
 
     public BasicMVP_ViewHolderCreator(iBasicMVP_ItemClickListener itemClickListener) {
         this.mItemClickListener = itemClickListener;
@@ -49,5 +51,9 @@ public class BasicMVP_ViewHolderCreator {
         return LayoutInflater
                 .from(parent.getContext())
                 .inflate(layoutId, parent, false);
+    }
+
+    public void setVideMode(iViewMode viewMode) {
+        mCurrentViewMode = viewMode;
     }
 }

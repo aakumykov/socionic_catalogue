@@ -23,12 +23,15 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
@@ -39,13 +42,13 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModelFactory;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.AllSelectedViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 
 public abstract class BasicMVP_View
         extends BaseView
@@ -76,7 +79,6 @@ public abstract class BasicMVP_View
     // Абстрактные методы
     protected abstract BasicMVP_Presenter preparePresenter();
     protected abstract BasicMVP_DataAdapter prepareDataAdapter();
-    protected abstract RecyclerView.LayoutManager prepareLayoutManager();
     protected abstract void processActivityResult();
 
 
@@ -99,7 +101,7 @@ public abstract class BasicMVP_View
 
         mDataAdapter = prepareDataAdapter();
 
-        mLayoutManager = prepareLayoutManager();
+        mLayoutManager = prepareLayoutManager((eBasicViewMode) mPresenter.getCurrentViewMode());
 
         configureSwipeRefresh();
 
@@ -179,6 +181,18 @@ public abstract class BasicMVP_View
 
             case R.id.actionInterrupt:
                 mPresenter.onInterruptRunningProcessClicked();
+                break;
+
+            case R.id.actionViewModeList:
+                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.LIST);
+                break;
+
+            case R.id.actionViewModeGrid:
+                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.GRID);
+                break;
+
+            case R.id.actionViewModeFeed:
+                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.FEED);
                 break;
 
             default:
@@ -317,6 +331,18 @@ public abstract class BasicMVP_View
     }
 
 
+
+    protected RecyclerView.LayoutManager createGridModeLayoutManager() {
+        return new StaggeredGridLayoutManager(AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT,StaggeredGridLayoutManager.VERTICAL);
+    }
+
+    protected RecyclerView.LayoutManager createLinearModeLayoutManager() {
+        return new LinearLayoutManager(this);
+    }
+
+
+
+
     // Внутренние
     private void configureSwipeRefresh() {
         if (null == swipeRefreshLayout)
@@ -328,6 +354,18 @@ public abstract class BasicMVP_View
                 mPresenter.onRefreshRequested();
             }
         });
+    }
+
+    private RecyclerView.LayoutManager prepareLayoutManager(eBasicViewMode basicViewMode) {
+        switch (basicViewMode) {
+            case LIST:
+            case FEED:
+                return createLinearModeLayoutManager();
+            case GRID:
+                return createGridModeLayoutManager();
+            default:
+                throw new RuntimeException("Неизвестный basicViewMode: "+basicViewMode);
+        }
     }
 
     private void addSearchView() {

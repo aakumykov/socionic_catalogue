@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
@@ -11,6 +12,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewSta
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.AllSelectedViewState;
@@ -28,15 +30,17 @@ public abstract class BasicMVP_Presenter
     protected iBasicList_Page mPageView;
     protected iBasicList mListView;
 
+    private iViewMode mCurrentViewMode;
     protected iBasicViewState mCurrentViewState;
-
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
 
     private boolean mInterruptFlag = false;
 
 
-    public BasicMVP_Presenter(iSortingMode defaultSortingMode) {
+
+    public BasicMVP_Presenter(iViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+        mCurrentViewMode = defaultViewMode;
         mCurrentSortingMode = defaultSortingMode;
         mCurrentSortingOrder = getDefaultSortingOrderForSortingMode(mCurrentSortingMode);
     }
@@ -69,6 +73,10 @@ public abstract class BasicMVP_Presenter
         else {
             setViewState(new SelectionViewState(selectedItemsCount));
         }
+    }
+
+    public iViewMode getCurrentViewMode() {
+        return mCurrentViewMode;
     }
 
     public iSortingMode getCurrentSortingMode() {
@@ -233,4 +241,37 @@ public abstract class BasicMVP_Presenter
     }
 
 
+    public void onChangeViewModeMenuItemClicked(iViewMode viewMode) {
+
+        if (viewMode instanceof eBasicViewMode) {
+
+            mCurrentViewMode = viewMode;
+
+            switch ((eBasicViewMode) viewMode) {
+                case LIST:
+                    onListViewModeClicked();
+                    return;
+                case GRID:
+                    onGridViewModeClicked();
+                    return;
+                case FEED:
+                    onFeedViewModeClicked();
+                    return;
+            }
+        }
+
+        throw new RuntimeException("Неизвестный viewMode: " + viewMode);
+    }
+
+    private void onListViewModeClicked() {
+        mListView.setViewMode(eBasicViewMode.LIST);
+    }
+
+    private void onGridViewModeClicked() {
+        mListView.setViewMode(eBasicViewMode.GRID);
+    }
+
+    private void onFeedViewModeClicked() {
+        mListView.setViewMode(eBasicViewMode.FEED);
+    }
 }

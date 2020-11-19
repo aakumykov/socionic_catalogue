@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.cards_list2;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
@@ -13,6 +12,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVP_Utils;
@@ -46,11 +46,17 @@ public class CardsList2_View extends BasicMVP_View {
     }
 
     @Override
+    public void compileMenu() {
+        super.compileMenu();
+        inflateMenu(R.menu.change_view_mode);
+    }
+
+    @Override
     protected BasicMVP_Presenter preparePresenter() {
         return BasicMVP_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new CardsList2_Presenter(eBasicSortingMode.BY_NAME);
+                return new CardsList2_Presenter(eBasicViewMode.LIST, eBasicSortingMode.BY_NAME);
             }
         });
     }
@@ -63,11 +69,6 @@ public class CardsList2_View extends BasicMVP_View {
                 return new CardsList2_DataAdapter(mPresenter);
             }
         });
-    }
-
-    @Override
-    protected RecyclerView.LayoutManager prepareLayoutManager() {
-        return new LinearLayoutManager(this);
     }
 
     @Override
