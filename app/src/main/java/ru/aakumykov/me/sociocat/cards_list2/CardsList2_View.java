@@ -77,7 +77,7 @@ public class CardsList2_View extends BasicMVP_View {
 
     @Override
     public void setDefaultPageTitle() {
-
+        setPageTitle(R.string.CARDS_LIST_page_title);
     }
 
     @Override
