@@ -227,7 +227,16 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public int findOriginalObjectPosition(iComparisionCallback callback) {
-        return 0;
+        for (BasicMVP_ListItem listItem : mOriginalItemsList)
+        {
+            if (listItem instanceof BasicMVP_DataItem)
+            {
+                Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
+                if (callback.onCompare(objectFromList))
+                    return mOriginalItemsList.indexOf(listItem);
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -564,6 +573,6 @@ public abstract class BasicMVP_DataAdapter
     }
 
     private boolean positionIsInListRange(int position, List<BasicMVP_ListItem> list) {
-        return position >= 0 && list.size() > position;
+        return (position >= 0) && (list.size() > position);
     }
 }
