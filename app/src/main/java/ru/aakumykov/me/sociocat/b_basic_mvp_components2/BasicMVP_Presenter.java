@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_Vi
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.AllSelectedViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.NeutralViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 
 public abstract class BasicMVP_Presenter
@@ -135,6 +136,10 @@ public abstract class BasicMVP_Presenter
 
     protected void setNeutralViewState() {
         setViewState(new NeutralViewState());
+    }
+
+    protected void setRefreshingViewState() {
+        setViewState(new RefreshingViewState());
     }
 
     protected void setErrorViewState(int userMessageId, String debugMessage) {

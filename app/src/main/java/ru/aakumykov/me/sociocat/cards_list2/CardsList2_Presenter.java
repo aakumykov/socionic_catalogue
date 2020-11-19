@@ -11,7 +11,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_Data
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.list_parts.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
@@ -45,7 +44,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onRefreshRequested() {
-
+        loadCardsFromBeginning();
     }
 
     @Override
@@ -65,7 +64,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
 
     private void loadCardsFromBeginning() {
-        setViewState(new RefreshingViewState());
+        setRefreshingViewState();
 
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
