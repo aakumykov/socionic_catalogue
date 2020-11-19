@@ -19,7 +19,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
@@ -31,7 +30,6 @@ import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
-import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
 
 public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
@@ -140,14 +138,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
-        if (viewState instanceof CancelableProgress)
-            setCancelableProgressViewState((CancelableProgress) viewState);
-        else
-            super.setViewState(viewState);
-    }
-
-    @Override
     public void goShowCardsWithTag(@NonNull Tag tag) {
         Intent intent = new Intent(this, CardsList_View.class);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
@@ -230,7 +220,4 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         }
     }
 
-    private void setCancelableProgressViewState(CancelableProgress viewState) {
-        setProgressViewState(viewState);
-    }
 }

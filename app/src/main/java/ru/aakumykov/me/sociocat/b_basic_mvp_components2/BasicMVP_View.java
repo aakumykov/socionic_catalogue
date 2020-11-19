@@ -45,6 +45,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressView
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
 
 public abstract class BasicMVP_View
         extends BaseView
@@ -176,6 +177,10 @@ public abstract class BasicMVP_View
                 mPresenter.onInvertSelectionClicked();
                 break;
 
+            case R.id.actionInterrupt:
+                mPresenter.onInterruptRunningProcessClicked();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -232,6 +237,9 @@ public abstract class BasicMVP_View
     public void setViewState(iBasicViewState viewState) {
         if (viewState instanceof NeutralViewState) {
             setNeutralViewState((NeutralViewState) viewState);
+        }
+        else if (viewState instanceof CancelableProgress) {
+            setCancelableProgressViewState((CancelableProgress) viewState);
         }
         else if (viewState instanceof ProgressViewState) {
             setProgressViewState((ProgressViewState) viewState);
@@ -450,6 +458,11 @@ public abstract class BasicMVP_View
         hideProgressMessage();
     }
 
+    protected void setCancelableProgressViewState(CancelableProgress viewState) {
+        setProgressViewState(viewState);
+        showInterruptButton();
+    }
+
     protected void setProgressViewState(ProgressViewState progressViewState) {
         if (progressViewState.hasStringMessage())
             showProgressMessage(progressViewState.getStringMessage());
@@ -579,6 +592,12 @@ public abstract class BasicMVP_View
 
     private void showSelectedItemsCount(Object viewStateData) {
         setPageTitle(R.string.page_title_selected_items_count, viewStateData);
+    }
+
+    private void showInterruptButton() {
+        clearMenu();
+        inflateMenu(R.menu.progress_interrupt);
+        setPageTitle(R.string.interrupt);
     }
 
     private void forgetActivityResult() {

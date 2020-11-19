@@ -32,6 +32,8 @@ public abstract class BasicMVP_Presenter
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
 
+    protected boolean mInterruptFlag;
+
 
     public BasicMVP_Presenter(iSortingMode defaultSortingMode) {
         mCurrentSortingMode = defaultSortingMode;
@@ -139,6 +141,10 @@ public abstract class BasicMVP_Presenter
         mPageView.setViewState(new ErrorViewState(userMessageId, debugMessage));
     }
 
+    protected void onInterruptRunningProcessClicked() {
+        mInterruptFlag = true;
+    }
+
 
     // iBasicMVP_ItemClickListener
     @Override
@@ -208,5 +214,6 @@ public abstract class BasicMVP_Presenter
     private boolean isColdStart() {
         return mListView.isVirgin();
     }
+
 
 }
