@@ -32,6 +32,4 @@ public interface iBasicList_Page {
     Context getPageContext();
 
     String getText(int stringResourceId, Object... formatArgs);
-
-    void reConfigureRecyclerview();
 }

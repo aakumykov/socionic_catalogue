@@ -270,11 +270,6 @@ public abstract class BasicMVP_Fragment
         return TextUtils.getText(getContext(), stringResourceId, formatArgs);
     }
 
-    @Override
-    public void reConfigureRecyclerview() {
-
-    }
-
 
     // Внутренние
     private void onBackPressed() {

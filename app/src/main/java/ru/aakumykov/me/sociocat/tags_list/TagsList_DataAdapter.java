@@ -6,7 +6,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
@@ -26,7 +25,7 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
 
     @Override
     protected BasicMVP_ViewHolderCreator prepareViewHolderCreator() {
-        return new TagsList_ViewHolderCreator(eBasicViewMode.LIST, (iTagsList_ItemClickListener) mItemClickListener);
+        return new TagsList_ViewHolderCreator((iTagsList_ItemClickListener) mItemClickListener);
     }
 
     @Override
