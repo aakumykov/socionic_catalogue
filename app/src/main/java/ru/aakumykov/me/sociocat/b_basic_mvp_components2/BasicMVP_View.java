@@ -76,7 +76,16 @@ public abstract class BasicMVP_View
     protected abstract BasicMVP_Presenter preparePresenter();
     protected abstract BasicMVP_DataAdapter prepareDataAdapter();
     protected abstract RecyclerView.LayoutManager prepareLayoutManager();
+    protected abstract void processActivityResult();
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mActivityRequestCode = requestCode;
+        mActivityResultCode = resultCode;
+        mActivityResultData = data;
+    }
 
     @Override
     protected void onStart() {
@@ -94,6 +103,9 @@ public abstract class BasicMVP_View
         configureSwipeRefresh();
 
         mPresenter.bindViews(this, mDataAdapter);
+
+        processActivityResult();
+        forgetActivityResult();
     }
 
     @Override
@@ -565,4 +577,9 @@ public abstract class BasicMVP_View
         setPageTitle(R.string.page_title_selected_items_count, viewStateData);
     }
 
+    private void forgetActivityResult() {
+        mActivityRequestCode = Integer.MAX_VALUE;
+        mActivityResultCode = Integer.MAX_VALUE;
+        mActivityResultData = null;
+    }
 }
