@@ -17,7 +17,7 @@ public class ListUtils {
         return new ArrayList<>(set1);
     }
 
-    public static <T> List<BasicMVP_ListItem> convertList2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
+    public static <T> List<BasicMVP_ListItem> incapsulateObjects2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
         List<BasicMVP_ListItem> outputList = new ArrayList<>();
         for (Object object : inputList)
             outputList.add(callback.createDataItem(object));

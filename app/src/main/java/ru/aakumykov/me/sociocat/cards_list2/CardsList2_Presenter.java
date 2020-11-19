@@ -21,9 +21,11 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
 
+
     public CardsList2_Presenter(iSortingMode defaultSortingMode) {
         super(defaultSortingMode);
     }
+
 
     @Override
     protected void onColdStart() {
@@ -58,7 +60,31 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
+        mListView.showThrobberItem();
 
+        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
+        Card lastCard = (Card) lastDataItem.getPayload();
+
+        mCardsSingleton.loadCardsAfter(lastCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                mListView.hideThrobberItem();
+                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object object) {
+                        return new Card_ListItem((Card) object);
+                    }
+                }));
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
+                mListView.hideThrobberItem();
+                mListView.showLoadmoreItem();
+            }
+        });
     }
 
 
@@ -71,7 +97,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                 setNeutralViewState();
 
                 mListView.setList(
-                        ListUtils.convertList2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                        ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                         @Override
                         public BasicMVP_DataItem createDataItem(Object payload) {
                             return new Card_ListItem((Card) payload);
