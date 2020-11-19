@@ -32,7 +32,7 @@ import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
-import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
@@ -240,7 +240,7 @@ public class TagsList_Presenter
         Tag tag = (Tag) dataItem.getPayload();
 
         String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
-        setViewState(new CancelableProgress(msg));
+        setViewState(new CancelableProgressViewState(msg));
 
         mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
             @Override

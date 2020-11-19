@@ -45,7 +45,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressView
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
-import ru.aakumykov.me.sociocat.tags_list.view_states.CancelableProgress;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 
 public abstract class BasicMVP_View
         extends BaseView
@@ -238,8 +238,8 @@ public abstract class BasicMVP_View
         if (viewState instanceof NeutralViewState) {
             setNeutralViewState((NeutralViewState) viewState);
         }
-        else if (viewState instanceof CancelableProgress) {
-            setCancelableProgressViewState((CancelableProgress) viewState);
+        else if (viewState instanceof CancelableProgressViewState) {
+            setCancelableProgressViewState((CancelableProgressViewState) viewState);
         }
         else if (viewState instanceof ProgressViewState) {
             setProgressViewState((ProgressViewState) viewState);
@@ -458,7 +458,7 @@ public abstract class BasicMVP_View
         hideProgressMessage();
     }
 
-    protected void setCancelableProgressViewState(CancelableProgress viewState) {
+    protected void setCancelableProgressViewState(CancelableProgressViewState viewState) {
         setProgressViewState(viewState);
         showInterruptButton();
     }
