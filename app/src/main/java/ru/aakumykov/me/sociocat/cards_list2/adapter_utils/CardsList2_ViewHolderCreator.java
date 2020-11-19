@@ -30,7 +30,8 @@ public class CardsList2_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
     }
 
     private RecyclerView.ViewHolder createCardViewHolder(@NonNull ViewGroup parent) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_list2_card_list_item,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cards_list2_card_list_item,parent,false);
 
         CardInList_ViewHolder viewHolder = new CardInList_ViewHolder(itemView);
 
