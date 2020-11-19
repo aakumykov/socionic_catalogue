@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
@@ -8,7 +7,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ListUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
@@ -72,7 +71,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                 setNeutralViewState();
 
                 mListView.setList(
-                    convertList2basicItemsList(list, new iIncapsulationCallback() {
+                        ListUtils.convertList2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                         @Override
                         public BasicMVP_DataItem createDataItem(Object payload) {
                             return new Card_ListItem((Card) payload);
@@ -90,14 +89,5 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         });
     }
 
-    private interface iIncapsulationCallback {
-        BasicMVP_DataItem createDataItem(Object payload);
-    }
 
-    private <T> List<BasicMVP_ListItem> convertList2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
-        List<BasicMVP_ListItem> outputList = new ArrayList<>();
-        for (Object object : inputList)
-            outputList.add(callback.createDataItem(object));
-        return outputList;
-    }
 }
