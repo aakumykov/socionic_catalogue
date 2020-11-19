@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
@@ -85,6 +85,6 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
 
     @OnClick(R.id.tagEditButton)
     void onEditTagClicked() {
-        ((iTagsList_ClickListener) mItemClickListener).onEditTagClicked(this);
+        ((iTagsList_ItemClickListener) mItemClickListener).onEditTagClicked(this);
     }
 }

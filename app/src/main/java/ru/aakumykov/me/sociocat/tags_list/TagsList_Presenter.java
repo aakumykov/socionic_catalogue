@@ -27,7 +27,7 @@ import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ClickListener;
+import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
@@ -38,7 +38,7 @@ import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
         extends BasicMVP_Presenter
-        implements iTagsList_ClickListener
+        implements iTagsList_ItemClickListener
 {
     private static final String TAG = TagsList_Presenter.class.getSimpleName();
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
@@ -119,7 +119,7 @@ public class TagsList_Presenter
     }*/
 
 
-    // iTagsList_ClickListener
+    // iTagsList_ItemClickListener
     @Override
     public void onEditTagClicked(Tag_ViewHolder tagViewHolder) {
         int adapterPosition = tagViewHolder.getAdapterPosition();
