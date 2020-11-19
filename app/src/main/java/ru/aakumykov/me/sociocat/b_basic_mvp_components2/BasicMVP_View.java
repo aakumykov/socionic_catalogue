@@ -37,6 +37,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemC
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
@@ -101,7 +102,7 @@ public abstract class BasicMVP_View
 
         mDataAdapter = prepareDataAdapter();
 
-        mLayoutManager = prepareLayoutManager((eBasicViewMode) mPresenter.getCurrentViewMode());
+//        mLayoutManager = prepareLayoutManager((eBasicViewMode) mPresenter.getCurrentViewMode());
 
         configureSwipeRefresh();
 
@@ -330,6 +331,8 @@ public abstract class BasicMVP_View
         return TextUtils.getText(this, stringResourceId, formatArgs);
     }
 
+    @Override
+    public abstract void reConfigureRecyclerview();
 
 
     protected RecyclerView.LayoutManager createGridModeLayoutManager() {
@@ -356,7 +359,9 @@ public abstract class BasicMVP_View
         });
     }
 
-    private RecyclerView.LayoutManager prepareLayoutManager(eBasicViewMode basicViewMode) {
+    protected RecyclerView.LayoutManager prepareLayoutManager(iViewMode viewMode) {
+        eBasicViewMode basicViewMode = (eBasicViewMode) viewMode;
+
         switch (basicViewMode) {
             case LIST:
             case FEED:
@@ -364,7 +369,7 @@ public abstract class BasicMVP_View
             case GRID:
                 return createGridModeLayoutManager();
             default:
-                throw new RuntimeException("Неизвестный basicViewMode: "+basicViewMode);
+                throw new RuntimeException("Неизвестный basicViewMode: "+viewMode);
         }
     }
 

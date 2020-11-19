@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.data_types.BasicMVP_ItemTypes;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 
 public class TagsList_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 
-    public TagsList_ViewHolderCreator(iTagsList_ItemClickListener itemClickListener) {
-        super(itemClickListener);
+    public TagsList_ViewHolderCreator(iViewMode initialViewMode, iTagsList_ItemClickListener itemClickListener) {
+        super(initialViewMode, itemClickListener);
     }
 
     @Override

@@ -32,9 +32,24 @@ public class CardsList2_View extends BasicMVP_View {
     @Override
     protected void onStart() {
         super.onStart();
+        reConfigureRecyclerview();
+    }
 
-        RecyclerView.ItemDecoration itemDecoration =
-                RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
+    @Override
+    public void compileMenu() {
+        super.compileMenu();
+        inflateMenu(R.menu.change_view_mode);
+    }
+
+    @Override
+    public void reConfigureRecyclerview() {
+
+        RecyclerView.ItemDecoration itemDecoration = null;
+
+        if (eBasicViewMode.LIST.equals(mPresenter.getCurrentViewMode()))
+            itemDecoration = RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
+
+        mLayoutManager = prepareLayoutManager(mPresenter.getCurrentViewMode());
 
         BasicMVP_Utils.configureRecyclerview(
                 mRecyclerView,
@@ -43,12 +58,6 @@ public class CardsList2_View extends BasicMVP_View {
                 itemDecoration,
                 null
         );
-    }
-
-    @Override
-    public void compileMenu() {
-        super.compileMenu();
-        inflateMenu(R.menu.change_view_mode);
     }
 
     @Override

@@ -47,6 +47,21 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     @Override
     protected void onStart() {
         super.onStart();
+        reConfigureRecyclerview();
+    }
+
+    @Override
+    public void compileMenu() {
+        super.compileMenu();
+
+//        getMenuInflater().inflate(R.menu.save, mMenu);
+
+        makeSortingMenuVisible();
+        addSortByCardsCountMenuItem();
+    }
+
+    @Override
+    public void reConfigureRecyclerview() {
 
         RecyclerView.ItemDecoration itemDecoration =
                 RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
@@ -58,16 +73,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
                 itemDecoration,
                 null
         );
-    }
-
-    @Override
-    public void compileMenu() {
-        super.compileMenu();
-
-//        getMenuInflater().inflate(R.menu.save, mMenu);
-
-        makeSortingMenuVisible();
-        addSortByCardsCountMenuItem();
     }
 
     @Override

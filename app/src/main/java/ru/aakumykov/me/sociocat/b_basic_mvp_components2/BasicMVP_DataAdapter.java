@@ -129,7 +129,8 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public void setViewMode(iViewMode viewMode) {
-        mViewHolderCreator.setVideMode(viewMode);
+        mViewHolderCreator.setViewMode(viewMode);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -89,4 +89,9 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
         return null;
     }
 
+    @Override
+    public void reConfigureRecyclerview() {
+
+    }
+
 }

@@ -20,7 +20,8 @@ public class BasicMVP_ViewHolderCreator {
     protected iBasicMVP_ItemClickListener mItemClickListener;
     private iViewMode mCurrentViewMode;
 
-    public BasicMVP_ViewHolderCreator(iBasicMVP_ItemClickListener itemClickListener) {
+    public BasicMVP_ViewHolderCreator(iViewMode initialViewMode, iBasicMVP_ItemClickListener itemClickListener) {
+        mCurrentViewMode = initialViewMode;
         this.mItemClickListener = itemClickListener;
     }
 
@@ -53,7 +54,11 @@ public class BasicMVP_ViewHolderCreator {
                 .inflate(layoutId, parent, false);
     }
 
-    public void setVideMode(iViewMode viewMode) {
+    public void setViewMode(iViewMode viewMode) {
         mCurrentViewMode = viewMode;
+    }
+
+    public iViewMode getCurrentViewMode() {
+        return mCurrentViewMode;
     }
 }

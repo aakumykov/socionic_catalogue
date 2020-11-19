@@ -23,6 +23,9 @@ public class    BasicMVP_Utils {
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        for (int i=0; i<recyclerView.getItemDecorationCount(); i++)
+            recyclerView.removeItemDecorationAt(i);
+
         if (null != itemDecoration)
             recyclerView.addItemDecoration(itemDecoration);
 

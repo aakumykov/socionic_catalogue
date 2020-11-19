@@ -265,13 +265,16 @@ public abstract class BasicMVP_Presenter
 
     private void onListViewModeClicked() {
         mListView.setViewMode(eBasicViewMode.LIST);
+        mPageView.reConfigureRecyclerview();
     }
 
     private void onGridViewModeClicked() {
         mListView.setViewMode(eBasicViewMode.GRID);
+        mPageView.reConfigureRecyclerview();
     }
 
     private void onFeedViewModeClicked() {
+        mPageView.reConfigureRecyclerview();
         mListView.setViewMode(eBasicViewMode.FEED);
     }
 }
