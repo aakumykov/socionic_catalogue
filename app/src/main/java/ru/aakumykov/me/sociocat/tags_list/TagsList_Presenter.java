@@ -33,7 +33,6 @@ import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
@@ -171,7 +170,7 @@ public class TagsList_Presenter
         int count = mListView.getSelectedItemsCount();
 
         if (count > Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT) {
-            String msg = MyUtils.getPluralString(
+            String msg = TextUtils.getPluralString(
                     mPageView.getAppContext(),
                     R.plurals.TAGS_LIST_cannot_delete_more_tags_at_once,
                     Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT
@@ -188,7 +187,7 @@ public class TagsList_Presenter
             messageBuilder.append("\n");
         }
 
-        String title = MyUtils.getPluralString(
+        String title = TextUtils.getPluralString(
                 mPageView.getAppContext(),
                 R.plurals.TAGS_LIST_deleting_dialog_title,
                 count

@@ -516,15 +516,6 @@ public final class MyUtils {
         return new Date().getTime() / 1000;
     }
 
-    public static String getPluralString(@NonNull Context context, int pluralResourceId, int count) {
-        return context.getResources()
-                .getQuantityString(
-                        pluralResourceId,
-                        count,
-                        count
-                );
-    }
-
     public static void setVisibility(@Nullable View view, boolean isVisible) {
         if (null != view)
             view.setVisibility((isVisible) ? View.VISIBLE : View.GONE);
