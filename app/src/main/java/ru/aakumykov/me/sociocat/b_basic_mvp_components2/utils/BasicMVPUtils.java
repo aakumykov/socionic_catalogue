@@ -10,24 +10,22 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterP
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
 
-public class    BasicMVP_Utils {
+public class BasicMVPUtils {
 
     public static void configureRecyclerview(
             RecyclerView recyclerView,
             BasicMVP_DataAdapter dataAdapter,
             RecyclerView.LayoutManager layoutManager,
-            @Nullable RecyclerView.ItemDecoration itemDecoration,
-            @Nullable iRecyclerViewConfigurationListener recyclerViewConfigurationListener
+            @Nullable RecyclerView.ItemDecoration itemDecoration
     ) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        clearItemDecorations(recyclerView);
+
         if (null != itemDecoration)
             recyclerView.addItemDecoration(itemDecoration);
-
-        if (null != recyclerViewConfigurationListener)
-            recyclerViewConfigurationListener.onRecyclerViewAssembled();
     }
 
     public static BasicMVP_Presenter prepPresenter(BasicMVP_ViewModel viewModel, iPresenterPreparationCallback callback) {
@@ -52,7 +50,9 @@ public class    BasicMVP_Utils {
         }
     }
 
-    public interface iRecyclerViewConfigurationListener {
-        void onRecyclerViewAssembled();
+    private static void clearItemDecorations(RecyclerView recyclerView) {
+        for (int i=0; i<recyclerView.getItemDecorationCount(); i++)
+            recyclerView.removeItemDecorationAt(i);
     }
+
 }

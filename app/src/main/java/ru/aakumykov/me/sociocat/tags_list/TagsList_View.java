@@ -16,14 +16,14 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVP_Utils;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -45,22 +45,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        RecyclerView.ItemDecoration itemDecoration =
-                RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
-
-        BasicMVP_Utils.configureRecyclerview(
-                mRecyclerView,
-                mDataAdapter,
-                mLayoutManager,
-                itemDecoration,
-                null
-        );
-    }
-
-    @Override
     public void compileMenu() {
         super.compileMenu();
 
@@ -68,6 +52,16 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
+    }
+
+    @Override
+    public RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode) {
+        return createItemDecoration(viewMode);
+    }
+
+    @Override
+    protected RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 
     @Override
@@ -81,9 +75,6 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         else if (R.id.actionDelete == itemId) {
             ((TagsList_Presenter) mPresenter).onDeleteMenuItemClicked();
         }
-        /*else if (R.id.actionSave == itemId) {
-            scroll2position(10);
-        }*/
         else {
             return super.onOptionsItemSelected(item);
         }
@@ -99,17 +90,17 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
     @Override
     protected BasicMVP_Presenter preparePresenter() {
-        return BasicMVP_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
+        return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new TagsList_Presenter(eBasicViewMode.LIST, eBasicSortingMode.BY_NAME);
+                return new TagsList_Presenter(new ListViewMode(), eBasicSortingMode.BY_NAME);
             }
         });
     }
 
     @Override
     protected BasicMVP_DataAdapter prepareDataAdapter() {
-        return BasicMVP_Utils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
+        return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
             public BasicMVP_DataAdapter onDataAdapterPrepared() {
                 return new TagsList_DataAdapter(mPresenter);

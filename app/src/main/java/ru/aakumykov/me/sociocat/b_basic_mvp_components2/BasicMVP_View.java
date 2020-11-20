@@ -31,16 +31,22 @@ import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.exceptions.UnknownViewModeException;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModelFactory;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.GridViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.AllSelectedViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewState;
@@ -64,6 +70,7 @@ public abstract class BasicMVP_View
     protected BasicMVP_Presenter mPresenter;
     protected BasicMVP_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+    protected RecyclerView.ItemDecoration mItemDecoration;
 
     protected Menu mMenu;
     protected MenuInflater mMenuInflater;
@@ -101,11 +108,11 @@ public abstract class BasicMVP_View
 
         mDataAdapter = prepareDataAdapter();
 
-        mLayoutManager = prepareLayoutManager((eBasicViewMode) mPresenter.getCurrentViewMode());
+        mPresenter.bindViews(this, mDataAdapter);
+
+        reconfigureRecyclerView();
 
         configureSwipeRefresh();
-
-        mPresenter.bindViews(this, mDataAdapter);
 
         processActivityResult();
         forgetActivityResult();
@@ -221,6 +228,15 @@ public abstract class BasicMVP_View
         }
     }
 
+    public abstract RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode);
+
+    @Override
+    public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
+        if (viewMode instanceof ListViewMode)
+            return RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
+        return null;
+    }
+
     @Override
     public void setPageTitle(int titleId) {
         String title = getString(titleId);
@@ -330,6 +346,22 @@ public abstract class BasicMVP_View
         return TextUtils.getText(this, stringResourceId, formatArgs);
     }
 
+    @Override
+    public void reconfigureRecyclerView() {
+
+        mLayoutManager = prepareLayoutManager(mPresenter.getCurrentViewMode());
+
+        mItemDecoration = prepareItemDecoration(mPresenter.getCurrentViewMode());
+
+        BasicMVPUtils.configureRecyclerview(
+                getRecyclerView(),
+                mDataAdapter,
+                mLayoutManager,
+                mItemDecoration
+        );
+    }
+
+    protected abstract RecyclerView getRecyclerView();
 
 
     protected RecyclerView.LayoutManager createGridModeLayoutManager() {
@@ -356,16 +388,14 @@ public abstract class BasicMVP_View
         });
     }
 
-    private RecyclerView.LayoutManager prepareLayoutManager(eBasicViewMode basicViewMode) {
-        switch (basicViewMode) {
-            case LIST:
-            case FEED:
+    private RecyclerView.LayoutManager prepareLayoutManager(BasicViewMode viewMode) {
+
+        if (viewMode instanceof ListViewMode || viewMode instanceof FeedViewMode)
                 return createLinearModeLayoutManager();
-            case GRID:
+        else if (viewMode instanceof GridViewMode)
                 return createGridModeLayoutManager();
-            default:
-                throw new RuntimeException("Неизвестный basicViewMode: "+basicViewMode);
-        }
+        else
+            throw new UnknownViewModeException(viewMode);
     }
 
     private void addSearchView() {

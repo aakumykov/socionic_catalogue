@@ -35,10 +35,12 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Pa
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.PageUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModel;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_model.BasicMVP_ViewModelFactory;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 
 public abstract class BasicMVP_Fragment
         extends Fragment
@@ -179,6 +181,11 @@ public abstract class BasicMVP_Fragment
     }
 
     @Override
+    public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
+        return RecyclerViewUtils.createSimpleDividerItemDecoration(getContext(), R.drawable.simple_list_item_divider);
+    }
+
+    @Override
     public void setPageTitle(int titleId) {
         Activity activity = getActivity();
         if (null != activity)
@@ -268,6 +275,11 @@ public abstract class BasicMVP_Fragment
     @Override
     public String getText(int stringResourceId, Object... formatArgs) {
         return TextUtils.getText(getContext(), stringResourceId, formatArgs);
+    }
+
+    @Override
+    public void reconfigureRecyclerView() {
+
     }
 
 

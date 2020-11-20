@@ -4,6 +4,10 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+
 public interface iBasicList_Page {
 
     void setPageTitle(int titleId);
@@ -12,6 +16,8 @@ public interface iBasicList_Page {
 
     void setDefaultPageTitle();
     void compileMenu();
+
+    RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode);
 
     void showToast(int messageId);
     void showToast(String message);
@@ -32,4 +38,6 @@ public interface iBasicList_Page {
     Context getPageContext();
 
     String getText(int stringResourceId, Object... formatArgs);
+
+    void reconfigureRecyclerView();
 }

@@ -11,9 +11,9 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewSta
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.GridViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
@@ -32,7 +32,7 @@ public abstract class BasicMVP_Presenter
     protected iBasicList_Page mPageView;
     protected iBasicList mListView;
 
-    private final iViewMode mCurrentViewMode;
+    protected BasicViewMode mCurrentViewMode;
     protected iBasicViewState mCurrentViewState;
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
@@ -41,7 +41,7 @@ public abstract class BasicMVP_Presenter
 
 
 
-    public BasicMVP_Presenter(iViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+    public BasicMVP_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         mCurrentViewMode = defaultViewMode;
         mCurrentSortingMode = defaultSortingMode;
         mCurrentSortingOrder = getDefaultSortingOrderForSortingMode(mCurrentSortingMode);
@@ -77,7 +77,7 @@ public abstract class BasicMVP_Presenter
         }
     }
 
-    public iViewMode getCurrentViewMode() {
+    public BasicViewMode getCurrentViewMode() {
         return mCurrentViewMode;
     }
 
@@ -104,15 +104,15 @@ public abstract class BasicMVP_Presenter
 
     // Переключение режимов просмотра
     public void onViewModeListClicked() {
-        mListView.setViewMode(new ListViewMode());
+        changeLayoutTo(new ListViewMode());
     }
 
     public void onViewModeGridClicked() {
-        mListView.setViewMode(new GridViewMode());
+        changeLayoutTo(new GridViewMode());
     }
 
     public void onViewModeFeedClicked() {
-        mListView.setViewMode(new FeedViewMode());
+        changeLayoutTo(new FeedViewMode());
     }
 
 
@@ -254,5 +254,13 @@ public abstract class BasicMVP_Presenter
 
     private boolean isColdStart() {
         return mListView.isVirgin();
+    }
+
+    private void changeLayoutTo(BasicViewMode viewMode) {
+        mCurrentViewMode = viewMode;
+
+        mListView.setViewMode(viewMode);
+
+        mPageView.reconfigureRecyclerView();
     }
 }

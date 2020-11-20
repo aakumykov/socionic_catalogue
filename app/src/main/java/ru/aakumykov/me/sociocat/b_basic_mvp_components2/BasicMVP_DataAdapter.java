@@ -132,6 +132,7 @@ public abstract class BasicMVP_DataAdapter
     @Override
     public void setViewMode(BasicViewMode viewMode) {
         mCurrentViewMode = viewMode;
+        notifyDataSetChanged();
     }
 
     @Override

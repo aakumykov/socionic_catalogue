@@ -4,8 +4,11 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.stubs;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 
 public class BasicMVP_ViewStub implements iBasicList_Page {
 
@@ -17,6 +20,11 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
     @Override
     public void compileMenu() {
 
+    }
+
+    @Override
+    public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
+        return null;
     }
 
     @Override
@@ -87,6 +95,11 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
     @Override
     public String getText(int stringResourceId, Object... formatArgs) {
         return null;
+    }
+
+    @Override
+    public void reconfigureRecyclerView() {
+
     }
 
 }

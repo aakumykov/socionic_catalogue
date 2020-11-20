@@ -12,11 +12,11 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVP_Utils;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 
 public class CardsList2_View extends BasicMVP_View {
 
@@ -30,40 +30,34 @@ public class CardsList2_View extends BasicMVP_View {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        RecyclerView.ItemDecoration itemDecoration =
-                RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
-
-        BasicMVP_Utils.configureRecyclerview(
-                mRecyclerView,
-                mDataAdapter,
-                mLayoutManager,
-                itemDecoration,
-                null
-        );
-    }
-
-    @Override
     public void compileMenu() {
         super.compileMenu();
         inflateMenu(R.menu.change_view_mode);
     }
 
     @Override
+    public RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode) {
+        return createItemDecoration(viewMode);
+    }
+
+    @Override
+    protected RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    @Override
     protected BasicMVP_Presenter preparePresenter() {
-        return BasicMVP_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
+        return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new CardsList2_Presenter(eBasicViewMode.LIST, eBasicSortingMode.BY_NAME);
+                return new CardsList2_Presenter(new ListViewMode(), eBasicSortingMode.BY_NAME);
             }
         });
     }
 
     @Override
     protected BasicMVP_DataAdapter prepareDataAdapter() {
-        return BasicMVP_Utils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
+        return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
             public BasicMVP_DataAdapter onDataAdapterPrepared() {
                 return new CardsList2_DataAdapter(mPresenter);

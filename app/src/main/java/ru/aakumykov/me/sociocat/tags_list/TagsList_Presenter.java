@@ -15,12 +15,12 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -32,8 +32,8 @@ import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
-import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
+import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
@@ -46,7 +46,7 @@ public class TagsList_Presenter
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private final boolean mInterruptFlag = false;
 
-    public TagsList_Presenter(iViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+    public TagsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);
     }
 
