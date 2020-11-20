@@ -33,6 +33,7 @@ public class CardsList2_View extends BasicMVP_View {
     public void compileMenu() {
         super.compileMenu();
         inflateMenu(R.menu.change_view_mode);
+        inflateMenu(R.menu.tags);
     }
 
     @Override
