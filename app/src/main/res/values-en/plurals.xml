@@ -21,7 +21,7 @@
     </plurals>
 
     <plurals name="CARDS_LIST_n_cards_mode_loaded">
-        <item quantity="one">%1$d more card loaded</item>
-        <item quantity="other">%1$d more cards loaded</item>
+        <item quantity="one">+ %1$d card</item>
+        <item quantity="other">+ %1$d cards</item>
     </plurals>
 </resources>
