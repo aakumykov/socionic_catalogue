@@ -290,13 +290,35 @@ public abstract class BasicMVP_DataAdapter
 
     @Override
     public BasicMVP_DataItem getLastDataItem() {
-        ListIterator<BasicMVP_ListItem> listIterator = mCurrentItemsList.listIterator(mCurrentItemsList.size());
+
+        ListIterator<BasicMVP_ListItem> listIterator =
+                mCurrentItemsList.listIterator(mCurrentItemsList.size());
+
         BasicMVP_ListItem listItem;
+
         while (listIterator.hasPrevious()) {
             listItem = listIterator.previous();
             if (listItem instanceof BasicMVP_DataItem)
                 return (BasicMVP_DataItem) listItem;
         }
+
+        return null;
+    }
+
+    @Override
+    public BasicMVP_DataItem getLastUnfilteredDataItem() {
+
+        ListIterator<BasicMVP_ListItem> listIterator =
+                mOriginalItemsList.listIterator(mOriginalItemsList.size());
+
+        BasicMVP_ListItem listItem;
+
+        while (listIterator.hasPrevious()) {
+            listItem = listIterator.previous();
+            if (listItem instanceof BasicMVP_DataItem)
+                return (BasicMVP_DataItem) listItem;
+        }
+
         return null;
     }
 

@@ -70,23 +70,30 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         mListView.hideLoadmoreItem();
         mListView.showThrobberItem();
 
-        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
-        Card lastCard = (Card) lastDataItem.getPayload();
+        BasicMVP_DataItem lastDataItem = mListView.getLastUnfilteredDataItem();
+        Card card = (Card) lastDataItem.getPayload();
 
-        mCardsSingleton.loadCardsAfter(lastCard, new iCardsSingleton.ListCallbacks() {
+        mCardsSingleton.loadCardsAfter(card, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 mListView.hideThrobberItem();
 
-                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                List<BasicMVP_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVP_DataItem createDataItem(Object object) {
                         return new Card_ListItem((Card) object);
                     }
-                }));
+                });
 
-                String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
-                mPageView.showToast(msg);
+                if (mListView.isFiltered()) {
+                    mListView.appendListAndFilter(list2append);
+                }
+                else {
+                    String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
+                    mPageView.showToast(msg);
+
+                    mListView.appendList(list2append);
+                }
 
                 mListView.showLoadmoreItem();
             }
@@ -128,11 +135,11 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         });
     }
 
-
     private Card getCorrespondingCard(BasicMVP_DataViewHolder basicDataViewHolder) {
         int index = basicDataViewHolder.getAdapterPosition();
         BasicMVP_ListItem listItem = mListView.getItem(index);
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
         return (Card) dataItem.getPayload();
     }
+
 }

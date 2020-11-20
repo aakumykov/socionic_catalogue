@@ -38,6 +38,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     BasicMVP_ListItem getItem(int position);
     BasicMVP_DataItem getLastDataItem();
+    BasicMVP_DataItem getLastUnfilteredDataItem();
 
     void refreshItem(int position);
 
