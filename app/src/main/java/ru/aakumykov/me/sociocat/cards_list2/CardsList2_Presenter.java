@@ -53,15 +53,20 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     @Override
-    public void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
-        Card card = getCorrespondingCard(basicDataViewHolder);
+    public void onItemClicked(BasicMVP_DataViewHolder dataViewHolder) {
 
+        if (mListView.isSelectionMode()) {
+            onSelectItemClicked(dataViewHolder);
+            return;
+        }
+
+        Card card = getCorrespondingCard(dataViewHolder);
         ((iCardsList2_View) mPageView).goShowingCard(card);
     }
 
     @Override
-    public void onItemLongClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
-
+    public void onItemLongClicked(BasicMVP_DataViewHolder dataViewHolder) {
+        onSelectItemClicked(dataViewHolder);
     }
 
     @Override

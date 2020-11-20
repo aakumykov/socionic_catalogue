@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
@@ -67,9 +68,13 @@ public class CardViewHolder extends BasicMVP_DataViewHolder {
     }
 
 
-    @OnClick({R.id.elementView})
+    @OnClick(R.id.elementView)
     void onCardClicked() {
         mItemClickListener.onItemClicked(this);
     }
 
+    @OnLongClick(R.id.elementView)
+    void onCardLongClicked() {
+        mItemClickListener.onItemLongClicked(this);
+    }
 }
