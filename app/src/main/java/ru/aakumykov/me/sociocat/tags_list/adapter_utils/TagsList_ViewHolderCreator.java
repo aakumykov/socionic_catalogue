@@ -10,6 +10,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.data_types.BasicMVP_ItemTypes;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.exceptions.UnknownViewModeException;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.GridViewMode;
@@ -24,6 +25,21 @@ public class TagsList_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 
     public TagsList_ViewHolderCreator(iTagsList_ItemClickListener itemClickListener) {
         super(itemClickListener);
+    }
+
+    @Override
+    public BasicMVP_DataViewHolder createViewHolder4listMode(ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public BasicMVP_DataViewHolder createViewHolder4feedMode(ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public BasicMVP_DataViewHolder createViewHolder4gridMode(ViewGroup parent) {
+        return null;
     }
 
     @Override
@@ -45,7 +61,7 @@ public class TagsList_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 
     private TagViewHolder prepareTagViewHolder(ViewGroup parent, BasicViewMode viewMode) {
         int layoutId = getLayoutForViewMode(viewMode);
-        View itemView = inflateLayout(layoutId, parent);
+        View itemView = inflateItemView(parent, layoutId);
 
         TagViewHolder tagViewHolder;
 

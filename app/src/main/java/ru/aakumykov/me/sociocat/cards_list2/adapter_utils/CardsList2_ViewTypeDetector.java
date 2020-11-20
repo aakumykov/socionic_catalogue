@@ -11,8 +11,9 @@ public class CardsList2_ViewTypeDetector extends BasicMVP_ViewTypeDetector {
 
     @Override
     public int getItemType(@NonNull BasicMVP_ListItem listItem) {
+
         if (listItem instanceof Card_ListItem)
-            return BasicMVP_ItemTypes.CARD_ITEM;
+            return BasicMVP_ItemTypes.DATA_ITEM;
 
         return super.getItemType(listItem);
     }

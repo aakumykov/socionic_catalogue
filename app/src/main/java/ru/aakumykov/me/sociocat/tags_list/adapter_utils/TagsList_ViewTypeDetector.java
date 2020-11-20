@@ -11,8 +11,9 @@ public class TagsList_ViewTypeDetector extends BasicMVP_ViewTypeDetector {
 
     @Override
     public int getItemType(@NonNull BasicMVP_ListItem listItem) {
+
         if (listItem instanceof Tag_ListItem)
-            return BasicMVP_ItemTypes.TAG_ITEM;
+            return BasicMVP_ItemTypes.DATA_ITEM;
 
         return super.getItemType(listItem);
     }
