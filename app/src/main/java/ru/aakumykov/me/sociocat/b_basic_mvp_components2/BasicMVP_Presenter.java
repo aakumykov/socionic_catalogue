@@ -103,15 +103,15 @@ public abstract class BasicMVP_Presenter
 
 
     // Переключение режимов просмотра
-    public void onListViewModeClicked() {
+    public void onViewModeListClicked() {
         mListView.setViewMode(new ListViewMode());
     }
 
-    public void onGridViewModeClicked() {
+    public void onViewModeGridClicked() {
         mListView.setViewMode(new GridViewMode());
     }
 
-    public void onFeedViewModeClicked() {
+    public void onViewModeFeedClicked() {
         mListView.setViewMode(new FeedViewMode());
     }
 
