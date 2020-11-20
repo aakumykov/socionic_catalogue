@@ -1,12 +1,15 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
@@ -17,8 +20,11 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPre
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
+import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsList2_View extends BasicMVP_View {
+public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -87,5 +93,13 @@ public class CardsList2_View extends BasicMVP_View {
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public void goShowingCard(@NonNull Card card) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 }

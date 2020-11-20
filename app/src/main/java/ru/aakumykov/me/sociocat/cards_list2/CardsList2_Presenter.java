@@ -7,12 +7,14 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ListUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
+import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -52,7 +54,9 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     public void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+        Card card = getCorrespondingCard(basicDataViewHolder);
 
+        ((iCardsList2_View) mPageView).goShowingCard(card);
     }
 
     @Override
@@ -125,4 +129,10 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
+    private Card getCorrespondingCard(BasicMVP_DataViewHolder basicDataViewHolder) {
+        int index = basicDataViewHolder.getAdapterPosition();
+        BasicMVP_ListItem listItem = mListView.getItem(index);
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
+        return (Card) dataItem.getPayload();
+    }
 }
