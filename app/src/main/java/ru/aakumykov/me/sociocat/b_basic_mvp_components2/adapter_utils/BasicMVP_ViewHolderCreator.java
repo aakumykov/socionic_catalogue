@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.data_types.BasicMVP_ItemTypes;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_LoadmoreViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ThrobberViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
@@ -39,16 +40,24 @@ public class BasicMVP_ViewHolderCreator {
     }
 
     private BasicMVP_LoadmoreViewHolder createLoadmoreViewHolder(ViewGroup parent, BasicViewMode viewMode) {
+
         BasicMVP_LoadmoreViewHolder loadmoreViewHolder =
                 new BasicMVP_LoadmoreViewHolder(inflateLayout(R.layout.basic_list_item_loadmore, parent));
 
         loadmoreViewHolder.setItemClickListener(mItemClickListener);
 
+        RecyclerViewUtils.setFullSpanIfSupported(loadmoreViewHolder);
+
         return loadmoreViewHolder;
     }
 
     private RecyclerView.ViewHolder createThrobberViewHolder(ViewGroup parent, BasicViewMode viewMode) {
-        return new BasicMVP_ThrobberViewHolder(inflateLayout(R.layout.basic_list_item_throbber, parent));
+        BasicMVP_ThrobberViewHolder throbberViewHolder =
+                new BasicMVP_ThrobberViewHolder(inflateLayout(R.layout.basic_list_item_throbber, parent));
+
+        RecyclerViewUtils.setFullSpanIfSupported(throbberViewHolder);
+
+        return throbberViewHolder;
     }
 
     
