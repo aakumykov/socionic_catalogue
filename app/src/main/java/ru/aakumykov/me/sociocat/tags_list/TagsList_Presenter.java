@@ -32,7 +32,7 @@ import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
-import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ViewHolder;
+import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
@@ -72,7 +72,7 @@ public class TagsList_Presenter
     @Override
     public void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
 
-        Tag_ViewHolder tagViewHolder = (Tag_ViewHolder) basicDataViewHolder;
+        TagViewHolder tagViewHolder = (TagViewHolder) basicDataViewHolder;
 
         if (mListView.isSelectionMode()) {
             onSelectItemClicked(tagViewHolder);
@@ -121,7 +121,7 @@ public class TagsList_Presenter
 
     // iTagsList_ItemClickListener
     @Override
-    public void onEditTagClicked(Tag_ViewHolder tagViewHolder) {
+    public void onEditTagClicked(TagViewHolder tagViewHolder) {
         int adapterPosition = tagViewHolder.getAdapterPosition();
 
         if (!mUsersSingleton.currentUserIsAdmin()) {

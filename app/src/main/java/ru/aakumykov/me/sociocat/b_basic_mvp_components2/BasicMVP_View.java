@@ -184,15 +184,15 @@ public abstract class BasicMVP_View
                 break;
 
             case R.id.actionViewModeList:
-                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.LIST);
+                mPresenter.onListViewModeClicked();
                 break;
 
             case R.id.actionViewModeGrid:
-                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.GRID);
+                mPresenter.onGridViewModeClicked();
                 break;
 
             case R.id.actionViewModeFeed:
-                mPresenter.onChangeViewModeMenuItemClicked(eBasicViewMode.FEED);
+                mPresenter.onFeedViewModeClicked();
                 break;
 
             default:

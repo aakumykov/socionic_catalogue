@@ -22,12 +22,13 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_LoadmoreItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ThrobberItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_utils.BasicMVP_ItemsFilter;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 
 public abstract class BasicMVP_DataAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -50,6 +51,7 @@ public abstract class BasicMVP_DataAdapter
     private Filter mFilter;
 
     private BasicMVP_DataItem mCurrentHighlightedItem;
+    private BasicViewMode mCurrentViewMode = new ListViewMode();
 
 
     public BasicMVP_DataAdapter(
@@ -77,7 +79,7 @@ public abstract class BasicMVP_DataAdapter
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return mViewHolderCreator.createViewHolder(parent, viewType);
+        return mViewHolderCreator.createViewHolder(parent, viewType, mCurrentViewMode);
     }
 
     @Override
@@ -128,8 +130,8 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void setViewMode(iViewMode viewMode) {
-        mViewHolderCreator.setVideMode(viewMode);
+    public void setViewMode(BasicViewMode viewMode) {
+        mCurrentViewMode = viewMode;
     }
 
     @Override

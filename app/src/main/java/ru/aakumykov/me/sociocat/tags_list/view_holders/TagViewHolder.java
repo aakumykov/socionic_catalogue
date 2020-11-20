@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.list_parts;
+package ru.aakumykov.me.sociocat.tags_list.view_holders;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -21,7 +21,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
+public class TagViewHolder extends BasicMVP_DataViewHolder {
 
     @BindView(R.id.listItem) View listItem;
     @BindView(R.id.checkMark) ImageView checkMark;
@@ -31,7 +31,7 @@ public class Tag_ViewHolder extends BasicMVP_DataViewHolder {
     @Nullable @BindView(R.id.highlightingOverlay) View highlightingOverlay;
 
 
-    public Tag_ViewHolder(@NonNull View itemView) {
+    public TagViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
