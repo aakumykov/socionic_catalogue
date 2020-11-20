@@ -16,15 +16,14 @@
                 app:showAsAction="never" />
 
             <item
-                android:id="@+id/actionViewModeGrid"
-                android:icon="@drawable/ic_view_mode_grid"
-                android:title="@string/MENU_view_mode_grid"
-                app:showAsAction="never" />
-
-            <item
                 android:id="@+id/actionViewModeFeed"
                 android:icon="@drawable/ic_view_mode_feed"
                 android:title="@string/MENU_view_mode_feed"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/actionViewModeGrid"
+                android:icon="@drawable/ic_view_mode_grid"
+                android:title="@string/MENU_view_mode_grid"
                 app:showAsAction="never" />
 
         </menu>
