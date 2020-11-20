@@ -168,7 +168,7 @@ public abstract class BasicMVP_Fragment
     @Override
     public abstract void setDefaultPageTitle();
 
-    public void compileMenu() {
+    public void assembleMenu() {
         if (null != mMenu) {
             clearMenu();
 
@@ -440,7 +440,8 @@ public abstract class BasicMVP_Fragment
         hideRefreshThrobber();
         hideProgressMessage();
 
-        compileMenu();
+        clearMenu();
+        assembleMenu();
     }
 
     protected void setProgressViewState(Object data) {

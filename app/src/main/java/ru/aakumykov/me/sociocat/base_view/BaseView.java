@@ -134,24 +134,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             menuBuilder.setOptionalIconsVisible(true);
         }
 
-        MenuInflater menuInflater = getMenuInflater();
-
-//        if (BuildConfig.DEBUG)
-//            menuInflater.inflate(R.menu.probe, menu);
-
-        menuInflater.inflate(R.menu.tags, menu);
-
-        menuInflater.inflate(R.menu.preferences, menu);
-
-        if (AuthSingleton.isLoggedIn()) {
-//            menuInflater.inflate(R.menu.profile_in, menu);
-            menuInflater.inflate(R.menu.logout, menu);
-        }
-        else {
-//            menuInflater.inflate(R.menu.profile_out, menu);
-            menuInflater.inflate(R.menu.login, menu);
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 

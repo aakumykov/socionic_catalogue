@@ -131,20 +131,16 @@ public abstract class BasicMVP_View
             mPresenter.onStop();
     }
 
-    @SuppressLint("RestrictedApi") @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-        if(menu instanceof MenuBuilder){
-            MenuBuilder menuBuilder = (MenuBuilder) menu;
-            menuBuilder.setOptionalIconsVisible(true);
-        }
 
         mMenu = menu;
         mMenuInflater = getMenuInflater();
 
-        mPresenter.onMenuCreated();
+        activateIconsInMenu(menu);
 
+        mPresenter.onMenuCreated();
         return true;
     }
 
@@ -216,19 +212,6 @@ public abstract class BasicMVP_View
 
     @Override
     public abstract void setDefaultPageTitle();
-
-    public void compileMenu() {
-        if (null != mMenu && null != mMenuInflater) {
-            clearMenu();
-
-            addSearchView();
-            addSortingMenuRoot();
-            addSortByNameMenu();
-            //addSortByDateMenu();
-        }
-    }
-
-    public abstract RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode);
 
     @Override
     public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
@@ -361,8 +344,28 @@ public abstract class BasicMVP_View
         );
     }
 
-    protected abstract RecyclerView getRecyclerView();
 
+    public abstract void assembleMenu();
+
+    public abstract RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode);
+
+
+    public void hideProgressMessage() {
+        hideProgressBar();
+        hideMessage();
+    }
+
+    public void hideMessage() {
+        ViewUtils.hide(messageView);
+    }
+
+    public void hideProgressBar() {
+        ViewUtils.hide(progressBar);
+    }
+
+
+
+    protected abstract RecyclerView getRecyclerView();
 
     protected RecyclerView.LayoutManager createGridModeLayoutManager() {
         return new StaggeredGridLayoutManager(AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT,StaggeredGridLayoutManager.VERTICAL);
@@ -372,6 +375,46 @@ public abstract class BasicMVP_View
         return new LinearLayoutManager(this);
     }
 
+    protected void setNeutralViewState() {
+        setDefaultPageTitle();
+
+        clearMenu();
+        assembleMenu();
+
+        hideRefreshThrobber();
+        hideProgressMessage();
+    }
+
+    protected void setCancelableProgressViewState(CancelableProgressViewState viewState) {
+        setProgressViewState(viewState);
+        showInterruptButton();
+    }
+
+    protected void setProgressViewState(ProgressViewState progressViewState) {
+        if (progressViewState.hasStringMessage())
+            showProgressMessage(progressViewState.getStringMessage());
+        else
+            showProgressMessage(progressViewState.getMessageId());
+    }
+
+    protected void setRefreshingViewState() {
+        showRefreshThrobber();
+    }
+
+    protected void setErrorViewState(ErrorViewState errorViewState) {
+        setNeutralViewState();
+        showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
+    }
+
+    protected void setSelectedViewState(SelectionViewState viewState) {
+        showSelectionMenu();
+        showSelectedItemsCount(viewState.getSelectedItemsCount());
+    }
+
+    protected void setAllSelectedViewState(AllSelectedViewState viewState) {
+        showAllSelectedMenu();
+        showSelectedItemsCount(viewState.getSelectedItemsCount());
+    }
 
 
 
@@ -398,7 +441,14 @@ public abstract class BasicMVP_View
             throw new UnknownViewModeException(viewMode);
     }
 
-    private void addSearchView() {
+    protected void addChangeViewModeMenu() {
+        inflateMenu(R.menu.change_view_mode);
+    }
+
+    protected void addSearchView() {
+
+        if (null == mMenuInflater || null == mMenu)
+            return;
 
         mMenuInflater.inflate(R.menu.search_view, mMenu);
 
@@ -442,12 +492,16 @@ public abstract class BasicMVP_View
         }
     }
 
-    private void addSortingMenuRoot() {
-        mMenuInflater.inflate(R.menu.sorting, mMenu);
-        mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
+    private void addSortingMenuRootIfNotExists() {
+        if (null == mMenu.findItem(R.id.actionSort) ) {
+            mMenuInflater.inflate(R.menu.sorting, mMenu);
+            mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
+        }
     }
 
-    private void addSortByNameMenu() {
+    protected void addSortByNameMenu() {
+
+        addSortingMenuRootIfNotExists();
 
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
@@ -484,6 +538,8 @@ public abstract class BasicMVP_View
 
     private void addSortByDateMenu() {
 
+        addSortingMenuRootIfNotExists();
+
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
@@ -515,61 +571,6 @@ public abstract class BasicMVP_View
                     }
                 })
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
-    }
-
-
-    protected void setCancelableProgressViewState(CancelableProgressViewState viewState) {
-        setProgressViewState(viewState);
-        showInterruptButton();
-    }
-
-    protected void setProgressViewState(ProgressViewState progressViewState) {
-        if (progressViewState.hasStringMessage())
-            showProgressMessage(progressViewState.getStringMessage());
-        else
-            showProgressMessage(progressViewState.getMessageId());
-    }
-
-    protected void setRefreshingViewState() {
-        showRefreshThrobber();
-    }
-
-    protected void setErrorViewState(ErrorViewState errorViewState) {
-        setNeutralViewState();
-        showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
-    }
-
-    protected void setSelectedViewState(SelectionViewState viewState) {
-        showSelectionMenu();
-        showSelectedItemsCount(viewState.getSelectedItemsCount());
-    }
-
-    protected void setAllSelectedViewState(AllSelectedViewState viewState) {
-        showAllSelectedMenu();
-        showSelectedItemsCount(viewState.getSelectedItemsCount());
-    }
-
-
-    // ViewState
-    protected void setNeutralViewState() {
-        setDefaultPageTitle();
-        compileMenu();
-
-        hideRefreshThrobber();
-        hideProgressMessage();
-    }
-
-    public void hideProgressMessage() {
-        hideProgressBar();
-        hideMessage();
-    }
-
-    public void hideMessage() {
-        ViewUtils.hide(messageView);
-    }
-
-    public void hideProgressBar() {
-        ViewUtils.hide(progressBar);
     }
 
     private void showProgressMessage(Object data) {
@@ -664,5 +665,13 @@ public abstract class BasicMVP_View
         mActivityRequestCode = Integer.MAX_VALUE;
         mActivityResultCode = Integer.MAX_VALUE;
         mActivityResultData = null;
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void activateIconsInMenu(Menu menu) {
+        if(menu instanceof MenuBuilder){
+            MenuBuilder menuBuilder = (MenuBuilder) menu;
+            menuBuilder.setOptionalIconsVisible(true);
+        }
     }
 }

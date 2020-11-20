@@ -6,7 +6,7 @@
         android:id="@+id/actionSearch"
         android:icon="@drawable/ic_search"
         android:title="@string/filter"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 
 </menu>

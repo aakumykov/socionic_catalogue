@@ -15,7 +15,7 @@ public interface iBasicList_Page {
     void setPageTitle(String title);
 
     void setDefaultPageTitle();
-    void compileMenu();
+    void assembleMenu();
 
     RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode);
 

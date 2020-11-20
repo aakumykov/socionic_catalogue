@@ -22,7 +22,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_Da
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.CancelableProgressViewState;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
@@ -138,8 +137,7 @@ public class TagsList_Presenter
 
     // Внутренние
     private void loadList() {
-        //        setViewState(eBasicViewStates.PROGRESS, R.string.TAGS_LIST_loading_list);
-        setViewState(new RefreshingViewState());
+        setRefreshingViewState();
 
         mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
             @Override

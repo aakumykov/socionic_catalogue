@@ -144,7 +144,7 @@ public abstract class BasicMVP_Presenter
     }
 
     protected void onColdStart() {
-        setViewState(new NeutralViewState());
+        setNeutralViewState();
     }
 
     protected void onConfigChanged() {
@@ -155,6 +155,7 @@ public abstract class BasicMVP_Presenter
 
     protected void setViewState(@NonNull iBasicViewState viewState) {
         mCurrentViewState = viewState;
+
         mPageView.setViewState(viewState);
     }
 

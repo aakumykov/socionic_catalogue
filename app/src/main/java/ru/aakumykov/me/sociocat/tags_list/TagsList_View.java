@@ -45,13 +45,15 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
-    public void compileMenu() {
-        super.compileMenu();
+    public void assembleMenu() {
+        addSearchView();
 
-        inflateMenu(R.menu.change_view_mode);
+        addChangeViewModeMenu();
+
+        addSortByNameMenu();
+        addSortByCardsCountMenuItem();
 
         makeSortingMenuVisible();
-        addSortByCardsCountMenuItem();
     }
 
     @Override

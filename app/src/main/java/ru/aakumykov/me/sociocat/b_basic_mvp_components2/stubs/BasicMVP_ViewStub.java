@@ -18,7 +18,7 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
     }
 
     @Override
-    public void compileMenu() {
+    public void assembleMenu() {
 
     }
 
