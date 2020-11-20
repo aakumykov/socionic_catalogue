@@ -64,7 +64,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     public void compileMenu() {
         super.compileMenu();
 
-//        getMenuInflater().inflate(R.menu.save, mMenu);
+        inflateMenu(R.menu.change_view_mode);
 
         makeSortingMenuVisible();
         addSortByCardsCountMenuItem();
