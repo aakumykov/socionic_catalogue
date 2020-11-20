@@ -1,7 +1,6 @@
-package ru.aakumykov.me.sociocat.cards_list2.list_parts;
+package ru.aakumykov.me.sociocat.cards_list2.view_holders;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardInList_ViewHolder extends BasicMVP_DataViewHolder {
+public class CardViewHolder extends BasicMVP_DataViewHolder {
 
     @BindView(R.id.elementView)
     View elementView;
@@ -26,14 +25,13 @@ public class CardInList_ViewHolder extends BasicMVP_DataViewHolder {
     @BindView(R.id.titleView)
     TextView titleView;
 
-    @BindView(R.id.cardTypeImageView)
-    ImageView cardTypeImageView;
-
     @BindView(R.id.highlightingOverlay)
     View highlightingOverlay;
 
+    protected Card mCurrentCard;
 
-    public CardInList_ViewHolder(@NonNull View itemView) {
+
+    public CardViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
@@ -50,34 +48,20 @@ public class CardInList_ViewHolder extends BasicMVP_DataViewHolder {
 
     @Override
     public void fillWithData(BasicMVP_ListItem basicListItem) {
+
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
-//        Card_ListItem cardListItem = (Card_ListItem) dataItem.getPayload();
-        Card card = (Card) dataItem.getPayload();
 
-        titleView.setText(card.getTitle());
+        mCurrentCard = extractCardFromListItem(basicListItem);
 
-        displayCardType(card);
+        titleView.setText(mCurrentCard.getTitle());
 
         displayIsChecked(dataItem.isSelected());
+
         displayIsHighlighted(dataItem.isHighLighted());
     }
 
-    private void displayCardType(@NonNull Card card) {
-        switch (card.getType()) {
-            case Card.TEXT_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
-                break;
-            case Card.IMAGE_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
-                break;
-            case Card.VIDEO_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
-                break;
-            case Card.AUDIO_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
-                break;
-            default:
-                break;
-        }
+    protected Card extractCardFromListItem(BasicMVP_ListItem basicListItem) {
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
+        return (Card) dataItem.getPayload();
     }
 }

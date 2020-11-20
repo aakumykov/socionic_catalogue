@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_Da
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
-import ru.aakumykov.me.sociocat.cards_list2.list_parts.Card_ListItem;
+import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;

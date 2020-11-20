@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list2.list_parts;
+package ru.aakumykov.me.sociocat.cards_list2.list_items;
 
 import androidx.annotation.NonNull;
 

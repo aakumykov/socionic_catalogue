@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class Card_ViewHolder extends BaseViewHolder
 {
-    private final static String TAG = "CardInList_ViewHolder";
+    private final static String TAG = "CardViewHolder";
 
     @BindView(R.id.mainView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
