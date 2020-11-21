@@ -99,10 +99,16 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     private void loadMoreCards() {
-        mListView.hideLoadmoreItem();
-        mListView.showThrobberItem();
+
+        showThrobberItem();
 
         BasicMVP_DataItem lastDataItem = mListView.getLastUnfilteredDataItem();
+        if (null == lastDataItem) {
+            showNoMoreCards();
+            return;
+        }
+
+
         Card card = (Card) lastDataItem.getPayload();
 
         mCardsSingleton.loadCardsAfter(card, new iCardsSingleton.ListCallbacks() {
@@ -141,7 +147,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     private void loadMoreCardsWithCurrentTagFilter() {
 
-        showLoadmoreItem();
+        showThrobberItem();
 
         BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
 
@@ -299,7 +305,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         return (Card) dataItem.getPayload();
     }
 
-    private void showLoadmoreItem() {
+    private void showThrobberItem() {
         mListView.hideLoadmoreItem();
         mListView.showThrobberItem();
     }

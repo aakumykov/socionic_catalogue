@@ -304,7 +304,9 @@ public abstract class BasicMVP_DataAdapter
     public BasicMVP_DataItem getLastUnfilteredDataItem() {
 
         ListIterator<BasicMVP_ListItem> listIterator =
-                mOriginalItemsList.listIterator(mOriginalItemsList.size());
+                (0 == mOriginalItemsList.size()) ?
+                        mCurrentItemsList.listIterator(mCurrentItemsList.size()) :
+                        mOriginalItemsList.listIterator(mOriginalItemsList.size());
 
         BasicMVP_ListItem listItem;
 
