@@ -36,6 +36,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
+    // SwipeRefreshlayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
     // TODO: попробовать это удалить
 //    implementation 'androidx.media:media:1.2.0'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
