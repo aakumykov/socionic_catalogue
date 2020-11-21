@@ -225,7 +225,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         mCardsSingleton.loadCardsWithTag(mCurrentTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setViewState(new CardsWithTagViewState(mCurrentTagFilter));
+                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mCurrentTagFilter);
+                setViewState(new CardsWithTagViewState(msg));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override

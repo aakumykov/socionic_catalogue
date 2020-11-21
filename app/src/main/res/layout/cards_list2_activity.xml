@@ -33,7 +33,7 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginVertical="8dp"
             android:textAppearance="@style/tagFilterChipTextAppearance"
-            android:visibility="gone"
+            android:visibility="visible"
             app:closeIconVisible="true"
             tools:layout_editor_absoluteX="124dp"
             tools:layout_editor_absoluteY="8dp"

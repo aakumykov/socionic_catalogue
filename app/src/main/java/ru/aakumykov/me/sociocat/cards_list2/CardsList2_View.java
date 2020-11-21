@@ -164,6 +164,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     public void hideTagFilter() {
+        tagFilterChip.setText("");
         ViewUtils.hide(tagFilterChip);
     }
 
