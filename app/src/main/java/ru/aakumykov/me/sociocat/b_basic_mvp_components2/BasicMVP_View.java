@@ -76,17 +76,17 @@ public abstract class BasicMVP_View
     protected MenuInflater mMenuInflater;
     protected SubMenu mSortingSubmenu;
 
-    protected int mActivityRequestCode;
-    protected int mActivityResultCode;
+    protected int mActivityRequestCode = Integer.MAX_VALUE;
+    protected int mActivityResultCode = Integer.MAX_VALUE;
     protected Intent mActivityResultData;
 
     private SearchView mSearchView;
 
 
     // Абстрактные методы
+    protected abstract void processActivityResult();
     protected abstract BasicMVP_Presenter preparePresenter();
     protected abstract BasicMVP_DataAdapter prepareDataAdapter();
-    protected abstract void processActivityResult();
 
 
     @Override

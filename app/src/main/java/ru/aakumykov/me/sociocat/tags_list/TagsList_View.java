@@ -141,6 +141,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
 
+    @Override
     protected void processActivityResult() {
         switch (mActivityRequestCode) {
             case Constants.CODE_EDIT_TAG:

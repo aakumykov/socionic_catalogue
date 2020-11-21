@@ -36,6 +36,18 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     @Override
+    protected void processActivityResult() {
+        switch (mActivityRequestCode) {
+            case Constants.CODE_SHOW_CARD:
+            case Constants.CODE_EDIT_CARD:
+                processCardShowOrEditionResult();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void assembleMenu() {
         addSearchView();
 
@@ -76,11 +88,6 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     @Override
-    protected void processActivityResult() {
-
-    }
-
-    @Override
     public void setDefaultPageTitle() {
         setPageTitle(R.string.CARDS_LIST_page_title);
     }
@@ -101,5 +108,17 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         intent.setAction(Intent.ACTION_VIEW);
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
+    }
+
+
+    private void processCardShowOrEditionResult() {
+        if (RESULT_OK == mActivityResultCode) {
+            if (null != mActivityResultData) {
+                Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
+                Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
+
+                ((CardsList2_Presenter) mPresenter).onCardEdited(oldCard, newCard);
+            }
+        }
     }
 }

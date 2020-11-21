@@ -39,6 +39,8 @@ public final class Constants
     public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
     public final static String COMMENT_KEY = "COMMENT_KEY";
+    public static final String OLD_CARD = "OLD_CARD";
+    public static final String NEW_CARD = "NEW_CARD";
 
     public static final String TRANSIT_INTENT = "TRANSIT_INTENT";
     public final static String REPLIED_ITEM = "REPLIED_ITEM";
