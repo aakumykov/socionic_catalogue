@@ -191,4 +191,13 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         ((CardsList2_View) mPageView).goCreateCard(cardType);
     }
+
+    public void onCardCreated(@Nullable Card newCard) {
+        if (null != newCard) {
+            int insertPosition = 0;
+            mListView.insertItem(insertPosition, new Card_ListItem(newCard));
+            mPageView.scroll2position(insertPosition);
+            mListView.highlightItem(insertPosition);
+        }
+    }
 }

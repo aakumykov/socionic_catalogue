@@ -57,11 +57,17 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     protected void processActivityResult() {
+
         switch (mActivityRequestCode) {
+            case Constants.CODE_CREATE_CARD:
+                processCardCreationResult();
+                break;
+
             case Constants.CODE_SHOW_CARD:
             case Constants.CODE_EDIT_CARD:
                 processCardShowOrEditionResult();
                 break;
+
             default:
                 break;
         }
@@ -184,4 +190,13 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         }
     }
 
+    private void processCardCreationResult() {
+        if (RESULT_OK == mActivityResultCode) {
+            if (null != mActivityResultData) {
+                Card newCard = mActivityResultData.getParcelableExtra(Constants.CARD);
+
+                ((CardsList2_Presenter) mPresenter).onCardCreated(newCard);
+            }
+        }
+    }
 }

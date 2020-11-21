@@ -189,6 +189,13 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
+    public void insertItem(int position, BasicMVP_ListItem item) {
+        mOriginalItemsList.add(position, item);
+        mCurrentItemsList.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    @Override
     public void removeItem(BasicMVP_ListItem item) {
         mOriginalItemsList.remove(item);
 

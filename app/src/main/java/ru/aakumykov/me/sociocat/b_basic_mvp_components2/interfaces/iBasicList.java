@@ -22,6 +22,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void appendListAndFilter(List<BasicMVP_ListItem> inputList);
 
     void addItem(BasicMVP_ListItem item);
+    void insertItem(int position, BasicMVP_ListItem item);
     void removeItem(BasicMVP_ListItem item);
 
     int getVisibleItemsCount();
