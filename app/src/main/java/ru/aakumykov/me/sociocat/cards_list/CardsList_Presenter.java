@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewState;
@@ -284,7 +284,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void onCardTypeSelected(CardType cardType) {
+    public void onCardTypeSelected(eCardType cardType) {
         pageView.goCreateCard(cardType);
     }
 

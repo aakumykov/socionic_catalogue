@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
-public enum CardType {
+public enum eCardType {
     TEXT_CARD,
     IMAGE_CARD,
     AUDIO_CARD,

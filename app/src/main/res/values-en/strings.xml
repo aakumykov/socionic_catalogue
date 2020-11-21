@@ -661,7 +661,7 @@
     <string name="LIST_TEMPLATE_loading_list">Loading list</string>
     <string name="card_deleted_long">Card «%1$s» is deleted</string>
     <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
-    <string name="add_new_card_bottom_menu_title">Add</string>
+    <string name="add_new_card_bottom_sheet_title">Add</string>
     <string name="CARDS_GRID_error_displaying_card">Error displaying card</string>
     <string name="MENU_change_view_mode">View mode</string>
     <string name="MENU_sort">Sort</string>
@@ -714,6 +714,7 @@
     <string name="CARDS_LIST_loading_cards_with_tag">Loading cards with tag «%1$s»</string>
     <string name="CARDS_LIST_error_loading_list">Error loading list</string>
     <string name="CARDS_LIST_cards_with_tag">Cards with tag «%1$s»</string>
+    <string name="CARDS_LIST_add_card_button_description">Add new card</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

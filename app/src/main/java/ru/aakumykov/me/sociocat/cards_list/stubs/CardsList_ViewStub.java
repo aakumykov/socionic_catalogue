@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -60,7 +60,7 @@ public class CardsList_ViewStub
     }
 
     @Override
-    public void goCreateCard(CardType cardType) {
+    public void goCreateCard(eCardType cardType) {
 
     }
 

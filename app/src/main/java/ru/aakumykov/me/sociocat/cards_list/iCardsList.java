@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
@@ -80,7 +80,7 @@ public interface iCardsList {
 
         void showAddNewCardMenu();
 
-        void goCreateCard(CardType cardType);
+        void goCreateCard(eCardType cardType);
 
         void goUserProfile(String userId);
 
@@ -187,7 +187,7 @@ public interface iCardsList {
         void onChangeViewModeClicked(ViewMode viewMode);
 
         void onCreateCardClicked();
-        void onCardTypeSelected(CardType cardType);
+        void onCardTypeSelected(eCardType cardType);
 
         boolean isLoggedIn();
 

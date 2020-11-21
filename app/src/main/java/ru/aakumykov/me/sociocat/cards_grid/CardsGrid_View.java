@@ -39,7 +39,7 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
@@ -314,7 +314,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void goCreateCard(CardType cardType) {
+    public void goCreateCard(eCardType cardType) {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType.name());
@@ -446,19 +446,19 @@ public class CardsGrid_View extends BaseView implements
         switch (actionItem.getId()) {
 
             case R.id.fab_quote:
-                presenter.onCreateCardClicked(CardType.TEXT_CARD);
+                presenter.onCreateCardClicked(eCardType.TEXT_CARD);
                 return false;
 
             case R.id.fab_image:
-                presenter.onCreateCardClicked(CardType.IMAGE_CARD);
+                presenter.onCreateCardClicked(eCardType.IMAGE_CARD);
                 return false;
 
             case R.id.fab_audio:
-                presenter.onCreateCardClicked(CardType.AUDIO_CARD);
+                presenter.onCreateCardClicked(eCardType.AUDIO_CARD);
                 return false;
 
             case R.id.fab_video:
-                presenter.onCreateCardClicked(CardType.VIDEO_CARD);
+                presenter.onCreateCardClicked(eCardType.VIDEO_CARD);
                 return false;
 
             default:

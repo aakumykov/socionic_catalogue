@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.AppConfig;
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
@@ -267,14 +267,14 @@ public class CardsList_View
     @Override
     public void showAddNewCardMenu() {
         new BottomSheetMenuDialogFragment.Builder(this, R.style.MyBottomSheetMenuStyleForLight)
-                .setSheet(R.menu.add_new_card_bottom_shet_menu)
-                .setTitle(R.string.add_new_card_bottom_menu_title)
+                .setSheet(R.menu.add_new_card_bottom_sheet)
+                .setTitle(R.string.add_new_card_bottom_sheet_title)
                 .setListener(bottomSheetListener)
                 .show(getSupportFragmentManager());
     }
 
     @Override
-    public void goCreateCard(CardType cardType) {
+    public void goCreateCard(eCardType cardType) {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType.name());
@@ -491,19 +491,19 @@ public class CardsList_View
                                             @NotNull MenuItem menuItem, @org.jetbrains.annotations.Nullable Object o) {
                 switch (menuItem.getItemId()) {
                     case R.id.actionAddTextCard:
-                        presenter.onCardTypeSelected(CardType.TEXT_CARD);
+                        presenter.onCardTypeSelected(eCardType.TEXT_CARD);
                         break;
 
                     case R.id.actionAddImageCard:
-                        presenter.onCardTypeSelected(CardType.IMAGE_CARD);
+                        presenter.onCardTypeSelected(eCardType.IMAGE_CARD);
                         break;
 
                     case R.id.actionAddAudioCard:
-                        presenter.onCardTypeSelected(CardType.AUDIO_CARD);
+                        presenter.onCardTypeSelected(eCardType.AUDIO_CARD);
                         break;
 
                     case R.id.actionAddVideoCard:
-                        presenter.onCardTypeSelected(CardType.VIDEO_CARD);
+                        presenter.onCardTypeSelected(eCardType.VIDEO_CARD);
                         break;
 
                     default:

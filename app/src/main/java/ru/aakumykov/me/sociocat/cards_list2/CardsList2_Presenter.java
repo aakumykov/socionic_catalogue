@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
@@ -170,4 +171,24 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         return (Card) dataItem.getPayload();
     }
 
+    public void onFABClicked() {
+        ((CardsList2_View) mPageView).showAddNewCardMenu();
+    }
+
+    public void onAddNewCardClicked(int itemId) {
+        eCardType cardType = null;
+
+        if (R.id.actionAddTextCard == itemId)
+            cardType = eCardType.TEXT_CARD;
+        else if (R.id.actionAddImageCard == itemId)
+            cardType = eCardType.IMAGE_CARD;
+        else if (R.id.actionAddAudioCard == itemId)
+            cardType = eCardType.AUDIO_CARD;
+        else if (R.id.actionAddVideoCard == itemId)
+            cardType = eCardType.VIDEO_CARD;
+        else
+            throw new RuntimeException("Unsupported menu itemId: "+itemId);
+
+        ((CardsList2_View) mPageView).goCreateCard(cardType);
+    }
 }

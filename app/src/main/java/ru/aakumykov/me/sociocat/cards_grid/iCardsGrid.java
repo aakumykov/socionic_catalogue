@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
@@ -27,7 +27,7 @@ public interface iCardsGrid {
         <T> void setTitle(T title);
 
         void goShowCard(Card card, int position);
-        void goCreateCard(CardType cardType);
+        void goCreateCard(eCardType cardType);
         void goEditCard(Card card, int position);
         void goCardsGrid();
 
@@ -111,7 +111,7 @@ public interface iCardsGrid {
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);
 
-        void onCreateCardClicked(CardType cardType);
+        void onCreateCardClicked(eCardType cardType);
         void onEditCardClicked(iGridItem gridItem);
         void onDeleteCardClicked(iGridItem gridItem);
         void onShareCardClicked(iGridItem gridItem);

@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.CardType;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
@@ -87,19 +87,19 @@ public class ExternalDataReceiver extends BaseView {
 
         ContentType intentDataType = IntentUtils.detectContentType(intent);
 
-        CardType cardType;
+        eCardType cardType;
 
         switch (intentDataType) {
             case TEXT:
-                cardType = CardType.TEXT_CARD;
+                cardType = eCardType.TEXT_CARD;
                 break;
 
             case IMAGE:
-                cardType = CardType.IMAGE_CARD;
+                cardType = eCardType.IMAGE_CARD;
                 break;
 
             case YOUTUBE_VIDEO:
-                cardType = CardType.VIDEO_CARD;
+                cardType = eCardType.VIDEO_CARD;
                 break;
 
             case OTHER:
@@ -133,7 +133,7 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
-    private void go2createCard(CardType cardType, Intent inputIntent) {
+    private void go2createCard(eCardType cardType, Intent inputIntent) {
 
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
