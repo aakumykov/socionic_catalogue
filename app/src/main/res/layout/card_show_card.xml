@@ -41,7 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
-        android:background="#80CBC4"
         android:scaleType="fitCenter"
         android:visibility="gone"
         tools:srcCompat="@tools:sample/backgrounds/scenic[9]"
