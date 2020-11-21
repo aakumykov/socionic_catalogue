@@ -28,13 +28,16 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewSta
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_list.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -171,7 +174,9 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     public void setViewState(iBasicViewState viewState) {
-        if (viewState instanceof CardsWithTagViewState)
+        if (viewState instanceof LoadingCardsWithTagViewState)
+            setLoadingCardsWithTagViewState((LoadingCardsWithTagViewState) viewState);
+        else if (viewState instanceof CardsWithTagViewState)
             setCardsWithTagViewState((CardsWithTagViewState) viewState);
         else
             super.setViewState(viewState);
@@ -184,9 +189,23 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
 
+    private void setLoadingCardsWithTagViewState(LoadingCardsWithTagViewState loadingCardsWithTagViewState) {
+        activateUpButton();
+
+        String tagName = loadingCardsWithTagViewState.getTagName();
+        String msg = TextUtils.getText(this, R.string.CARDS_LIST_loading_cards_with_tag, tagName);
+        setProgressViewState(new ProgressViewState(msg));
+    }
+
     protected void setCardsWithTagViewState(CardsWithTagViewState cardsWithTagViewState) {
         setNeutralViewState();
-        showTagFilter(cardsWithTagViewState.getTagName());
+        activateUpButton();
+
+        String tagName = cardsWithTagViewState.getTagName();
+        String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_with_tag, tagName);
+        setPageTitle(msg);
+
+        showTagFilter(tagName);
     }
 
 

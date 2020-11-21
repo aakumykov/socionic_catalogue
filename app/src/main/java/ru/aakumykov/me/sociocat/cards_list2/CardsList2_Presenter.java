@@ -19,12 +19,12 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
-import ru.aakumykov.me.sociocat.cards_list.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -219,12 +219,13 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     private void loadCardsWithTag() {
-        String msg = mPageView.getText(R.string.CARDS_LIST_loading_cards_with_tag, mCurrentTagFilter);
-        setViewState(new ProgressViewState(msg));
+
+        setViewState(new LoadingCardsWithTagViewState(mCurrentTagFilter));
 
         mCardsSingleton.loadCardsWithTag(mCurrentTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mCurrentTagFilter);
                 setViewState(new CardsWithTagViewState(msg));
 
