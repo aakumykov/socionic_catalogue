@@ -3,11 +3,13 @@ package ru.aakumykov.me.sociocat.cards_list2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
@@ -25,6 +27,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -36,14 +39,9 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.tagFilterChip) Chip tagFilterChip;
 
     private BottomSheetListener mBottomSheetListener;
-
-
-    @OnClick(R.id.floatingActionButton)
-    void onFABClicked() {
-        ((CardsList2_Presenter) mPresenter).onFABClicked();
-    }
 
 
     @Override
@@ -53,6 +51,8 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         ButterKnife.bind(this);
 
         configureBottomSheetListener();
+
+        configureTagFilter();
     }
 
     @Override
@@ -154,6 +154,22 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
+    @Override
+    public void showTagFilter(String tagName) {
+        ViewUtils.show(tagFilterChip);
+    }
+
+    @Override
+    public void hideTagFilter() {
+        ViewUtils.hide(tagFilterChip);
+    }
+
+
+    @OnClick(R.id.floatingActionButton)
+    void onFABClicked() {
+        ((CardsList2_Presenter) mPresenter).onFABClicked();
+    }
+
 
     private void configureBottomSheetListener() {
 
@@ -177,6 +193,15 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
             }
         };
+    }
+
+    private void configureTagFilter() {
+        tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
+            }
+        });
     }
 
     private void processCardShowOrEditionResult() {

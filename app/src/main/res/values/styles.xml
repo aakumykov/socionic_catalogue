@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -62,6 +62,12 @@
     <style name="cancel_button">
         <item name="android:layout_marginTop">@dimen/minor_button_margin_top</item>
         <item name="android:textSize">@dimen/minor_button_font_size</item>
+    </style>
+
+    <style name="tagFilterChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">italic|bold</item>-->
     </style>
 
 </resources>

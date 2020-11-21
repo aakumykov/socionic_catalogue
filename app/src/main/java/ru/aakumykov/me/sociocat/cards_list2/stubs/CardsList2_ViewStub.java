@@ -23,4 +23,14 @@ public class CardsList2_ViewStub extends BasicMVP_ViewStub implements iCardsList
     public void goCreateCard(eCardType cardType) {
 
     }
+
+    @Override
+    public void showTagFilter(String tagName) {
+
+    }
+
+    @Override
+    public void hideTagFilter() {
+
+    }
 }

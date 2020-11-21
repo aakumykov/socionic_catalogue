@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
@@ -21,6 +20,7 @@ import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickList
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
+import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -58,6 +58,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     @Override
     protected void onColdStart() {
         super.onColdStart();
+
         loadCardsFromBeginning();
     }
 
@@ -199,5 +200,9 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             mPageView.scroll2position(insertPosition);
             mListView.highlightItem(insertPosition);
         }
+    }
+
+    public void onCloseTagFilterClicked() {
+        setNeutralViewState();
     }
 }
