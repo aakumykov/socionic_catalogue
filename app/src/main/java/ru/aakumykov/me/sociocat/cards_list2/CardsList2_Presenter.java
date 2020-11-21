@@ -33,7 +33,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
 
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
-    private String mCurrentTagFilter;
+    private String mTagFilter;
 
 
     public CardsList2_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -49,7 +49,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         if (null != intent) {
             String tagName = intent.getStringExtra(Constants.TAG_NAME);
             if (null != tagName) {
-                mCurrentTagFilter = tagName;
+                mTagFilter = tagName;
                 loadCardsWithTag();
                 return;
             }
@@ -134,6 +134,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
+
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
         if (null != oldCard && null != newCard)
@@ -152,8 +153,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             mListView.highlightItem(position);
         }
     }
-
-
 
     public void onFABClicked() {
         ((CardsList2_View) mPageView).showAddNewCardMenu();
@@ -186,6 +185,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     public void onCloseTagFilterClicked() {
+        mTagFilter = null;
         loadCardsFromBeginning();
     }
 
@@ -220,13 +220,13 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     private void loadCardsWithTag() {
 
-        setViewState(new LoadingCardsWithTagViewState(mCurrentTagFilter));
+        setViewState(new LoadingCardsWithTagViewState(mTagFilter));
 
-        mCardsSingleton.loadCardsWithTag(mCurrentTagFilter, new iCardsSingleton.ListCallbacks() {
+        mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mCurrentTagFilter);
+                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
                 setViewState(new CardsWithTagViewState(msg));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
@@ -235,6 +235,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                         return new Card_ListItem((Card) payload);
                     }
                 }));
+
+                mListView.showLoadmoreItem();
             }
 
             @Override
