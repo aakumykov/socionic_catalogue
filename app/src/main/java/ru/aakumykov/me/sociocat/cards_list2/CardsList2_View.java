@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.cards_list2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +38,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.tagFilterChip) Chip tagFilterChip;
+    @BindView(R.id.tagFilter) Chip tagFilter;
 
     private BottomSheetListener mBottomSheetListener;
 
@@ -156,12 +155,12 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     public void showTagFilter(String tagName) {
-        ViewUtils.show(tagFilterChip);
+        ViewUtils.show(tagFilter);
     }
 
     @Override
     public void hideTagFilter() {
-        ViewUtils.hide(tagFilterChip);
+        ViewUtils.hide(tagFilter);
     }
 
 
@@ -196,12 +195,12 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     private void configureTagFilter() {
-        tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
-            }
-        });
+//        tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
+//            }
+//        });
     }
 
     private void processCardShowOrEditionResult() {

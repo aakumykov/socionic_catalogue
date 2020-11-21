@@ -17,30 +17,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/tagFilterChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="метка-фильтр"
-        android:textAppearance="@style/tagFilterChipTextAppearance"
-        android:visibility="gone"
-        app:closeIcon="@drawable/ic_close_black"
-        app:closeIconVisible="true"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/tagFilterContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:visibility="visible" />
+        android:padding="12dp"
+        app:justifyContent="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tagFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="метка-фильтр"
+            android:textAppearance="@style/tagFilterChipTextAppearance"
+            android:visibility="gone"
+            app:closeIcon="@drawable/ic_close_black"
+            app:closeIconVisible="true"
+            tools:visibility="visible" />
+
+    </com.google.android.flexbox.FlexboxLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tagFilterChip">
+        app:layout_constraintTop_toBottomOf="@+id/tagFilterContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
