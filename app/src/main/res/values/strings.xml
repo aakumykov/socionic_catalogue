@@ -722,6 +722,7 @@
     <string name="CARDS_LIST_error_loading_list">Ошибка загрузки карточек</string>
     <string name="CARDS_LIST_cards_with_tag">Карточки с меткой «%1$s»</string>
     <string name="CARDS_LIST_add_card_button_description">Добавить новую карточку</string>
+    <string name="CARDS_LIST_no_more_cards_with_tag">Больше нет</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

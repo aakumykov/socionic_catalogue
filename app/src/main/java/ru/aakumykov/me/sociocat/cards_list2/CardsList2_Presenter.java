@@ -92,7 +92,13 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
+        if (null != mTagFilter)
+            loadMoreCardsWithCurrentTagFilter();
+        else
+            loadMoreCards();
+    }
 
+    private void loadMoreCards() {
         mListView.hideLoadmoreItem();
         mListView.showThrobberItem();
 
@@ -133,7 +139,47 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         });
     }
 
+    private void loadMoreCardsWithCurrentTagFilter() {
 
+        showLoadmoreItem();
+
+        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
+
+        if (null == lastDataItem) {
+            showNoMoreCards();
+            return;
+        }
+
+        Card card = (Card) lastDataItem.getPayload();
+
+        mCardsSingleton.loadCardsWithTagAfter(mTagFilter, card, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+
+                setViewState(new CardsWithTagViewState(mTagFilter));
+
+                if (0 == list.size()) {
+                    showNoMoreCards();
+                    return;
+                }
+
+                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+
+                mListView.hideThrobberItem();
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
 
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
@@ -253,4 +299,13 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         return (Card) dataItem.getPayload();
     }
 
+    private void showLoadmoreItem() {
+        mListView.hideLoadmoreItem();
+        mListView.showThrobberItem();
+    }
+
+    private void showNoMoreCards() {
+        mListView.hideThrobberItem();
+        mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
+    }
 }
