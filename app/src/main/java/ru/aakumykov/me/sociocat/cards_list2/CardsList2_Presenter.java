@@ -35,6 +35,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
 
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
+
         if (null != oldCard && null != newCard)
         {
             Card_ListItem newCardListItem = new Card_ListItem(newCard);

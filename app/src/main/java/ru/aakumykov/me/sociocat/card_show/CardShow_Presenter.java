@@ -44,6 +44,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     private iCardShow.iDataAdapter dataAdapter = null;
 
     private Card currentCard = null;
+    private Card oldCard = null;
+
     private iList_Item currentListItem = null;
     private iCommentable repliedItem = null;
     private Comment editedComment = null;
@@ -331,9 +333,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onEditCardComplete(@Nullable Intent data) {
         if (null != data) {
-            Card card = data.getParcelableExtra(Constants.CARD);
-            if (null != card) {
-                currentCard = card;
+            Card newCard = data.getParcelableExtra(Constants.CARD);
+
+            if (null != newCard) {
+                oldCard = currentCard;
+                currentCard = newCard;
+
                 dataAdapter.showCard(currentCard);
             }
             else
@@ -374,7 +379,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     @Override
     public void onGoBackRequested() {
-        pageView.goBack(currentCard);
+        pageView.goBack(currentCard, oldCard);
     }
 
 

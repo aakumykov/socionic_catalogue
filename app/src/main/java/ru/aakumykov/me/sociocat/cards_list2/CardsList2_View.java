@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.Constants;
@@ -111,6 +113,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
 
+    @Subscribe
     private void processCardShowOrEditionResult() {
         if (RESULT_OK == mActivityResultCode) {
             if (null != mActivityResultData) {

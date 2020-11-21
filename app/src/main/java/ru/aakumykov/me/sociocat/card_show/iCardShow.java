@@ -41,7 +41,7 @@ public interface iCardShow
 
         void openImageInBrowser(String imageURL);
 
-        void goBack(@NonNull Card card);
+        void goBack(@NonNull Card card, @NonNull Card oldCard);
 
         void showRefreshThrobber();
         void hideRefreshThrobber();

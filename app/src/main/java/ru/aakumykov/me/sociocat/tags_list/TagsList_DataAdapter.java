@@ -38,25 +38,4 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
         return new TagsList_ItemsComparator();
     }
 
-
-    /*public int updateItemInList(@NonNull Tag oldTag, @NonNull Tag newTag) {
-
-        Tag_ListItem tagListItem = new Tag_ListItem(newTag);
-
-        iBasicList.iFindItemComparisionCallback comparisionCallback = new iFindItemComparisionCallback() {
-            @Override
-            public boolean onCompareFindingOldItemPosition(Object objectFromList) {
-                Tag tagFromList = (Tag) objectFromList;
-                return tagFromList.getKey().equals(oldTag.getKey());
-            }
-        };
-
-        int visiblePosition = findVisibleObjectPosition(comparisionCallback);
-        updateItemInVisibleList(visiblePosition, tagListItem);
-
-        int originalPosition = findOriginalObjectPosition(comparisionCallback);
-        updateItemInOriginalList(originalPosition, tagListItem);
-
-        return visiblePosition;
-    }*/
 }
