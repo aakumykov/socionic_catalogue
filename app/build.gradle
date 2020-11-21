@@ -82,7 +82,7 @@ dependencies {
     implementation 'com.github.aakumykov:insertable-youtube-player:0.16'
 
     // Circle image view
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+//    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
