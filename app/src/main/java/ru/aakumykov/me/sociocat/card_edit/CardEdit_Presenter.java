@@ -105,11 +105,15 @@ public class CardEdit_Presenter implements
         try {
             switch (action) {
                 case Constants.ACTION_CREATE:
+                case Intent.ACTION_CREATE_DOCUMENT:
                     proceed2createCard(intent);
                     break;
+
                 case Constants.ACTION_EDIT:
+                case Intent.ACTION_EDIT:
                     proceed2editCard(intent);
                     break;
+
                 default:
                     throw new IllegalArgumentException("Unknown action: "+action);
             }
