@@ -55,6 +55,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressView
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public abstract class BasicMVP_View
         extends BaseView
@@ -497,6 +498,13 @@ public abstract class BasicMVP_View
             mMenuInflater.inflate(R.menu.sorting, mMenu);
             mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
         }
+    }
+
+    protected void addAuthorizationMenu() {
+        if (AuthSingleton.isLoggedIn())
+            inflateMenu(R.menu.logout);
+        else
+            inflateMenu(R.menu.login);
     }
 
     protected void addSortByNameMenu() {

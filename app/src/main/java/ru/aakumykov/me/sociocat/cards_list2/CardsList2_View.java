@@ -86,6 +86,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         inflateMenu(R.menu.tags);
 
         addSortByNameMenu();
+        addAuthorizationMenu();
     }
 
     @Override
