@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.SelectionViewState;
-import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
@@ -127,7 +127,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
 
     @Override
     public void goShowCardsWithTag(@NonNull Tag tag) {
-        Intent intent = new Intent(this, CardsList_View.class);
+        Intent intent = new Intent(this, CardsList2_View.class);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivity(intent);
     }

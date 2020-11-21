@@ -7,8 +7,8 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public class Tag_ListItem extends BasicMVP_DataItem {
 
-    public Tag_ListItem(Object object) {
-        setPayload(object);
+    public Tag_ListItem(Tag tag) {
+        setPayload(tag);
     }
 
     @Override

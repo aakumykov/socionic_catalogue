@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_list2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
@@ -31,6 +33,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_list.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -38,7 +41,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.tagFilter) Chip tagFilter;
+    @BindView(R.id.tagFilter) Chip tagFilterChip;
 
     private BottomSheetListener mBottomSheetListener;
 
@@ -155,12 +158,34 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     public void showTagFilter(String tagName) {
-        ViewUtils.show(tagFilter);
+        tagFilterChip.setText(tagName);
+        ViewUtils.show(tagFilterChip);
     }
 
     @Override
     public void hideTagFilter() {
-        ViewUtils.hide(tagFilter);
+        ViewUtils.hide(tagFilterChip);
+    }
+
+
+    @Override
+    public void setViewState(iBasicViewState viewState) {
+        if (viewState instanceof CardsWithTagViewState)
+            setCardsWithTagViewState((CardsWithTagViewState) viewState);
+        else
+            super.setViewState(viewState);
+    }
+
+    @Override
+    protected void setNeutralViewState() {
+        super.setNeutralViewState();
+        hideTagFilter();
+    }
+
+
+    protected void setCardsWithTagViewState(CardsWithTagViewState cardsWithTagViewState) {
+        setNeutralViewState();
+        showTagFilter(cardsWithTagViewState.getTagName());
     }
 
 
@@ -195,12 +220,12 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     private void configureTagFilter() {
-//        tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
-//            }
-//        });
+        tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
+            }
+        });
     }
 
     private void processCardShowOrEditionResult() {
@@ -223,4 +248,5 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
             }
         }
     }
+
 }

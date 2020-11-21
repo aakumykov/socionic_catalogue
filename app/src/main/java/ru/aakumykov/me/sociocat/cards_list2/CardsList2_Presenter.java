@@ -1,9 +1,12 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
+import android.content.Intent;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
@@ -16,6 +19,8 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
+import ru.aakumykov.me.sociocat.cards_list.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
@@ -28,6 +33,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
 
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
+    private String mCurrentTagFilter;
 
 
     public CardsList2_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -35,29 +41,19 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-    public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
-
-        if (null != oldCard && null != newCard)
-        {
-            Card_ListItem newCardListItem = new Card_ListItem(newCard);
-
-            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
-                @Override
-                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
-                    Card cardFromList = (Card) objectFromListItem;
-                    return cardFromList.getKey().equals(oldCard.getKey());
-                }
-            });
-
-            mPageView.scroll2position(position);
-            mListView.highlightItem(position);
-        }
-    }
-
-
     @Override
     protected void onColdStart() {
         super.onColdStart();
+
+        Intent intent = mPageView.getInputIntent();
+        if (null != intent) {
+            String tagName = intent.getStringExtra(Constants.TAG_NAME);
+            if (null != tagName) {
+                mCurrentTagFilter = tagName;
+                loadCardsWithTag();
+                return;
+            }
+        }
 
         loadCardsFromBeginning();
     }
@@ -85,7 +81,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             return;
         }
 
-        Card card = getCorrespondingCard(dataViewHolder);
+        Card card = getCardForViewHolder(dataViewHolder);
         ((iCardsList2_View) mPageView).goShowingCard(card);
     }
 
@@ -138,39 +134,26 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-    private void loadCardsFromBeginning() {
-        setRefreshingViewState();
+    public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
-        mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                setNeutralViewState();
+        if (null != oldCard && null != newCard)
+        {
+            Card_ListItem newCardListItem = new Card_ListItem(newCard);
 
-                mListView.setList(
-                        ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                        @Override
-                        public BasicMVP_DataItem createDataItem(Object payload) {
-                            return new Card_ListItem((Card) payload);
-                        }
-                    })
-                );
+            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
+                @Override
+                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
+                    Card cardFromList = (Card) objectFromListItem;
+                    return cardFromList.getKey().equals(oldCard.getKey());
+                }
+            });
 
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
-            }
-        });
+            mPageView.scroll2position(position);
+            mListView.highlightItem(position);
+        }
     }
 
-    private Card getCorrespondingCard(BasicMVP_DataViewHolder basicDataViewHolder) {
-        int index = basicDataViewHolder.getAdapterPosition();
-        BasicMVP_ListItem listItem = mListView.getItem(index);
-        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
-        return (Card) dataItem.getPayload();
-    }
+
 
     public void onFABClicked() {
         ((CardsList2_View) mPageView).showAddNewCardMenu();
@@ -203,6 +186,67 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     public void onCloseTagFilterClicked() {
-        setNeutralViewState();
+        loadCardsFromBeginning();
     }
+
+
+
+    private void loadCardsFromBeginning() {
+        setRefreshingViewState();
+
+        mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setNeutralViewState();
+
+                mListView.setList(
+                        ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                            @Override
+                            public BasicMVP_DataItem createDataItem(Object payload) {
+                                return new Card_ListItem((Card) payload);
+                            }
+                        })
+                );
+
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private void loadCardsWithTag() {
+        String msg = mPageView.getText(R.string.CARDS_LIST_loading_cards_with_tag, mCurrentTagFilter);
+        setViewState(new ProgressViewState(msg));
+
+        mCardsSingleton.loadCardsWithTag(mCurrentTagFilter, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setViewState(new CardsWithTagViewState(mCurrentTagFilter));
+
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private Card getCardForViewHolder(BasicMVP_DataViewHolder basicDataViewHolder) {
+        int index = basicDataViewHolder.getAdapterPosition();
+        BasicMVP_ListItem listItem = mListView.getItem(index);
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
+        return (Card) dataItem.getPayload();
+    }
+
 }
