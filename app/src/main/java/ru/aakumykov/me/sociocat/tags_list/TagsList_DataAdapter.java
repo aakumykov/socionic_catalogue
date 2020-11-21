@@ -1,20 +1,15 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
-import androidx.annotation.NonNull;
-
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
-import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
-import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.tags_list.list_utils.TagsList_ItemsComparator;
 
 public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
@@ -44,13 +39,13 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
     }
 
 
-    public int updateTagInList(@NonNull Tag oldTag, @NonNull Tag newTag) {
+    /*public int updateItemInList(@NonNull Tag oldTag, @NonNull Tag newTag) {
 
         Tag_ListItem tagListItem = new Tag_ListItem(newTag);
 
-        iBasicList.iComparisionCallback comparisionCallback = new iComparisionCallback() {
+        iBasicList.iFindItemComparisionCallback comparisionCallback = new iFindItemComparisionCallback() {
             @Override
-            public boolean onCompare(Object objectFromList) {
+            public boolean onCompareFindingOldItemPosition(Object objectFromList) {
                 Tag tagFromList = (Tag) objectFromList;
                 return tagFromList.getKey().equals(oldTag.getKey());
             }
@@ -63,5 +58,5 @@ public class TagsList_DataAdapter extends BasicMVP_DataAdapter {
         updateItemInOriginalList(originalPosition, tagListItem);
 
         return visiblePosition;
-    }
+    }*/
 }

@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
-import androidx.annotation.NonNull;
-
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
@@ -10,17 +8,11 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsCompara
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter {
 
     public CardsList2_DataAdapter(iBasicMVP_ItemClickListener itemClickListener) {
         super(itemClickListener);
-    }
-
-
-    public int updateCardInList(@NonNull Card oldCard, @NonNull Card newCard) {
-        return 0;
     }
 
 

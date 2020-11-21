@@ -14,6 +14,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
@@ -259,8 +260,20 @@ public class TagsList_Presenter
 
 
     public void onTagEdited(Tag oldTag, Tag newTag) {
-        if (null != oldTag && null != newTag) {
-            int position = ((TagsList_DataAdapter) mListView).updateTagInList(oldTag, newTag);
+        if (null != oldTag && null != newTag)
+        {
+//            int position = ((TagsList_DataAdapter) mListView).updateItemInList(oldTag, newTag);
+
+            Tag_ListItem newTagListItem = new Tag_ListItem(newTag);
+
+            int position = mListView.updateItemInList(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
+                @Override
+                public boolean onCompareFindingOldItemPosition(Object objectFromList) {
+                    Tag tagFromList = (Tag) objectFromList;
+                    return tagFromList.getKey().equals(oldTag.getKey());
+                }
+            });
+
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }

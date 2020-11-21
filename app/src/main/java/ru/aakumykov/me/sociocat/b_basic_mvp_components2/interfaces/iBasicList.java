@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
@@ -22,13 +24,10 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void addItem(BasicMVP_ListItem item);
     void removeItem(BasicMVP_ListItem item);
 
-    void updateItemInVisibleList(int position, BasicMVP_ListItem item);
-    void updateItemInOriginalList(int position, BasicMVP_ListItem item);
-
     int getVisibleItemsCount();
 
-    int findVisibleObjectPosition(iComparisionCallback callback);
-    int findOriginalObjectPosition(iComparisionCallback callback);
+    int findVisibleObjectPosition(iFindItemComparisionCallback callback);
+    int findOriginalObjectPosition(iFindItemComparisionCallback callback);
 
     int getVisibleDataItemsCount();
 
@@ -41,6 +40,9 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     BasicMVP_DataItem getLastUnfilteredDataItem();
 
     void refreshItem(int position);
+
+    int updateItemInList(@NonNull BasicMVP_DataItem newItem,
+                         @NonNull iFindItemComparisionCallback comparisionCallback);
 
     void showThrobberItem();
     void hideThrobberItem();
@@ -58,7 +60,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void setViewMode(BasicViewMode viewMode);
 
 
-    interface iComparisionCallback {
-        boolean onCompare(Object objectFromList);
+    interface iFindItemComparisionCallback {
+        boolean onCompareFindingOldItemPosition(Object objectFromList);
     }
 }

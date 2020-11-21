@@ -76,8 +76,7 @@ public abstract class BasicMVP_DataAdapter
     protected abstract iItemsComparator getItemsComparator();
 
 
-    @NonNull
-    @Override
+    @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return mViewHolderCreator.createViewHolder(parent, viewType, mCurrentViewMode);
     }
@@ -202,46 +201,35 @@ public abstract class BasicMVP_DataAdapter
     }
 
     @Override
-    public void updateItemInVisibleList(int position, BasicMVP_ListItem item) {
-        if (positionIsInListRange(position, mCurrentItemsList)) {
-            mCurrentItemsList.set(position, item);
-            notifyItemChanged(position);
-        }
-    }
-
-    @Override
-    public void updateItemInOriginalList(int position, BasicMVP_ListItem item) {
-        if (positionIsInListRange(position, mOriginalItemsList))
-            mOriginalItemsList.set(position, item);
-    }
-
-    @Override
     public int getVisibleItemsCount() {
         return mCurrentItemsList.size();
     }
 
     @Override
-    public int findVisibleObjectPosition(iComparisionCallback callback) {
+    public int findVisibleObjectPosition(iFindItemComparisionCallback callback) {
+
         for (BasicMVP_ListItem listItem : mCurrentItemsList)
         {
             if (listItem instanceof BasicMVP_DataItem)
             {
                 Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
-                if (callback.onCompare(objectFromList))
+
+                if (callback.onCompareFindingOldItemPosition(objectFromList))
                     return mCurrentItemsList.indexOf(listItem);
             }
         }
+
         return -1;
     }
 
     @Override
-    public int findOriginalObjectPosition(iComparisionCallback callback) {
+    public int findOriginalObjectPosition(iFindItemComparisionCallback callback) {
         for (BasicMVP_ListItem listItem : mOriginalItemsList)
         {
             if (listItem instanceof BasicMVP_DataItem)
             {
                 Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
-                if (callback.onCompare(objectFromList))
+                if (callback.onCompareFindingOldItemPosition(objectFromList))
                     return mOriginalItemsList.indexOf(listItem);
             }
         }
@@ -325,6 +313,19 @@ public abstract class BasicMVP_DataAdapter
     @Override
     public void refreshItem(int position) {
         notifyItemChanged(position);
+    }
+
+    @Override
+    public int updateItemInList(@NonNull BasicMVP_DataItem newListItem,
+                                @NonNull iFindItemComparisionCallback comparisionCallback)
+    {
+        int visiblePosition = findVisibleObjectPosition(comparisionCallback);
+        updateItemInVisibleList(visiblePosition, newListItem);
+
+        int originalPosition = findOriginalObjectPosition(comparisionCallback);
+        updateItemInOriginalList(originalPosition, newListItem);
+
+        return visiblePosition;
     }
 
 
@@ -605,5 +606,17 @@ public abstract class BasicMVP_DataAdapter
 
     private boolean positionIsInListRange(int position, List<BasicMVP_ListItem> list) {
         return (position >= 0) && (list.size() > position);
+    }
+
+    private void updateItemInVisibleList(int position, BasicMVP_ListItem item) {
+        if (positionIsInListRange(position, mCurrentItemsList)) {
+            mCurrentItemsList.set(position, item);
+            notifyItemChanged(position);
+        }
+    }
+
+    private void updateItemInOriginalList(int position, BasicMVP_ListItem item) {
+        if (positionIsInListRange(position, mOriginalItemsList))
+            mOriginalItemsList.set(position, item);
     }
 }

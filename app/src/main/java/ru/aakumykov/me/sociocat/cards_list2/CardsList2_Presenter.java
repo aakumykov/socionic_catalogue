@@ -7,6 +7,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
@@ -22,7 +23,6 @@ import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.tags_list.TagsList_DataAdapter;
 
 public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
 
@@ -35,8 +35,18 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
 
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
-        if (null != oldCard && null != newCard) {
-            int position = ((CardsList2_DataAdapter) mListView).updateCardInList(oldCard, newCard);
+        if (null != oldCard && null != newCard)
+        {
+            Card_ListItem newCardListItem = new Card_ListItem(newCard);
+
+            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
+                @Override
+                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
+                    Card cardFromList = (Card) objectFromListItem;
+                    return cardFromList.getKey().equals(oldCard.getKey());
+                }
+            });
+
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
