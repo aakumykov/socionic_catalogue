@@ -37,6 +37,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Название элемента" />
 
+        <TextView
+            android:id="@+id/quoteView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleView"
+            tools:text="«Если вы ищете истину, вы можете в конце концов найти успокоение; если вы ищете успокоение, вы не найдёте ни успокоение, ни истины – вы лишь начнёте с мягкого мыла и выдачи желаемого за действительное, а закончите отчаянием»" />
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -46,7 +59,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleView"
+            app:layout_constraintTop_toBottomOf="@+id/quoteView"
             tools:srcCompat="@drawable/ic_image_placeholder_smaller"
             tools:visibility="visible" />
 

@@ -103,7 +103,7 @@ public final class Constants
     public final static String MODE_SEND = "MODE_SEND";
     public final static String MODE_SELECT = "MODE_SELECT";
 
-    public final static int CARDS_GRID_QUOTE_MAX_LENGTH = 50;
+    public final static int CARDS_FEED_QUOTE_MAX_LENGTH = 50;
 
     public final static int USER_NAME_MIN_LENGTH = 2;
     public final static int USER_NAME_MAX_LENGTH = 30;
