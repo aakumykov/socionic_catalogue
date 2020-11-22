@@ -37,6 +37,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingAllCardsViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -161,13 +162,27 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     @Override
+    public void goShowAllCards() {
+        Intent intent = new Intent(this, CardsList2_View.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent);
+    }
+
+    @Override
     public void setViewState(iBasicViewState viewState) {
-        if (viewState instanceof LoadingCardsWithTagViewState)
+
+        if (viewState instanceof LoadingAllCardsViewState) {
+            setLoadingAllCardsViewState((LoadingAllCardsViewState) viewState);
+        }
+        else if (viewState instanceof LoadingCardsWithTagViewState) {
             setLoadingCardsWithTagViewState((LoadingCardsWithTagViewState) viewState);
-        else if (viewState instanceof CardsWithTagViewState)
+        }
+        else if (viewState instanceof CardsWithTagViewState) {
             setCardsWithTagViewState((CardsWithTagViewState) viewState);
-        else
+        }
+        else {
             super.setViewState(viewState);
+        }
     }
 
     @Override
@@ -176,6 +191,13 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         hideTagFilter();
     }
 
+
+    private void setLoadingAllCardsViewState(LoadingAllCardsViewState loadingAllCardsViewState) {
+        showRefreshThrobber();
+
+        if (loadingAllCardsViewState.isWithBackButton())
+            activateUpButton();
+    }
 
     protected void setLoadingCardsWithTagViewState(LoadingCardsWithTagViewState loadingCardsWithTagViewState) {
         activateUpButton();

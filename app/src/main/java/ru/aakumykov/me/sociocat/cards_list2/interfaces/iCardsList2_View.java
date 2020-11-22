@@ -10,4 +10,5 @@ public interface iCardsList2_View extends iBasicList_Page {
     void goShowingCard(@NonNull Card card);
     void showAddNewCardMenu();
     void goCreateCard(eCardType cardType);
+    void goShowAllCards();
 }

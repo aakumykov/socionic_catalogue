@@ -19,11 +19,12 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingAllCardsViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -55,7 +56,9 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             }
         }
 
-        loadCardsFromBeginning();
+        loadCardsFromBeginning(
+                null != intent && Intent.ACTION_VIEW.equals(intent.getAction())
+        );
     }
 
     @Override
@@ -70,7 +73,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onRefreshRequested() {
-        loadCardsFromBeginning();
+        //loadCardsFromBeginning(false);
+        mPageView.showToast("Вопросы с реализацией");
     }
 
     @Override
@@ -238,13 +242,14 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     public void onCloseTagFilterClicked() {
         mTagFilter = null;
-        loadCardsFromBeginning();
+        ((iCardsList2_View) mPageView).goShowAllCards();
     }
 
 
 
-    private void loadCardsFromBeginning() {
-        setRefreshingViewState();
+    private void loadCardsFromBeginning(boolean showBackButton) {
+
+        setViewState(new LoadingAllCardsViewState(showBackButton));
 
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
