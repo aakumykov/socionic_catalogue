@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_list2.view_holders;
 import android.animation.AnimatorSet;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.Constants;
@@ -29,7 +36,11 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.quoteView) TextView quoteView;
+    @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
+
+    private YouTubePlayerView mYoutubePlayerView;
+
 
     public CardViewHolder_Feed(@NonNull View itemView) {
         super(itemView);
@@ -117,11 +128,43 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
 
     private void showVideo() {
+        ViewUtils.show(videoThrobber);
+        videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
+
+        if (null != mYoutubePlayerView)
+            mYoutubePlayerView.release();
+
+        mYoutubePlayerView = new YouTubePlayerView(audioVideoContainer.getContext());
+        mYoutubePlayerView.setEnableAutomaticInitialization(false);
+        mYoutubePlayerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        mYoutubePlayerView.initialize(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                super.onReady(youTubePlayer);
+
+                videoThrobber.clearAnimation();
+                ViewUtils.hide(videoThrobber);
+
+                audioVideoContainer.addView(mYoutubePlayerView);
+                ViewUtils.show(audioVideoContainer);
+
+                youTubePlayer.cueVideo(mCurrentCard.getVideoCode(), mCurrentCard.getTimecode());
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError error) {
+                super.onError(youTubePlayer, error);
+
+                videoThrobber.clearAnimation();
+                videoThrobber.setImageResource(R.drawable.ic_youtube_video_error);
+            }
+        });
 
     }
 
     private void hideVideo() {
-
+        audioVideoContainer.removeAllViews();
     }
 
 

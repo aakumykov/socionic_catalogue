@@ -63,6 +63,18 @@
             tools:srcCompat="@drawable/ic_image_placeholder_smaller"
             tools:visibility="visible" />
 
+        <ImageView
+            android:id="@+id/videoThrobber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_youtube_video_placeholder"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            tools:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/audioVideoContainer"
             android:layout_width="match_parent"
@@ -70,7 +82,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/videoThrobber"
             tools:visibility="visible">
 
         </FrameLayout>
