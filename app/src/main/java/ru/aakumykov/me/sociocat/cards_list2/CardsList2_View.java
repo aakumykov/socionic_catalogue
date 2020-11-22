@@ -39,8 +39,8 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -201,7 +201,6 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
 
     private void setLoadingCardsWithoutTagViewState(LoadingCardsWithoutTag_ViewState loadingCardsWithoutTagViewState) {
-        setNeutralViewState();
 
         setViewState(new ProgressViewState(R.string.CARDS_LIST_loading_list));
 
@@ -211,29 +210,26 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     private void setCardsWithoutTagViewState(CardsWithoutTag_ViewState cardsWithoutTagViewState) {
         setNeutralViewState();
-
         if (cardsWithoutTagViewState.isDisplayBackButton())
             activateUpButton();
     }
 
     protected void setLoadingCardsWithTagViewState(LoadingCardsWithTag_ViewState loadingCardsWithTagViewState) {
-        setNeutralViewState();
+        activateUpButton();
 
         String tagName = loadingCardsWithTagViewState.getTagName();
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_loading_cards_with_tag, tagName);
-
-        activateUpButton();
         setProgressViewState(new ProgressViewState(msg));
     }
 
     protected void setCardsWithTagViewState(CardsWithTag_ViewState cardsWithTagViewState) {
         setNeutralViewState();
+        activateUpButton();
 
         String tagName = cardsWithTagViewState.getTagName();
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_with_tag, tagName);
         setPageTitle(msg);
 
-        activateUpButton();
         showTagFilter(tagName);
     }
 

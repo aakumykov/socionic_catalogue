@@ -98,137 +98,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             loadMoreCards();
     }
 
-
-    public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
-
-        if (null != oldCard && null != newCard)
-        {
-            Card_ListItem newCardListItem = new Card_ListItem(newCard);
-
-            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
-                @Override
-                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
-                    Card cardFromList = (Card) objectFromListItem;
-                    return cardFromList.getKey().equals(oldCard.getKey());
-                }
-            });
-
-            mPageView.scroll2position(position);
-            mListView.highlightItem(position);
-        }
-    }
-
-    public void onFABClicked() {
-        ((CardsList2_View) mPageView).showAddNewCardMenu();
-    }
-
-    public void onAddNewCardClicked(int itemId) {
-        eCardType cardType = null;
-
-        if (R.id.actionAddTextCard == itemId)
-            cardType = eCardType.TEXT_CARD;
-        else if (R.id.actionAddImageCard == itemId)
-            cardType = eCardType.IMAGE_CARD;
-        else if (R.id.actionAddAudioCard == itemId)
-            cardType = eCardType.AUDIO_CARD;
-        else if (R.id.actionAddVideoCard == itemId)
-            cardType = eCardType.VIDEO_CARD;
-        else
-            throw new RuntimeException("Unsupported menu itemId: "+itemId);
-
-        ((CardsList2_View) mPageView).goCreateCard(cardType);
-    }
-
-    public void onCardCreated(@Nullable Card newCard) {
-        if (null != newCard) {
-            int insertPosition = 0;
-            mListView.insertItem(insertPosition, new Card_ListItem(newCard));
-            mPageView.scroll2position(insertPosition);
-            mListView.highlightItem(insertPosition);
-        }
-    }
-
-    public void onCloseTagFilterClicked() {
-        mTagFilter = null;
-
-//        ((iCardsList2_View) mPageView).goShowAllCards();
-
-        loadCardsWithoutTag(true);
-    }
-
-
-    private String getActionFromIntent() {
-        Intent intent = mPageView.getInputIntent();
-        if (null != intent)
-            return intent.getAction();
-        return null;
-    }
-
-    private String getTagNameFromIntent() {
-        Intent intent = mPageView.getInputIntent();
-        if (null != intent)
-            return intent.getStringExtra(Constants.TAG_NAME);
-        return null;
-    }
-
-    private void loadCardsWithoutTag(boolean displayBackButton) {
-        Log.d(TAG, "loadCardsWithoutTag()");
-
-        setViewState(new LoadingCardsWithoutTag_ViewState(displayBackButton));
-
-        mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                setViewState(new CardsWithoutTag_ViewState(displayBackButton));
-
-                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                            @Override
-                            public BasicMVP_DataItem createDataItem(Object payload) {
-                                return new Card_ListItem((Card) payload);
-                            }
-                        }));
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
-            }
-        });
-    }
-
-    private void loadCardsWithTag() {
-
-        mTagFilter = getTagNameFromIntent();
-        if (null == mTagFilter) {
-            setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
-            return;
-        }
-
-        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
-
-        mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
-                setViewState(new CardsWithTag_ViewState(msg));
-
-                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVP_DataItem createDataItem(Object payload) {
-                        return new Card_ListItem((Card) payload);
-                    }
-                }));
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
-            }
-        });
-    }
-
     private void loadMoreCards() {
 
         showThrobberItem();
@@ -314,6 +183,134 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadFail(String errorMessage) {
                 setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
+
+        if (null != oldCard && null != newCard)
+        {
+            Card_ListItem newCardListItem = new Card_ListItem(newCard);
+
+            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
+                @Override
+                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
+                    Card cardFromList = (Card) objectFromListItem;
+                    return cardFromList.getKey().equals(oldCard.getKey());
+                }
+            });
+
+            mPageView.scroll2position(position);
+            mListView.highlightItem(position);
+        }
+    }
+
+    public void onFABClicked() {
+        ((CardsList2_View) mPageView).showAddNewCardMenu();
+    }
+
+    public void onAddNewCardClicked(int itemId) {
+        eCardType cardType = null;
+
+        if (R.id.actionAddTextCard == itemId)
+            cardType = eCardType.TEXT_CARD;
+        else if (R.id.actionAddImageCard == itemId)
+            cardType = eCardType.IMAGE_CARD;
+        else if (R.id.actionAddAudioCard == itemId)
+            cardType = eCardType.AUDIO_CARD;
+        else if (R.id.actionAddVideoCard == itemId)
+            cardType = eCardType.VIDEO_CARD;
+        else
+            throw new RuntimeException("Unsupported menu itemId: "+itemId);
+
+        ((CardsList2_View) mPageView).goCreateCard(cardType);
+    }
+
+    public void onCardCreated(@Nullable Card newCard) {
+        if (null != newCard) {
+            int insertPosition = 0;
+            mListView.insertItem(insertPosition, new Card_ListItem(newCard));
+            mPageView.scroll2position(insertPosition);
+            mListView.highlightItem(insertPosition);
+        }
+    }
+
+    public void onCloseTagFilterClicked() {
+        mTagFilter = null;
+        ((iCardsList2_View) mPageView).goShowAllCards();
+    }
+
+
+
+    private String getActionFromIntent() {
+        Intent intent = mPageView.getInputIntent();
+        if (null != intent)
+            return intent.getAction();
+        return null;
+    }
+
+    private String getTagNameFromIntent() {
+        Intent intent = mPageView.getInputIntent();
+        if (null != intent)
+            return intent.getStringExtra(Constants.TAG_NAME);
+        return null;
+    }
+
+    private void loadCardsWithoutTag(boolean displayBackButton) {
+        Log.d(TAG, "loadCardsWithoutTag()");
+
+        setViewState(new LoadingCardsWithoutTag_ViewState(displayBackButton));
+
+        mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setViewState(new CardsWithoutTag_ViewState(displayBackButton));
+
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                            @Override
+                            public BasicMVP_DataItem createDataItem(Object payload) {
+                                return new Card_ListItem((Card) payload);
+                            }
+                        }));
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private void loadCardsWithTag() {
+
+        mTagFilter = getTagNameFromIntent();
+        if (null == mTagFilter) {
+            setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
+            return;
+        }
+
+        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
+
+        mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
+                setViewState(new CardsWithTag_ViewState(msg));
+
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
             }
         });
     }
