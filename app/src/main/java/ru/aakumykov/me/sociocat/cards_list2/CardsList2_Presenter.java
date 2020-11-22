@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -23,9 +24,10 @@ import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickList
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingAllCardsViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -33,6 +35,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 
 public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
 
+    private static final String TAG = CardsList2_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private String mTagFilter;
 
@@ -44,21 +47,14 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onColdStart() {
+        Log.d("onColdStart", "onColdStart()");
         super.onColdStart();
 
-        Intent intent = mPageView.getInputIntent();
-        if (null != intent) {
-            String tagName = intent.getStringExtra(Constants.TAG_NAME);
-            if (null != tagName) {
-                mTagFilter = tagName;
-                loadCardsWithTag();
-                return;
-            }
-        }
+        String action = getActionFromIntent();
 
-        loadCardsFromBeginning(
-                null != intent && Intent.ACTION_VIEW.equals(intent.getAction())
-        );
+        if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
+            loadCardsWithTag();
+        else loadCardsWithoutTag(Intent.ACTION_VIEW.equals(action));
     }
 
     @Override
@@ -73,7 +69,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onRefreshRequested() {
-        //loadCardsFromBeginning(false);
+        //loadCardsWithoutTag(false);
         mPageView.showToast("Вопросы с реализацией");
     }
 
@@ -166,7 +162,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                setViewState(new CardsWithTagViewState(mTagFilter));
+                setViewState(new CardsWithTag_ViewState(mTagFilter));
 
                 if (0 == list.size()) {
                     showNoMoreCards();
@@ -247,24 +243,36 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
 
 
-    private void loadCardsFromBeginning(boolean showBackButton) {
+    private String getActionFromIntent() {
+        Intent intent = mPageView.getInputIntent();
+        if (null != intent)
+            return intent.getAction();
+        return null;
+    }
 
-        setViewState(new LoadingAllCardsViewState(showBackButton));
+    private String getTagNameFromIntent() {
+        Intent intent = mPageView.getInputIntent();
+        if (null != intent)
+            return intent.getStringExtra(Constants.TAG_NAME);
+        return null;
+    }
+
+    private void loadCardsWithoutTag(boolean displayBackButton) {
+        Log.d(TAG, "loadCardsWithoutTag()");
+
+        setViewState(new LoadingCardsWithoutTag_ViewState(displayBackButton));
 
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setNeutralViewState();
+                setViewState(new CardsWithoutTag_ViewState(displayBackButton));
 
-                mListView.setList(
-                        ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                             @Override
                             public BasicMVP_DataItem createDataItem(Object payload) {
                                 return new Card_ListItem((Card) payload);
                             }
-                        })
-                );
-
+                        }));
                 mListView.showLoadmoreItem();
             }
 
@@ -277,14 +285,19 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     private void loadCardsWithTag() {
 
-        setViewState(new LoadingCardsWithTagViewState(mTagFilter));
+        mTagFilter = getTagNameFromIntent();
+        if (null == mTagFilter) {
+            setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
+            return;
+        }
+
+        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
 
         mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-
                 String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
-                setViewState(new CardsWithTagViewState(msg));
+                setViewState(new CardsWithTag_ViewState(msg));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -292,7 +305,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                         return new Card_ListItem((Card) payload);
                     }
                 }));
-
                 mListView.showLoadmoreItem();
             }
 

@@ -38,7 +38,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -381,8 +381,8 @@ public class CardsList_View
 
     @Override
     public void setViewState(iBasicViewState viewState) {
-        if (viewState instanceof CardsWithTagViewState)
-            processFilteredListViewState((CardsWithTagViewState) viewState);
+        if (viewState instanceof CardsWithTag_ViewState)
+            processFilteredListViewState((CardsWithTag_ViewState) viewState);
         else
             super.setViewState(viewState);
     }
@@ -689,7 +689,7 @@ public class CardsList_View
         });
     }
 
-    private void processFilteredListViewState(@NonNull CardsWithTagViewState filteredListViewState) {
+    private void processFilteredListViewState(@NonNull CardsWithTag_ViewState filteredListViewState) {
         setNeutralViewState();
         activateUpButton();
 

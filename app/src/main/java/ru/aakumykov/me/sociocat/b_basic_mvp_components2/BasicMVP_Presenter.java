@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.b_basic_mvp_components2;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
@@ -55,6 +57,8 @@ public abstract class BasicMVP_Presenter
     public abstract void unbindViews();
 
     public  void onMenuCreated() {
+        Log.d("onMenuCreated", "onMenuCreated()");
+
         if (isColdStart())
             onColdStart();
         else

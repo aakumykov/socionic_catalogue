@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,9 +37,10 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressView
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingAllCardsViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -47,6 +49,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.tagFilter) Chip tagFilterChip;
 
+    private static final String TAG = CardsList2_View.class.getSimpleName();
     private BottomSheetListener mBottomSheetListener;
 
 
@@ -81,6 +84,8 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     @Override
     public void assembleMenu() {
+        Log.d("assembleMenu", "assembleMenu()");
+
         addSearchView();
 
         inflateMenu(R.menu.change_view_mode);
@@ -171,14 +176,17 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     @Override
     public void setViewState(iBasicViewState viewState) {
 
-        if (viewState instanceof LoadingAllCardsViewState) {
-            setLoadingAllCardsViewState((LoadingAllCardsViewState) viewState);
+        if (viewState instanceof LoadingCardsWithoutTag_ViewState) {
+            setLoadingCardsWithoutTagViewState((LoadingCardsWithoutTag_ViewState) viewState);
         }
-        else if (viewState instanceof LoadingCardsWithTagViewState) {
-            setLoadingCardsWithTagViewState((LoadingCardsWithTagViewState) viewState);
+        else if (viewState instanceof CardsWithoutTag_ViewState) {
+            setCardsWithoutTagViewState((CardsWithoutTag_ViewState) viewState);
         }
-        else if (viewState instanceof CardsWithTagViewState) {
-            setCardsWithTagViewState((CardsWithTagViewState) viewState);
+        else if (viewState instanceof LoadingCardsWithTag_ViewState) {
+            setLoadingCardsWithTagViewState((LoadingCardsWithTag_ViewState) viewState);
+        }
+        else if (viewState instanceof CardsWithTag_ViewState) {
+            setCardsWithTagViewState((CardsWithTag_ViewState) viewState);
         }
         else {
             super.setViewState(viewState);
@@ -192,14 +200,21 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
 
-    private void setLoadingAllCardsViewState(LoadingAllCardsViewState loadingAllCardsViewState) {
-        showRefreshThrobber();
+    private void setLoadingCardsWithoutTagViewState(LoadingCardsWithoutTag_ViewState loadingCardsWithoutTagViewState) {
 
-        if (loadingAllCardsViewState.isWithBackButton())
+        setViewState(new ProgressViewState(R.string.CARDS_LIST_loading_list));
+
+        if (loadingCardsWithoutTagViewState.isDisplayBackButton())
             activateUpButton();
     }
 
-    protected void setLoadingCardsWithTagViewState(LoadingCardsWithTagViewState loadingCardsWithTagViewState) {
+    private void setCardsWithoutTagViewState(CardsWithoutTag_ViewState cardsWithoutTagViewState) {
+        setNeutralViewState();
+        if (cardsWithoutTagViewState.isDisplayBackButton())
+            activateUpButton();
+    }
+
+    protected void setLoadingCardsWithTagViewState(LoadingCardsWithTag_ViewState loadingCardsWithTagViewState) {
         activateUpButton();
 
         String tagName = loadingCardsWithTagViewState.getTagName();
@@ -207,7 +222,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         setProgressViewState(new ProgressViewState(msg));
     }
 
-    protected void setCardsWithTagViewState(CardsWithTagViewState cardsWithTagViewState) {
+    protected void setCardsWithTagViewState(CardsWithTag_ViewState cardsWithTagViewState) {
         setNeutralViewState();
         activateUpButton();
 

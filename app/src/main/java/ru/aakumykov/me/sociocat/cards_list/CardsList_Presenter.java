@@ -17,7 +17,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ErrorViewSta
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -493,7 +493,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsWithTag(tagName, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                pageView.setViewState(new CardsWithTagViewState(tagName));
+                pageView.setViewState(new CardsWithTag_ViewState(tagName));
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
             }
