@@ -105,7 +105,7 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
         return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
             public BasicMVP_DataAdapter onDataAdapterPrepared() {
-                return new TagsList_DataAdapter(mPresenter);
+                return new TagsList_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
             }
         });
     }

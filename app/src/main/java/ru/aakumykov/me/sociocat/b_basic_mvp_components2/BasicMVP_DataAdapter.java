@@ -28,7 +28,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_Load
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ThrobberItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_utils.BasicMVP_ItemsFilter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 
 public abstract class BasicMVP_DataAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -51,13 +50,15 @@ public abstract class BasicMVP_DataAdapter
     private Filter mFilter;
 
     private BasicMVP_DataItem mCurrentHighlightedItem;
-    private BasicViewMode mCurrentViewMode = new ListViewMode();
+    private BasicViewMode mCurrentViewMode;
 
 
     public BasicMVP_DataAdapter(
+            BasicViewMode defaultViewMode,
             iBasicMVP_ItemClickListener itemClickListener
     )
     {
+        mCurrentViewMode = defaultViewMode;
         mItemClickListener = itemClickListener;
 
         mCurrentItemsList = new ArrayList<>();

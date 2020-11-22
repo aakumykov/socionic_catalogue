@@ -32,7 +32,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
@@ -110,7 +110,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new CardsList2_Presenter(new ListViewMode(), eBasicSortingMode.BY_NAME);
+                return new CardsList2_Presenter(new FeedViewMode(), eBasicSortingMode.BY_NAME);
             }
         });
     }
@@ -120,7 +120,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
             public BasicMVP_DataAdapter onDataAdapterPrepared() {
-                return new CardsList2_DataAdapter(mPresenter);
+                return new CardsList2_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
             }
         });
     }
