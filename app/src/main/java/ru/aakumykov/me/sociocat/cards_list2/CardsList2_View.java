@@ -201,6 +201,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
 
     private void setLoadingCardsWithoutTagViewState(LoadingCardsWithoutTag_ViewState loadingCardsWithoutTagViewState) {
+        setNeutralViewState();
 
         setViewState(new ProgressViewState(R.string.CARDS_LIST_loading_list));
 
@@ -210,26 +211,29 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     private void setCardsWithoutTagViewState(CardsWithoutTag_ViewState cardsWithoutTagViewState) {
         setNeutralViewState();
+
         if (cardsWithoutTagViewState.isDisplayBackButton())
             activateUpButton();
     }
 
     protected void setLoadingCardsWithTagViewState(LoadingCardsWithTag_ViewState loadingCardsWithTagViewState) {
-        activateUpButton();
+        setNeutralViewState();
 
         String tagName = loadingCardsWithTagViewState.getTagName();
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_loading_cards_with_tag, tagName);
+
+        activateUpButton();
         setProgressViewState(new ProgressViewState(msg));
     }
 
     protected void setCardsWithTagViewState(CardsWithTag_ViewState cardsWithTagViewState) {
         setNeutralViewState();
-        activateUpButton();
 
         String tagName = cardsWithTagViewState.getTagName();
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_with_tag, tagName);
         setPageTitle(msg);
 
+        activateUpButton();
         showTagFilter(tagName);
     }
 
