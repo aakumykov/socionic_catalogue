@@ -35,8 +35,8 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTagViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTagViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -161,19 +161,6 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     @Override
-    public void showTagFilter(String tagName) {
-        tagFilterChip.setText(tagName);
-        ViewUtils.show(tagFilterChip);
-    }
-
-    @Override
-    public void hideTagFilter() {
-        tagFilterChip.setText("");
-        ViewUtils.hide(tagFilterChip);
-    }
-
-
-    @Override
     public void setViewState(iBasicViewState viewState) {
         if (viewState instanceof LoadingCardsWithTagViewState)
             setLoadingCardsWithTagViewState((LoadingCardsWithTagViewState) viewState);
@@ -190,7 +177,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
 
-    private void setLoadingCardsWithTagViewState(LoadingCardsWithTagViewState loadingCardsWithTagViewState) {
+    protected void setLoadingCardsWithTagViewState(LoadingCardsWithTagViewState loadingCardsWithTagViewState) {
         activateUpButton();
 
         String tagName = loadingCardsWithTagViewState.getTagName();
@@ -207,12 +194,6 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         setPageTitle(msg);
 
         showTagFilter(tagName);
-    }
-
-
-    @OnClick(R.id.floatingActionButton)
-    void onFABClicked() {
-        ((CardsList2_Presenter) mPresenter).onFABClicked();
     }
 
 
@@ -268,6 +249,22 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
                 ((CardsList2_Presenter) mPresenter).onCardCreated(newCard);
             }
         }
+    }
+
+    private void showTagFilter(String tagName) {
+        tagFilterChip.setText(tagName);
+        ViewUtils.show(tagFilterChip);
+    }
+
+    private void hideTagFilter() {
+        tagFilterChip.setText("");
+        ViewUtils.hide(tagFilterChip);
+    }
+
+
+    @OnClick(R.id.floatingActionButton)
+    void onFABClicked() {
+        ((CardsList2_Presenter) mPresenter).onFABClicked();
     }
 
 }
