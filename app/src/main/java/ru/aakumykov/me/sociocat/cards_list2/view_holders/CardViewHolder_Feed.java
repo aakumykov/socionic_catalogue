@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list2.view_holders;
 
 import android.animation.AnimatorSet;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -40,7 +41,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
 
-
+    private final static String TAG = CardViewHolder_Feed.class.getSimpleName();
     public CardViewHolder_Feed(@NonNull View itemView) {
         super(itemView);
     }
@@ -68,25 +69,42 @@ public class CardViewHolder_Feed extends CardViewHolder {
     protected void displayCard(@NonNull Card card) {
         super.displayCard(card);
 
-        if (card.isImageCard())
-            showImage(card);
-        else
-            hideImage();
-
-        if (card.isTextCard())
+        if (card.isTextCard()) {
             showQuote(card);
-        else
-            hideQuote();
 
-        if (card.isVideoCard())
-            showVideo(card);
-        else
+            hideImage();
             hideVideo();
+        }
+//        else
+//            hideQuote();
 
-        if (card.isAudioCard())
+        if (card.isImageCard()) {
+            showImage(card);
+
+            hideQuote();
+            hideVideo();
+            return;
+        }
+//        else
+//            hideImage();
+
+        if (card.isVideoCard()) {
+            showVideo(card);
+
+            hideImage();
+            hideQuote();
+        }
+//        else
+//            hideVideo();
+
+        if (card.isAudioCard()) {
             showAudio(card);
-        else
-            hideAudio();
+
+            hideImage();
+            hideQuote();
+        }
+//        else
+//            hideAudio();
     }
 
 
@@ -101,6 +119,22 @@ public class CardViewHolder_Feed extends CardViewHolder {
                 .load(card.getImageURL())
                 .listener(new RequestListener<Drawable>() {
                     @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        if (card.isImageCard()) {
+                            hideQuote();
+                            hideVideo();
+                            hideAudio();
+
+                            imageView.setImageDrawable(resource);
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        }
+                        else
+                            hideImage();
+
+                        return true;
+                    }
+
+                    @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         if (card.isImageCard()) {
                             AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
@@ -108,15 +142,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
                         }
                         else {
                             hideImage();
-                        }
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        if (card.isImageCard()) {
-                            imageView.setImageDrawable(resource);
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
                         }
                         return true;
                     }
@@ -168,19 +193,20 @@ public class CardViewHolder_Feed extends CardViewHolder {
             @Override
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 super.onReady(youTubePlayer);
+                    if (card.isVideoCard()) {
+                        hideQuote();
+                        hideImage();
 
-                if (card.isVideoCard()) {
-                    videoThrobber.clearAnimation();
-                    ViewUtils.hide(videoThrobber);
+                        videoThrobber.clearAnimation();
+                        ViewUtils.hide(videoThrobber);
 
-                    audioVideoContainer.addView(youtubePlayerView);
-                    ViewUtils.show(audioVideoContainer);
+                        audioVideoContainer.addView(youtubePlayerView);
+                        ViewUtils.show(audioVideoContainer);
 
-                    youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
-                }
-                else {
-                    hideVideo(youtubePlayerView);
-                }
+                        youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
+                    }
+                    else
+                        hideVideo(youtubePlayerView);
             }
 
             @Override
@@ -215,4 +241,9 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
     }
 
+
+
+    boolean isImageVisible() {
+        return View.GONE == imageView.getVisibility();
+    }
 }
