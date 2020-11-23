@@ -227,7 +227,7 @@
     <string name="CARD_EDIT_error_loading_tags_list">Ошибка получения списка меток</string>
     <string name="INFO_you_must_be_logged_in">Вы должны зайти в программу</string>
     <string name="EXTERNAL_DATA_RECIEVER_page_title">Получатель внешних данных</string>
-    <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
+    <string name="CARDS_LIST_loading_list">Получаем список карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
     <string name="CARDS_GRID_page_title">Все карточки</string>
     <string name="MENU_view_mode_grid">Сеткой</string>
