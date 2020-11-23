@@ -40,8 +40,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
 
-    private YouTubePlayerView mYoutubePlayerView;
-
 
     public CardViewHolder_Feed(@NonNull View itemView) {
         super(itemView);
@@ -108,6 +106,9 @@ public class CardViewHolder_Feed extends CardViewHolder {
                             AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
                             imageView.setImageResource(R.drawable.ic_image_error);
                         }
+                        else {
+                            hideImage();
+                        }
                         return true;
                     }
 
@@ -159,14 +160,11 @@ public class CardViewHolder_Feed extends CardViewHolder {
         ViewUtils.show(videoThrobber);
         videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
 
-        if (null != mYoutubePlayerView)
-            mYoutubePlayerView.release();
+        YouTubePlayerView youtubePlayerView = new YouTubePlayerView(audioVideoContainer.getContext());
+        youtubePlayerView.setEnableAutomaticInitialization(false);
+        youtubePlayerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        mYoutubePlayerView = new YouTubePlayerView(audioVideoContainer.getContext());
-        mYoutubePlayerView.setEnableAutomaticInitialization(false);
-        mYoutubePlayerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        mYoutubePlayerView.initialize(new AbstractYouTubePlayerListener() {
+        youtubePlayerView.initialize(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 super.onReady(youTubePlayer);
@@ -175,10 +173,13 @@ public class CardViewHolder_Feed extends CardViewHolder {
                     videoThrobber.clearAnimation();
                     ViewUtils.hide(videoThrobber);
 
-                    audioVideoContainer.addView(mYoutubePlayerView);
+                    audioVideoContainer.addView(youtubePlayerView);
                     ViewUtils.show(audioVideoContainer);
 
                     youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
+                }
+                else {
+                    hideVideo(youtubePlayerView);
                 }
             }
 
@@ -195,6 +196,13 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
     private void hideVideo() {
+        hideVideo(null);
+    }
+
+    private void hideVideo(@Nullable YouTubePlayerView youTubePlayerViewIfExists) {
+        if (null != youTubePlayerViewIfExists)
+            youTubePlayerViewIfExists.release();
+
         audioVideoContainer.removeAllViews();
     }
 
