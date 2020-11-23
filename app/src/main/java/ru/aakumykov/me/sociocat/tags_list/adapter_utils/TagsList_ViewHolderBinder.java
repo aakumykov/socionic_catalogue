@@ -13,7 +13,7 @@ public class TagsList_ViewHolderBinder extends BasicMVP_ViewHolderBinder {
     public void bindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, BasicMVP_ListItem listItem) {
         if (holder instanceof TagViewHolder) {
             TagViewHolder tagViewHolder = (TagViewHolder) holder;
-            tagViewHolder.fillWithData(listItem);
+            tagViewHolder.initialize(listItem);
         }
         else
             super.bindViewHolder(holder, position, listItem);

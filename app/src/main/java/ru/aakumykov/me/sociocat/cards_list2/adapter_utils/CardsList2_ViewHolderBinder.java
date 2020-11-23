@@ -13,7 +13,7 @@ public class CardsList2_ViewHolderBinder extends BasicMVP_ViewHolderBinder {
     public void bindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, BasicMVP_ListItem listItem) {
         if (holder instanceof CardViewHolder) {
             CardViewHolder viewHolder = (CardViewHolder) holder;
-            viewHolder.fillWithData(listItem);
+            viewHolder.initialize(listItem);
         }
         else {
             super.bindViewHolder(holder, position, listItem);

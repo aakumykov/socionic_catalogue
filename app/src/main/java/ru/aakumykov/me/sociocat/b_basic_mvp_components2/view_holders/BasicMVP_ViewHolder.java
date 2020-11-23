@@ -18,7 +18,7 @@ public abstract class BasicMVP_ViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public abstract void fillWithData(BasicMVP_ListItem basicListItem);
+    public abstract void initialize(BasicMVP_ListItem basicListItem);
 
     public void setItemClickListener(iBasicMVP_ItemClickListener clickListener) {
         mItemClickListener = clickListener;

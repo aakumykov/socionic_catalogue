@@ -30,6 +30,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.AnimationUtils;
 
 public class CardViewHolder_Feed extends CardViewHolder {
@@ -46,40 +47,60 @@ public class CardViewHolder_Feed extends CardViewHolder {
         super(itemView);
     }
 
-    @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
-        super.fillWithData(basicListItem);
 
-        if (mCurrentCard.isImageCard())
-            showImage();
+    @Override
+    public void initialize(BasicMVP_ListItem basicListItem) {
+        super.initialize(basicListItem);
+
+        Card card = extractCardFromListItem(basicListItem);
+        if (null == card) {
+            showNoCardError();
+            return;
+        }
+
+        displayCard(card);
+    }
+
+    @Override
+    protected void showNoCardError() {
+
+    }
+
+    @Override
+    protected void displayCard(@NonNull Card card) {
+        super.displayCard(card);
+
+        if (card.isImageCard())
+            showImage(card.getImageURL());
         else
             hideImage();
 
-        if (mCurrentCard.isTextCard())
-            showQuote();
+        if (card.isTextCard())
+            showQuote(card);
         else
             hideQuote();
 
-        if (mCurrentCard.isVideoCard())
-            showVideo();
+        if (card.isVideoCard())
+            showVideo(card);
         else
             hideVideo();
 
-        if (mCurrentCard.isAudioCard())
-            showAudio();
+        if (card.isAudioCard())
+            showAudio(card);
         else
             hideAudio();
     }
 
 
-    private void showImage() {
+
+    private void showImage(String imageURL) {
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
         ViewUtils.show(imageView);
         AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
 
         Glide.with(imageView.getContext())
-                .load(mCurrentCard.getImageURL())
+                .load(imageURL)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -113,11 +134,13 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
 
-    private void showQuote() {
-        String quote = mCurrentCard.getQuote();
-        int cutIndex = (quoteView.length() > Constants.CARDS_FEED_QUOTE_MAX_LENGTH) ?
-                Constants.CARDS_FEED_QUOTE_MAX_LENGTH : quote.length();
-        quote = mCurrentCard.getQuote().substring(0, cutIndex);
+    private void showQuote(@NonNull Card card) {
+        String quote = card.getQuote();
+
+        int cutIndex = Math.min(quote.length(), Constants.CARDS_FEED_QUOTE_MAX_LENGTH);
+
+        quote = card.getQuote().substring(0, cutIndex);
+
         quoteView.setText(quote);
         ViewUtils.show(quoteView);
     }
@@ -127,7 +150,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
 
-    private void showVideo() {
+    private void showVideo(@NonNull Card card) {
+
         ViewUtils.show(videoThrobber);
         videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
 
@@ -149,7 +173,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
                 audioVideoContainer.addView(mYoutubePlayerView);
                 ViewUtils.show(audioVideoContainer);
 
-                youTubePlayer.cueVideo(mCurrentCard.getVideoCode(), mCurrentCard.getTimecode());
+                youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
             }
 
             @Override
@@ -168,13 +192,12 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
 
-    private void showAudio() {
+    private void showAudio(@NonNull Card card) {
 
     }
 
     private void hideAudio() {
 
     }
-
 
 }

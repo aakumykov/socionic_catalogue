@@ -56,7 +56,7 @@ public class TagViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void initialize(BasicMVP_ListItem basicListItem) {
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
 
         Tag tag = (Tag) dataItem.getPayload();

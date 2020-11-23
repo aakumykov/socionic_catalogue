@@ -16,7 +16,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardViewHolder extends BasicMVP_DataViewHolder {
+public abstract class CardViewHolder extends BasicMVP_DataViewHolder {
 
     @BindView(R.id.elementView)
     View elementView;
@@ -29,8 +29,6 @@ public class CardViewHolder extends BasicMVP_DataViewHolder {
 
     @BindView(R.id.highlightingOverlay)
     View highlightingOverlay;
-
-    protected Card mCurrentCard;
 
 
     public CardViewHolder(@NonNull View itemView) {
@@ -49,23 +47,15 @@ public class CardViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
+    public void initialize(BasicMVP_ListItem basicListItem) {
 
         BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
-
-        mCurrentCard = extractCardFromListItem(basicListItem);
-
-        titleView.setText(mCurrentCard.getTitle());
 
         displayIsChecked(dataItem.isSelected());
 
         displayIsHighlighted(dataItem.isHighLighted());
     }
 
-    protected Card extractCardFromListItem(BasicMVP_ListItem basicListItem) {
-        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
-        return (Card) dataItem.getPayload();
-    }
 
 
     @OnClick(R.id.elementView)
@@ -76,5 +66,21 @@ public class CardViewHolder extends BasicMVP_DataViewHolder {
     @OnLongClick(R.id.elementView)
     void onCardLongClicked() {
         mItemClickListener.onItemLongClicked(this);
+    }
+
+
+    protected Card extractCardFromListItem(BasicMVP_ListItem basicListItem) {
+        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
+        return (Card) dataItem.getPayload();
+    }
+
+    protected abstract void showNoCardError();
+
+    protected void displayCard(@NonNull Card card) {
+        displayTitle(card);
+    }
+
+    private void displayTitle(Card card) {
+        titleView.setText(card.getTitle());
     }
 }

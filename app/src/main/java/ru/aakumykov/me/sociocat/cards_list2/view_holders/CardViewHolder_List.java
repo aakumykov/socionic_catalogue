@@ -19,9 +19,21 @@ public class CardViewHolder_List extends CardViewHolder {
     }
 
     @Override
-    public void fillWithData(BasicMVP_ListItem basicListItem) {
-        super.fillWithData(basicListItem);
-        displayCardType(mCurrentCard);
+    public void initialize(BasicMVP_ListItem basicListItem) {
+        super.initialize(basicListItem);
+
+        Card card = extractCardFromListItem(basicListItem);
+        if (null == card) {
+            showNoCardError();
+            return;
+        }
+
+        displayCardType(card);
+    }
+
+    @Override
+    protected void showNoCardError() {
+
     }
 
     private void displayCardType(@NonNull Card card) {
