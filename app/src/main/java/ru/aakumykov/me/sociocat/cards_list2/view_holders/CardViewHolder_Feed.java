@@ -71,7 +71,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
         super.displayCard(card);
 
         if (card.isImageCard())
-            showImage(card.getImageURL());
+            showImage(card);
         else
             hideImage();
 
@@ -93,27 +93,31 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
 
 
-    private void showImage(String imageURL) {
+    private void showImage(@NonNull Card card) {
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_smaller);
         ViewUtils.show(imageView);
         AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
 
         Glide.with(imageView.getContext())
-                .load(imageURL)
+                .load(card.getImageURL())
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                        imageView.setImageResource(R.drawable.ic_image_error);
-                        return false;
+                        if (card.isImageCard()) {
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                            imageView.setImageResource(R.drawable.ic_image_error);
+                        }
+                        return true;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        imageView.setImageDrawable(resource);
-                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                        return false;
+                        if (card.isImageCard()) {
+                            imageView.setImageDrawable(resource);
+                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        }
+                        return true;
                     }
                 })
                 .into(new CustomTarget<Drawable>() {
@@ -167,21 +171,24 @@ public class CardViewHolder_Feed extends CardViewHolder {
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 super.onReady(youTubePlayer);
 
-                videoThrobber.clearAnimation();
-                ViewUtils.hide(videoThrobber);
+                if (card.isVideoCard()) {
+                    videoThrobber.clearAnimation();
+                    ViewUtils.hide(videoThrobber);
 
-                audioVideoContainer.addView(mYoutubePlayerView);
-                ViewUtils.show(audioVideoContainer);
+                    audioVideoContainer.addView(mYoutubePlayerView);
+                    ViewUtils.show(audioVideoContainer);
 
-                youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
+                    youTubePlayer.cueVideo(card.getVideoCode(), card.getTimecode());
+                }
             }
 
             @Override
             public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError error) {
                 super.onError(youTubePlayer, error);
-
-                videoThrobber.clearAnimation();
-                videoThrobber.setImageResource(R.drawable.ic_youtube_video_error);
+                if (card.isVideoCard()) {
+                    videoThrobber.clearAnimation();
+                    videoThrobber.setImageResource(R.drawable.ic_youtube_video_error);
+                }
             }
         });
 
