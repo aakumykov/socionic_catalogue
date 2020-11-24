@@ -70,4 +70,10 @@
         <item name="android:textStyle">italic|bold</item>-->
     </style>
 
+    <style name="tagFilterChipShapeAppearance">
+        <item name="chipStrokeColor">@color/grey</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+
 </resources>

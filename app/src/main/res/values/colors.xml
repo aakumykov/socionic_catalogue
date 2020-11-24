@@ -110,5 +110,6 @@
     <color name="colorErrorText">#E6453A</color>
 
     <color name="tags_list_selection_background_color">#DFDFDF</color>
+    <color name="cards_list_background">#F4F4F4</color>
 
 </resources>
