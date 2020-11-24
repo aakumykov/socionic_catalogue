@@ -230,7 +230,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_with_tag, tagName);
         setPageTitle(msg);
 
-        showTagFilter(tagName);
+        showTagFilter(msg);
     }
 
 

@@ -73,7 +73,10 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onRefreshRequested() {
-        loadCards();
+        if (null == mTagFilter)
+            loadCards();
+        else
+            loadCardsWithTag();
     }
 
     @Override
@@ -259,6 +262,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
                 setViewState(new CardsWithTag_ViewState(msg));
 
@@ -295,7 +299,8 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                setViewState(new CardsWithTag_ViewState(mTagFilter));
+                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
+                setViewState(new CardsWithTag_ViewState(msg));
 
                 if (0 == list.size()) {
                     showNoMoreCards();

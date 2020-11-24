@@ -493,7 +493,9 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsWithTag(tagName, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 pageView.setViewState(new CardsWithTag_ViewState(tagName));
+
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
             }
