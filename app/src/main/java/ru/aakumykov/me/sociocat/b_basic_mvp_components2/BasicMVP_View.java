@@ -261,9 +261,6 @@ public abstract class BasicMVP_View
         else if (viewState instanceof RefreshingViewState) {
             setRefreshingViewState();
         }
-        else if (viewState instanceof ErrorViewState) {
-            setErrorViewState((ErrorViewState) viewState);
-        }
         // AllSelectedViewState - частный случай SelectionViewState,
         // поэтому должен идти перед ним.
         else if (viewState instanceof AllSelectedViewState) {
@@ -271,6 +268,9 @@ public abstract class BasicMVP_View
         }
         else if (viewState instanceof SelectionViewState) {
             setSelectedViewState((SelectionViewState) viewState);
+        }
+        else if (viewState instanceof ErrorViewState) {
+            setErrorViewState((ErrorViewState) viewState);
         }
         else
             throw new RuntimeException("Unknown view state: "+viewState);
@@ -607,9 +607,10 @@ public abstract class BasicMVP_View
     public void showErrorMsg(int userMessageId, String debugMessage) {
         setNeutralViewState();
 
-        String msg = (BuildConfig.DEBUG) ?
-                TextUtils.getText(this, userMessageId) :
-                debugMessage;
+        String msg = TextUtils.getText(this, userMessageId);
+
+        if (BuildConfig.DEBUG)
+            msg += ": " + debugMessage;
 
         showMessage(msg);
         setMessageColor(R.color.colorErrorText);
