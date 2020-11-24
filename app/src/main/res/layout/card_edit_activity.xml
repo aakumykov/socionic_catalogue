@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/CARD_EDIT_card_name"
+                android:padding="8dp"
                 android:inputType="textCapSentences"
                 android:singleLine="true"
                 android:textSize="18sp" />
@@ -35,17 +36,19 @@
                 android:id="@+id/quoteInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:fontFamily="serif"
                 android:hint="@string/quote"
                 android:inputType="textCapSentences|textMultiLine"
                 android:selectAllOnFocus="false"
                 android:singleLine="false"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
+                android:padding="12dp"
                 android:textStyle="italic"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <EditText
                 android:id="@+id/quoteSourceInput"
@@ -57,8 +60,10 @@
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
+                android:padding="8dp"
                 android:textStyle="italic"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/mediaThrobber"
