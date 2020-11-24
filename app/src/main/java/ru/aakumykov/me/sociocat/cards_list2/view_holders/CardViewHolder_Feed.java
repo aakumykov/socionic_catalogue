@@ -182,7 +182,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
     private void showVideo(@NonNull Card card) {
 
-/*
         ViewUtils.show(videoThrobber);
         videoThrobber.startAnimation(AnimationUtils.createFadeInOutAnimation(750L, false));
 
@@ -219,9 +218,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
                 }
             }
         });
-*/
 
-        showVideoPreview(card.getVideoCode());
     }
 
     private void hideVideo() {
@@ -245,59 +242,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
 
-    private void showVideoPreview(String videoCode) {
 
-        String youtubeVideoPreviewURL = "https://img.youtube.com/vi/"+videoCode+"/mqdefault.jpg";
-
-        imageView.setImageResource(R.drawable.ic_youtube_video_placeholder);
-        ViewUtils.show(imageView);
-        AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
-
-        Glide.with(imageView.getContext())
-                .load(youtubeVideoPreviewURL)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        /*if (card.isImageCard()) {
-                            hideQuote();
-                            hideVideo();
-                            hideAudio();
-
-                            imageView.setImageDrawable(resource);
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                        }
-                        else
-                            hideImage();*/
-
-                        imageView.setImageDrawable(resource);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        /*if (card.isImageCard()) {
-                            AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                            imageView.setImageResource(R.drawable.ic_image_error);
-                        }
-                        else {
-                            hideImage();
-                        }*/
-
-                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                        imageView.setImageResource(R.drawable.ic_image_error);
-                        return true;
-                    }
-                })
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
-                    }
-                });
+    boolean isImageVisible() {
+        return View.GONE == imageView.getVisibility();
     }
 }
