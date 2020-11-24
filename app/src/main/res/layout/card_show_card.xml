@@ -28,11 +28,12 @@
         android:layout_marginBottom="10dp"
         android:textIsSelectable="true"
         android:textSize="18sp"
-        android:padding="8dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
         android:fontFamily="serif"
         android:textStyle="italic"
         android:visibility="gone"
-        tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13'
+        tools:text='Уже взявшись за дверную ручку, Уинстон увидел, что дневник остался на столе раскрытым. Весь в надписях ДОЛОЙ СТАРШЕГО БРАТА, да таких крупных, что можно разглядеть из другого конца комнаты. Непостижимая глупость. Нет, сообразил он, жалко стало пачкать кремовую бумагу, даже в панике не захотел захлопнуть дневник на непросохшей странице.'
         tools:visibility="visible" />
 
     <ImageView
