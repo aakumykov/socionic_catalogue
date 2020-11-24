@@ -71,8 +71,9 @@
     </style>
 
     <style name="tagFilterChipShapeAppearance">
-        <item name="chipStrokeColor">@color/grey</item>
+        <item name="chipStrokeColor">#d5d4d4</item>
         <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@android:color/white</item>
     </style>
 
 
