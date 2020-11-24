@@ -23,6 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
         app:justifyContent="center"
+        android:background="@drawable/shape_cards_list_tag_filter_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
