@@ -38,6 +38,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     private static final String TAG = CardsList2_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private String mTagFilter;
+    private boolean mHasParent;
 
 
     public CardsList2_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -52,9 +53,12 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         String action = getActionFromIntent();
 
+        mHasParent = Intent.ACTION_VIEW.equals(action);
+
         if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
             loadCardsWithTag();
-        else loadCards(Intent.ACTION_VIEW.equals(action));
+        else
+            loadCards();
     }
 
     @Override
@@ -69,8 +73,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected void onRefreshRequested() {
-        //loadCardsWithoutTag(false);
-        mPageView.showToast("Вопросы с реализацией");
+        loadCards();
     }
 
     @Override
@@ -171,13 +174,14 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-    private void loadCards(boolean displayBackButton) {
-        setRefreshingViewState();
+    private void loadCards() {
+
+        setViewState(new LoadingCards_ViewState(mHasParent));
 
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setViewState(new CardsWithoutTag_ViewState(displayBackButton));
+                setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                             @Override

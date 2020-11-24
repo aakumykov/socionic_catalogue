@@ -4,13 +4,13 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewSta
 
 public class LoadingCards_ViewState implements iBasicViewState {
 
-    private final boolean mDisplayBackButton;
+    private final boolean mHasParent;
 
-    public LoadingCards_ViewState(boolean displayBackButton) {
-        mDisplayBackButton = displayBackButton;
+    public LoadingCards_ViewState(boolean hasParent) {
+        mHasParent = hasParent;
     }
 
-    public boolean isDisplayBackButton() {
-        return mDisplayBackButton;
+    public boolean isHasParent() {
+        return mHasParent;
     }
 }

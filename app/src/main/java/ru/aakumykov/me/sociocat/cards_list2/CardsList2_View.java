@@ -202,9 +202,9 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
     private void setLoadingCardsViewState(LoadingCards_ViewState loadingCardsWithoutTagViewState) {
 
-        setViewState(new ProgressViewState(R.string.CARDS_LIST_loading_list));
+        setRefreshingViewState();
 
-        if (loadingCardsWithoutTagViewState.isDisplayBackButton())
+        if (loadingCardsWithoutTagViewState.isHasParent())
             activateUpButton();
     }
 
