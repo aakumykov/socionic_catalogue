@@ -267,8 +267,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
-                setViewState(new CardsWithTag_ViewState(msg));
+                setViewState(new CardsWithTag_ViewState(mTagFilter));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -303,8 +302,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
-                setViewState(new CardsWithTag_ViewState(msg));
+                setViewState(new CardsWithTag_ViewState(mTagFilter));
 
                 if (0 == list.size()) {
                     showNoMoreCards();
