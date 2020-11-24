@@ -98,94 +98,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             loadMoreCards();
     }
 
-    private void loadMoreCards() {
 
-        showThrobberItem();
-
-        BasicMVP_DataItem lastDataItem = mListView.getLastUnfilteredDataItem();
-        if (null == lastDataItem) {
-            showNoMoreCards();
-            return;
-        }
-
-
-        Card card = (Card) lastDataItem.getPayload();
-
-        mCardsSingleton.loadCardsAfter(card, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                mListView.hideThrobberItem();
-
-                List<BasicMVP_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVP_DataItem createDataItem(Object object) {
-                        return new Card_ListItem((Card) object);
-                    }
-                });
-
-                if (mListView.isFiltered()) {
-                    mListView.appendListAndFilter(list2append);
-                }
-                else {
-                    String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
-                    mPageView.showToast(msg);
-
-                    mListView.appendList(list2append);
-                }
-
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
-                mListView.hideThrobberItem();
-                mListView.showLoadmoreItem();
-            }
-        });
-    }
-
-    private void loadMoreCardsWithCurrentTagFilter() {
-
-        showThrobberItem();
-
-        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
-
-        if (null == lastDataItem) {
-            showNoMoreCards();
-            return;
-        }
-
-        Card card = (Card) lastDataItem.getPayload();
-
-        mCardsSingleton.loadCardsWithTagAfter(mTagFilter, card, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-
-                setViewState(new CardsWithTag_ViewState(mTagFilter));
-
-                if (0 == list.size()) {
-                    showNoMoreCards();
-                    return;
-                }
-
-                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVP_DataItem createDataItem(Object payload) {
-                        return new Card_ListItem((Card) payload);
-                    }
-                }));
-
-                mListView.hideThrobberItem();
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
-            }
-        });
-    }
 
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
@@ -311,6 +224,95 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             @Override
             public void onListLoadFail(String errorMessage) {
                 setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private void loadMoreCards() {
+
+        showThrobberItem();
+
+        BasicMVP_DataItem lastDataItem = mListView.getLastUnfilteredDataItem();
+        if (null == lastDataItem) {
+            showNoMoreCards();
+            return;
+        }
+
+
+        Card card = (Card) lastDataItem.getPayload();
+
+        mCardsSingleton.loadCardsAfter(card, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                mListView.hideThrobberItem();
+
+                List<BasicMVP_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object object) {
+                        return new Card_ListItem((Card) object);
+                    }
+                });
+
+                if (mListView.isFiltered()) {
+                    mListView.appendListAndFilter(list2append);
+                }
+                else {
+                    String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
+                    mPageView.showToast(msg);
+
+                    mListView.appendList(list2append);
+                }
+
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
+                mListView.hideThrobberItem();
+                mListView.showLoadmoreItem();
+            }
+        });
+    }
+
+    private void loadMoreCardsWithCurrentTagFilter() {
+
+        showThrobberItem();
+
+        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
+
+        if (null == lastDataItem) {
+            showNoMoreCards();
+            return;
+        }
+
+        Card card = (Card) lastDataItem.getPayload();
+
+        mCardsSingleton.loadCardsWithTagAfter(mTagFilter, card, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+
+                setViewState(new CardsWithTag_ViewState(mTagFilter));
+
+                if (0 == list.size()) {
+                    showNoMoreCards();
+                    return;
+                }
+
+                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+
+                mListView.hideThrobberItem();
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
             }
         });
     }
