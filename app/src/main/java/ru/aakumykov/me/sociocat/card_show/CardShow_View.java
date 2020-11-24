@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.view_model.CardShow_ViewModel;
 import ru.aakumykov.me.sociocat.card_show.view_model.CardShow_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
@@ -235,7 +236,8 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void showCardsWithTag(String tagName) {
-        Intent intent = new Intent(this, CardsGrid_View.class);
+        Intent intent = new Intent(this, CardsList2_View.class);
+        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
         intent.putExtra(Constants.TAG_NAME, tagName);
         startActivity(intent);
     }
