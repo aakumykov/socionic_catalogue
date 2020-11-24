@@ -27,7 +27,7 @@ import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -54,7 +54,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
             loadCardsWithTag();
-        else loadCardsWithoutTag(Intent.ACTION_VIEW.equals(action));
+        else loadCards(Intent.ACTION_VIEW.equals(action));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     @Override
     public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
         if (null != mTagFilter)
-            loadMoreCardsWithCurrentTagFilter();
+            loadMoreCardsWithTag();
         else
             loadMoreCards();
     }
@@ -170,10 +170,9 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         return null;
     }
 
-    private void loadCardsWithoutTag(boolean displayBackButton) {
-        Log.d(TAG, "loadCardsWithoutTag()");
 
-        setViewState(new LoadingCardsWithoutTag_ViewState(displayBackButton));
+    private void loadCards(boolean displayBackButton) {
+        setRefreshingViewState();
 
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
@@ -196,38 +195,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         });
     }
 
-    private void loadCardsWithTag() {
-
-        mTagFilter = getTagNameFromIntent();
-        if (null == mTagFilter) {
-            setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
-            return;
-        }
-
-        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
-
-        mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
-                setViewState(new CardsWithTag_ViewState(msg));
-
-                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVP_DataItem createDataItem(Object payload) {
-                        return new Card_ListItem((Card) payload);
-                    }
-                }));
-                mListView.showLoadmoreItem();
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
-            }
-        });
-    }
-
     private void loadMoreCards() {
 
         showThrobberItem();
@@ -237,7 +204,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             showNoMoreCards();
             return;
         }
-
 
         Card card = (Card) lastDataItem.getPayload();
 
@@ -275,7 +241,40 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         });
     }
 
-    private void loadMoreCardsWithCurrentTagFilter() {
+
+    private void loadCardsWithTag() {
+
+        mTagFilter = getTagNameFromIntent();
+        if (null == mTagFilter) {
+            setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
+            return;
+        }
+
+        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
+
+        mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                String msg = mPageView.getText(R.string.CARDS_LIST_cards_with_tag, mTagFilter);
+                setViewState(new CardsWithTag_ViewState(msg));
+
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVP_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+                mListView.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private void loadMoreCardsWithTag() {
 
         showThrobberItem();
 
@@ -316,6 +315,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             }
         });
     }
+
 
     private Card getCardForViewHolder(BasicMVP_DataViewHolder basicDataViewHolder) {
         int index = basicDataViewHolder.getAdapterPosition();

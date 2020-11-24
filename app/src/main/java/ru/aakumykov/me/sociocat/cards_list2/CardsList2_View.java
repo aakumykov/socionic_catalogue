@@ -40,7 +40,7 @@ import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -176,8 +176,8 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     @Override
     public void setViewState(iBasicViewState viewState) {
 
-        if (viewState instanceof LoadingCardsWithoutTag_ViewState) {
-            setLoadingCardsWithoutTagViewState((LoadingCardsWithoutTag_ViewState) viewState);
+        if (viewState instanceof LoadingCards_ViewState) {
+            setLoadingCardsViewState((LoadingCards_ViewState) viewState);
         }
         else if (viewState instanceof CardsWithoutTag_ViewState) {
             setCardsWithoutTagViewState((CardsWithoutTag_ViewState) viewState);
@@ -200,7 +200,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
 
-    private void setLoadingCardsWithoutTagViewState(LoadingCardsWithoutTag_ViewState loadingCardsWithoutTagViewState) {
+    private void setLoadingCardsViewState(LoadingCards_ViewState loadingCardsWithoutTagViewState) {
 
         setViewState(new ProgressViewState(R.string.CARDS_LIST_loading_list));
 
