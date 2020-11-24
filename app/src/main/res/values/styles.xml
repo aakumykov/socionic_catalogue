@@ -66,14 +66,12 @@
 
     <style name="tagFilterChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">18sp</item>
-        <!--<item name="android:fontFamily">monospace</item>
-        <item name="android:textStyle">italic|bold</item>-->
     </style>
 
     <style name="tagFilterChipShapeAppearance">
-        <item name="chipStrokeColor">#d5d4d4</item>
+        <item name="chipStrokeColor">#9CCC65</item>
         <item name="chipStrokeWidth">1dp</item>
-        <item name="chipBackgroundColor">@android:color/white</item>
+        <item name="chipBackgroundColor">#F1F8E9</item>
     </style>
 
 
