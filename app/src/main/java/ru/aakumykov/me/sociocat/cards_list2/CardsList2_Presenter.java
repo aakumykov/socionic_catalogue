@@ -20,6 +20,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
@@ -56,7 +57,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         mHasParent = Intent.ACTION_VIEW.equals(action);
 
         if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
-            loadCardsWithTag();
+            loadCardsWithTag(false);
         else
             loadCards();
     }
@@ -76,7 +77,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
         if (null == mTagFilter)
             loadCards();
         else
-            loadCardsWithTag();
+            loadCardsWithTag(true);
     }
 
     @Override
@@ -249,7 +250,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-    private void loadCardsWithTag() {
+    private void loadCardsWithTag(boolean isOnRefreshing) {
 
         mTagFilter = getTagNameFromIntent();
         if (null == mTagFilter) {
@@ -257,7 +258,10 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             return;
         }
 
-        setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
+        if (isOnRefreshing)
+            setViewState(new RefreshingViewState());
+        else
+            setViewState(new LoadingCardsWithTag_ViewState(mTagFilter));
 
         mCardsSingleton.loadCardsWithTag(mTagFilter, new iCardsSingleton.ListCallbacks() {
             @Override
