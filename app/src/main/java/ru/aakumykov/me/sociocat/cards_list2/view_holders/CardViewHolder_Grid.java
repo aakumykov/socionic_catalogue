@@ -18,6 +18,7 @@ public class CardViewHolder_Grid extends CardViewHolder {
         super(itemView);
     }
 
+
     @Override
     public void initialize(BasicMVP_ListItem basicListItem) {
         super.initialize(basicListItem);
@@ -28,6 +29,17 @@ public class CardViewHolder_Grid extends CardViewHolder {
             return;
         }
 
+        displayCard(card);
+        displatCardType(card);
+    }
+
+    @Override
+    protected void showNoCardError() {
+
+    }
+
+
+    private void displatCardType(@NonNull Card card) {
         if (card.isTextCard())
             cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
         else if (card.isImageCard())
@@ -36,10 +48,5 @@ public class CardViewHolder_Grid extends CardViewHolder {
             cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
         else if (card.isVideoCard())
             cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
-    }
-
-    @Override
-    protected void showNoCardError() {
-
     }
 }

@@ -28,6 +28,7 @@ public class CardViewHolder_List extends CardViewHolder {
             return;
         }
 
+        displayCard(card);
         displayCardType(card);
     }
 
