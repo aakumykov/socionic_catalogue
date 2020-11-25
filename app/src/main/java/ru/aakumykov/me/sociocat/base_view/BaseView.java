@@ -40,7 +40,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressView
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.login.Login_View;
@@ -162,9 +162,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 logout();
                 break;
 
-            case R.id.actionCards:
-                goCardsGrid();
-                break;
 
             case R.id.actionTags:
                 goTagsList();
@@ -475,7 +472,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void goToMainPage() {
-        startActivity(new Intent(this, CardsGrid_View.class));
+        startActivity(new Intent(this, CardsList2_View.class));
     }
 
 
@@ -569,11 +566,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 //                Log.e(TAG, "data: "+data);
 //                break;
 //        }
-    }
-
-    private void goCardsGrid() {
-        Intent intent = new Intent(this, CardsGrid_View.class);
-        startActivity(intent);
     }
 
     private void goTagsList() {

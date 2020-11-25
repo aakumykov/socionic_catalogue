@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class StartPage extends BaseView {
@@ -159,7 +159,7 @@ public class StartPage extends BaseView {
     }
 
     private void go2cardsGrid() {
-        Intent cardsGridIntent = new Intent(this, CardsGrid_View.class);
+        Intent cardsGridIntent = new Intent(this, CardsList2_View.class);
         startActivity(cardsGridIntent);
     }
 }
