@@ -262,10 +262,11 @@ public abstract class BasicMVP_Presenter
     }
 
     private void changeLayoutTo(BasicViewMode viewMode) {
+        if (null != mCurrentViewMode && mCurrentViewMode.equals(viewMode))
+            return;
+
         mCurrentViewMode = viewMode;
-
         mListView.setViewMode(viewMode);
-
         mPageView.reconfigureRecyclerView();
     }
 }
