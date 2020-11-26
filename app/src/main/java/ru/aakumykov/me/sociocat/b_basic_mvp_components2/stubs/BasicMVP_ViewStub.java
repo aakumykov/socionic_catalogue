@@ -102,4 +102,14 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
 
     }
 
+    @Override
+    public int getListScrollPosition() {
+        return 0;
+    }
+
+    @Override
+    public void restoreListScrollPosition(int position) {
+
+    }
+
 }

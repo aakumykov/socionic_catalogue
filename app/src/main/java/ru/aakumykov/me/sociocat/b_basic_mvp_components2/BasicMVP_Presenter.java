@@ -40,7 +40,7 @@ public abstract class BasicMVP_Presenter
     protected eSortingOrder mCurrentSortingOrder;
 
     private boolean mInterruptFlag = false;
-
+    private int mListScrollPosition = 0;
 
 
     public BasicMVP_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -105,6 +105,18 @@ public abstract class BasicMVP_Presenter
         mPageView.refreshMenu();
     }
 
+    public void onPause() {
+        mListScrollPosition = mPageView.getListScrollPosition();
+    }
+
+    public void onResume() {
+        if (null != mCurrentViewState)
+            setViewState(mCurrentViewState);
+
+        mPageView.restoreListScrollPosition(mListScrollPosition);
+    }
+
+
 
     // Переключение режимов просмотра
     public void onViewModeListClicked() {
@@ -117,16 +129,6 @@ public abstract class BasicMVP_Presenter
 
     public void onViewModeFeedClicked() {
         changeLayoutTo(new FeedViewMode());
-    }
-
-
-    protected void onResume() {
-        if (null != mCurrentViewState)
-            setViewState(mCurrentViewState);
-    }
-
-    protected void onStop() {
-        unbindViews();
     }
 
     public boolean onBackPressed() {
