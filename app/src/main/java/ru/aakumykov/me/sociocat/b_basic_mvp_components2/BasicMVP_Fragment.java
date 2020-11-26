@@ -100,6 +100,12 @@ public abstract class BasicMVP_Fragment
         mPresenter.onResume();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPresenter.onStop();
+    }
+
     @SuppressLint("RestrictedApi")
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -274,16 +280,6 @@ public abstract class BasicMVP_Fragment
     @Override
     public void reconfigureRecyclerView() {
 
-    }
-
-    @Override
-    public int getListScrollPosition() {
-        return 0;
-    }
-
-    @Override
-    public void restoreListScrollPosition(int position) {
-        showToast("Восстановление позиции прокрутки во фрагменте ещё не реализовано");
     }
 
 

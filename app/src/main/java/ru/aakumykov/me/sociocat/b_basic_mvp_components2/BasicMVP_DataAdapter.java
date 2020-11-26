@@ -338,6 +338,7 @@ public abstract class BasicMVP_DataAdapter
         return visiblePosition;
     }
 
+
     @Override
     public void showThrobberItem() {
         addItem(new BasicMVP_ThrobberItem());

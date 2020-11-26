@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -127,10 +126,10 @@ public abstract class BasicMVP_View
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         if (null != mPresenter)
-            mPresenter.onPause();
+            mPresenter.onStop();
     }
 
     @Override
@@ -344,28 +343,6 @@ public abstract class BasicMVP_View
                 mLayoutManager,
                 mItemDecoration
         );
-    }
-
-    @Override
-    public int getListScrollPosition() {
-        if (mLayoutManager instanceof LinearLayoutManager)
-        {
-            return ((LinearLayoutManager) mLayoutManager).findFirstCompletelyVisibleItemPosition();
-        }
-        else if (mLayoutManager instanceof StaggeredGridLayoutManager)
-        {
-            int[] positions = {};
-            ((StaggeredGridLayoutManager) mLayoutManager).findFirstCompletelyVisibleItemPositions(positions);
-            if (positions.length > 0)
-                return positions[0];
-        }
-
-        return 0;
-    }
-
-    @Override
-    public void restoreListScrollPosition(int position) {
-        mLayoutManager.scrollToPosition(position);
     }
 
 
