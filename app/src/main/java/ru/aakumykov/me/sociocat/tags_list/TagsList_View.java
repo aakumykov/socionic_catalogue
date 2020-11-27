@@ -38,10 +38,14 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tags_activity);
-        ButterKnife.bind(this);
 
         activateUpButton();
+    }
+
+    @Override
+    protected void setActivityView() {
+        setContentView(R.layout.tags_activity);
+        ButterKnife.bind(this);
     }
 
     @Override

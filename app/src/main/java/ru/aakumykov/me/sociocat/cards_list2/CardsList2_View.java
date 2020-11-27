@@ -56,12 +56,16 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_list2_activity);
-        ButterKnife.bind(this);
 
         configureBottomSheetListener();
 
         configureTagFilter();
+    }
+
+    @Override
+    protected void setActivityView() {
+        setContentView(R.layout.cards_list2_activity);
+        ButterKnife.bind(this);
     }
 
     @Override

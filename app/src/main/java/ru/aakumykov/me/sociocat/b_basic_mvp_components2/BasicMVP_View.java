@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,12 +84,25 @@ public abstract class BasicMVP_View
 
     private SearchView mSearchView;
 
-
     // Абстрактные методы
+    protected abstract void setActivityView();
     protected abstract void processActivityResult();
     protected abstract BasicMVP_Presenter preparePresenter();
     protected abstract BasicMVP_DataAdapter prepareDataAdapter();
 
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActivityView();
+
+        mViewModel = prepareViewModel();
+        mPresenter = preparePresenter();
+        mDataAdapter = prepareDataAdapter();
+
+        reconfigureRecyclerView();
+        configureSwipeRefresh();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -102,18 +116,7 @@ public abstract class BasicMVP_View
     protected void onStart() {
         super.onStart();
 
-        mViewModel = new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
-                .get(BasicMVP_ViewModel.class);
-
-        mPresenter = preparePresenter();
-
-        mDataAdapter = prepareDataAdapter();
-
         mPresenter.bindViews(this, mDataAdapter);
-
-        reconfigureRecyclerView();
-
-        configureSwipeRefresh();
 
         processActivityResult();
         forgetActivityResult();
@@ -122,13 +125,13 @@ public abstract class BasicMVP_View
     @Override
     protected void onPause() {
         super.onPause();
-        mPresenter.onPause();
+//        mPresenter.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.onResume();
+//        mPresenter.onResume();
     }
 
     @Override
@@ -432,6 +435,11 @@ public abstract class BasicMVP_View
 
 
     // Внутренние
+    private BasicMVP_ViewModel prepareViewModel() {
+        return new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
+                .get(BasicMVP_ViewModel.class);
+    }
+
     private void configureSwipeRefresh() {
         if (null == swipeRefreshLayout)
             return;
