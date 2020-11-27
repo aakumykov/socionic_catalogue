@@ -40,16 +40,16 @@ public class CardViewHolder_List extends CardViewHolder {
     private void displayCardType(@NonNull Card card) {
         switch (card.getType()) {
             case Card.TEXT_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
+                cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list_mode);
                 break;
             case Card.IMAGE_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
+                cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list_mode);
                 break;
             case Card.VIDEO_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_video_list);
+                cardTypeImageView.setImageResource(R.drawable.ic_card_type_youtube_video_list_mode);
                 break;
             case Card.AUDIO_CARD:
-                cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
+                cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list_mode);
                 break;
             default:
                 break;

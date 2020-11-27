@@ -41,9 +41,9 @@ public class CardViewHolder_Grid extends CardViewHolder {
 
     private void displatCardType(@NonNull Card card) {
         if (card.isTextCard())
-            cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list);
+            cardTypeImageView.setImageResource(R.drawable.ic_card_type_text_list_mode);
         else if (card.isImageCard())
-            cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list);
+            cardTypeImageView.setImageResource(R.drawable.ic_card_type_image_list_mode);
         else if (card.isAudioCard())
             cardTypeImageView.setImageResource(R.drawable.ic_card_type_audio_list);
         else if (card.isVideoCard())

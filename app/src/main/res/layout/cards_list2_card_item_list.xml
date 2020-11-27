@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_card_type_image_list" />
+        app:srcCompat="@drawable/ic_card_type_image_list_mode" />
 
     <View
         android:id="@+id/highlightingOverlay"
