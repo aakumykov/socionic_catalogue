@@ -90,10 +90,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
 //            hideImage();
 
         if (card.isVideoCard()) {
-//            showVideo(card);
             showVideoPreview(card);
 
-            hideImage();
             hideQuote();
         }
 //        else
