@@ -33,6 +33,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
@@ -49,6 +50,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.tagFilter) Chip tagFilterChip;
 
+    private static final BasicViewMode DEFAULT_VIEW_MODE = new ListViewMode();
     private static final String TAG = CardsList2_View.class.getSimpleName();
     private BottomSheetListener mBottomSheetListener;
 
@@ -114,7 +116,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVP_Presenter onPresenterPrepared() {
-                return new CardsList2_Presenter(new FeedViewMode(), eBasicSortingMode.BY_NAME);
+                return new CardsList2_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_NAME);
             }
         });
     }
