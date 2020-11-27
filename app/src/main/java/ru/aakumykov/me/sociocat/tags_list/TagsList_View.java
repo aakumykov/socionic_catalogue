@@ -116,6 +116,16 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
+    public int getListScrollOffset() {
+        return mRecyclerView.computeVerticalScrollOffset();
+    }
+
+    @Override
+    public void setListScrollOffset(int verticalOffset) {
+        mRecyclerView.scrollBy(0, verticalOffset);
+    }
+
+    @Override
     public void onUserLogin() {
 
     }

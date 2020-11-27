@@ -102,4 +102,14 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
 
     }
 
+    @Override
+    public int getListScrollOffset() {
+        return 0;
+    }
+
+    @Override
+    public void setListScrollOffset(int offset) {
+
+    }
+
 }

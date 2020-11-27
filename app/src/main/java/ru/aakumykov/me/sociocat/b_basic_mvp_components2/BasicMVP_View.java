@@ -120,6 +120,12 @@ public abstract class BasicMVP_View
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.onPause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mPresenter.onResume();
@@ -344,6 +350,12 @@ public abstract class BasicMVP_View
                 mItemDecoration
         );
     }
+
+    @Override
+    public abstract int getListScrollOffset();
+
+    @Override
+    public abstract void setListScrollOffset(int offset);
 
 
     public abstract void assembleMenu();

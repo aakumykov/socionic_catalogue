@@ -282,6 +282,16 @@ public abstract class BasicMVP_Fragment
 
     }
 
+    @Override
+    public int getListScrollOffset() {
+        return 0;
+    }
+
+    @Override
+    public void setListScrollOffset(int offset) {
+
+    }
+
 
     // Внутренние
     private void onBackPressed() {

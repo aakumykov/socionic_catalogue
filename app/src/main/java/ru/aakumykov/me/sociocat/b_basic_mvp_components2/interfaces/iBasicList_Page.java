@@ -40,4 +40,7 @@ public interface iBasicList_Page {
     String getText(int stringResourceId, Object... formatArgs);
 
     void reconfigureRecyclerView();
+
+    int getListScrollOffset();
+    void setListScrollOffset(int offset);
 }
