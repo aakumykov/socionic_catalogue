@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -89,7 +90,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
 //            hideImage();
 
         if (card.isVideoCard()) {
-            showVideo(card);
+//            showVideo(card);
+            showVideoPreview(card);
 
             hideImage();
             hideQuote();
@@ -106,8 +108,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
 //        else
 //            hideAudio();
     }
-
-
 
     private void showImage(@NonNull Card card) {
 
@@ -219,6 +219,44 @@ public class CardViewHolder_Feed extends CardViewHolder {
             }
         });
 
+    }
+
+    private void showVideoPreview(@NonNull Card card) {
+
+        imageView.setImageResource(R.drawable.ic_youtube_video_placeholder);
+        ViewUtils.show(imageView);
+        AnimatorSet animatorSet = AnimationUtils.animateFadeInOut(imageView);
+
+        String imageURL = "https://img.youtube.com/vi/"+card.getVideoCode()+"/mqdefault.jpg";
+
+        Glide.with(imageView.getContext())
+                .load(imageURL)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imageView.setImageDrawable(resource);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        imageView.setImageResource(R.drawable.ic_youtube_video_error);
+                        AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
+                        return true;
+                    }
+                })
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
     private void hideVideo() {
