@@ -123,15 +123,9 @@ public abstract class BasicMVP_View
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-//        mPresenter.onPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-//        mPresenter.onResume();
+        mPresenter.onResume();
     }
 
     @Override
