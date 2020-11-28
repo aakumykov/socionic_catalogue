@@ -32,7 +32,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -79,8 +78,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
                 break;
 
             case Constants.CODE_SHOW_CARD:
-            case Constants.CODE_EDIT_CARD:
-                processCardShowOrEditionResult();
+                processCardShowResult();
                 break;
 
             default:
@@ -283,17 +281,6 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         });
     }
 
-    private void processCardShowOrEditionResult() {
-        if (RESULT_OK == mActivityResultCode) {
-            if (null != mActivityResultData) {
-                Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
-                Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
-
-                ((CardsList2_Presenter) mPresenter).onCardEdited(oldCard, newCard);
-            }
-        }
-    }
-
     private void processCardCreationResult() {
         if (RESULT_OK == mActivityResultCode) {
             if (null != mActivityResultData) {
@@ -302,6 +289,44 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
                 ((CardsList2_Presenter) mPresenter).onCardCreated(newCard);
             }
         }
+    }
+
+    private void processCardShowResult() {
+        if (RESULT_OK != mActivityResultCode)
+            return;
+
+        if (null == mActivityResultData)
+            return;
+
+        String action = mActivityResultData.getAction();
+        if (null == action)
+            return;
+
+        switch (action) {
+            case Constants.ACTION_EDIT:
+                processCardEdition();
+                break;
+
+            case Intent.ACTION_DELETE:
+                processCardDeletion();
+                return;
+
+            default:
+                break;
+        }
+    }
+
+    private void processCardEdition() {
+        Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
+        Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
+
+        ((CardsList2_Presenter) mPresenter).onCardEdited(oldCard, newCard);
+    }
+
+    private void processCardDeletion() {
+        Card card = mActivityResultData.getParcelableExtra(Constants.CARD);
+
+        ((CardsList2_Presenter) mPresenter).onCardDeleted(card);
     }
 
     private void showTagFilter(String tagName) {

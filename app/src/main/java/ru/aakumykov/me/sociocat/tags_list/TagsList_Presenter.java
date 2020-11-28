@@ -268,8 +268,8 @@ public class TagsList_Presenter
 
             int position = mListView.updateItemInList(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
-                public boolean onCompareFindingOldItemPosition(Object objectFromList) {
-                    Tag tagFromList = (Tag) objectFromList;
+                public boolean onCompareWithListItemPayload(Object itemPayload) {
+                    Tag tagFromList = (Tag) itemPayload;
                     return tagFromList.getKey().equals(oldTag.getKey());
                 }
             });

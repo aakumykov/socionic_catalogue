@@ -106,7 +106,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
         if (null != oldCard && null != newCard)
@@ -115,15 +114,28 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
             int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
-                public boolean onCompareFindingOldItemPosition(Object objectFromListItem) {
-                    Card cardFromList = (Card) objectFromListItem;
-                    return cardFromList.getKey().equals(oldCard.getKey());
+                public boolean onCompareWithListItemPayload(Object itemPayload) {
+                    Card cardFromList = (Card) itemPayload;
+                    return cardFromList.equals(oldCard);
                 }
             });
 
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
+    }
+
+    public void onCardDeleted(@Nullable Card card) {
+        if (null == card)
+            return;
+
+        mListView.deleteItemFromList(new iBasicList.iFindItemComparisionCallback() {
+            @Override
+            public boolean onCompareWithListItemPayload(Object itemPayload) {
+                Card cardFromList = (Card) itemPayload;
+                return (cardFromList.equals(card));
+            }
+        });
     }
 
     public void onFABClicked() {

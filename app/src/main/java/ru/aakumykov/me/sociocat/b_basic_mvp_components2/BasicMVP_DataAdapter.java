@@ -222,7 +222,7 @@ public abstract class BasicMVP_DataAdapter
             {
                 Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
 
-                if (callback.onCompareFindingOldItemPosition(objectFromList))
+                if (callback.onCompareWithListItemPayload(objectFromList))
                     return mCurrentItemsList.indexOf(listItem);
             }
         }
@@ -237,7 +237,7 @@ public abstract class BasicMVP_DataAdapter
             if (listItem instanceof BasicMVP_DataItem)
             {
                 Object objectFromList = ((BasicMVP_DataItem) listItem).getPayload();
-                if (callback.onCompareFindingOldItemPosition(objectFromList))
+                if (callback.onCompareWithListItemPayload(objectFromList))
                     return mOriginalItemsList.indexOf(listItem);
             }
         }
@@ -338,6 +338,15 @@ public abstract class BasicMVP_DataAdapter
         return visiblePosition;
     }
 
+    @Override
+    public void deleteItemFromList(@NonNull iFindItemComparisionCallback comparisionCallback)
+    {
+        int visiblePosition = findVisibleObjectPosition(comparisionCallback);
+        deleteItemFromVisibleList(visiblePosition);
+
+        int originalPosition = findOriginalObjectPosition(comparisionCallback);
+        deleteItemFromOriginalList(originalPosition);
+    }
 
     @Override
     public void showThrobberItem() {
@@ -628,5 +637,17 @@ public abstract class BasicMVP_DataAdapter
     private void updateItemInOriginalList(int position, BasicMVP_ListItem item) {
         if (positionIsInListRange(position, mOriginalItemsList))
             mOriginalItemsList.set(position, item);
+    }
+
+    private void deleteItemFromVisibleList(int position) {
+        if (positionIsInListRange(position, mCurrentItemsList)) {
+            mCurrentItemsList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    private void deleteItemFromOriginalList(int position) {
+        if (positionIsInListRange(position, mOriginalItemsList))
+            mOriginalItemsList.remove(position);
     }
 }

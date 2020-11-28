@@ -45,6 +45,8 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     int updateItemInList(@NonNull BasicMVP_DataItem newItem,
                          @NonNull iFindItemComparisionCallback comparisionCallback);
 
+    void deleteItemFromList(@NonNull iFindItemComparisionCallback comparisionCallback);
+
     void showThrobberItem();
     void hideThrobberItem();
 
@@ -62,6 +64,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
 
     interface iFindItemComparisionCallback {
-        boolean onCompareFindingOldItemPosition(Object objectFromList);
+        boolean onCompareWithListItemPayload(Object itemPayload);
     }
 }
