@@ -264,9 +264,10 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public void goBack(@NonNull Card newCard, @NonNull Card oldCard) {
+    public void goBack(@NonNull Card currentCard, @Nullable Card oldCard) {
         Intent intent = new Intent();
-        intent.putExtra(Constants.NEW_CARD, newCard);
+
+        intent.putExtra(Constants.NEW_CARD, currentCard);
         intent.putExtra(Constants.OLD_CARD, oldCard);
         intent.setAction(Intent.ACTION_VIEW);
 

@@ -41,7 +41,7 @@ public interface iCardShow
 
         void openImageInBrowser(String imageURL);
 
-        void goBack(@NonNull Card card, @NonNull Card oldCard);
+        void goBack(@NonNull Card currentCard, @NonNull Card oldCard);
 
         void showRefreshThrobber();
         void hideRefreshThrobber();
@@ -105,8 +105,10 @@ public interface iCardShow
         void onTagClicked(String tagName);
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
+
         void onEditCardClicked();
         void onEditCardComplete(@Nullable Intent data);
+
         void onDeleteCardClicked();
 
         void onLoadMoreClicked(iList_Item listItem);

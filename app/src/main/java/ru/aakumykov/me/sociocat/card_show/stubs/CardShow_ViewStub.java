@@ -69,7 +69,7 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
-    public void goBack(@NonNull Card card, @NonNull Card oldCard) {
+    public void goBack(@NonNull Card currentCard, @NonNull Card oldCard) {
 
     }
 

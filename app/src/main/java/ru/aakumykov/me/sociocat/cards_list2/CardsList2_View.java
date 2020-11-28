@@ -303,8 +303,9 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
             return;
 
         switch (action) {
+            case Intent.ACTION_VIEW:
             case Constants.ACTION_EDIT:
-                processCardEdition();
+                processCardShowOrEdition();
                 break;
 
             case Intent.ACTION_DELETE:
@@ -316,7 +317,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         }
     }
 
-    private void processCardEdition() {
+    private void processCardShowOrEdition() {
         Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
         Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
 
