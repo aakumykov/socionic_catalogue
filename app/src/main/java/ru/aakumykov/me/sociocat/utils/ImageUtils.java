@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,6 +17,7 @@ import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
@@ -301,6 +304,22 @@ public class ImageUtils {
             throw new IllegalArgumentException("imageType cannot be null");
 
         return nameBase + "." + imageType.name().toLowerCase();
+    }
+
+    public static Drawable getDrawableFromResource(@NonNull Context context, int drawableResourceId) {
+        return ResourcesCompat.getDrawable(context.getResources(), drawableResourceId, null);
+    }
+
+    public static Bitmap drawable2bitmap(@NonNull Context context, Drawable drawable, int widthPixels, int heightPixels) {
+
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(mutableBitmap);
+
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
     }
 
 

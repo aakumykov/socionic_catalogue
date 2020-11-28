@@ -1,8 +1,12 @@
 package ru.aakumykov.me.sociocat.cards_list2.view_holders;
 
 import android.animation.AnimatorSet;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,7 +18,6 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -34,6 +37,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_List
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.AnimationUtils;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 
 public class CardViewHolder_Feed extends CardViewHolder {
 
@@ -232,7 +236,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        imageView.setImageDrawable(resource);
+                        Bitmap previewWithPlayMark = drawMarkOnVideoPreview(resource);
+                        imageView.setImageBitmap(previewWithPlayMark);
                         AnimationUtils.revealFromCurrentAlphaState(imageView, animatorSet);
                         return true;
                     }
@@ -277,9 +282,35 @@ public class CardViewHolder_Feed extends CardViewHolder {
 
     }
 
+    private Bitmap drawMarkOnVideoPreview(@NonNull Drawable previewImageResource) {
 
+        Bitmap backgroundBitmap = ((BitmapDrawable) previewImageResource).getBitmap();
 
-    boolean isImageVisible() {
-        return View.GONE == imageView.getVisibility();
+        int markRectSize = backgroundBitmap.getWidth() / 5;
+
+        Bitmap foregroundBitmap = ImageUtils.drawable2bitmap(
+                itemView.getContext(),
+                ImageUtils.getDrawableFromResource(itemView.getContext(), R.drawable.ic_video_mark_overlay),
+                markRectSize,
+                markRectSize
+        );
+
+        Bitmap resultBitmap = Bitmap.createBitmap(
+                backgroundBitmap.getWidth(),
+                backgroundBitmap.getHeight(),
+                backgroundBitmap.getConfig()
+        );
+
+        Canvas canvas = new Canvas(resultBitmap);
+        canvas.drawBitmap(backgroundBitmap, new Matrix(), null);
+        canvas.drawBitmap(
+                foregroundBitmap,
+                (backgroundBitmap.getWidth() - foregroundBitmap.getWidth()) / 2,
+                (backgroundBitmap.getHeight() - foregroundBitmap.getHeight()) / 2,
+                new Paint()
+        );
+
+        return resultBitmap;
     }
+
 }
