@@ -353,13 +353,16 @@ public class CardShow_View extends BaseView implements
 
     // TODO: этому место в Presenter-е
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+
         switch (resultCode) {
             case RESULT_OK:
                 presenter.onEditCardComplete(data);
                 break;
+
             case RESULT_CANCELED:
                 showToast(R.string.CARD_SHOW_edit_cancelled);
                 break;
+
             default:
                 break;
         }

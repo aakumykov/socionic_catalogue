@@ -340,6 +340,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 currentCard = newCard;
 
                 dataAdapter.showCard(currentCard);
+                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, newCard.getTitle());
             }
             else
                 pageView.showErrorMsg(R.string.data_error, "Card from activity result is null");
