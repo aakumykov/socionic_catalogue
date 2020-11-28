@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
@@ -140,6 +142,14 @@ public class Card implements
         return cardMap;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Card) {
+            Card otherCard = (Card) obj;
+            return getKey().equals(otherCard.getKey());
+        }
+        return false;
+    }
 
     // Parcelable
     @Override
