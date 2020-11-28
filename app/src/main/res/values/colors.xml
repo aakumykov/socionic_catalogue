@@ -102,7 +102,7 @@
     <color name="card_type_icon_text">#888888</color>
     <color name="card_type_icon_audio">#7E57C2</color>
     <color name="card_type_icon_video">#F48FB1</color>
-    <color name="card_type_icon_image">#9CCC65</color>
+    <color name="card_type_icon_image">#8BC34A</color>
 
     <color name="highlighted_comment_border">#FFF59D</color>
     <color name="highlighted_comment_background">#FFFDE7</color>
