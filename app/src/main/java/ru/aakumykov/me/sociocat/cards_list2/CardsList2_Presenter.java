@@ -120,7 +120,6 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                 }
             });
 
-            mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
     }
