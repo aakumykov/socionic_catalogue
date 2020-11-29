@@ -18,13 +18,13 @@ public class CardsList2_ViewHolderCreator extends BasicMVP_ViewHolderCreator {
 
 
     @Override
-    public BasicMVP_DataViewHolder createViewHolder4listMode(ViewGroup parent) {
-        return new CardViewHolder_List(inflateItemView(parent, R.layout.cards_list2_card_item_list));
+    public BasicMVP_DataViewHolder createViewHolder4feedMode(ViewGroup parent) {
+        return new CardViewHolder_Feed(inflateItemView(parent, R.layout.cards_list2_card_item_feed));
     }
 
     @Override
-    public BasicMVP_DataViewHolder createViewHolder4feedMode(ViewGroup parent) {
-        return new CardViewHolder_Feed(inflateItemView(parent, R.layout.cards_list2_card_item_feed));
+    public BasicMVP_DataViewHolder createViewHolder4listMode(ViewGroup parent) {
+        return new CardViewHolder_List(inflateItemView(parent, R.layout.cards_list2_card_item_list));
     }
 
     @Override
