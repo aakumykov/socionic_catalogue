@@ -71,7 +71,9 @@
     <!-- ... -->
     <color name="defaultTextColor">#3C3C3C</color>
     <color name="titleTextColor">#222222</color>
-    <color name="quoteTextColor">#222222</color>
+    <color name="quoteTextColor">#505050</color>
+    <color name="quoteSourceTextColor">#858585</color>
+    <color name="descriptionTextColor">#222222</color>
 
     <!-- Всплывающие сообщения -->
     <color name="toastBorder">#E2E2E2</color>
