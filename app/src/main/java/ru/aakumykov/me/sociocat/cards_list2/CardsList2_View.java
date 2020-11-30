@@ -36,7 +36,6 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.FeedViewMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
@@ -48,7 +47,6 @@ import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_View
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 
 public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
@@ -97,7 +95,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (R.id.actionSortByCommentsDirect == id || R.id.actionSortByCommentsReverse == id) {
+        if (R.id.actionSortByComments == id) {
             mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_COMMENTS);
         }
         /*else if (R.id.actionSortBy == id || R.id.actionSortByCommentsReverse == id) {
@@ -287,7 +285,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_comments)
-                .addDirectOrderMenuItemId(R.id.actionSortByCommentsDirect)
+                .addDirectOrderMenuItemId(R.id.actionSortByComments)
                 .addReverseOrderMenuItemId(R.id.actionSortByCommentsReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_reverse_active)

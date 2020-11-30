@@ -3,14 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionSortByCommentsDirect"
-        android:icon="@drawable/ic_menu_sort_by_comments_count_direct"
-        android:title="@string/menu_item_sorted_by_comments"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/actionSortByCommentsReverse"
-        android:icon="@drawable/ic_menu_sort_by_comments_count_reverse"
+        android:id="@+id/actionSortByComments"
+        android:icon="@drawable/ic_menu_sort_by_comments"
         android:title="@string/menu_item_sorted_by_comments"
         app:showAsAction="never" />
 
