@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -337,6 +340,29 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showToast(String message) {
         MyUtils.showCustomToast(getAppContext(), message);
+    }
+
+    @Override
+    public void showSnackbar(View view, int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+        String text = getResources().getString(msgId);
+        showSnackbar(view, text, dismissStringResourceId, duration);
+    }
+
+    @Override
+    public void showSnackbar(View view, String text, int dismissStringResourceId, @Nullable Integer duration) {
+
+        int length = (null != duration) ? duration : BaseTransientBottomBar.LENGTH_SHORT;
+
+        Snackbar snackbar = Snackbar.make(view, text, length);
+
+        snackbar.setAction(dismissStringResourceId, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+
+        snackbar.show();
     }
 
     @Override

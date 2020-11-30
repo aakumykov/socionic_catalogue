@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 
@@ -84,6 +86,16 @@ public class BaseView_Stub implements iBaseView {
 
     @Override
     public void showToast(String message) {
+
+    }
+
+    @Override
+    public void showSnackbar(View view, int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+
+    }
+
+    @Override
+    public void showSnackbar(View view, String text, int dismissStringResourceId, @Nullable Integer duration) {
 
     }
 
