@@ -343,17 +343,30 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void showSnackbar(View view, int msgId, int dismissStringResourceId, @Nullable Integer duration) {
-        String text = getResources().getString(msgId);
-        showSnackbar(view, text, dismissStringResourceId, duration);
+    public void showSnackbar(int msgId, int dismissStringResourceId) {
+        showSnackbar(msgId, dismissStringResourceId, null);
     }
 
     @Override
-    public void showSnackbar(View view, String text, int dismissStringResourceId, @Nullable Integer duration) {
+    public void showSnackbar(int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+        String text = getResources().getString(msgId);
 
-        int length = (null != duration) ? duration : BaseTransientBottomBar.LENGTH_SHORT;
+        showSnackbar(text, dismissStringResourceId, duration);
+    }
 
-        Snackbar snackbar = Snackbar.make(view, text, length);
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId) {
+        showSnackbar(text, dismissStringResourceId, null);
+    }
+
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId, @Nullable Integer duration) {
+
+        View parentView = findViewById(android.R.id.content);
+
+        int length = (null != duration) ? duration : BaseTransientBottomBar.LENGTH_LONG;
+
+        Snackbar snackbar = Snackbar.make(parentView, text, length);
 
         snackbar.setAction(dismissStringResourceId, new View.OnClickListener() {
             @Override

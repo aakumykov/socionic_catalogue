@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,12 +89,22 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showSnackbar(View view, int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+    public void showSnackbar(int msgId, int dismissStringResourceId) {
 
     }
 
     @Override
-    public void showSnackbar(View view, String text, int dismissStringResourceId, @Nullable Integer duration) {
+    public void showSnackbar(int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+
+    }
+
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId) {
+
+    }
+
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId, @Nullable Integer duration) {
 
     }
 

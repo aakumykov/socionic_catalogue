@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.stubs;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
@@ -59,6 +60,26 @@ public class BasicMVP_ViewStub implements iBasicList_Page {
 
     @Override
     public void showToast(String text) {
+
+    }
+
+    @Override
+    public void showSnackbar(int msgId, int dismissStringResourceId) {
+
+    }
+
+    @Override
+    public void showSnackbar(int msgId, int dismissStringResourceId, @Nullable Integer duration) {
+
+    }
+
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId) {
+
+    }
+
+    @Override
+    public void showSnackbar(String text, int dismissStringResourceId, @Nullable Integer duration) {
 
     }
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -41,8 +40,10 @@ public interface iBaseView {
     void showToast(int msgId);
     void showToast(String message);
 
-    void showSnackbar(View view, int msgId, int dismissStringResourceId, @Nullable Integer duration);
-    void showSnackbar(View view, String text, int dismissStringResourceId, @Nullable Integer duration);
+    void showSnackbar(int msgId, int dismissStringResourceId);
+    void showSnackbar(int msgId, int dismissStringResourceId, @Nullable Integer duration);
+    void showSnackbar(String text, int dismissStringResourceId);
+    void showSnackbar(String text, int dismissStringResourceId, @Nullable Integer duration);
 
     void showLongToast(int msgId);
     void showLongToast(String message);

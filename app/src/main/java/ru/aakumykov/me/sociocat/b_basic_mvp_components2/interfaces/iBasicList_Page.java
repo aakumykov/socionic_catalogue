@@ -3,7 +3,9 @@ package ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
@@ -21,6 +23,11 @@ public interface iBasicList_Page {
 
     void showToast(int messageId);
     void showToast(String message);
+
+    void showSnackbar(int msgId, int dismissStringResourceId);
+    void showSnackbar(int msgId, int dismissStringResourceId, @Nullable Integer duration);
+    void showSnackbar(String text, int dismissStringResourceId);
+    void showSnackbar(String text, int dismissStringResourceId, @Nullable Integer duration);
 
     void activateUpButton();
 
