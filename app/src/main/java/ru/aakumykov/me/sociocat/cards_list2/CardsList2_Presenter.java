@@ -218,15 +218,15 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         showThrobberItem();
 
-        BasicMVP_DataItem lastDataItem = mListView.getLastUnfilteredDataItem();
-        if (null == lastDataItem) {
+        BasicMVP_DataItem tailDataItem = mListView.getLastUnfilteredDataItem();
+        if (null == tailDataItem) {
             showNoMoreCards();
             return;
         }
 
-        Card card = (Card) lastDataItem.getPayload();
+        Card tailCard = (Card) tailDataItem.getPayload();
 
-        mCardsSingleton.loadCardsAfter(card, new iCardsSingleton.ListCallbacks() {
+        mCardsSingleton.loadCardsAfter(tailCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 mListView.hideThrobberItem();
@@ -245,7 +245,10 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
                     String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
                     mPageView.showToast(msg);
 
+                    int firstNewCardPosition = mListView.getVisibleItemsCount();
                     mListView.appendList(list2append);
+
+                    mPageView.scroll2position(firstNewCardPosition);
                 }
 
                 mListView.showLoadmoreItem();
