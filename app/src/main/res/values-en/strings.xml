@@ -717,6 +717,8 @@
     <string name="CARDS_LIST_add_card_button_description">Add new card</string>
     <string name="CARDS_LIST_no_more_cards_with_tag">No more cards</string>
     <string name="CARDS_LIST_error_tag_name_missing">Tag name missing</string>
+    <string name="SNACKBAR_got_it">Got it</string>
+    <string name="TAGS_LIST_you_cannot_delete_tags">You cannot delete tags</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

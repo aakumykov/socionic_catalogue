@@ -211,7 +211,9 @@ public class TagsList_Presenter
         List<BasicMVP_DataItem> selectedItemsList = mListView.getSelectedItems();
 
         if (!mUsersSingleton.currentUserIsAdmin()) {
-            mPageView.showToast(R.string.action_denied);
+            mPageView.showSnackbar(R.string.TAGS_LIST_you_cannot_delete_tags, R.string.SNACKBAR_got_it, 10000);
+            mListView.clearSelection();
+            setNeutralViewState();
             return;
         }
 
@@ -279,6 +281,9 @@ public class TagsList_Presenter
         }
     }
 
+    public boolean canDeleteTag() {
+        return mUsersSingleton.currentUserIsAdmin();
+    }
 }
 
 

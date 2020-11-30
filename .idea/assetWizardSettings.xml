@@ -308,27 +308,12 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="file:$PROJECT_DIR$/../../Sdk-Android-Linux/icons/material/materialicons/audiotrack/baseline_audiotrack_24.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_video_mark_overlay_with_contour" />
-                            <entry key="sourceFile" value="$USER_HOME$/Рабочий стол/ic_video_mark_overlay_with_contour.svg" />
+                            <entry key="outputName" value="ic_menu_tag" />
+                            <entry key="sourceFile" value="C:\Users\Andrey\Desktop\ic_menu_tag.svg" />
                           </map>
                         </option>
                       </PersistentState>

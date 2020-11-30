@@ -91,7 +91,9 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     @Override
     protected void setSelectedViewState(SelectionViewState viewState) {
         super.setSelectedViewState(viewState);
-        inflateMenu(R.menu.tags_list_delete);
+
+//        if (((TagsList_Presenter) mPresenter).canDeleteTag())
+            inflateMenu(R.menu.tags_list_delete);
     }
 
     @Override
