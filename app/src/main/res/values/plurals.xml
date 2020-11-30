@@ -40,6 +40,7 @@
         <item quantity="zero">нет комментариев</item>
         <item quantity="one">%1$d комментарий</item>
         <item quantity="two">%1$d комментария</item>
+        <item quantity="few">%1$d комментария</item>
         <item quantity="many">%1$d комментариев</item>
     </plurals>
 </resources>
