@@ -507,7 +507,7 @@ public abstract class BasicMVP_View
         }
     }
 
-    private void addSortingMenuRootIfNotExists() {
+    protected void addSortingMenuRootIfNotExists() {
         if (null != mMenu) {
             if (null == mMenu.findItem(R.id.actionSort)) {
                 mMenuInflater.inflate(R.menu.sorting, mMenu);

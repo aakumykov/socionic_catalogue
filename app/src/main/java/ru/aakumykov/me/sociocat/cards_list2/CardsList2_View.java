@@ -25,9 +25,12 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_Presenter;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_View;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iPresenterPreparationCallback;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.BasicMVPUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
@@ -37,6 +40,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
@@ -98,6 +102,10 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
         inflateMenu(R.menu.tags);
 
         addSortByNameMenu();
+        addSortByCommentsMenu();
+        addSortByRatingMenu();
+        addSortByAuthorMenu();
+
         addAuthorizationMenu();
     }
 
@@ -248,6 +256,53 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
         showTagFilter(msg);
     }
+
+
+    protected void addSortByCommentsMenu() {
+
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItemConstructor()
+                .addMenuInflater(mMenuInflater)
+                .addTargetMenu(mSortingSubmenu)
+                .addMenuResource(R.menu.menu_sort_by_comments)
+                .addDirectOrderMenuItemId(R.id.actionSortByCommentsDirect)
+                .addReverseOrderMenuItemId(R.id.actionSortByCommentsReverse)
+                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
+                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_reverse_active)
+                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
+                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eCardsList2_SortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        switch ((eCardsList2_SortingMode) sortingMode) {
+                            case BY_COMMENTS:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+
+                    @Override
+                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
+                        return sortingOrder.isDirect();
+                    }
+                })
+                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+    }
+
+    protected void addSortByRatingMenu() {
+
+    }
+
+    protected void addSortByAuthorMenu() {
+
+    }
+
 
 
     private void configureBottomSheetListener() {
