@@ -9,7 +9,7 @@ import android.view.Menu;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
 public class BaseView_Stub implements iBaseView {
 

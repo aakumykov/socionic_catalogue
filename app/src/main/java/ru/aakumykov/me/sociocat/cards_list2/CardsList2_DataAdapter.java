@@ -1,17 +1,17 @@
 package ru.aakumykov.me.sociocat.cards_list2;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderBinder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.cards_list2.list_utils.CardsList2_ItemsComparator;
 
-public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter {
+public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_DataAdapter {
 
     public CardsList2_DataAdapter(BasicViewMode defaultViewMode,  iBasicMVP_ItemClickListener itemClickListener) {
         super(defaultViewMode, itemClickListener);

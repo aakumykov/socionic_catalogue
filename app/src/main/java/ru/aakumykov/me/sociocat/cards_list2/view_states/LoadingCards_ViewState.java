@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_list2.view_states;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
 public class LoadingCards_ViewState implements iBasicViewState {
 

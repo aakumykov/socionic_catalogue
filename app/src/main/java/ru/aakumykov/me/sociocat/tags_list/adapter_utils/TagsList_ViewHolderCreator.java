@@ -3,8 +3,8 @@ package ru.aakumykov.me.sociocat.tags_list.adapter_utils;
 import android.view.ViewGroup;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder_Feed;
 import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder_Grid;

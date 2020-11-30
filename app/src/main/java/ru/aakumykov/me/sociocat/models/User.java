@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortableData;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortableData;
 
 @IgnoreExtraProperties
 public class User implements Parcelable, iSortableData {

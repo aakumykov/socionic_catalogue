@@ -10,10 +10,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public abstract class CardViewHolder extends BasicMVP_DataViewHolder {

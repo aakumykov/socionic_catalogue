@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list2.list_items;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class Card_ListItem extends BasicMVP_DataItem {

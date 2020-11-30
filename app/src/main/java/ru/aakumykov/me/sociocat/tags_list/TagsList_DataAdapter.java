@@ -1,12 +1,12 @@
 package ru.aakumykov.me.sociocat.tags_list;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderBinder;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewTypeDetector;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iItemsComparator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderBinder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.tags_list.adapter_utils.TagsList_ViewTypeDetector;

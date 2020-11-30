@@ -1,13 +1,10 @@
 package ru.aakumykov.me.sociocat.cards_list2.list_utils;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_utils.BasicMVP_ItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVP_ItemsComparator;
 import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tags_list.list_utils.TagsList_ItemsComparator;
 
 public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
 

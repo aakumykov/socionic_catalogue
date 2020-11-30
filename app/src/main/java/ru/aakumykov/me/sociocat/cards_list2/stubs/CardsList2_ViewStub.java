@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list2.stubs;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.stubs.BasicMVP_ViewStub;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.stubs.BasicMVP_ViewStub;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;

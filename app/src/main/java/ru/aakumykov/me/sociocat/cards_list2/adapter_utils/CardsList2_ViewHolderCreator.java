@@ -3,9 +3,9 @@ package ru.aakumykov.me.sociocat.cards_list2.adapter_utils;
 import android.view.ViewGroup;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.adapter_utils.BasicMVP_ViewHolderCreator;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicMVP_ItemClickListener;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVP_ViewHolderCreator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVP_ItemClickListener;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
 import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_Feed;
 import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_Grid;
 import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_List;

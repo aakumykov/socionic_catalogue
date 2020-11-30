@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iSortableData;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.iListPayload;
 
 

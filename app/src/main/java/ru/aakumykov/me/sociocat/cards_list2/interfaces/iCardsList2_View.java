@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list2.interfaces;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.b_basic_mvp_components2.interfaces.iBasicList_Page;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
