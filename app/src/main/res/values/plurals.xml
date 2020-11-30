@@ -35,4 +35,11 @@
         <item quantity="two">+ %1$d карточки</item>
         <item quantity="many">+ %1$d карточек</item>
     </plurals>
+
+    <plurals name="comments_count">
+        <item quantity="zero">нет комментариев</item>
+        <item quantity="one">%1$d комментарий</item>
+        <item quantity="two">%1$d комментария</item>
+        <item quantity="many">%1$d комментариев</item>
+    </plurals>
 </resources>

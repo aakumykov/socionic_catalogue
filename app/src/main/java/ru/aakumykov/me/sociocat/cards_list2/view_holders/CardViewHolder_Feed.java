@@ -34,6 +34,7 @@ import butterknife.BindView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.TextUtils;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.AnimationUtils;
@@ -45,6 +46,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
+    @BindView(R.id.authorView) TextView authorView;
+    @BindView(R.id.commentsCountView) TextView commentsCountView;
 
     private final static String TAG = CardViewHolder_Feed.class.getSimpleName();
     public CardViewHolder_Feed(@NonNull View itemView) {
@@ -73,6 +76,9 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @Override
     protected void displayCard(@NonNull Card card) {
         super.displayCard(card);
+
+        showAuthor(card);
+        showCommentsCount(card);
 
         if (card.isTextCard()) {
             showQuote(card);
@@ -109,6 +115,16 @@ public class CardViewHolder_Feed extends CardViewHolder {
         }
 //        else
 //            hideAudio();
+    }
+
+    private void showAuthor(@NonNull Card card) {
+        String text = TextUtils.getText(authorView.getContext(), R.string.CARDS_LIST_author, card.getUserName());
+        authorView.setText(text);
+    }
+
+    private void showCommentsCount(@NonNull Card card) {
+        String text = TextUtils.getPluralString(commentsCountView.getContext(), R.plurals.comments_count, card.getCommentsKeys().size());
+        commentsCountView.setText(text);
     }
 
     private void showImage(@NonNull Card card) {

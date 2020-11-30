@@ -48,6 +48,7 @@ import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_View
 import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 
 public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
 
@@ -90,6 +91,26 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (R.id.actionSortByCommentsDirect == id || R.id.actionSortByCommentsReverse == id) {
+            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_COMMENTS);
+        }
+        /*else if (R.id.actionSortBy == id || R.id.actionSortByCommentsReverse == id) {
+
+        }
+        else if (R.id.actionSortByCommentsDirect == id || R.id.actionSortByCommentsReverse == id) {
+
+        }*/
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <plurals name="CARDS_GRID_delete_selected_cards_title">
         <item quantity="one">Delete %1$d selected card?</item>
         <item quantity="other">Delete selected %1$d cards?</item>
@@ -23,5 +23,11 @@
     <plurals name="CARDS_LIST_n_cards_mode_loaded">
         <item quantity="one">+ %1$d card</item>
         <item quantity="other">+ %1$d cards</item>
+    </plurals>
+
+    <plurals name="comments_count" tools:ignore="UnusedQuantity">
+        <item quantity="zero">no comments</item>
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
     </plurals>
 </resources>

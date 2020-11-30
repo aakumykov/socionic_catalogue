@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_Da
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_holders.BasicMVP_ViewHolder;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_states.RefreshingViewState;
+import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
 import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
 import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
@@ -69,6 +70,14 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
     @Override
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
+        if (sortingMode instanceof eCardsList2_SortingMode) {
+            switch ((eCardsList2_SortingMode) sortingMode) {
+                case BY_COMMENTS:
+                    return eSortingOrder.REVERSE;
+                default:
+                    return eSortingOrder.DIRECT;
+            }
+        }
         return eSortingOrder.DIRECT;
     }
 

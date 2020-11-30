@@ -9,6 +9,7 @@ import ru.aakumykov.me.sociocat.b_basic_mvp_components2.view_modes.BasicViewMode
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.cards_list2.adapter_utils.CardsList2_ViewTypeDetector;
+import ru.aakumykov.me.sociocat.cards_list2.list_utils.CardsList2_ItemsComparator;
 
 public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp_components2.BasicMVP_DataAdapter {
 
@@ -34,7 +35,7 @@ public class CardsList2_DataAdapter extends ru.aakumykov.me.sociocat.b_basic_mvp
 
     @Override
     protected iItemsComparator getItemsComparator() {
-        return null;
+        return new CardsList2_ItemsComparator();
     }
 
 

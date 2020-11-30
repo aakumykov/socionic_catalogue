@@ -92,12 +92,38 @@
 
         </FrameLayout>
 
-        <Space
-            app:layout_constraintTop_toBottomOf="@id/audioVideoContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+        <TextView
+            android:id="@+id/authorView"
             android:layout_width="0dp"
-            android:layout_height="20dp" />
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioVideoContainer"
+            android:paddingTop="18dp"
+            android:textSize="16dp"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="10dp"
+            tools:text="Имя Автора" />
+
+        <TextView
+            android:id="@+id/commentsCountView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            android:textSize="16dp"
+            android:paddingTop="18dp"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="10dp"
+            tools:text="10 комментариев" />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authorView" />
 
         <View
             android:id="@+id/highlightingOverlay"
