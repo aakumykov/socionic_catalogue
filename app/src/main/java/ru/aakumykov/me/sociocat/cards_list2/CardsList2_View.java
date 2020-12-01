@@ -25,7 +25,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
@@ -281,39 +280,6 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         addSortingMenuRootIfNotExists();
 
-        /*new SortingMenuItemConstructor()
-                .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_comments)
-                .addDirectOrderMenuItemId(R.id.actionSortByComments)
-                .addReverseOrderMenuItemId(R.id.actionSortByComments)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_reverse_active)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
-                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
-                    @Override
-                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eCardsList2_SortingMode;
-                    }
-
-                    @Override
-                    public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eCardsList2_SortingMode) sortingMode) {
-                            case BY_COMMENTS:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
-                    }
-                })
-                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
-        */
-
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
@@ -328,11 +294,6 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
                         return eCardsList2_SortingMode.BY_COMMENTS == (eCardsList2_SortingMode) sortingMode;
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
                     }
                 })
                 .buildMenuItem(

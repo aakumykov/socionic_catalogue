@@ -12,11 +12,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingM
 
 public class SortingMenuItemBuilder {
 
-    public interface iSortingModeParamsCallback {
-        boolean isSortingModeComplains(iSortingMode sortingMode);
-        boolean isSortingModeActive(iSortingMode sortingMode);
-        boolean isDirectOrder(eSortingOrder sortingOrder);
-    }
+    private final static String DIRECT_ARROW = "↓";
+    private final static String REVERSE_ARROW = "↑";
 
     private MenuInflater mMenuInflater;
     private Menu mMenu;
@@ -66,27 +63,31 @@ public class SortingMenuItemBuilder {
                 MenuItem menuItem = mMenu.findItem(mMenuItemId);
                 if (null != menuItem)
                 {
-                    setSortingArrow(menuItem, mParamsCallback.isDirectOrder(targetSortingOrder));
+                    setSortingArrow(menuItem, targetSortingOrder.isDirect());
                 }
             }
         }
     }
 
     private void setSortingArrow(@NonNull MenuItem menuItem, boolean isDirectOrder) {
-        String reverseArrow = "↓";
-        String directArrow = "↑";
 
         String title = menuItem.getTitle().toString();
 
         if (isDirectOrder) {
-            title = title.replace(reverseArrow, "");
-            title = directArrow + title;
+            title = title.replace(REVERSE_ARROW, "");
+            title = DIRECT_ARROW + title;
         }
         else {
-            title = title.replace(directArrow, "");
-            title = reverseArrow + title;
+            title = title.replace(DIRECT_ARROW, "");
+            title = REVERSE_ARROW + title;
         }
 
         menuItem.setTitle(title);
+    }
+
+
+    public interface iSortingModeParamsCallback {
+        boolean isSortingModeComplains(iSortingMode sortingMode);
+        boolean isSortingModeActive(iSortingMode sortingMode);
     }
 }
