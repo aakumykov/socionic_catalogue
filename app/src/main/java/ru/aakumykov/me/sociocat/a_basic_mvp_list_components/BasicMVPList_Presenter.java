@@ -94,9 +94,10 @@ public abstract class BasicMVPList_Presenter
 
     public void onSortMenuItemClicked(iSortingMode sortingMode) {
 
+        // !!! Присваивание sortingOrder должно предшествовать присваиванию sortingMode !!!
         mCurrentSortingOrder = getSortingOrderForSortingMode(sortingMode);
 
-        // !Присваивание mCurrentSortingMode должно производиться после mCurrentSortingOrder!
+        // !!! Присваивание sortingMode должно производиться после sortingOrder !!!
         mCurrentSortingMode = sortingMode;
 
         mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);

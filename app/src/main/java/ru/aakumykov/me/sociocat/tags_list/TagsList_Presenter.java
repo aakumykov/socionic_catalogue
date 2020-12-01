@@ -54,13 +54,7 @@ public class TagsList_Presenter
     @Override
     protected void onColdStart() {
         super.onColdStart();
-
         loadList();
-    }
-
-    @Override
-    protected void onConfigChanged() {
-        super.onConfigChanged();
     }
 
     @Override

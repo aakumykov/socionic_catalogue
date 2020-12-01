@@ -12,8 +12,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingM
 
 public class SortingMenuItemBuilder {
 
-    private final static String DIRECT_ARROW = "↓";
-    private final static String REVERSE_ARROW = "↑";
+    private final static String DIRECT_ARROW = "↓ ";
+    private final static String REVERSE_ARROW = "↑ ";
 
     private MenuInflater mMenuInflater;
     private Menu mMenu;

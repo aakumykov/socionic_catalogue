@@ -192,7 +192,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eBasicSortingMode;
+                        return sortingMode instanceof eTagsList_SortingMode;
                     }
 
                     @Override
