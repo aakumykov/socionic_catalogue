@@ -121,8 +121,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
     private void showAuthor(@NonNull Card card) {
-        String text = TextUtils.getText(authorView.getContext(), R.string.CARDS_LIST_author, card.getUserName());
-        authorView.setText(text);
+        authorView.setText(card.getUserName());
     }
 
     private void showDate(@NonNull Card card) {
