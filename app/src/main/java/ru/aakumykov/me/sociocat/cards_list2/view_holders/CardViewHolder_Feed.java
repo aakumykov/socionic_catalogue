@@ -89,8 +89,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
             hideImage();
             hideVideo();
         }
-//        else
-//            hideQuote();
 
         if (card.isImageCard()) {
             showImage(card);
@@ -99,16 +97,12 @@ public class CardViewHolder_Feed extends CardViewHolder {
             hideVideo();
             return;
         }
-//        else
-//            hideImage();
 
         if (card.isVideoCard()) {
             showVideoPreview(card);
 
             hideQuote();
         }
-//        else
-//            hideVideo();
 
         if (card.isAudioCard()) {
             showAudio(card);
@@ -116,8 +110,6 @@ public class CardViewHolder_Feed extends CardViewHolder {
             hideImage();
             hideQuote();
         }
-//        else
-//            hideAudio();
     }
 
     private void showAuthor(@NonNull Card card) {
