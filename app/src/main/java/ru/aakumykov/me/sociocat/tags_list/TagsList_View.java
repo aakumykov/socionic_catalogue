@@ -38,6 +38,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setDefaultPageTitle();
         activateUpButton();
     }
 

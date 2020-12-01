@@ -52,16 +52,20 @@ public class TagsList_Presenter
 
 
     @Override
-    protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
+    protected void onColdStart() {
+        super.onColdStart();
 
-        Map<iSortingMode,eSortingOrder> sortingOrderMap = new HashMap<>();
-        sortingOrderMap.put(eTagsList_SortingMode.BY_CARDS_COUNT, eSortingOrder.REVERSE);
-        sortingOrderMap.put(eBasicSortingMode.BY_NAME, eSortingOrder.DIRECT);
+        loadList();
+    }
 
-        if (sortingOrderMap.containsKey(sortingMode))
-            return sortingOrderMap.get(sortingMode);
+    @Override
+    protected void onConfigChanged() {
+        super.onConfigChanged();
+    }
 
-        return eSortingOrder.DIRECT;
+    @Override
+    protected void onRefreshRequested() {
+        loadList();
     }
 
     @Override
@@ -87,11 +91,6 @@ public class TagsList_Presenter
     }
 
     @Override
-    protected void onRefreshRequested() {
-        loadList();
-    }
-
-    @Override
     public void onItemLongClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
         onSelectItemClicked(basicDataViewHolder);
     }
@@ -102,14 +101,16 @@ public class TagsList_Presenter
     }
 
     @Override
-    protected void onColdStart() {
-        super.onColdStart();
-        loadList();
-    }
+    protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
 
-    @Override
-    protected void onConfigChanged() {
-        super.onConfigChanged();
+        Map<iSortingMode,eSortingOrder> sortingOrderMap = new HashMap<>();
+        sortingOrderMap.put(eTagsList_SortingMode.BY_CARDS_COUNT, eSortingOrder.REVERSE);
+        sortingOrderMap.put(eBasicSortingMode.BY_NAME, eSortingOrder.DIRECT);
+
+        if (sortingOrderMap.containsKey(sortingMode))
+            return sortingOrderMap.get(sortingMode);
+
+        return eSortingOrder.DIRECT;
     }
 
     /*@Override
@@ -138,6 +139,7 @@ public class TagsList_Presenter
 
     // Внутренние
     private void loadList() {
+
         setRefreshingViewState();
 
         mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
