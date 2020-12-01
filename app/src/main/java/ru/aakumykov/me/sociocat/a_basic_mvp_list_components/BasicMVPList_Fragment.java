@@ -135,10 +135,6 @@ public abstract class BasicMVPList_Fragment
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
-            case R.id.actionSortByNameReverse:
-                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
-                break;
-
             case R.id.actionSortByDateDirect:
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
                 break;
@@ -377,7 +373,7 @@ public abstract class BasicMVPList_Fragment
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_date)
+                .addMenuResource(R.menu.sort_by_date)
                 .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
@@ -412,7 +408,7 @@ public abstract class BasicMVPList_Fragment
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_date)
+                .addMenuResource(R.menu.sort_by_date)
                 .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
                 .addReverseOrderActiveIcon(R.id.actionSortByDateReverse)

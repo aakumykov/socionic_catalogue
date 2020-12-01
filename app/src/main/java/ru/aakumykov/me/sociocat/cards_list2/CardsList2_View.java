@@ -285,7 +285,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
                 .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_comments)
+                .addMenuResource(R.menu.sort_by_comments)
                 .addMenuItemId(R.id.actionSortByComments)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
@@ -312,7 +312,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
                 .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_rating)
+                .addMenuResource(R.menu.sort_by_rating)
                 .addMenuItemId(R.id.actionSortByRating)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
@@ -338,7 +338,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
                 .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_author)
+                .addMenuResource(R.menu.sort_by_author)
                 .addMenuItemId(R.id.actionSortByAuthor)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override

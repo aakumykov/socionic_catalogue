@@ -559,7 +559,7 @@ public abstract class BasicMVPList_View
 
         new SortingMenuItemBuilder()
                 .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_name)
+                .addMenuResource(R.menu.sort_by_name)
                 .addMenuItemId(R.id.actionSortByName)
                 .addMenuInflater(mMenuInflater)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
@@ -583,7 +583,7 @@ public abstract class BasicMVPList_View
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_date)
+                .addMenuResource(R.menu.sort_by_date)
                 .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)

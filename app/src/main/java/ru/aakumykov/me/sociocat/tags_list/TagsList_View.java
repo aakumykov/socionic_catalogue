@@ -185,7 +185,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_cards_count)
+                .addMenuResource(R.menu.sort_by_cards_count)
                 .addDirectOrderMenuItemId(R.id.actionSortByCardsCountDirect)
                 .addReverseOrderMenuItemId(R.id.actionSortByCardsCountReverse)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_cards_count)
