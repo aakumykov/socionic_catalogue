@@ -114,13 +114,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //invalidateOptionsMenu();
-        //checkUnfinishedEdit();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
