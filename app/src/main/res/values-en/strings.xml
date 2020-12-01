@@ -721,6 +721,7 @@
     <string name="TAGS_LIST_you_cannot_delete_tags">You cannot delete tags</string>
     <string name="menu_item_sorted_by_comments">By comments</string>
     <string name="menu_item_sorted_by_rating">By rating</string>
+    <string name="CARDS_LIST_rating">Rating: %1$d</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

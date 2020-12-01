@@ -728,6 +728,7 @@
     <string name="TAGS_LIST_you_cannot_delete_tags">Вы не можете удалять метки</string>
     <string name="menu_item_sorted_by_comments">По комментариям</string>
     <string name="menu_item_sorted_by_rating">По популярности</string>
+    <string name="CARDS_LIST_rating">Оценка: %1$d</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

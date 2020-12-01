@@ -50,6 +50,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @BindView(R.id.authorView) TextView authorView;
     @BindView(R.id.dateView) TextView dateView;
     @BindView(R.id.commentsCountView) TextView commentsCountView;
+    @BindView(R.id.ratingView) TextView ratingView;
 
     private final static String TAG = CardViewHolder_Feed.class.getSimpleName();
     public CardViewHolder_Feed(@NonNull View itemView) {
@@ -82,6 +83,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
         showAuthor(card);
         showDate(card);
         showCommentsCount(card);
+        showRating(card);
 
         if (card.isTextCard()) {
             showQuote(card);
@@ -123,6 +125,12 @@ public class CardViewHolder_Feed extends CardViewHolder {
     private void showCommentsCount(@NonNull Card card) {
         String text = TextUtils.getPluralString(commentsCountView.getContext(), R.plurals.comments_count, card.getCommentsKeys().size());
         commentsCountView.setText(text);
+    }
+
+    private void showRating(@NonNull Card card) {
+        ratingView.setText(
+                TextUtils.getText(ratingView.getContext(), R.string.CARDS_LIST_rating, card.getRating())
+        );
     }
 
     private void showImage(@NonNull Card card) {

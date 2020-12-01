@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
             android:paddingTop="18dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/audioVideoContainer"
@@ -111,6 +111,7 @@
             app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/authorView"
+            android:paddingTop="6dp"
             tools:text="5 мая 2020" />
 
         <TextView
@@ -119,11 +120,23 @@
             android:layout_height="0dp"
             android:paddingHorizontal="12dp"
             android:paddingTop="18dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/authorView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
             tools:text="10 комментариев" />
+
+        <TextView
+            android:id="@+id/ratingView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/authorView"
+            app:layout_constraintTop_toBottomOf="@id/commentsCountView"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="6dp"
+            tools:text="Рейтинг: 5" />
 
         <Space
             android:id="@+id/space"
