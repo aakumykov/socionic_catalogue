@@ -284,7 +284,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
+                .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_comments)
                 .addMenuItemId(R.id.actionSortByComments)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
@@ -295,7 +295,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_COMMENTS == (eCardsList2_SortingMode) sortingMode;
+                        return eCardsList2_SortingMode.BY_COMMENTS.equals(sortingMode);
                     }
                 })
                 .buildMenuItem(
@@ -311,7 +311,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
+                .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_rating)
                 .addMenuItemId(R.id.actionSortByRating)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
@@ -322,7 +322,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_RATING == (eCardsList2_SortingMode) sortingMode;
+                        return eCardsList2_SortingMode.BY_RATING.equals(sortingMode);
                     }
                 })
                 .buildMenuItem(
@@ -337,7 +337,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         new SortingMenuItemBuilder()
                 .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
+                .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_author)
                 .addMenuItemId(R.id.actionSortByAuthor)
                 .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
@@ -348,7 +348,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_AUTHOR == (eCardsList2_SortingMode) sortingMode;
+                        return eCardsList2_SortingMode.BY_AUTHOR.equals(sortingMode);
                     }
                 })
                 .buildMenuItem(

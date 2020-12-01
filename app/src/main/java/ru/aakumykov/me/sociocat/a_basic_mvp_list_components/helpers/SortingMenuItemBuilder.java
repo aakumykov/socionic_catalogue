@@ -27,7 +27,7 @@ public class SortingMenuItemBuilder {
         return this;
     }
 
-    public SortingMenuItemBuilder addTargetMenu(Menu menu) {
+    public SortingMenuItemBuilder addMenuRoot(Menu menu) {
         this.mMenu = menu;
         return this;
     }

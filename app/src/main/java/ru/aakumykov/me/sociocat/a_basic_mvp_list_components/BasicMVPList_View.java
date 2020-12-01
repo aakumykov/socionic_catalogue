@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.exceptions.UnknownViewModeException;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
@@ -158,11 +159,7 @@ public abstract class BasicMVPList_View
                 onBackPressed();
                 break;
 
-            case R.id.actionSortByNameDirect:
-                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
-                break;
-
-            case R.id.actionSortByNameReverse:
+            case R.id.actionSortByName:
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
@@ -527,7 +524,7 @@ public abstract class BasicMVPList_View
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemConstructor()
+        /*new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_name)
@@ -558,6 +555,25 @@ public abstract class BasicMVPList_View
                     }
                 })
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+        */
+
+        new SortingMenuItemBuilder()
+                .addMenuRoot(mSortingSubmenu)
+                .addMenuResource(R.menu.menu_sort_by_name)
+                .addMenuItemId(R.id.actionSortByName)
+                .addMenuInflater(mMenuInflater)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eBasicSortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        return eBasicSortingMode.BY_NAME.equals(sortingMode);
+                    }
+                })
+                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
     private void addSortByDateMenu() {

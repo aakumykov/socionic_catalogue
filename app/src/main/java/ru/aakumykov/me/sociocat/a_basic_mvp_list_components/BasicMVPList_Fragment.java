@@ -42,7 +42,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
-public abstract class BasicMVP_Fragment
+public abstract class BasicMVPList_Fragment
         extends Fragment
         implements iBasicList_Page
 {
@@ -50,7 +50,7 @@ public abstract class BasicMVP_Fragment
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
 
-    private static final String TAG = BasicMVP_Fragment.class.getSimpleName();
+    private static final String TAG = BasicMVPList_Fragment.class.getSimpleName();
 
     protected BasicMVPList_ViewModel mViewModel;
     protected BasicMVPList_Presenter mPresenter;
@@ -131,7 +131,7 @@ public abstract class BasicMVP_Fragment
                 onBackPressed();
                 break;
 
-            case R.id.actionSortByNameDirect:
+            case R.id.actionSortByName:
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
@@ -372,16 +372,17 @@ public abstract class BasicMVP_Fragment
 
     private void addSortByNameMenu() {
 
+        addSortingMenuRootIfNotExists();
+
         new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.menu_sort_by_name)
-                .addDirectOrderMenuItemId(R.id.actionSortByNameDirect)
-                .addReverseOrderMenuItemId(R.id.actionSortByNameReverse)
-                .addReverseOrderActiveIcon(R.id.actionSortByNameReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_name_direct_active)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_name_reverse_active)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_name_direct)
+                .addMenuResource(R.menu.menu_sort_by_date)
+                .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
+                .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
+                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
+                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_date_reverse_active)
+                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_date_direct)
                 .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
@@ -391,7 +392,7 @@ public abstract class BasicMVP_Fragment
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
                         switch ((eBasicSortingMode) sortingMode) {
-                            case BY_NAME:
+                            case BY_DATE:
                                 return true;
                             default:
                                 return false;
@@ -537,5 +538,12 @@ public abstract class BasicMVP_Fragment
         setPageTitle(R.string.page_title_selected_items_count, viewStateData);
     }
 
-
+    protected void addSortingMenuRootIfNotExists() {
+        if (null != mMenu) {
+            if (null == mMenu.findItem(R.id.actionSort)) {
+                mMenuInflater.inflate(R.menu.sorting, mMenu);
+                mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
+            }
+        }
+    }
 }
