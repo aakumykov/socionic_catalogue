@@ -73,6 +73,7 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
         if (sortingMode instanceof eCardsList2_SortingMode) {
             switch ((eCardsList2_SortingMode) sortingMode) {
                 case BY_COMMENTS:
+                case BY_RATING:
                     return eSortingOrder.REVERSE;
                 default:
                     return eSortingOrder.DIRECT;

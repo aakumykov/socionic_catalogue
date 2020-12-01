@@ -727,7 +727,7 @@
     <string name="SNACKBAR_got_it">Ясно</string>
     <string name="TAGS_LIST_you_cannot_delete_tags">Вы не можете удалять метки</string>
     <string name="menu_item_sorted_by_comments">По комментариям</string>
-    <string name="menu_item_sorted_by_rating">По популярности</string>
+    <string name="menu_item_sorted_by_rating">По оценке</string>
     <string name="CARDS_LIST_rating">Оценка: %1$d</string>
 
 
