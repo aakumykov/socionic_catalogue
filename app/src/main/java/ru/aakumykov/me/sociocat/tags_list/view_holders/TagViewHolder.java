@@ -12,16 +12,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class TagViewHolder extends BasicMVP_DataViewHolder {
+public class TagViewHolder extends BasicMVPList_DataViewHolder {
 
     @BindView(R.id.listItem) View listItem;
     @BindView(R.id.checkMark) ImageView checkMark;
@@ -56,8 +56,8 @@ public class TagViewHolder extends BasicMVP_DataViewHolder {
     }
 
     @Override
-    public void initialize(BasicMVP_ListItem basicListItem) {
-        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) basicListItem;
+    public void initialize(BasicMVPList_ListItem basicListItem) {
+        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) basicListItem;
 
         Tag tag = (Tag) dataItem.getPayload();
 

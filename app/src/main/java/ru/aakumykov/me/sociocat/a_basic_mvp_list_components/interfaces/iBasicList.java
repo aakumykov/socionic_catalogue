@@ -6,24 +6,24 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
 public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 {
     boolean isVirgin();
 
-    void setList(List<BasicMVP_ListItem> inputList);
-    void setListAndFilter(List<BasicMVP_ListItem> list);
+    void setList(List<BasicMVPList_ListItem> inputList);
+    void setListAndFilter(List<BasicMVPList_ListItem> list);
 
-    void appendList(List<BasicMVP_ListItem> inputList);
-    void appendListAndSort(List<BasicMVP_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
-    void appendListAndFilter(List<BasicMVP_ListItem> inputList);
+    void appendList(List<BasicMVPList_ListItem> inputList);
+    void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
+    void appendListAndFilter(List<BasicMVPList_ListItem> inputList);
 
-    void addItem(BasicMVP_ListItem item);
-    void insertItem(int position, BasicMVP_ListItem item);
-    void removeItem(BasicMVP_ListItem item);
+    void addItem(BasicMVPList_ListItem item);
+    void insertItem(int position, BasicMVPList_ListItem item);
+    void removeItem(BasicMVPList_ListItem item);
 
     int getVisibleItemsCount();
 
@@ -34,15 +34,15 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     int getOriginalDataItemsCount();
 
-    List<BasicMVP_DataItem> getVisibleDataItems();
+    List<BasicMVPList_DataItem> getVisibleDataItems();
 
-    BasicMVP_ListItem getItem(int position);
-    BasicMVP_DataItem getLastDataItem();
-    BasicMVP_DataItem getLastUnfilteredDataItem();
+    BasicMVPList_ListItem getItem(int position);
+    BasicMVPList_DataItem getLastDataItem();
+    BasicMVPList_DataItem getLastUnfilteredDataItem();
 
     void refreshItem(int position);
 
-    int updateItemInList(@NonNull BasicMVP_DataItem newItem,
+    int updateItemInList(@NonNull BasicMVPList_DataItem newItem,
                          @NonNull iFindItemComparisionCallback comparisionCallback);
 
     void deleteItemFromList(@NonNull iFindItemComparisionCallback comparisionCallback);

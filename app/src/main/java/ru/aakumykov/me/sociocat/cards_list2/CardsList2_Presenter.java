@@ -9,16 +9,16 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
@@ -35,7 +35,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 
-public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsList2_ItemClickListener {
+public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCardsList2_ItemClickListener {
 
     private static final String TAG = CardsList2_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
@@ -90,7 +90,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     @Override
-    public void onItemClicked(BasicMVP_DataViewHolder dataViewHolder) {
+    public void onItemClicked(BasicMVPList_DataViewHolder dataViewHolder) {
 
         if (mListView.isSelectionMode()) {
             onSelectItemClicked(dataViewHolder);
@@ -102,12 +102,12 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
     @Override
-    public void onItemLongClicked(BasicMVP_DataViewHolder dataViewHolder) {
+    public void onItemLongClicked(BasicMVPList_DataViewHolder dataViewHolder) {
         onSelectItemClicked(dataViewHolder);
     }
 
     @Override
-    public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
+    public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
         if (null != mTagFilter)
             loadMoreCardsWithTag();
         else
@@ -209,7 +209,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                             @Override
-                            public BasicMVP_DataItem createDataItem(Object payload) {
+                            public BasicMVPList_DataItem createDataItem(Object payload) {
                                 return new Card_ListItem((Card) payload);
                             }
                         }));
@@ -227,7 +227,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         showThrobberItem();
 
-        BasicMVP_DataItem tailDataItem = mListView.getLastUnfilteredDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getLastUnfilteredDataItem();
         if (null == tailDataItem) {
             showNoMoreCards();
             return;
@@ -240,9 +240,9 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
             public void onListLoadSuccess(List<Card> list) {
                 mListView.hideThrobberItem();
 
-                List<BasicMVP_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                List<BasicMVPList_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
-                    public BasicMVP_DataItem createDataItem(Object object) {
+                    public BasicMVPList_DataItem createDataItem(Object object) {
                         return new Card_ListItem((Card) object);
                     }
                 });
@@ -294,7 +294,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
-                    public BasicMVP_DataItem createDataItem(Object payload) {
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
                 }));
@@ -312,7 +312,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
         showThrobberItem();
 
-        BasicMVP_DataItem lastDataItem = mListView.getLastDataItem();
+        BasicMVPList_DataItem lastDataItem = mListView.getLastDataItem();
 
         if (null == lastDataItem) {
             showNoMoreCards();
@@ -334,7 +334,7 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
 
                 mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
-                    public BasicMVP_DataItem createDataItem(Object payload) {
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
                 }));
@@ -351,10 +351,10 @@ public class CardsList2_Presenter extends BasicMVP_Presenter implements iCardsLi
     }
 
 
-    private Card getCardForViewHolder(BasicMVP_DataViewHolder basicDataViewHolder) {
+    private Card getCardForViewHolder(BasicMVPList_DataViewHolder basicDataViewHolder) {
         int index = basicDataViewHolder.getAdapterPosition();
-        BasicMVP_ListItem listItem = mListView.getItem(index);
-        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) listItem;
+        BasicMVPList_ListItem listItem = mListView.getItem(index);
+        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) listItem;
         return (Card) dataItem.getPayload();
     }
 

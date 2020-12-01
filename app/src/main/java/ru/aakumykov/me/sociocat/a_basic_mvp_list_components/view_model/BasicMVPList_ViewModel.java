@@ -3,7 +3,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model;
 
 import androidx.lifecycle.ViewModel;
 
-public class BasicMVP_ViewModel extends ViewModel
+public class BasicMVPList_ViewModel extends ViewModel
 {
     private Object dataAdapter;
     private Object presenter;

@@ -4,7 +4,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class BasicMVP_Activity
+public class BasicMVPList_Activity
         extends AppCompatActivity
 {
     public void setPageTitle(int titleId) {

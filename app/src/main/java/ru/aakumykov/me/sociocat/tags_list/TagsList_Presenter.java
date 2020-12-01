@@ -11,16 +11,16 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -37,7 +37,7 @@ import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
-        extends BasicMVP_Presenter
+        extends BasicMVPList_Presenter
         implements iTagsList_ItemClickListener
 {
     private static final String TAG = TagsList_Presenter.class.getSimpleName();
@@ -70,7 +70,7 @@ public class TagsList_Presenter
     }
 
     @Override
-    public void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+    public void onItemClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
 
         TagViewHolder tagViewHolder = (TagViewHolder) basicDataViewHolder;
 
@@ -80,7 +80,7 @@ public class TagsList_Presenter
         }
 
         int position = tagViewHolder.getAdapterPosition();
-        BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) mListView.getItem(position);
+        BasicMVPList_DataItem basicDataItem = (BasicMVPList_DataItem) mListView.getItem(position);
         Tag tag = (Tag) basicDataItem.getPayload();
 
         ((iTagsList_View) mPageView).goShowCardsWithTag(tag);
@@ -92,12 +92,12 @@ public class TagsList_Presenter
     }
 
     @Override
-    public void onItemLongClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+    public void onItemLongClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
         onSelectItemClicked(basicDataViewHolder);
     }
 
     @Override
-    public void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder) {
+    public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
 
     }
 
@@ -129,7 +129,7 @@ public class TagsList_Presenter
             return;
         }
 
-        BasicMVP_DataItem dataItem = (BasicMVP_DataItem) mListView.getItem(adapterPosition);
+        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) mListView.getItem(adapterPosition);
         Tag tag = (Tag) dataItem.getPayload();
 
         ((iTagsList_View) mPageView).goEditTag(tag);
@@ -157,8 +157,8 @@ public class TagsList_Presenter
         });
     }
 
-    private List<BasicMVP_ListItem> incapsulate2dataListItems(List<Tag> tagsList) {
-        List<BasicMVP_ListItem> dataItemList = new ArrayList<>();
+    private List<BasicMVPList_ListItem> incapsulate2dataListItems(List<Tag> tagsList) {
+        List<BasicMVPList_ListItem> dataItemList = new ArrayList<>();
         for (Tag tag : tagsList)
             dataItemList.add(new Tag_ListItem(tag));
         return dataItemList;
@@ -179,9 +179,9 @@ public class TagsList_Presenter
             return;
         }
 
-        List<BasicMVP_DataItem> selectedItems = mListView.getSelectedItems();
+        List<BasicMVPList_DataItem> selectedItems = mListView.getSelectedItems();
         StringBuilder messageBuilder = new StringBuilder();
-        for (BasicMVP_DataItem dataItem : selectedItems) {
+        for (BasicMVPList_DataItem dataItem : selectedItems) {
             Tag tag = (Tag) dataItem.getPayload();
             messageBuilder.append(tag.getName());
             messageBuilder.append("\n");
@@ -208,7 +208,7 @@ public class TagsList_Presenter
     }
 
     private void onTagsDeletionConfirmed() {
-        List<BasicMVP_DataItem> selectedItemsList = mListView.getSelectedItems();
+        List<BasicMVPList_DataItem> selectedItemsList = mListView.getSelectedItems();
 
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showSnackbar(R.string.TAGS_LIST_you_cannot_delete_tags, R.string.SNACKBAR_got_it, 10000);
@@ -220,7 +220,7 @@ public class TagsList_Presenter
         deleteTagsFromList(selectedItemsList);
     }
 
-    private void deleteTagsFromList(List<BasicMVP_DataItem> tagsList) {
+    private void deleteTagsFromList(List<BasicMVPList_DataItem> tagsList) {
 
         if (hasInterruptFlag()) {
             mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
@@ -236,7 +236,7 @@ public class TagsList_Presenter
             return;
         }
 
-        BasicMVP_DataItem dataItem = tagsList.get(0);
+        BasicMVPList_DataItem dataItem = tagsList.get(0);
         tagsList.remove(0);
         Tag tag = (Tag) dataItem.getPayload();
 

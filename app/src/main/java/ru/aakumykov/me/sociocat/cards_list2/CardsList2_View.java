@@ -21,9 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_DataAdapter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_View;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
@@ -31,7 +31,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicVie
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
@@ -48,7 +48,7 @@ import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
+public class CardsList2_View extends BasicMVPList_View implements iCardsList2_View {
 
     private static final BasicViewMode DEFAULT_VIEW_MODE = new FeedViewMode();
 
@@ -139,20 +139,20 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
     }
 
     @Override
-    protected BasicMVP_Presenter preparePresenter() {
-        return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
+    protected BasicMVPList_Presenter preparePresenter() {
+        return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
-            public BasicMVP_Presenter onPresenterPrepared() {
+            public BasicMVPList_Presenter onPresenterPrepared() {
                 return new CardsList2_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_NAME);
             }
         });
     }
 
     @Override
-    protected BasicMVP_DataAdapter prepareDataAdapter() {
-        return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
+    protected BasicMVPList_DataAdapter prepareDataAdapter() {
+        return BasicMVPList_Utils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
-            public BasicMVP_DataAdapter onDataAdapterPrepared() {
+            public BasicMVPList_DataAdapter onDataAdapterPrepared() {
                 return new CardsList2_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
             }
         });
@@ -286,7 +286,7 @@ public class CardsList2_View extends BasicMVP_View implements iCardsList2_View {
                 .addTargetMenu(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_comments)
                 .addDirectOrderMenuItemId(R.id.actionSortByComments)
-                .addReverseOrderMenuItemId(R.id.actionSortByCommentsReverse)
+                .addReverseOrderMenuItemId(R.id.actionSortByComments)
                 .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)
                 .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_comments_count_reverse_active)
                 .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_comments_count_direct)

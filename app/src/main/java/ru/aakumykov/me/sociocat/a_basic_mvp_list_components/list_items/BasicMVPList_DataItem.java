@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortableData;
 
-public abstract class BasicMVP_DataItem extends BasicMVP_ListItem {
+public abstract class BasicMVPList_DataItem extends BasicMVPList_ListItem {
 
     // Своейства
     private boolean isSelected = false;

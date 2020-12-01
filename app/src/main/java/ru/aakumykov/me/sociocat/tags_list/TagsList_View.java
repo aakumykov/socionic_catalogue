@@ -12,16 +12,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_DataAdapter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_Presenter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_View;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAdapter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
@@ -31,7 +31,7 @@ import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
 
-public class TagsList_View extends BasicMVP_View implements iTagsList_View {
+public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -97,20 +97,20 @@ public class TagsList_View extends BasicMVP_View implements iTagsList_View {
     }
 
     @Override
-    protected BasicMVP_Presenter preparePresenter() {
-        return BasicMVPUtils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
+    protected BasicMVPList_Presenter preparePresenter() {
+        return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
-            public BasicMVP_Presenter onPresenterPrepared() {
+            public BasicMVPList_Presenter onPresenterPrepared() {
                 return new TagsList_Presenter(new ListViewMode(), eBasicSortingMode.BY_NAME);
             }
         });
     }
 
     @Override
-    protected BasicMVP_DataAdapter prepareDataAdapter() {
-        return BasicMVPUtils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
+    protected BasicMVPList_DataAdapter prepareDataAdapter() {
+        return BasicMVPList_Utils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
-            public BasicMVP_DataAdapter onDataAdapterPrepared() {
+            public BasicMVPList_DataAdapter onDataAdapterPrepared() {
                 return new TagsList_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
             }
         });

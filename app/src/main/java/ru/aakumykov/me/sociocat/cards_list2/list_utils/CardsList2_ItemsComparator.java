@@ -1,17 +1,17 @@
 package ru.aakumykov.me.sociocat.cards_list2.list_utils;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVP_ItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
 import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
+public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
 
     private static final String TAG = CardsList2_ItemsComparator.class.getSimpleName();
 
     @Override
-    public int compare(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         if (mSortingMode instanceof eCardsList2_SortingMode)
             return sortSelf(o1, o2, false);
         else
@@ -19,7 +19,7 @@ public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
     @Override
-    protected int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortSortableItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
 
         eCardsList2_SortingMode sortingMode = (eCardsList2_SortingMode) mSortingMode;
 
@@ -39,9 +39,9 @@ public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    private int sortByAuthor(eCardsList2_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Card card1 = (Card) ((BasicMVP_DataItem) o1).getPayload();
-        Card card2 = (Card) ((BasicMVP_DataItem) o2).getPayload();
+    private int sortByAuthor(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
+        Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 
         String author1 = card1.getUserName();
         String author2 = card2.getUserName();
@@ -53,9 +53,9 @@ public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    private int sortByRating(eCardsList2_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Card card1 = (Card) ((BasicMVP_DataItem) o1).getPayload();
-        Card card2 = (Card) ((BasicMVP_DataItem) o2).getPayload();
+    private int sortByRating(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
+        Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 
         Integer rating1 = card1.getRating();
         Integer rating2 = card2.getRating();
@@ -67,9 +67,9 @@ public class CardsList2_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    private int sortByComments(eCardsList2_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Card card1 = (Card) ((BasicMVP_DataItem) o1).getPayload();
-        Card card2 = (Card) ((BasicMVP_DataItem) o2).getPayload();
+    private int sortByComments(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
+        Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 
         Integer commentsCount1 = card1.getCommentsKeys().size();
         Integer commentsCount2 = card2.getCommentsKeys().size();

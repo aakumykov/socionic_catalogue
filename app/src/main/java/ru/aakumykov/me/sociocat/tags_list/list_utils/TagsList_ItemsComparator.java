@@ -1,18 +1,18 @@
 package ru.aakumykov.me.sociocat.tags_list.list_utils;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVP_ItemsComparator;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
 
-public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
+public class TagsList_ItemsComparator extends BasicMVPList_ItemsComparator {
 
     private static final String TAG = TagsList_ItemsComparator.class.getSimpleName();
 
 
     @Override
-    public int compare(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         if (mSortingMode instanceof eTagsList_SortingMode)
             return sortSelf(o1, o2, false);
         else
@@ -20,7 +20,7 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    protected int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortSortableItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
 
             eTagsList_SortingMode sortingMode = (eTagsList_SortingMode) mSortingMode;
 
@@ -33,9 +33,9 @@ public class TagsList_ItemsComparator extends BasicMVP_ItemsComparator {
     }
 
 
-    private int sortByCardsCount(eTagsList_SortingMode sortingMode, BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        Tag tag1 = (Tag) ((BasicMVP_DataItem) o1).getPayload();
-        Tag tag2 = (Tag) ((BasicMVP_DataItem) o2).getPayload();
+    private int sortByCardsCount(eTagsList_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        Tag tag1 = (Tag) ((BasicMVPList_DataItem) o1).getPayload();
+        Tag tag2 = (Tag) ((BasicMVPList_DataItem) o2).getPayload();
 
         Integer cardsCount1 = tag1.getCardsCount();
         Integer cardsCount2 = tag2.getCardsCount();

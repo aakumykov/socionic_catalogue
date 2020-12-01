@@ -10,12 +10,12 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iListBott
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iListTopItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortableData;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 
-public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
+public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
 
-    private static final String TAG = BasicMVP_ItemsComparator.class.getSimpleName();
+    private static final String TAG = BasicMVPList_ItemsComparator.class.getSimpleName();
     protected iSortingMode mSortingMode;
     protected eSortingOrder mSortingOrder;
 
@@ -27,11 +27,11 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
     }
 
     @Override
-    public int compare(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return sortSelf(o1, o2, true);
     }
 
-    protected int sortSelf(BasicMVP_ListItem o1, BasicMVP_ListItem o2, boolean calledFromBasicComparator) {
+    protected int sortSelf(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2, boolean calledFromBasicComparator) {
         if (hasPinnedItems(o1, o2))
             return sortPinnedItems(o1, o2);
         else {
@@ -43,11 +43,11 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
     }
 
 
-    protected boolean hasPinnedItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected boolean hasPinnedItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return hasTopItem(o1, o2) || hasBottomItem(o1, o2);
     }
 
-    protected int sortPinnedItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortPinnedItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         if (hasTopItem(o1, o2))
             return sortTopItems(o1 ,o2);
 
@@ -60,17 +60,17 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
         }
     }
 
-    protected int sortTopItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortTopItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return 0;
     }
 
-    protected int sortBottomItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    protected int sortBottomItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return 0;
     }
 
-    protected abstract int sortSortableItems(BasicMVP_ListItem o1, BasicMVP_ListItem o2);
+    protected abstract int sortSortableItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2);
 
-    private int sortMiddleItemsBasic(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
+    private int sortMiddleItemsBasic(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         if (mSortingMode instanceof eBasicSortingMode) {
 
             switch ((eBasicSortingMode) mSortingMode) {
@@ -90,19 +90,19 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
         }
     }
 
-    protected boolean hasTopItem(BasicMVP_ListItem item1, BasicMVP_ListItem item2) {
+    protected boolean hasTopItem(BasicMVPList_ListItem item1, BasicMVPList_ListItem item2) {
         return isTopItem(item1) || isTopItem(item2);
     }
 
-    protected boolean hasBottomItem(BasicMVP_ListItem item1, BasicMVP_ListItem item2) {
+    protected boolean hasBottomItem(BasicMVPList_ListItem item1, BasicMVPList_ListItem item2) {
         return isBottomItem(item1) || isBottomItem(item2);
     }
 
-    protected boolean isTopItem(BasicMVP_ListItem listItem) {
+    protected boolean isTopItem(BasicMVPList_ListItem listItem) {
         return listItem instanceof iListTopItem;
     }
 
-    protected boolean isBottomItem(BasicMVP_ListItem listItem) {
+    protected boolean isBottomItem(BasicMVPList_ListItem listItem) {
         return listItem instanceof iListBottomItem;
     }
 
@@ -113,9 +113,9 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
 
 
 
-    private int sortByName(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        BasicMVP_DataItem dataItem1 = (BasicMVP_DataItem) o1;
-        BasicMVP_DataItem dataItem2 = (BasicMVP_DataItem) o2;
+    private int sortByName(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        BasicMVPList_DataItem dataItem1 = (BasicMVPList_DataItem) o1;
+        BasicMVPList_DataItem dataItem2 = (BasicMVPList_DataItem) o2;
 
         iSortableData data1 = (iSortableData) dataItem1.getPayload();
         iSortableData data2 = (iSortableData) dataItem2.getPayload();
@@ -129,9 +129,9 @@ public abstract class BasicMVP_ItemsComparator implements iItemsComparator {
             return name2.compareTo(name1);
     }
 
-    private int sortByDate(BasicMVP_ListItem o1, BasicMVP_ListItem o2) {
-        BasicMVP_DataItem dataItem1 = (BasicMVP_DataItem) o1;
-        BasicMVP_DataItem dataItem2 = (BasicMVP_DataItem) o2;
+    private int sortByDate(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        BasicMVPList_DataItem dataItem1 = (BasicMVPList_DataItem) o1;
+        BasicMVPList_DataItem dataItem2 = (BasicMVPList_DataItem) o2;
 
         iSortableData basicData1 = dataItem1.getBasicData();
         iSortableData basicData2 = dataItem2.getBasicData();

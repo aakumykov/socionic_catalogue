@@ -10,21 +10,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_LoadmoreItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_LoadmoreItem;
 
-public class BasicMVP_LoadmoreViewHolder extends BasicMVP_ViewHolder {
+public class BasicMVPList_LoadmoreViewHolder extends BasicMVPList_ViewHolder {
 
     @BindView(R.id.titleView) TextView titleView;
 
-    public BasicMVP_LoadmoreViewHolder(@NonNull View itemView) {
+    public BasicMVPList_LoadmoreViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
     @Override
-    public void initialize(BasicMVP_ListItem basicListItem) {
-        BasicMVP_LoadmoreItem loadmoreItem = (BasicMVP_LoadmoreItem) basicListItem;
+    public void initialize(BasicMVPList_ListItem basicListItem) {
+        BasicMVPList_LoadmoreItem loadmoreItem = (BasicMVPList_LoadmoreItem) basicListItem;
         if (loadmoreItem.hasTitleId())
             titleView.setText(loadmoreItem.getTitleId());
     }

@@ -38,8 +38,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.PageUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVP_ViewModel;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVP_ViewModelFactory;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
 public abstract class BasicMVP_Fragment
@@ -52,9 +52,9 @@ public abstract class BasicMVP_Fragment
 
     private static final String TAG = BasicMVP_Fragment.class.getSimpleName();
 
-    protected BasicMVP_ViewModel mViewModel;
-    protected BasicMVP_Presenter mPresenter;
-    protected BasicMVP_DataAdapter mDataAdapter;
+    protected BasicMVPList_ViewModel mViewModel;
+    protected BasicMVPList_Presenter mPresenter;
+    protected BasicMVPList_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
     private View mFragmentView;
@@ -65,8 +65,8 @@ public abstract class BasicMVP_Fragment
     private SearchView mSearchView;
 
 
-    protected abstract BasicMVP_Presenter preparePresenter();
-    protected abstract BasicMVP_DataAdapter prepareDataAdapter();
+    protected abstract BasicMVPList_Presenter preparePresenter();
+    protected abstract BasicMVPList_DataAdapter prepareDataAdapter();
     protected abstract RecyclerView.LayoutManager prepareLayoutManager();
 
 
@@ -80,8 +80,8 @@ public abstract class BasicMVP_Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
-                .get(BasicMVP_ViewModel.class);
+        mViewModel = new ViewModelProvider(this, new BasicMVPList_ViewModelFactory())
+                .get(BasicMVPList_ViewModel.class);
         mPresenter = preparePresenter();
         mDataAdapter = prepareDataAdapter();
         mLayoutManager = prepareLayoutManager();
@@ -189,28 +189,28 @@ public abstract class BasicMVP_Fragment
     public void setPageTitle(int titleId) {
         Activity activity = getActivity();
         if (null != activity)
-            ((BasicMVP_Activity) activity).setPageTitle(titleId);
+            ((BasicMVPList_Activity) activity).setPageTitle(titleId);
     }
 
     @Override
     public void setPageTitle(int titleId, Object... formatArguments) {
         Activity activity = getActivity();
         if (null != activity)
-            ((BasicMVP_Activity) activity).setPageTitle(titleId, formatArguments);
+            ((BasicMVPList_Activity) activity).setPageTitle(titleId, formatArguments);
     }
 
     @Override
     public void setPageTitle(String title) {
         Activity activity = getActivity();
         if (null != activity)
-            ((BasicMVP_Activity) activity).setPageTitle(title);
+            ((BasicMVPList_Activity) activity).setPageTitle(title);
     }
 
     @Override
     public void activateUpButton() {
         Activity activity = getActivity();
         if (null != activity)
-            ((BasicMVP_Activity) activity).activateUpButton();
+            ((BasicMVPList_Activity) activity).activateUpButton();
     }
 
     @Override
@@ -239,7 +239,7 @@ public abstract class BasicMVP_Fragment
     public void refreshMenu() {
         Activity activity = getActivity();
         if (null != activity)
-            ((BasicMVP_Activity) getActivity()).refreshMenu();
+            ((BasicMVPList_Activity) getActivity()).refreshMenu();
     }
 
     @Override

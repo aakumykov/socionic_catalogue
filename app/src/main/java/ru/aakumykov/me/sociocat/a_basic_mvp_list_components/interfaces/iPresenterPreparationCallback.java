@@ -1,8 +1,8 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces;
 
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVP_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 
 public interface iPresenterPreparationCallback {
-    BasicMVP_Presenter onPresenterPrepared();
+    BasicMVPList_Presenter onPresenterPrepared();
 }

@@ -13,8 +13,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicVie
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_DataViewHolder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVP_ViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewMode;
@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
 
-public abstract class BasicMVP_Presenter
+public abstract class BasicMVPList_Presenter
         implements
         iBasicMVP_ItemClickListener,
         iSearchViewListener,
@@ -42,7 +42,7 @@ public abstract class BasicMVP_Presenter
     private boolean mInterruptFlag = false;
 
 
-    public BasicMVP_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+    public BasicMVPList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         mCurrentViewMode = defaultViewMode;
         mCurrentSortingMode = defaultSortingMode;
         mCurrentSortingOrder = getDefaultSortingOrderForSortingMode(mCurrentSortingMode);
@@ -192,13 +192,13 @@ public abstract class BasicMVP_Presenter
 
     // iBasicMVP_ItemClickListener
     @Override
-    public abstract void onItemClicked(BasicMVP_DataViewHolder basicDataViewHolder);
+    public abstract void onItemClicked(BasicMVPList_DataViewHolder basicDataViewHolder);
 
     @Override
-    public abstract void onItemLongClicked(BasicMVP_DataViewHolder basicDataViewHolder);
+    public abstract void onItemLongClicked(BasicMVPList_DataViewHolder basicDataViewHolder);
 
     @Override
-    public abstract void onLoadMoreClicked(BasicMVP_ViewHolder basicViewHolder);
+    public abstract void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder);
 
 
     // iSearchViewListener
@@ -231,7 +231,7 @@ public abstract class BasicMVP_Presenter
 
     // iSelectionCommandsListener
     @Override
-    public void onSelectItemClicked(BasicMVP_DataViewHolder basicDataViewHolder) {
+    public void onSelectItemClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
         mListView.toggleItemSelection(basicDataViewHolder.getAdapterPosition());
         updateSelectionModeMenu();
     }

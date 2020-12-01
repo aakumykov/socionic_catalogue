@@ -7,38 +7,38 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 
-public class BasicMVP_ItemsFilter extends Filter {
+public class BasicMVPList_ItemsFilter extends Filter {
 
     // Интерфейсы
     public interface CompleteCallback {
-        void onListFiltered(List<BasicMVP_ListItem> filteredList);
+        void onListFiltered(List<BasicMVPList_ListItem> filteredList);
     }
 
 
     // Свойства
-    private final List<BasicMVP_ListItem> inputList;
+    private final List<BasicMVPList_ListItem> inputList;
     private final CompleteCallback completeCallback;
 
 
     //  Конструктор
-    public BasicMVP_ItemsFilter(List<BasicMVP_ListItem> list4search, CompleteCallback callback) {
+    public BasicMVPList_ItemsFilter(List<BasicMVPList_ListItem> list4search, CompleteCallback callback) {
         this.completeCallback = callback;
         this.inputList = list4search;
     }
 
 
     // Собственные внешние методы
-    public boolean itemIsFilterable(BasicMVP_ListItem basicListItem) {
-        return basicListItem instanceof BasicMVP_DataItem;
+    public boolean itemIsFilterable(BasicMVPList_ListItem basicListItem) {
+        return basicListItem instanceof BasicMVPList_DataItem;
     }
 
-    public boolean itemIsPassedFilter(BasicMVP_ListItem basicListItem, CharSequence constraint) {
+    public boolean itemIsPassedFilter(BasicMVPList_ListItem basicListItem, CharSequence constraint) {
         String filterPattern = constraint.toString().toLowerCase();
 
-        BasicMVP_DataItem basicDataItem = (BasicMVP_DataItem) basicListItem;
+        BasicMVPList_DataItem basicDataItem = (BasicMVPList_DataItem) basicListItem;
         String title = basicDataItem.getTitle();
 
         return title.toLowerCase().contains(filterPattern);
@@ -48,12 +48,12 @@ public class BasicMVP_ItemsFilter extends Filter {
     // Filer
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
-        List<BasicMVP_ListItem> filteredList = new ArrayList<>();
+        List<BasicMVPList_ListItem> filteredList = new ArrayList<>();
 
         if (TextUtils.isEmpty(constraint))
             filteredList.addAll(this.inputList);
         else {
-            for (BasicMVP_ListItem basicListItem : this.inputList) {
+            for (BasicMVPList_ListItem basicListItem : this.inputList) {
                 if (itemIsFilterable(basicListItem))
                     if (itemIsPassedFilter(basicListItem, constraint))
                         filteredList.add(basicListItem);

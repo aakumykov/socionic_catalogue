@@ -38,12 +38,12 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuI
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPUtils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVP_ViewModel;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVP_ViewModelFactory;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewMode;
@@ -58,7 +58,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Selectio
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
-public abstract class BasicMVP_View
+public abstract class BasicMVPList_View
         extends BaseView
         implements iBasicList_Page
 {
@@ -66,11 +66,11 @@ public abstract class BasicMVP_View
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
 
-    private static final String TAG = BasicMVP_View.class.getSimpleName();
+    private static final String TAG = BasicMVPList_View.class.getSimpleName();
 
-    protected BasicMVP_ViewModel mViewModel;
-    protected BasicMVP_Presenter mPresenter;
-    protected BasicMVP_DataAdapter mDataAdapter;
+    protected BasicMVPList_ViewModel mViewModel;
+    protected BasicMVPList_Presenter mPresenter;
+    protected BasicMVPList_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected RecyclerView.ItemDecoration mItemDecoration;
 
@@ -87,8 +87,8 @@ public abstract class BasicMVP_View
     // Абстрактные методы
     protected abstract void setActivityView();
     protected abstract void processActivityResult();
-    protected abstract BasicMVP_Presenter preparePresenter();
-    protected abstract BasicMVP_DataAdapter prepareDataAdapter();
+    protected abstract BasicMVPList_Presenter preparePresenter();
+    protected abstract BasicMVPList_DataAdapter prepareDataAdapter();
 
 
     @Override
@@ -340,7 +340,7 @@ public abstract class BasicMVP_View
 
         mItemDecoration = prepareItemDecoration(mPresenter.getCurrentViewMode());
 
-        BasicMVPUtils.configureRecyclerview(
+        BasicMVPList_Utils.configureRecyclerview(
                 getRecyclerView(),
                 mDataAdapter,
                 mLayoutManager,
@@ -429,9 +429,9 @@ public abstract class BasicMVP_View
 
 
     // Внутренние
-    private BasicMVP_ViewModel prepareViewModel() {
-        return new ViewModelProvider(this, new BasicMVP_ViewModelFactory())
-                .get(BasicMVP_ViewModel.class);
+    private BasicMVPList_ViewModel prepareViewModel() {
+        return new ViewModelProvider(this, new BasicMVPList_ViewModelFactory())
+                .get(BasicMVPList_ViewModel.class);
     }
 
     private void configureSwipeRefresh() {

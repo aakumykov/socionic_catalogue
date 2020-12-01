@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_DataItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 
 public class ListUtils {
 
@@ -17,8 +17,8 @@ public class ListUtils {
         return new ArrayList<>(set1);
     }
 
-    public static <T> List<BasicMVP_ListItem> incapsulateObjects2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
-        List<BasicMVP_ListItem> outputList = new ArrayList<>();
+    public static <T> List<BasicMVPList_ListItem> incapsulateObjects2basicItemsList(List<T> inputList, iIncapsulationCallback callback) {
+        List<BasicMVPList_ListItem> outputList = new ArrayList<>();
         for (Object object : inputList)
             outputList.add(callback.createDataItem(object));
         return outputList;
@@ -26,6 +26,6 @@ public class ListUtils {
 
 
     public interface iIncapsulationCallback {
-        BasicMVP_DataItem createDataItem(Object payload);
+        BasicMVPList_DataItem createDataItem(Object payload);
     }
 }

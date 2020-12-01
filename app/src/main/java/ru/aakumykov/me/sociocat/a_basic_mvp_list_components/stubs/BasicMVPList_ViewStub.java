@@ -11,7 +11,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicLis
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
-public class BasicMVP_ViewStub implements iBasicList_Page {
+public class BasicMVPList_ViewStub implements iBasicList_Page {
 
     @Override
     public void setDefaultPageTitle() {

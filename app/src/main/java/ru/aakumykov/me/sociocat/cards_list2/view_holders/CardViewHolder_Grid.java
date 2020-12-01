@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVP_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardViewHolder_Grid extends CardViewHolder {
@@ -20,7 +20,7 @@ public class CardViewHolder_Grid extends CardViewHolder {
 
 
     @Override
-    public void initialize(BasicMVP_ListItem basicListItem) {
+    public void initialize(BasicMVPList_ListItem basicListItem) {
         super.initialize(basicListItem);
 
         Card card = extractCardFromListItem(basicListItem);
