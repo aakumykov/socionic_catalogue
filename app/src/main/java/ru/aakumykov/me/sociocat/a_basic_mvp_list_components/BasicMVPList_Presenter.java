@@ -146,7 +146,7 @@ public abstract class BasicMVPList_Presenter
     }
 
     protected void onColdStart() {
-        setNeutralViewState();
+        //setNeutralViewState(); // Не место! Дочерние компоненты сами решают, какой статус делать вначале.
     }
 
     protected void onConfigChanged() {
