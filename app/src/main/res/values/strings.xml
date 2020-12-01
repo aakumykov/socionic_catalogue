@@ -726,7 +726,8 @@
     <string name="CARDS_LIST_error_tag_name_missing">Отсутствует имя метки</string>
     <string name="SNACKBAR_got_it">Ясно</string>
     <string name="TAGS_LIST_you_cannot_delete_tags">Вы не можете удалять метки</string>
-    <string name="menu_item_sorted_by_comments">По числу комментариев</string>
+    <string name="menu_item_sorted_by_comments">По комментариям</string>
+    <string name="menu_item_sorted_by_rating">По популярности</string>
 
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->

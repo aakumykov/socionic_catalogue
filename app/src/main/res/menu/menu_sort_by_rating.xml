@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionSortByAuthor"
-        android:icon="@drawable/ic_menu_sort_by_author"
-        android:title="@string/menu_item_sorted_by_author"
+        android:id="@+id/actionSortByRating"
+        android:icon="@drawable/ic_menu_sort_by_rating"
+        android:title="@string/menu_item_sorted_by_rating"
         app:showAsAction="never" />
 
 </menu>

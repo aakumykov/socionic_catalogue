@@ -97,12 +97,12 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         if (R.id.actionSortByComments == id) {
             mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_COMMENTS);
         }
-        /*else if (R.id.actionSortBy == id || R.id.actionSortByCommentsReverse == id) {
-
+        else if (R.id.actionSortByAuthor == id) {
+            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_AUTHOR);
         }
-        else if (R.id.actionSortByCommentsDirect == id || R.id.actionSortByCommentsReverse == id) {
-
-        }*/
+        else if (R.id.actionSortByRating == id) {
+            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_RATING);
+        }
         else {
             return super.onOptionsItemSelected(item);
         }
@@ -305,10 +305,54 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
     protected void addSortByRatingMenu() {
 
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItemBuilder()
+                .addMenuInflater(mMenuInflater)
+                .addTargetMenu(mSortingSubmenu)
+                .addMenuResource(R.menu.menu_sort_by_rating)
+                .addMenuItemId(R.id.actionSortByRating)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eCardsList2_SortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        return eCardsList2_SortingMode.BY_RATING == (eCardsList2_SortingMode) sortingMode;
+                    }
+                })
+                .buildMenuItem(
+                        mPresenter.getCurrentSortingMode(),
+                        mPresenter.getCurrentSortingOrder()
+                );
     }
 
     protected void addSortByAuthorMenu() {
 
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItemBuilder()
+                .addMenuInflater(mMenuInflater)
+                .addTargetMenu(mSortingSubmenu)
+                .addMenuResource(R.menu.menu_sort_by_author)
+                .addMenuItemId(R.id.actionSortByAuthor)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eCardsList2_SortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        return eCardsList2_SortingMode.BY_AUTHOR == (eCardsList2_SortingMode) sortingMode;
+                    }
+                })
+                .buildMenuItem(
+                        mPresenter.getCurrentSortingMode(),
+                        mPresenter.getCurrentSortingOrder()
+                );
     }
 
 
