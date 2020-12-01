@@ -29,7 +29,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder_old;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -365,12 +365,12 @@ public abstract class BasicMVPList_Fragment
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder()
+        new SortingMenuItemBuilder_old()
                 .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.sort_by_name)
                 .addMenuItemId(R.id.actionSortByName)
                 .addMenuInflater(mMenuInflater)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;
@@ -388,12 +388,12 @@ public abstract class BasicMVPList_Fragment
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder()
+        new SortingMenuItemBuilder_old()
                 .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.sort_by_date)
                 .addMenuItemId(R.id.actionSortByDate)
                 .addMenuInflater(mMenuInflater)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;

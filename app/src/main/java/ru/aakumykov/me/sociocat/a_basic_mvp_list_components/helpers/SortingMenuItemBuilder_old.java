@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 
-public class SortingMenuItemBuilder {
+public class SortingMenuItemBuilder_old {
 
     private final static String DIRECT_ARROW = "↓ ";
     private final static String REVERSE_ARROW = "↑ ";
@@ -22,27 +22,27 @@ public class SortingMenuItemBuilder {
     private iSortingModeParamsCallback mParamsCallback;
 
 
-    public SortingMenuItemBuilder addMenuInflater(MenuInflater inflater) {
+    public SortingMenuItemBuilder_old addMenuInflater(MenuInflater inflater) {
         this.mMenuInflater = inflater;
         return this;
     }
 
-    public SortingMenuItemBuilder addMenuRoot(Menu menu) {
+    public SortingMenuItemBuilder_old addMenuRoot(Menu menu) {
         this.mMenu = menu;
         return this;
     }
 
-    public SortingMenuItemBuilder addMenuResource(int menuResource) {
+    public SortingMenuItemBuilder_old addMenuResource(int menuResource) {
         this.mMenuResourceId = menuResource;
         return this;
     }
 
-    public SortingMenuItemBuilder addMenuItemId(int menuItemId) {
+    public SortingMenuItemBuilder_old addMenuItemId(int menuItemId) {
         mMenuItemId = menuItemId;
         return this;
     }
 
-    public SortingMenuItemBuilder addSortingModeParamsCallback(iSortingModeParamsCallback paramsCallback) {
+    public SortingMenuItemBuilder_old addSortingModeParamsCallback(iSortingModeParamsCallback paramsCallback) {
         this.mParamsCallback = paramsCallback;
         return this;
     }
