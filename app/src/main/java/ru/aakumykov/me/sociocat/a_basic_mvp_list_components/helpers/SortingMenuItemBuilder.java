@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 
-public class SortingMenuItemConstructor2 {
+public class SortingMenuItemBuilder {
 
     public interface iSortingModeParamsCallback {
         boolean isSortingModeComplains(iSortingMode sortingMode);
@@ -20,47 +20,51 @@ public class SortingMenuItemConstructor2 {
 
     private MenuInflater mMenuInflater;
     private Menu mMenu;
-    private int menuResourceId;
-    private int menuItemId;
-    private int menuIconId;
-    private iSortingModeParamsCallback paramsCallback;
+    private int mMenuResourceId;
+    private int mMenuItemId;
+    private iSortingModeParamsCallback mParamsCallback;
 
 
-    public SortingMenuItemConstructor2 addMenuInflater(MenuInflater inflater) {
+    public SortingMenuItemBuilder addMenuInflater(MenuInflater inflater) {
         this.mMenuInflater = inflater;
         return this;
     }
 
-    public SortingMenuItemConstructor2 addTargetMenu(Menu menu) {
+    public SortingMenuItemBuilder addTargetMenu(Menu menu) {
         this.mMenu = menu;
         return this;
     }
 
-    public SortingMenuItemConstructor2 addMenuResource(int menuResource) {
-        this.menuResourceId = menuResource;
+    public SortingMenuItemBuilder addMenuResource(int menuResource) {
+        this.mMenuResourceId = menuResource;
         return this;
     }
 
-    public SortingMenuItemConstructor2 addSortingModeParamsCallback(iSortingModeParamsCallback paramsCallback) {
-        this.paramsCallback = paramsCallback;
+    public SortingMenuItemBuilder addMenuItemId(int menuItemId) {
+        mMenuItemId = menuItemId;
         return this;
     }
 
-    public void makeMenuItem(iSortingMode targetSortingMode, eSortingOrder targetSortingOrder) {
+    public SortingMenuItemBuilder addSortingModeParamsCallback(iSortingModeParamsCallback paramsCallback) {
+        this.mParamsCallback = paramsCallback;
+        return this;
+    }
+
+    public void buildMenuItem(iSortingMode targetSortingMode, eSortingOrder targetSortingOrder) {
 
         if (null == mMenuInflater || null == mMenu)
             return;
 
-        mMenuInflater.inflate(menuResourceId, mMenu);
+        mMenuInflater.inflate(mMenuResourceId, mMenu);
 
-        if (paramsCallback.isSortingModeComplains(targetSortingMode))
+        if (mParamsCallback.isSortingModeComplains(targetSortingMode))
         {
-            if (paramsCallback.isSortingModeActive(targetSortingMode))
+            if (mParamsCallback.isSortingModeActive(targetSortingMode))
             {
-                MenuItem menuItem = mMenu.findItem(menuItemId);
+                MenuItem menuItem = mMenu.findItem(mMenuItemId);
                 if (null != menuItem)
                 {
-                    setSortingArrow(menuItem, paramsCallback.isDirectOrder(targetSortingOrder));
+                    setSortingArrow(menuItem, mParamsCallback.isDirectOrder(targetSortingOrder));
                 }
             }
         }

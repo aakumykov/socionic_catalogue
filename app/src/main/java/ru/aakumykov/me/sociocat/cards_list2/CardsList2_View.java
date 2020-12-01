@@ -26,7 +26,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Present
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
@@ -281,7 +281,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemConstructor()
+        /*new SortingMenuItemConstructor()
                 .addMenuInflater(mMenuInflater)
                 .addTargetMenu(mSortingSubmenu)
                 .addMenuResource(R.menu.menu_sort_by_comments)
@@ -312,6 +312,34 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                     }
                 })
                 .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+        */
+
+        new SortingMenuItemBuilder()
+                .addMenuInflater(mMenuInflater)
+                .addTargetMenu(mSortingSubmenu)
+                .addMenuResource(R.menu.menu_sort_by_comments)
+                .addMenuItemId(R.id.actionSortByComments)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eCardsList2_SortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        return eCardsList2_SortingMode.BY_COMMENTS == (eCardsList2_SortingMode) sortingMode;
+                    }
+
+                    @Override
+                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
+                        return sortingOrder.isDirect();
+                    }
+                })
+                .buildMenuItem(
+                        mPresenter.getCurrentSortingMode(),
+                        mPresenter.getCurrentSortingOrder()
+                );
+
     }
 
     protected void addSortByRatingMenu() {
