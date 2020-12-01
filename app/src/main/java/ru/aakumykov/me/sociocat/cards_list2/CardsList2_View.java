@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder_old;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
@@ -284,12 +284,14 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_comments)
-                .addMenuItemId(R.id.actionSortByComments)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_comments)
+                .addInflatedMenuItemId(R.id.actionSortByComments)
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eCardsList2_SortingMode;
@@ -300,23 +302,21 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                         return eCardsList2_SortingMode.BY_COMMENTS.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(
-                        mPresenter.getCurrentSortingMode(),
-                        mPresenter.getCurrentSortingOrder()
-                );
-
+                .create();
     }
 
     protected void addSortByRatingMenu() {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_rating)
-                .addMenuItemId(R.id.actionSortByRating)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_rating)
+                .addInflatedMenuItemId(R.id.actionSortByRating)
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eCardsList2_SortingMode;
@@ -327,22 +327,21 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                         return eCardsList2_SortingMode.BY_RATING.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(
-                        mPresenter.getCurrentSortingMode(),
-                        mPresenter.getCurrentSortingOrder()
-                );
+                .create();
     }
 
     protected void addSortByAuthorMenu() {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_author)
-                .addMenuItemId(R.id.actionSortByAuthor)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_author)
+                .addInflatedMenuItemId(R.id.actionSortByAuthor)
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eCardsList2_SortingMode;
@@ -353,10 +352,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                         return eCardsList2_SortingMode.BY_AUTHOR.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(
-                        mPresenter.getCurrentSortingMode(),
-                        mPresenter.getCurrentSortingOrder()
-                );
+                .create();
     }
 
 

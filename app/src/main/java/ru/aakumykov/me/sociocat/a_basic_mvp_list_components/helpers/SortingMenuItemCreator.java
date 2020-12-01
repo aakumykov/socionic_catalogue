@@ -14,18 +14,21 @@ public class SortingMenuItemCreator {
     private final static String DIRECT_ARROW = "↓ ";
     private final static String REVERSE_ARROW = "↑ ";
 
-    private MenuInflater mMenuInflater;
-    private Menu mRootMenu;
-    private int mMenuResource;
-    private int mMenuItemId;
-    private iSortingMode mSortingMode;
-    private eSortingOrder mSortingOrder;
-    private SortingMenuItemCreator.iSortingModeParamsCallback mParamsCallback;
+    private final MenuInflater mMenuInflater;
+    private final Menu mRootMenu;
+
+    private final int mMenuResource;
+    private final int mMenuItemId;
+
+    private final iSortingMode mSortingMode;
+    private final eSortingOrder mSortingOrder;
+
+    private final SortingMenuItemCreator.iSortingModeParamsCallback mParamsCallback;
 
 
     public static class Builder {
 
-        private final MenuInflater mMenuInflater;
+        private MenuInflater mMenuInflater = null;
         private Menu mRootMenu = null;
         private int mMenuResource = -1;
         private int mMenuItemId = -1;
@@ -33,12 +36,15 @@ public class SortingMenuItemCreator {
         private eSortingOrder mSortingOrder = null;
         private SortingMenuItemCreator.iSortingModeParamsCallback mParamsCallback = null;
 
-
-        public Builder(MenuInflater menuInflater) {
-            mMenuInflater = menuInflater;
+        public Builder() {
         }
 
-        public Builder setRootMenu(Menu menu) {
+        public Builder addMenuInflater(MenuInflater menuInflater) {
+            mMenuInflater = menuInflater;
+            return this;
+        }
+
+        public Builder addRootMenu(Menu menu) {
             mRootMenu = menu;
             return this;
         }
@@ -48,7 +54,7 @@ public class SortingMenuItemCreator {
             return this;
         }
 
-        public Builder addMenuItemId(int menuItemId) {
+        public Builder addInflatedMenuItemId(int menuItemId) {
             mMenuItemId = menuItemId;
             return this;
         }
@@ -69,7 +75,7 @@ public class SortingMenuItemCreator {
         }
 
 
-        public void createMenuItem() {
+        public void create() {
             new SortingMenuItemCreator(this).create();
         }
     }
@@ -98,6 +104,10 @@ public class SortingMenuItemCreator {
     }
 
     private SortingMenuItemCreator(Builder builder) throws RuntimeException {
+
+        mMenuInflater = builder.mMenuInflater;
+        if (null == mMenuInflater)
+            throw new SortingMenuItemBuilder_Exception("Вы должны добавить MenuInflater");
 
         mRootMenu = builder.mRootMenu;
         if (null == mRootMenu)

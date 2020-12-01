@@ -16,7 +16,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder_old;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -184,12 +184,12 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_cards_count)
-                .addMenuItemId(R.id.actionSortByCardsCount)
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_cards_count)
+                .addInflatedMenuItemId(R.id.actionSortByCardsCount)
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eTagsList_SortingMode;
@@ -200,7 +200,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
                         return eTagsList_SortingMode.BY_CARDS_COUNT.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .create();
     }
 
     private void processTagEditionResult(int resultCode, @Nullable Intent data) {

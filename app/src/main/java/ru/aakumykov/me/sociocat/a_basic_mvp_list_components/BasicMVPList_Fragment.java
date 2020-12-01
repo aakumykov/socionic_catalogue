@@ -29,7 +29,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder_old;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -361,16 +361,18 @@ public abstract class BasicMVPList_Fragment
         mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
     }
 
-    private void addSortByNameMenu() {
+    protected void addSortByNameMenu() {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_name)
-                .addMenuItemId(R.id.actionSortByName)
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_name)
+                .addInflatedMenuItemId(R.id.actionSortByName)
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;
@@ -381,19 +383,21 @@ public abstract class BasicMVPList_Fragment
                         return eBasicSortingMode.BY_NAME.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .create();
     }
 
-    private void addSortByDateMenu() {
+    protected void addSortByDateMenu() {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemBuilder_old()
-                .addMenuRoot(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_date)
-                .addMenuItemId(R.id.actionSortByDate)
+        new SortingMenuItemCreator.Builder()
                 .addMenuInflater(mMenuInflater)
-                .addSortingModeParamsCallback(new SortingMenuItemBuilder_old.iSortingModeParamsCallback() {
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_date)
+                .addInflatedMenuItemId(R.id.actionSortByDate)
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;
@@ -404,7 +408,7 @@ public abstract class BasicMVPList_Fragment
                         return eBasicSortingMode.BY_DATE.equals(sortingMode);
                     }
                 })
-                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .create();
     }
 
 
