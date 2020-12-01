@@ -16,11 +16,11 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
@@ -184,12 +184,12 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemCreator.Builder()
+        new SortingMenuItem.Builder()
                 .addMenuInflater(mMenuInflater)
                 .addRootMenu(mSortingSubmenu)
                 .addInflatedMenuResource(R.menu.sort_by_cards_count)
                 .addInflatedMenuItemId(R.id.actionSortByCardsCount)
-                .addSortingModeParamsCallback(new SortingMenuItemCreator.iSortingModeParamsCallback() {
+                .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eTagsList_SortingMode;

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers;
+package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 
-public class SortingMenuItemCreator {
+public class SortingMenuItem {
 
     private final static String DIRECT_ARROW = "↓ ";
     private final static String REVERSE_ARROW = "↑ ";
@@ -23,7 +23,7 @@ public class SortingMenuItemCreator {
     private final iSortingMode mSortingMode;
     private final eSortingOrder mSortingOrder;
 
-    private final SortingMenuItemCreator.iSortingModeParamsCallback mParamsCallback;
+    private final SortingMenuItem.iSortingModeParamsCallback mParamsCallback;
 
 
     public static class Builder {
@@ -34,7 +34,7 @@ public class SortingMenuItemCreator {
         private int mMenuItemId = -1;
         private iSortingMode mSortingMode = null;
         private eSortingOrder mSortingOrder = null;
-        private SortingMenuItemCreator.iSortingModeParamsCallback mParamsCallback = null;
+        private SortingMenuItem.iSortingModeParamsCallback mParamsCallback = null;
 
         public Builder() {
         }
@@ -59,7 +59,7 @@ public class SortingMenuItemCreator {
             return this;
         }
 
-        public Builder addSortingModeParamsCallback(SortingMenuItemCreator.iSortingModeParamsCallback callback) {
+        public Builder addSortingModeParamsCallback(SortingMenuItem.iSortingModeParamsCallback callback) {
             mParamsCallback = callback;
             return this;
         }
@@ -76,7 +76,7 @@ public class SortingMenuItemCreator {
 
 
         public void create() {
-            new SortingMenuItemCreator(this).create();
+            new SortingMenuItem(this).create();
         }
     }
 
@@ -103,7 +103,7 @@ public class SortingMenuItemCreator {
         }
     }
 
-    private SortingMenuItemCreator(Builder builder) throws RuntimeException {
+    private SortingMenuItem(Builder builder) throws RuntimeException {
 
         mMenuInflater = builder.mMenuInflater;
         if (null == mMenuInflater)
@@ -123,7 +123,7 @@ public class SortingMenuItemCreator {
 
         mParamsCallback = builder.mParamsCallback;
         if (null == mParamsCallback)
-            throw new SortingMenuItemBuilder_Exception("Вы должны добавить объект SortingMenuItemCreator.iSortingModeParamsCallback");
+            throw new SortingMenuItemBuilder_Exception("Вы должны добавить объект SortingMenuItem.iSortingModeParamsCallback");
 
         mSortingMode = builder.mSortingMode;
         if (null == mSortingMode)
