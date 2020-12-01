@@ -55,8 +55,10 @@ public class SortingMenuItemBuilder {
         if (null == mMenuInflater || null == mMenu)
             return;
 
+        // Пункт меню добавляется к заданному в качестве родительского.
         mMenuInflater.inflate(mMenuResourceId, mMenu);
 
+        // Пункт меню "активируется" (отображается направление сортировки), если совпадает.
         if (mParamsCallback.isSortingModeComplains(targetSortingMode))
         {
             if (mParamsCallback.isSortingModeActive(targetSortingMode))
@@ -71,8 +73,8 @@ public class SortingMenuItemBuilder {
     }
 
     private void setSortingArrow(@NonNull MenuItem menuItem, boolean isDirectOrder) {
-        String reverseArrow = "↑";
-        String directArrow = "↓";
+        String reverseArrow = "↓";
+        String directArrow = "↑";
 
         String title = menuItem.getTitle().toString();
 
