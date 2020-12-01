@@ -6,6 +6,6 @@
   <path
       android:pathData="M8.5508,13.6216L14.2785,13.6216L11.4146,6.2006ZM4.14,19.2762L4.14,18.1682L5.5092,18.1682L11.0697,3.6712h1.7559l5.5709,14.497h1.5365v1.1079h-5.6755v-1.1079h1.735L14.6861,14.74L8.1223,14.74l-1.3065,3.4283h1.7141v1.1079z"
       android:strokeWidth="0.535145"
-      android:fillColor="@color/icon_grey"
+      android:fillColor="@color/menu_icon_grey"
       android:strokeColor="#00000000"/>
 </vector>

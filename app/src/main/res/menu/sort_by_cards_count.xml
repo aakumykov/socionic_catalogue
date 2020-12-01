@@ -3,13 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionSortByCardsCountDirect"
-        android:icon="@drawable/ic_menu_sort_by_cards_count"
-        android:title="@string/menu_item_sorted_by_cards_count"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/actionSortByCardsCountReverse"
+        android:id="@+id/actionSortByCardsCount"
         android:icon="@drawable/ic_menu_sort_by_cards_count"
         android:title="@string/menu_item_sorted_by_cards_count"
         app:showAsAction="never" />

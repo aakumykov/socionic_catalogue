@@ -16,8 +16,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -75,7 +74,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
         int itemId = item.getItemId();
 
-        if (R.id.actionSortByCardsCountDirect == itemId || R.id.actionSortByCardsCountReverse == itemId) {
+        if (R.id.actionSortByCardsCount == itemId) {
             mPresenter.onSortMenuItemClicked(eTagsList_SortingMode.BY_CARDS_COUNT);
         }
         else if (R.id.actionDelete == itemId) {
@@ -182,37 +181,25 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
     private void addSortByCardsCountMenuItem() {
 
-        new SortingMenuItemConstructor()
-                .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItemBuilder()
+                .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.sort_by_cards_count)
-                .addDirectOrderMenuItemId(R.id.actionSortByCardsCountDirect)
-                .addReverseOrderMenuItemId(R.id.actionSortByCardsCountReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_cards_count)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_cards_count)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_cards_count)
-                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
+                .addMenuItemId(R.id.actionSortByCardsCount)
+                .addMenuInflater(mMenuInflater)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eTagsList_SortingMode;
+                        return sortingMode instanceof eBasicSortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eTagsList_SortingMode) sortingMode) {
-                            case BY_CARDS_COUNT:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
+                        return eTagsList_SortingMode.BY_CARDS_COUNT.equals(sortingMode);
                     }
                 })
-                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
     private void processTagEditionResult(int resultCode, @Nullable Intent data) {
