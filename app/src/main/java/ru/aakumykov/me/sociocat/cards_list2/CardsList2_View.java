@@ -122,6 +122,8 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         addProfileMenuItem();
 
         addSortByNameMenu();
+        addSortByDateMenu();
+
         addSortByCommentsMenu();
         addSortByRatingMenu();
         addSortByAuthorMenu();

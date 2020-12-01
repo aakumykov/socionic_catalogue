@@ -29,8 +29,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemConstructor;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.helpers.SortingMenuItemBuilder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -135,11 +134,7 @@ public abstract class BasicMVPList_Fragment
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_NAME);
                 break;
 
-            case R.id.actionSortByDateDirect:
-                mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
-                break;
-
-            case R.id.actionSortByDateReverse:
+            case R.id.actionSortByDate:
                 mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
                 break;
 
@@ -370,16 +365,12 @@ public abstract class BasicMVPList_Fragment
 
         addSortingMenuRootIfNotExists();
 
-        new SortingMenuItemConstructor()
+        new SortingMenuItemBuilder()
+                .addMenuRoot(mSortingSubmenu)
+                .addMenuResource(R.menu.sort_by_name)
+                .addMenuItemId(R.id.actionSortByName)
                 .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
-                .addMenuResource(R.menu.sort_by_date)
-                .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
-                .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_date_reverse_active)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_date_direct)
-                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;
@@ -387,35 +378,22 @@ public abstract class BasicMVPList_Fragment
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eBasicSortingMode) sortingMode) {
-                            case BY_DATE:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
+                        return eBasicSortingMode.BY_NAME.equals(sortingMode);
                     }
                 })
-                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
     private void addSortByDateMenu() {
 
-        new SortingMenuItemConstructor()
-                .addMenuInflater(mMenuInflater)
-                .addTargetMenu(mSortingSubmenu)
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItemBuilder()
+                .addMenuRoot(mSortingSubmenu)
                 .addMenuResource(R.menu.sort_by_date)
-                .addDirectOrderMenuItemId(R.id.actionSortByDateDirect)
-                .addReverseOrderMenuItemId(R.id.actionSortByDateReverse)
-                .addReverseOrderActiveIcon(R.id.actionSortByDateReverse)
-                .addDirectOrderActiveIcon(R.drawable.ic_menu_sort_by_date_direct_active)
-                .addReverseOrderActiveIcon(R.drawable.ic_menu_sort_by_date_reverse_active)
-                .addDirectOrderInactiveIcon(R.drawable.ic_menu_sort_by_date_direct)
-                .addSortingModeParamsCallback(new SortingMenuItemConstructor.iSortingModeParamsCallback() {
+                .addMenuItemId(R.id.actionSortByDate)
+                .addMenuInflater(mMenuInflater)
+                .addSortingModeParamsCallback(new SortingMenuItemBuilder.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
                         return sortingMode instanceof eBasicSortingMode;
@@ -423,20 +401,10 @@ public abstract class BasicMVPList_Fragment
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        switch ((eBasicSortingMode) sortingMode) {
-                            case BY_DATE:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public boolean isDirectOrder(eSortingOrder sortingOrder) {
-                        return sortingOrder.isDirect();
+                        return eBasicSortingMode.BY_DATE.equals(sortingMode);
                     }
                 })
-                .makeMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
+                .buildMenuItem(mPresenter.getCurrentSortingMode(), mPresenter.getCurrentSortingOrder());
     }
 
 
