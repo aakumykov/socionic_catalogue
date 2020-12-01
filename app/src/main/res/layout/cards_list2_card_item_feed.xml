@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/elementView"
@@ -47,9 +46,9 @@
             android:fontFamily="serif"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
+            android:textColor="@color/quoteTextColor"
             android:textSize="18sp"
             android:textStyle="italic"
-            android:textColor="@color/quoteTextColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleView"
@@ -96,34 +95,44 @@
             android:id="@+id/authorView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="18dp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/audioVideoContainer"
-            android:paddingTop="18dp"
-            android:textSize="16dp"
-            android:paddingHorizontal="12dp"
-            android:paddingBottom="10dp"
             tools:text="Имя Автора" />
+
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/authorView"
+            tools:text="5 мая 2020" />
 
         <TextView
             android:id="@+id/commentsCountView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="10dp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView"
-            android:textSize="16dp"
-            android:paddingTop="18dp"
-            android:paddingHorizontal="12dp"
-            android:paddingBottom="10dp"
             tools:text="10 комментариев" />
 
         <Space
             android:id="@+id/space"
             android:layout_width="0dp"
             android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/authorView" />
+            app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
         <View
             android:id="@+id/highlightingOverlay"

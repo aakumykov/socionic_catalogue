@@ -34,6 +34,7 @@ import butterknife.BindView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.DateUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -47,6 +48,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
     @BindView(R.id.authorView) TextView authorView;
+    @BindView(R.id.dateView) TextView dateView;
     @BindView(R.id.commentsCountView) TextView commentsCountView;
 
     private final static String TAG = CardViewHolder_Feed.class.getSimpleName();
@@ -78,6 +80,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
         super.displayCard(card);
 
         showAuthor(card);
+        showDate(card);
         showCommentsCount(card);
 
         if (card.isTextCard()) {
@@ -120,6 +123,10 @@ public class CardViewHolder_Feed extends CardViewHolder {
     private void showAuthor(@NonNull Card card) {
         String text = TextUtils.getText(authorView.getContext(), R.string.CARDS_LIST_author, card.getUserName());
         authorView.setText(text);
+    }
+
+    private void showDate(@NonNull Card card) {
+        dateView.setText(DateUtils.long2date(card.getCTime()));
     }
 
     private void showCommentsCount(@NonNull Card card) {
