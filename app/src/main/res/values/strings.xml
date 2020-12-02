@@ -694,7 +694,7 @@
     <string name="menu_item_sorted_by_name">По имени</string>
     <string name="menu_item_clear_selection">Снять выделение</string>
     <string name="filter">Фильтр</string>
-    <string name="menu_item_sort">Сортировать</string>
+    <string name="menu_item_sort">Сортировка</string>
     <string name="page_title_selected_items_count">Выбрано: %1$d</string>
     <string name="menu_item_sorted_by_cards_count">По числу карточек</string>
     <string name="CARDS_LIST_card_has_been_deleted">Карточка удалена</string>
