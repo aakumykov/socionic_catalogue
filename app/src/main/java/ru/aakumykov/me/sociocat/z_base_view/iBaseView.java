@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.base_view;
+package ru.aakumykov.me.sociocat.z_base_view;
 
 import android.app.Activity;
 import android.content.Context;

@@ -7,12 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class PreferencesActivity extends BaseView {
 

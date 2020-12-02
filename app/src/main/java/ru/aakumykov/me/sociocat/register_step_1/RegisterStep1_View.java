@@ -13,14 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class RegisterStep1_View extends BaseView implements iRegisterStep1.View {
 

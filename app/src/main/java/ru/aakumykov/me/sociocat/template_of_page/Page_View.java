@@ -22,12 +22,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.template_of_page.models.Item;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModelFactory;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class Page_View extends BaseView implements
         iPage.iView,

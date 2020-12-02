@@ -54,8 +54,8 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public abstract class BasicMVPList_View
         extends BaseView

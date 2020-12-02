@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 @SuppressLint("Registered")
 public class ResetPasswordStep1_ViewStub extends BaseView_Stub implements iResetPasswordStep1.View {

@@ -20,12 +20,12 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEdit_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class TagEdit_View extends BaseView
         implements iTagEdit_View, LifecycleOwner

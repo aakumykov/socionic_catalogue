@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.user_change_password;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.iBaseView;
+import ru.aakumykov.me.sociocat.z_base_view.iBaseView;
 
 public interface iUserChangePassword {
 

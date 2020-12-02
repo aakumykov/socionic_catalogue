@@ -44,7 +44,6 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -55,6 +54,7 @@ import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 //@RuntimePermissions
 public class CardEdit_View extends BaseView implements

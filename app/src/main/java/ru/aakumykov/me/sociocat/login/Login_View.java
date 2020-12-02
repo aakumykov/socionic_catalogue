@@ -27,7 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
@@ -37,6 +36,7 @@ import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class Login_View extends BaseView implements
         iLogin.View,

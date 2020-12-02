@@ -22,13 +22,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class UserEditEmail_View extends BaseView implements
         iUserEditEmail.iView,

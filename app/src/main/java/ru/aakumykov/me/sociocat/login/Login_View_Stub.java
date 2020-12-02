@@ -5,7 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     @Override

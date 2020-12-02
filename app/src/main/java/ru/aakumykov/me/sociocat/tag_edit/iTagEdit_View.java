@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.z_base_view.iBaseView;
 
 public interface iTagEdit_View extends iBaseView {
 

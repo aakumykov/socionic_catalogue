@@ -8,9 +8,9 @@ import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ImageType;
+import ru.aakumykov.me.sociocat.z_base_view.iBaseView;
 
 public interface iCardEdit {
 

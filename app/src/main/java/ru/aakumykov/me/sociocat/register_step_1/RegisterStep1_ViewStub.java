@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.register_step_1;
 
 import android.annotation.SuppressLint;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 @SuppressLint("Registered")
 public class RegisterStep1_ViewStub extends BaseView_Stub implements iRegisterStep1.View {

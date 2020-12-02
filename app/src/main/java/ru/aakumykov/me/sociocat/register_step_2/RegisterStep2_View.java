@@ -1,9 +1,6 @@
 package ru.aakumykov.me.sociocat.register_step_2;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -23,15 +23,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.MyTextUtils;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.YesNoDialog;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class RegisterStep2_View extends BaseView implements
         iRegisterStep2.View,

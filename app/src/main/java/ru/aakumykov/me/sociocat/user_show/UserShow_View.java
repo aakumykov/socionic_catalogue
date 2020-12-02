@@ -17,10 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
@@ -28,6 +26,7 @@ import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class UserShow_View extends BaseView implements iUserShow.iView
 {

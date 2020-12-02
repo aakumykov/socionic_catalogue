@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.reset_password_step1;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.iBaseView;
+import ru.aakumykov.me.sociocat.z_base_view.iBaseView;
 
 public interface iResetPasswordStep1 {
 

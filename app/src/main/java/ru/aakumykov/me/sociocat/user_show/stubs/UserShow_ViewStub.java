@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_show.iUserShow;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 @SuppressLint("Registered")
 public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView {

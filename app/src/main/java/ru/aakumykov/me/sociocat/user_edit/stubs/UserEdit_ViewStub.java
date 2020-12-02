@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.iUserEdit;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 @SuppressLint("Registered")
 public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView {

@@ -26,10 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
@@ -39,6 +37,8 @@ import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.YesNoDialog;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class UserEdit_View extends BaseView implements iUserEdit.iView, Validator.ValidationListener {
 

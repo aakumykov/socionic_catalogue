@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.base_view.iBaseView;
+import ru.aakumykov.me.sociocat.z_base_view.iBaseView;
 
 public interface iRegisterStep2 {
 

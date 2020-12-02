@@ -4,9 +4,9 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.iTagEdit_View;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 public class TagEdit_ViewStub extends BaseView_Stub implements iTagEdit_View {
 

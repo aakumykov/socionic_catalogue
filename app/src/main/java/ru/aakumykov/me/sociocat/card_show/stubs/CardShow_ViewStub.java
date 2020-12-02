@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 @SuppressLint("Registered")
 public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageView {

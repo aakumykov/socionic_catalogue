@@ -6,8 +6,8 @@ import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 
-import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.z_base_view.BaseView_Stub;
 
 public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
 
