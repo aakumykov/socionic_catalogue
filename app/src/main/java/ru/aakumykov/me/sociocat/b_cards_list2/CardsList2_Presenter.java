@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list2;
+package ru.aakumykov.me.sociocat.b_cards_list2;
 
 import android.content.Intent;
 import android.util.Log;
@@ -21,15 +21,15 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
-import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_ItemClickListener;
-import ru.aakumykov.me.sociocat.cards_list2.interfaces.iCardsList2_View;
-import ru.aakumykov.me.sociocat.cards_list2.list_items.Card_ListItem;
-import ru.aakumykov.me.sociocat.cards_list2.stubs.CardsList2_ViewStub;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.CardsWithoutTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.cards_list2.view_states.LoadingCards_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list2.enums.eCardsList2_SortingMode;
+import ru.aakumykov.me.sociocat.b_cards_list2.interfaces.iCardsList2_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_cards_list2.interfaces.iCardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list2.list_items.Card_ListItem;
+import ru.aakumykov.me.sociocat.b_cards_list2.stubs.CardsList2_ViewStub;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;

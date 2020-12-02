@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list2.adapter_utils;
+package ru.aakumykov.me.sociocat.b_cards_list2.adapter_utils;
 
 import android.view.ViewGroup;
 
@@ -6,9 +6,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderCreator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVP_ItemClickListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
-import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_Feed;
-import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_Grid;
-import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder_List;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_holders.CardViewHolder_Feed;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_holders.CardViewHolder_Grid;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_holders.CardViewHolder_List;
 
 public class CardsList2_ViewHolderCreator extends BasicMVPList_ViewHolderCreator {
 

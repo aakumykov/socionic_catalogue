@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;

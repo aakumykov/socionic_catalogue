@@ -1,11 +1,11 @@
-package ru.aakumykov.me.sociocat.cards_list2.adapter_utils;
+package ru.aakumykov.me.sociocat.b_cards_list2.adapter_utils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.cards_list2.view_holders.CardViewHolder;
+import ru.aakumykov.me.sociocat.b_cards_list2.view_holders.CardViewHolder;
 
 public class CardsList2_ViewHolderBinder extends BasicMVPList_ViewHolderBinder {
 

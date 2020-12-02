@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list2.interfaces;
+package ru.aakumykov.me.sociocat.b_cards_list2.interfaces;
 
 import androidx.annotation.NonNull;
 

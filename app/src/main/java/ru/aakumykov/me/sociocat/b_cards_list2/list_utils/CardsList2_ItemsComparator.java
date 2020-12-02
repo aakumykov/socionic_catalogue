@@ -1,9 +1,9 @@
-package ru.aakumykov.me.sociocat.cards_list2.list_utils;
+package ru.aakumykov.me.sociocat.b_cards_list2.list_utils;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
-import ru.aakumykov.me.sociocat.cards_list2.enums.eCardsList2_SortingMode;
+import ru.aakumykov.me.sociocat.b_cards_list2.enums.eCardsList2_SortingMode;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {

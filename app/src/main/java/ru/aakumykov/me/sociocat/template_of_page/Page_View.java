@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_list2.CardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list2.CardsList2_View;
 import ru.aakumykov.me.sociocat.template_of_page.models.Item;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModelFactory;

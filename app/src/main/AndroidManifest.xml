@@ -29,7 +29,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".cards_list2.CardsList2_View" android:exported="true">
+        <activity android:name=".b_cards_list2.CardsList2_View" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
