@@ -114,4 +114,8 @@
     <color name="tags_list_selection_background_color">#DFDFDF</color>
     <color name="cards_list_background">#F4F4F4</color>
 
+    <color name="cards_feed_author_text_color">#222222</color>
+    <color name="cards_feed_comments_count_text_color">#222222</color>
+
+
 </resources>
