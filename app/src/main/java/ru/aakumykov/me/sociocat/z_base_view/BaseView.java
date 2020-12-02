@@ -512,8 +512,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     protected void addProfileMenuItem() {
         if (AuthSingleton.isLoggedIn())
             inflateMenu(R.menu.profile_in);
-        else
-            inflateMenu(R.menu.profile_out);
     }
 
     protected void addPreferencesMenuItem() {
