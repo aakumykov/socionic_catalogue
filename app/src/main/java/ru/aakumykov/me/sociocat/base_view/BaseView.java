@@ -71,13 +71,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-        //invalidateOptionsMenu();
+        invalidateOptionsMenu();
 
         onUserLogin();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
-        //invalidateOptionsMenu();
+        invalidateOptionsMenu();
 
         onUserLogout();
 
