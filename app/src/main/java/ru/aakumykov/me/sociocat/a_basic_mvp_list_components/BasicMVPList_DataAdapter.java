@@ -28,6 +28,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ThrobberItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.utils.SortUtils;
 
 public abstract class BasicMVPList_DataAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -440,7 +441,7 @@ public abstract class BasicMVPList_DataAdapter
 
         if (null != itemsComparator) {
             itemsComparator.setSortingMode(sortingMode, sortingOrder);
-            performSorting(mCurrentItemsList, itemsComparator);
+            setList(SortUtils.sortList(mCurrentItemsList, itemsComparator));
             mIsSorted = true;
         }
     }
