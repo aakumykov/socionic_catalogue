@@ -315,7 +315,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/access_time/baseline_access_time_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/login/baseline_login_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -325,9 +325,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_menu_sort_by_date" />
-                            <entry key="sourceFile" value="C:\Users\Andrey\Desktop\ic_menu_sort_by_name.svg" />
+                            <entry key="outputName" value="ic_menu_logout" />
+                            <entry key="sourceFile" value="C:\Users\Andrey\Desktop\ic_menu_logout.svg" />
                           </map>
                         </option>
                       </PersistentState>
