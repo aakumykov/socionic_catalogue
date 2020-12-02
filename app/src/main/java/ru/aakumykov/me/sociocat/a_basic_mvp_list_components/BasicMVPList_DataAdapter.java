@@ -52,6 +52,7 @@ public abstract class BasicMVPList_DataAdapter
 
     private BasicMVPList_DataItem mCurrentHighlightedItem;
     private BasicViewMode mCurrentViewMode;
+    private iItemsComparator mCurrentItemsComparator;
 
 
     public BasicMVPList_DataAdapter(
@@ -173,7 +174,7 @@ public abstract class BasicMVPList_DataAdapter
 
         if (isSorted())
             if (null != sortingMode && null != sortingOrder)
-                sortList(sortingMode, sortingOrder);
+                sortCurrentList(sortingMode, sortingOrder);
 
         notifyItemRangeInserted(insertPosition, inputList.size());
     }
@@ -436,14 +437,21 @@ public abstract class BasicMVPList_DataAdapter
 
     // Сортировка
     @Override
-    public void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
-        iItemsComparator itemsComparator = getItemsComparator();
+    public void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
+        mCurrentItemsComparator = getItemsComparator();
 
-        if (null != itemsComparator) {
-            itemsComparator.setSortingMode(sortingMode, sortingOrder);
-            setList(SortUtils.sortList(mCurrentItemsList, itemsComparator));
+        if (null != mCurrentItemsComparator) {
+            mCurrentItemsComparator.setSortingMode(sortingMode, sortingOrder);
+
+            setList(SortUtils.sortList(mCurrentItemsList, mCurrentItemsComparator));
+
             mIsSorted = true;
         }
+    }
+
+    @Override
+    public List<BasicMVPList_ListItem> applyCurrentSortingToList(List<BasicMVPList_ListItem> inputList) {
+        return SortUtils.sortList(inputList, mCurrentItemsComparator);
     }
 
     @Override

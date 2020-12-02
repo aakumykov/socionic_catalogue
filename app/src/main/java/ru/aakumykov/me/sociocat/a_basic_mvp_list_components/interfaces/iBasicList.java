@@ -55,13 +55,14 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     void hideLoadmoreItem();
 
-    void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder);
+    void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder);
+    List<BasicMVPList_ListItem> applyCurrentSortingToList(List<BasicMVPList_ListItem> inputList);
+
     boolean isSorted();
 
     void highlightItem(int position);
 
     void setViewMode(BasicViewMode viewMode);
-
 
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);

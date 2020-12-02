@@ -100,7 +100,7 @@ public abstract class BasicMVPList_Presenter
         // !!! Присваивание sortingMode должно производиться после sortingOrder !!!
         mCurrentSortingMode = sortingMode;
 
-        mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
+        mListView.sortCurrentList(mCurrentSortingMode, mCurrentSortingOrder);
 
         mPageView.refreshMenu();
     }

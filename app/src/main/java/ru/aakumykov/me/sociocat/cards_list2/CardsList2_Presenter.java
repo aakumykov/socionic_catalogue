@@ -208,12 +208,21 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
             public void onListLoadSuccess(List<Card> list) {
                 setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
-                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                            @Override
-                            public BasicMVPList_DataItem createDataItem(Object payload) {
-                                return new Card_ListItem((Card) payload);
-                            }
-                        }));
+                List<BasicMVPList_ListItem> listOfLoadedItems = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                });
+
+                if (mListView.isSorted()) {
+                    List<BasicMVPList_ListItem> sortedList = mListView.applyCurrentSortingToList(listOfLoadedItems);
+                    mListView.setList(sortedList);
+                }
+                else {
+                    mListView.setList(listOfLoadedItems);
+                }
+
                 mListView.showLoadmoreItem();
             }
 
