@@ -6,7 +6,7 @@
         android:id="@+id/actionChangeViewMode"
         android:icon="@drawable/ic_view_mode"
         android:title="@string/MENU_change_view_mode"
-        app:showAsAction="always">
+        app:showAsAction="never">
 
         <menu>
             <item
