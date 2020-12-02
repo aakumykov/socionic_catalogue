@@ -119,14 +119,14 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         inflateMenu(R.menu.change_view_mode);
         inflateMenu(R.menu.tags);
 
-        addProfileMenuItem();
-
         addSortByNameMenu();
         addSortByDateMenu();
-
         addSortByCommentsMenu();
         addSortByRatingMenu();
         addSortByAuthorMenu();
+
+        addProfileMenuItem();
+        addPreferencesMenuItem();
 
         addAuthorizationMenu();
     }
