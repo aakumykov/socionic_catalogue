@@ -185,6 +185,8 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
         addSortingMenuRootIfNotExists();
 
         new SortingMenuItem.Builder()
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
                 .addMenuInflater(mMenuInflater)
                 .addRootMenu(mSortingSubmenu)
                 .addInflatedMenuResource(R.menu.sort_by_cards_count)
