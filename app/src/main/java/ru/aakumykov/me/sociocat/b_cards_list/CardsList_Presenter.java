@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.b_cards_list2;
+package ru.aakumykov.me.sociocat.b_cards_list;
 
 import android.content.Intent;
 import android.util.Log;
@@ -21,29 +21,29 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.enums.eCardsList2_SortingMode;
-import ru.aakumykov.me.sociocat.b_cards_list2.interfaces.iCardsList2_ItemClickListener;
-import ru.aakumykov.me.sociocat.b_cards_list2.interfaces.iCardsList2_View;
-import ru.aakumykov.me.sociocat.b_cards_list2.list_items.Card_ListItem;
-import ru.aakumykov.me.sociocat.b_cards_list2.stubs.CardsList2_ViewStub;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithoutTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCards_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
+import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
+import ru.aakumykov.me.sociocat.b_cards_list.list_items.Card_ListItem;
+import ru.aakumykov.me.sociocat.b_cards_list.stubs.CardsList_ViewStub;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 
-public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCardsList2_ItemClickListener {
+public class CardsList_Presenter extends BasicMVPList_Presenter implements iCardsList_ItemClickListener {
 
-    private static final String TAG = CardsList2_Presenter.class.getSimpleName();
+    private static final String TAG = CardsList_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private String mTagFilter;
     private boolean mHasParent;
 
 
-    public CardsList2_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
+    public CardsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);
     }
 
@@ -65,13 +65,13 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
 
     @Override
     public void unbindViews() {
-        mPageView = new CardsList2_ViewStub();
+        mPageView = new CardsList_ViewStub();
     }
 
     @Override
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
-        if (sortingMode instanceof eCardsList2_SortingMode) {
-            switch ((eCardsList2_SortingMode) sortingMode) {
+        if (sortingMode instanceof eCardsList_SortingMode) {
+            switch ((eCardsList_SortingMode) sortingMode) {
                 case BY_COMMENTS:
                 case BY_RATING:
                     return eSortingOrder.REVERSE;
@@ -99,7 +99,7 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
         }
 
         Card card = getCardForViewHolder(dataViewHolder);
-        ((iCardsList2_View) mPageView).goShowingCard(card);
+        ((iCardsList_View) mPageView).goShowingCard(card);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
     }
 
     public void onFABClicked() {
-        ((CardsList2_View) mPageView).showAddNewCardMenu();
+        ((CardsList_View) mPageView).showAddNewCardMenu();
     }
 
     public void onAddNewCardClicked(int itemId) {
@@ -165,7 +165,7 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
         else
             throw new RuntimeException("Unsupported menu itemId: "+itemId);
 
-        ((CardsList2_View) mPageView).goCreateCard(cardType);
+        ((CardsList_View) mPageView).goCreateCard(cardType);
     }
 
     public void onCardCreated(@Nullable Card newCard) {
@@ -179,7 +179,7 @@ public class CardsList2_Presenter extends BasicMVPList_Presenter implements iCar
 
     public void onCloseTagFilterClicked() {
         mTagFilter = null;
-        ((iCardsList2_View) mPageView).goShowAllCards();
+        ((iCardsList_View) mPageView).goShowAllCards();
     }
 
 

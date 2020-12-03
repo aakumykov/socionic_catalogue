@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_cards_list2.CardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -221,7 +221,7 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     }
 
     void goMainPage() {
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         startActivity(intent);
     }
 }

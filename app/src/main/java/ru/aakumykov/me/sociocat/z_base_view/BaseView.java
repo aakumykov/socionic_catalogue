@@ -43,7 +43,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorVie
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.CardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
@@ -510,7 +510,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void goToMainPage() {
-        startActivity(new Intent(this, CardsList2_View.class));
+        startActivity(new Intent(this, CardsList_View.class));
     }
 
 

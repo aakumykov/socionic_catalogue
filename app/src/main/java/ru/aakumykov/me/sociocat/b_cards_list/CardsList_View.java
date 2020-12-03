@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.b_cards_list2;
+package ru.aakumykov.me.sociocat.b_cards_list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,25 +36,25 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.Sorti
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.enums.eCardsList2_SortingMode;
-import ru.aakumykov.me.sociocat.b_cards_list2.interfaces.iCardsList2_View;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.CardsWithoutTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCardsWithTag_ViewState;
-import ru.aakumykov.me.sociocat.b_cards_list2.view_states.LoadingCards_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
+import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithoutTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsList2_View extends BasicMVPList_View implements iCardsList2_View {
+public class CardsList_View extends BasicMVPList_View implements iCardsList_View {
 
     private static final BasicViewMode DEFAULT_VIEW_MODE = new FeedViewMode();
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.tagFilter) Chip tagFilterChip;
 
-    private static final String TAG = CardsList2_View.class.getSimpleName();
+    private static final String TAG = CardsList_View.class.getSimpleName();
     private BottomSheetListener mBottomSheetListener;
 
 
@@ -69,7 +69,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
     @Override
     protected void setActivityView() {
-        setContentView(R.layout.cards_list2_activity);
+        setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
     }
 
@@ -95,13 +95,13 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         int id = item.getItemId();
 
         if (R.id.actionSortByComments == id) {
-            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_COMMENTS);
+            mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_COMMENTS);
         }
         else if (R.id.actionSortByAuthor == id) {
-            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_AUTHOR);
+            mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_AUTHOR);
         }
         else if (R.id.actionSortByRating == id) {
-            mPresenter.onSortMenuItemClicked(eCardsList2_SortingMode.BY_RATING);
+            mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_RATING);
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -146,7 +146,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVPList_Presenter onPresenterPrepared() {
-                return new CardsList2_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_NAME);
+                return new CardsList_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_NAME);
             }
         });
     }
@@ -156,7 +156,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         return BasicMVPList_Utils.prepDataAdapter(mViewModel, new iDataAdapterPreparationCallback() {
             @Override
             public BasicMVPList_DataAdapter onDataAdapterPrepared() {
-                return new CardsList2_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
+                return new CardsList_DataAdapter(mPresenter.getCurrentViewMode(), mPresenter);
             }
         });
     }
@@ -204,7 +204,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
     @Override
     public void goShowAllCards() {
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         intent.setAction(Intent.ACTION_VIEW);
         startActivity(intent);
     }
@@ -294,12 +294,12 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eCardsList2_SortingMode;
+                        return sortingMode instanceof eCardsList_SortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_COMMENTS.equals(sortingMode);
+                        return eCardsList_SortingMode.BY_COMMENTS.equals(sortingMode);
                     }
                 })
                 .create();
@@ -319,12 +319,12 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eCardsList2_SortingMode;
+                        return sortingMode instanceof eCardsList_SortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_RATING.equals(sortingMode);
+                        return eCardsList_SortingMode.BY_RATING.equals(sortingMode);
                     }
                 })
                 .create();
@@ -344,12 +344,12 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eCardsList2_SortingMode;
+                        return sortingMode instanceof eCardsList_SortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCardsList2_SortingMode.BY_AUTHOR.equals(sortingMode);
+                        return eCardsList_SortingMode.BY_AUTHOR.equals(sortingMode);
                     }
                 })
                 .create();
@@ -371,7 +371,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
                     @NotNull MenuItem menuItem,
                     @Nullable Object o
             ) {
-                ((CardsList2_Presenter) mPresenter).onAddNewCardClicked(menuItem.getItemId());
+                ((CardsList_Presenter) mPresenter).onAddNewCardClicked(menuItem.getItemId());
             }
 
             @Override
@@ -385,7 +385,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CardsList2_Presenter) mPresenter).onCloseTagFilterClicked();
+                ((CardsList_Presenter) mPresenter).onCloseTagFilterClicked();
             }
         });
     }
@@ -395,7 +395,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
             if (null != mActivityResultData) {
                 Card newCard = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-                ((CardsList2_Presenter) mPresenter).onCardCreated(newCard);
+                ((CardsList_Presenter) mPresenter).onCardCreated(newCard);
             }
         }
     }
@@ -430,13 +430,13 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
         Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
         Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
 
-        ((CardsList2_Presenter) mPresenter).onCardEdited(oldCard, newCard);
+        ((CardsList_Presenter) mPresenter).onCardEdited(oldCard, newCard);
     }
 
     private void processCardDeletion() {
         Card card = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-        ((CardsList2_Presenter) mPresenter).onCardDeleted(card);
+        ((CardsList_Presenter) mPresenter).onCardDeleted(card);
     }
 
     private void showTagFilter(String tagName) {
@@ -452,7 +452,7 @@ public class CardsList2_View extends BasicMVPList_View implements iCardsList2_Vi
 
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
-        ((CardsList2_Presenter) mPresenter).onFABClicked();
+        ((CardsList_Presenter) mPresenter).onFABClicked();
     }
 
 }

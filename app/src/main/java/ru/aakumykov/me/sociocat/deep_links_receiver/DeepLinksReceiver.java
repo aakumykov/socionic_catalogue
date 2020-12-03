@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.b_cards_list2.CardsList2_View;
+import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -230,25 +230,25 @@ public class DeepLinksReceiver extends BaseView {
 
     private void continueWithSuccess(int messageId) {
         String message = getResources().getString(messageId);
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         intent.putExtra(Constants.INFO_MESSAGE_ID, message);
         startActivity(intent);
     }
 
     private void continueWithError(int errorMessageId, String consoleError) {
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         intent.putExtra(Constants.ERROR_MESSAGE_ID, errorMessageId);
         intent.putExtra(Constants.CONSOLE_ERROR_MESSAGE, consoleError);
         startActivity(intent);
     }
 
     private void onContinueButtonClicked() {
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         startActivity(intent);
     }
 
     private void goToStartPage() {
-        Intent intent = new Intent(this, CardsList2_View.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         startActivity(intent);
     }
 

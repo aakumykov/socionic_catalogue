@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.b_cards_list2.view_holders;
+package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 
 import android.animation.AnimatorSet;
 import android.graphics.Bitmap;

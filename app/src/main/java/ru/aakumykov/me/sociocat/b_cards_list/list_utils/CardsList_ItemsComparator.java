@@ -1,18 +1,18 @@
-package ru.aakumykov.me.sociocat.b_cards_list2.list_utils;
+package ru.aakumykov.me.sociocat.b_cards_list.list_utils;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
-import ru.aakumykov.me.sociocat.b_cards_list2.enums.eCardsList2_SortingMode;
+import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
+public class CardsList_ItemsComparator extends BasicMVPList_ItemsComparator {
 
-    private static final String TAG = CardsList2_ItemsComparator.class.getSimpleName();
+    private static final String TAG = CardsList_ItemsComparator.class.getSimpleName();
 
     @Override
     public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
-        if (mSortingMode instanceof eCardsList2_SortingMode)
+        if (mSortingMode instanceof eCardsList_SortingMode)
             return sortSelf(o1, o2, false);
         else
             return super.compare(o1, o2);
@@ -21,7 +21,7 @@ public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
     @Override
     protected int sortSortableItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
 
-        eCardsList2_SortingMode sortingMode = (eCardsList2_SortingMode) mSortingMode;
+        eCardsList_SortingMode sortingMode = (eCardsList_SortingMode) mSortingMode;
 
         switch (sortingMode) {
             case BY_AUTHOR:
@@ -39,7 +39,7 @@ public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
     }
 
 
-    private int sortByAuthor(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+    private int sortByAuthor(eCardsList_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
         Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 
@@ -53,7 +53,7 @@ public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
     }
 
 
-    private int sortByRating(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+    private int sortByRating(eCardsList_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
         Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 
@@ -67,7 +67,7 @@ public class CardsList2_ItemsComparator extends BasicMVPList_ItemsComparator {
     }
 
 
-    private int sortByComments(eCardsList2_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+    private int sortByComments(eCardsList_SortingMode sortingMode, BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         Card card1 = (Card) ((BasicMVPList_DataItem) o1).getPayload();
         Card card2 = (Card) ((BasicMVPList_DataItem) o2).getPayload();
 

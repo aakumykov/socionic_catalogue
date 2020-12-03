@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.b_cards_list2.view_states;
+package ru.aakumykov.me.sociocat.b_cards_list.view_states;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
