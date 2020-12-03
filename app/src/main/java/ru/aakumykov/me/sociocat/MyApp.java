@@ -30,72 +30,15 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iUsersSingleton usersSingleton;
-
 
     // Методы Application
     @Override
     public void onCreate() {
         super.onCreate();
-
-        usersSingleton = UsersSingleton.getInstance();
-
-        // Подписываюсь на события изменения авторизации Firebase
-        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-            if (null != firebaseUser) {
-
-                String userId = firebaseUser.getUid();
-
-                try {
-                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                        @Override
-                        public void onUserRefreshSuccess(User user) {
-                            if (null != user)
-                                authorizeUser(user);
-                        }
-
-                        @Override
-                        public void onUserNotExists() {
-
-                        }
-
-                        @Override
-                        public void onUserRefreshFail(String errorMsg) {
-                            deauthorizeUser();
-                        }
-                    });
-                }
-                catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                    e.printStackTrace();
-                    deauthorizeUser();
-                }
-
-            } else {
-                Log.e(TAG, "FirebaseUser == NULL");
-                deauthorizeUser();
-            }
-        });
-
         //logFCMRegistrationToken();
     }
 
-
     // Внутренние методы
-    private void authorizeUser(User user) {
-        Log.d(TAG, "authorizeUser(), "+user.getName());
-        EventBus.getDefault().post(new UserAuthorizedEvent(user));
-    }
-
-    private void deauthorizeUser() {
-        Log.d(TAG, "deauthorizeUser()");
-        EventBus.getDefault().post(new UserUnauthorizedEvent());
-        usersSingleton.clearCurrentUser();
-    }
-
     private void logFCMRegistrationToken() {
 
         FirebaseInstanceId.getInstance().getInstanceId()
