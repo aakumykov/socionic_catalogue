@@ -51,13 +51,11 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     @Override
     public void assembleMenu() {
         addSearchView();
-
         addChangeViewModeMenu();
-
         addSortByNameMenu();
         addSortByCardsCountMenuItem();
 
-        makeSortingMenuVisible();
+//        makeSortingMenuVisible();
     }
 
     @Override

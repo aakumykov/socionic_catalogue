@@ -501,7 +501,7 @@ public abstract class BasicMVPList_View
     protected void addSortingMenuRootIfNotExists() {
         if (null != mMenu) {
             if (null == mMenu.findItem(R.id.actionSort)) {
-                mMenuInflater.inflate(R.menu.sorting, mMenu);
+                mMenuInflater.inflate(R.menu.sort, mMenu);
                 mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
             }
         }

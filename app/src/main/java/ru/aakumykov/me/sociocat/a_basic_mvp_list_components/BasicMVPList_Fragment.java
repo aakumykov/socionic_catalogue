@@ -357,7 +357,7 @@ public abstract class BasicMVPList_Fragment
     }
 
     private void addSortingMenuRoot() {
-        mMenuInflater.inflate(R.menu.sorting, mMenu);
+        mMenuInflater.inflate(R.menu.sort, mMenu);
         mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
     }
 
@@ -509,7 +509,7 @@ public abstract class BasicMVPList_Fragment
     protected void addSortingMenuRootIfNotExists() {
         if (null != mMenu) {
             if (null == mMenu.findItem(R.id.actionSort)) {
-                mMenuInflater.inflate(R.menu.sorting, mMenu);
+                mMenuInflater.inflate(R.menu.sort, mMenu);
                 mSortingSubmenu = mMenu.findItem(R.id.actionSort).getSubMenu();
             }
         }
