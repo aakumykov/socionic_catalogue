@@ -116,7 +116,6 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
         addSearchView();
 
-        inflateMenu(R.menu.change_view_mode);
         inflateMenu(R.menu.tags);
 
         addSortByNameMenu();
@@ -124,6 +123,8 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         addSortByCommentsMenu();
         addSortByRatingMenu();
         addSortByAuthorMenu();
+
+        inflateMenu(R.menu.change_view_mode);
 
         addProfileMenuItem();
         addPreferencesMenuItem();
