@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.view_holders;
+package ru.aakumykov.me.sociocat.c_tags_list.view_holders;
 
 import android.view.View;
 

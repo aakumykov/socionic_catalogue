@@ -1,10 +1,10 @@
-package ru.aakumykov.me.sociocat.tags_list.list_utils;
+package ru.aakumykov.me.sociocat.c_tags_list.list_utils;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
+import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 
 public class TagsList_ItemsComparator extends BasicMVPList_ItemsComparator {
 

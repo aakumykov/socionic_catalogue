@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.view_holders;
+package ru.aakumykov.me.sociocat.c_tags_list.view_holders;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
+import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagViewHolder extends BasicMVPList_DataViewHolder {

@@ -54,7 +54,7 @@ import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.tags_list.TagsList_View;
+import ru.aakumykov.me.sociocat.c_tags_list.TagsList_View;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;

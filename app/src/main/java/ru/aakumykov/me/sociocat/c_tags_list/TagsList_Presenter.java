@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list;
+package ru.aakumykov.me.sociocat.c_tags_list;
 
 import android.util.Log;
 
@@ -28,12 +28,12 @@ import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
-import ru.aakumykov.me.sociocat.tags_list.enums.eTagsList_SortingMode;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_ItemClickListener;
-import ru.aakumykov.me.sociocat.tags_list.interfaces.iTagsList_View;
-import ru.aakumykov.me.sociocat.tags_list.list_parts.Tag_ListItem;
-import ru.aakumykov.me.sociocat.tags_list.stubs.TagsList_ViewStub;
-import ru.aakumykov.me.sociocat.tags_list.view_holders.TagViewHolder;
+import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
+import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
+import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
+import ru.aakumykov.me.sociocat.c_tags_list.list_parts.Tag_ListItem;
+import ru.aakumykov.me.sociocat.c_tags_list.stubs.TagsList_ViewStub;
+import ru.aakumykov.me.sociocat.c_tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter

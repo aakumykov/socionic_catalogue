@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.stubs;
+package ru.aakumykov.me.sociocat.c_tags_list.stubs;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.stubs.BasicMVPList_ViewStub;
 

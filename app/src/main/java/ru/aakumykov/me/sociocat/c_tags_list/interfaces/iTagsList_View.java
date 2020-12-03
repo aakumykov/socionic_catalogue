@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.interfaces;
+package ru.aakumykov.me.sociocat.c_tags_list.interfaces;
 
 import androidx.annotation.NonNull;
 

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.tags_list.enums;
+package ru.aakumykov.me.sociocat.c_tags_list.enums;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 
