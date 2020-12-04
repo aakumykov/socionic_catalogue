@@ -443,9 +443,13 @@ public abstract class BasicMVPList_DataAdapter
         if (null != mCurrentItemsComparator) {
             mCurrentItemsComparator.setSortingMode(sortingMode, sortingOrder);
 
-            List<BasicMVPList_ListItem> sortedList = SortUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
+            List<BasicMVPList_ListItem> sortedListCurrent = SortUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
+            List<BasicMVPList_ListItem> sortedListOriginal = SortUtils.sortList(mOriginalItemsList, mCurrentItemsComparator);
 
-            setList(sortedList);
+            setList(sortedListCurrent);
+
+            mOriginalItemsList.clear();
+            mOriginalItemsList.addAll(sortedListOriginal);
 
             mIsSorted = true;
         }
