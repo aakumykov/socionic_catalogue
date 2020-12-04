@@ -15,6 +15,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     boolean isVirgin();
 
     void setList(List<BasicMVPList_ListItem> inputList);
+    void setOriginalList(List<BasicMVPList_ListItem> list);
     void setListAndFilter(List<BasicMVPList_ListItem> list);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
@@ -24,6 +25,8 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void addItem(BasicMVPList_ListItem item);
     void insertItem(int position, BasicMVPList_ListItem item);
     void removeItem(BasicMVPList_ListItem item);
+
+    iItemsComparator getItemsComparator(iSortingMode sortingMode, eSortingOrder sortingOrder);
 
     int getVisibleItemsCount();
 

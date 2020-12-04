@@ -28,7 +28,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ThrobberItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.utils.SortUtils;
+import ru.aakumykov.me.sociocat.utils.SortAndFilterUtils;
 
 public abstract class BasicMVPList_DataAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -76,7 +76,6 @@ public abstract class BasicMVPList_DataAdapter
     protected abstract BasicMVPList_ViewHolderCreator prepareViewHolderCreator();
     protected abstract BasicMVPList_ViewHolderBinder prepareViewHolderBinder();
     protected abstract BasicMVPList_ViewTypeDetector prepareViewTypeDetector();
-    protected abstract iItemsComparator getItemsComparator();
 
 
     @NonNull @Override
@@ -144,6 +143,12 @@ public abstract class BasicMVPList_DataAdapter
         mCurrentItemsList.clear();
         mCurrentItemsList.addAll(inputList);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void setOriginalList(List<BasicMVPList_ListItem> list) {
+        mOriginalItemsList.clear();
+        mOriginalItemsList.addAll(list);
     }
 
     @Override
@@ -431,20 +436,22 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public boolean isFiltered() {
+    public boolean isFilteredWithText() {
         return !TextUtils.isEmpty(mFilterPattern);
     }
 
     // Сортировка
     @Override
     public void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
-        mCurrentItemsComparator = getItemsComparator();
+
+        mCurrentItemsComparator = getItemsComparator(sortingMode, sortingOrder);
 
         if (null != mCurrentItemsComparator) {
+            // fixme: это теперь не нужно...
             mCurrentItemsComparator.setSortingMode(sortingMode, sortingOrder);
 
-            List<BasicMVPList_ListItem> sortedListCurrent = SortUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
-            List<BasicMVPList_ListItem> sortedListOriginal = SortUtils.sortList(mOriginalItemsList, mCurrentItemsComparator);
+            List<BasicMVPList_ListItem> sortedListCurrent = SortAndFilterUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
+            List<BasicMVPList_ListItem> sortedListOriginal = SortAndFilterUtils.sortList(mOriginalItemsList, mCurrentItemsComparator);
 
             setList(sortedListCurrent);
 
@@ -457,7 +464,7 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public List<BasicMVPList_ListItem> applyCurrentSortingToList(List<BasicMVPList_ListItem> inputList) {
-        return SortUtils.sortList(inputList, mCurrentItemsComparator);
+        return SortAndFilterUtils.sortList(inputList, mCurrentItemsComparator);
     }
 
     @Override

@@ -20,6 +20,12 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
     protected eSortingOrder mSortingOrder;
 
 
+    public BasicMVPList_ItemsComparator(iSortingMode sortingMode, eSortingOrder sortingOrder) {
+        mSortingMode = sortingMode;
+        mSortingOrder = sortingOrder;
+    }
+
+
     @Override
     public void setSortingMode(iSortingMode sortingMode, eSortingOrder sortingOrder) {
         mSortingMode = sortingMode;

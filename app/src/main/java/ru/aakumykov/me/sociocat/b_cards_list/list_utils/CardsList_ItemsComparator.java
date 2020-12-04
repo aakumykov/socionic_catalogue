@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.b_cards_list.list_utils;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
@@ -9,6 +11,12 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardsList_ItemsComparator extends BasicMVPList_ItemsComparator {
 
     private static final String TAG = CardsList_ItemsComparator.class.getSimpleName();
+
+
+    public CardsList_ItemsComparator(iSortingMode sortingMode, eSortingOrder sortingOrder) {
+        super(sortingMode, sortingOrder);
+    }
+
 
     @Override
     public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {

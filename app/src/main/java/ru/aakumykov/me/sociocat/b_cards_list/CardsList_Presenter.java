@@ -5,7 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -13,6 +15,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Present
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
@@ -35,6 +38,7 @@ import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.utils.SortAndFilterUtils;
 
 public class CardsList_Presenter extends BasicMVPList_Presenter implements iCardsList_ItemClickListener {
 
@@ -216,23 +220,41 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mCardsSingleton.loadFirstPortion(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
-                List<BasicMVPList_ListItem> listOfLoadedItems = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                List<BasicMVPList_ListItem> loadedList = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
                 });
+                List<BasicMVPList_ListItem> list2display = new ArrayList<>(loadedList);
 
+                // Разбираемся с сортировкой
                 if (mListView.isSorted()) {
-                    List<BasicMVPList_ListItem> sortedList = mListView.applyCurrentSortingToList(listOfLoadedItems);
-                    mListView.setList(sortedList);
-                }
-                else {
-                    mListView.setList(listOfLoadedItems);
+                    iItemsComparator comparator = mListView.getItemsComparator(getCurrentSortingMode(), getCurrentSortingOrder());
+                    list2display = SortAndFilterUtils.sortList(loadedList, comparator);
                 }
 
+                // Разбираемся с фильтрацией
+                if (mListView.isFilteredWithText()) {
+                    String filterText = mListView.getFilterText();
+
+                    list2display = SortAndFilterUtils.filterList(list2display, new Predicate<BasicMVPList_ListItem>() {
+                        @Override
+                        public boolean test(BasicMVPList_ListItem listItem) {
+                            if (listItem instanceof BasicMVPList_DataItem) {
+                                Card card = (Card) ((BasicMVPList_DataItem) listItem).getPayload();
+                                return card.getTitle().toLowerCase().contains(filterText.toLowerCase());
+                            }
+                            return false;
+                        }
+                    });
+                }
+
+                mListView.setOriginalList(loadedList);
+                mListView.setList(list2display);
                 mListView.showLoadmoreItem();
             }
 
@@ -267,7 +289,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 });
 
-                if (mListView.isFiltered()) {
+                if (mListView.isFilteredWithText()) {
                     mListView.appendListAndFilter(list2append);
                 }
                 else {

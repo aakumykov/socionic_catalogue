@@ -1,14 +1,21 @@
 package ru.aakumykov.me.sociocat.c_tags_list.list_utils;
 
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsComparator;
-import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
+import ru.aakumykov.me.sociocat.models.Tag;
 
 public class TagsList_ItemsComparator extends BasicMVPList_ItemsComparator {
 
     private static final String TAG = TagsList_ItemsComparator.class.getSimpleName();
+
+
+    public TagsList_ItemsComparator(iSortingMode sortingMode, eSortingOrder sortingOrder) {
+        super(sortingMode, sortingOrder);
+    }
 
 
     @Override
