@@ -40,6 +40,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.AnimationUtils;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardViewHolder_Feed extends CardViewHolder {
 
@@ -119,7 +120,13 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
     private void showDate(@NonNull Card card) {
-        dateView.setText(DateUtils.long2date(card.getCTime()));
+        dateView.setText(
+                MyUtils.getHumanTimeAgo(
+                        dateView.getContext(),
+                        card.getCTime(),
+                        R.string.simple_string
+                )
+        );
     }
 
     private void showCommentsCount(@NonNull Card card) {
