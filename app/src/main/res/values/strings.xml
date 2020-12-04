@@ -311,9 +311,9 @@
     <string name="REGISTER1_email_already_used">Электронная почта уже используется</string>
     <string name="REGISTER1_error_checking_email">Ошибка проверки электронной почты</string>
     <string name="LOGIN_password_recovery_email_sent">Вам отправлено письмо для восстановления пароля</string>
-    <string name="CARD_SHOW_created_at">%1$s</string>
+    <string name="CARD_SHOW_created_at">Создано %1$s</string>
     <string name="CARD_SHOW_edited_at">Изменено %1$s</string>
-    <string name="COMMENT_created_at">%1$s</string>
+    <string name="COMMENT_created_at">Написан %1$s</string>
     <string name="COMMENT_edited_at">Изменён %1$s</string>
     <string name="MENU_new_cards">Новые карточки</string>
     <string name="CARDS_GRID_loading_new_cards">Новые карточки</string>
@@ -729,7 +729,7 @@
     <string name="menu_item_sorted_by_comments">По комментариям</string>
     <string name="menu_item_sorted_by_rating">По оценке</string>
     <string name="CARDS_LIST_rating">Оценка: %1$d</string>
-
+    <string name="simple_string" translatable="false">%1$s</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>

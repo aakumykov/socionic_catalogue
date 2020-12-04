@@ -309,9 +309,9 @@
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_checking_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
-    <string name="CARD_SHOW_created_at">%1$s</string>
+    <string name="CARD_SHOW_created_at">Created %1$s</string>
     <string name="CARD_SHOW_edited_at">Edited at %1$s</string>
-    <string name="COMMENT_created_at">%1$s</string>
+    <string name="COMMENT_created_at">Added %1$s</string>
     <string name="COMMENT_edited_at">Edited at %1$s</string>
     <string name="MENU_new_cards">New cards</string>
     <string name="CARDS_GRID_loading_new_cards">New cards</string>

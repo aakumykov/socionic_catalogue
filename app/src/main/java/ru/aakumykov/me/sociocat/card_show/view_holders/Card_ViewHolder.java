@@ -227,6 +227,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         displayAuthor();
 
+        displayDate();
+
         displayTags();
 
         displayRating();
@@ -346,6 +348,30 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                         currentCard.getUserName()
                 )
         );
+    }
+
+    private void displayDate() {
+
+        long cTime = currentCard.getCTime();
+        long mTime = currentCard.getMTime();
+
+        if (mTime == cTime) {
+            MyUtils.hide(mTimeView);
+
+            String cTimeString = MyUtils.getHumanTimeAgo(cTimeView.getContext(), cTime, R.string.simple_string);
+            cTimeView.setText(cTimeString);
+            MyUtils.show(cTimeView);
+            return;
+        }
+
+        String cTimeString = MyUtils.getHumanTimeAgo(cTimeView.getContext(), cTime, R.string.CARD_SHOW_created_at);
+        String mTimeString = MyUtils.getHumanTimeAgo(mTimeView.getContext(), mTime, R.string.CARD_SHOW_edited_at);
+
+        cTimeView.setText(cTimeString);
+        mTimeView.setText(mTimeString);
+
+        MyUtils.show(cTimeView);
+        MyUtils.show(mTimeView);
     }
 
     private void displayTags() {
