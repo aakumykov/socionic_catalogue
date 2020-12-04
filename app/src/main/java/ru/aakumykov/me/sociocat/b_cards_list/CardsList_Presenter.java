@@ -62,6 +62,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         mHasParent = Intent.ACTION_VIEW.equals(action);
 
+
         if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
             loadCardsWithTag(false);
         else
