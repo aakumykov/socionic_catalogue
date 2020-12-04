@@ -132,7 +132,7 @@ public class Card implements
         cardMap.put("description", getDescription());
         cardMap.put("tags", getTags());
         cardMap.put("commentsKeys", getCommentsKeys());
-        //cardMap.put("rating", this.getRating());
+        cardMap.put("rating", this.getRating());
         cardMap.put("ctime", this.getCTime());
         cardMap.put("mtime", this.getMTime());
 
