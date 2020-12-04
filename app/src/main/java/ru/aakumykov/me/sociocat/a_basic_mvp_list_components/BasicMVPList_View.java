@@ -447,6 +447,25 @@ public abstract class BasicMVPList_View
             throw new UnknownViewModeException(viewMode);
     }
 
+    protected void addSingleItemMenu(int menuResourceId, int itemId, int showAsAction) {
+        mMenuInflater.inflate(menuResourceId, mMenu);
+
+//        MenuItem menuItem = mMenu.findItem(itemId);
+
+        /*if (MenuItem.SHOW_AS_ACTION_NEVER == showAsAction) {
+
+        }*/
+
+        /*Drawable menuItemIcon = menuItem.getIcon();
+
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_baseline_android_24);
+        if (null != unwrappedDrawable) {
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, Color.RED);
+            androidMenuItem.setIcon(wrappedDrawable);
+        }*/
+    }
+
     protected void addChangeViewModeMenu() {
         inflateMenu(R.menu.change_view_mode);
     }

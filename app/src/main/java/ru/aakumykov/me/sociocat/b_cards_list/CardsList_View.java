@@ -116,7 +116,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
         addSearchView();
 
-        inflateMenu(R.menu.tags);
+        addSingleItemMenu(R.menu.tags, R.id.actionTags, MenuItem.SHOW_AS_ACTION_NEVER);
 
         addSortByNameMenu();
         addSortByDateMenu();
