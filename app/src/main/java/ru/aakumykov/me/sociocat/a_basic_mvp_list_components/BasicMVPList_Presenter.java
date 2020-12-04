@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
@@ -56,8 +54,6 @@ public abstract class BasicMVPList_Presenter
     public abstract void unbindViews();
 
     public  void onMenuCreated() {
-        Log.d("onMenuCreated", "onMenuCreated()");
-
         if (isColdStart())
             onColdStart();
         else
@@ -120,8 +116,8 @@ public abstract class BasicMVPList_Presenter
     }
 
     protected void onResume() {
-        if (null != mCurrentViewState)
-            setViewState(mCurrentViewState);
+//        if (null != mCurrentViewState)
+//            setViewState(mCurrentViewState);
     }
 
     protected void onStop() {
@@ -151,7 +147,8 @@ public abstract class BasicMVPList_Presenter
     }
 
     protected void onConfigChanged() {
-        mPageView.setViewState(mCurrentViewState);
+        if (null != mCurrentViewState)
+            setViewState(mCurrentViewState);
     }
 
     protected abstract void onRefreshRequested();
