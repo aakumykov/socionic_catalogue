@@ -6,5 +6,5 @@
         android:id="@+id/actionTags"
         android:icon="@drawable/ic_menu_tag"
         android:title="@string/MENU_tags"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>
