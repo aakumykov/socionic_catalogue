@@ -27,15 +27,10 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
 
 
     @Override
-    public void setSortingMode(iSortingMode sortingMode, eSortingOrder sortingOrder) {
-        mSortingMode = sortingMode;
-        mSortingOrder = sortingOrder;
-    }
-
-    @Override
     public int compare(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return sortSelf(o1, o2, true);
     }
+
 
     protected int sortSelf(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2, boolean calledFromBasicComparator) {
         if (hasPinnedItems(o1, o2))
@@ -47,7 +42,6 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
                 return sortSortableItems(o1, o2);
         }
     }
-
 
     protected boolean hasPinnedItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         return hasTopItem(o1, o2) || hasBottomItem(o1, o2);
@@ -76,26 +70,6 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
 
     protected abstract int sortSortableItems(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2);
 
-    private int sortMiddleItemsBasic(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
-        if (mSortingMode instanceof eBasicSortingMode) {
-
-            switch ((eBasicSortingMode) mSortingMode) {
-                case BY_NAME:
-                    return sortByName(o1, o2);
-
-                case BY_DATE:
-                    return sortByDate(o1, o2);
-
-                default:
-                    return unknownSortingMode(TAG, mSortingMode);
-            }
-        }
-        else {
-            Log.e(TAG, "Sorting mode is not eBasicSortingMode instance: " + mSortingMode);
-            return 0;
-        }
-    }
-
     protected boolean hasTopItem(BasicMVPList_ListItem item1, BasicMVPList_ListItem item2) {
         return isTopItem(item1) || isTopItem(item2);
     }
@@ -118,6 +92,26 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
     }
 
 
+    // Внутренние
+    private int sortMiddleItemsBasic(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+        if (mSortingMode instanceof eBasicSortingMode) {
+
+            switch ((eBasicSortingMode) mSortingMode) {
+                case BY_NAME:
+                    return sortByName(o1, o2);
+
+                case BY_DATE:
+                    return sortByDate(o1, o2);
+
+                default:
+                    return unknownSortingMode(TAG, mSortingMode);
+            }
+        }
+        else {
+            Log.e(TAG, "Sorting mode is not eBasicSortingMode instance: " + mSortingMode);
+            return 0;
+        }
+    }
 
     private int sortByName(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         BasicMVPList_DataItem dataItem1 = (BasicMVPList_DataItem) o1;

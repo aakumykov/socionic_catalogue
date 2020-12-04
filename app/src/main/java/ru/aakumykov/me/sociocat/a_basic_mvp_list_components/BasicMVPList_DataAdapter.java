@@ -447,9 +447,6 @@ public abstract class BasicMVPList_DataAdapter
         mCurrentItemsComparator = getItemsComparator(sortingMode, sortingOrder);
 
         if (null != mCurrentItemsComparator) {
-            // fixme: это теперь не нужно...
-            mCurrentItemsComparator.setSortingMode(sortingMode, sortingOrder);
-
             List<BasicMVPList_ListItem> sortedListCurrent = SortAndFilterUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
             List<BasicMVPList_ListItem> sortedListOriginal = SortAndFilterUtils.sortList(mOriginalItemsList, mCurrentItemsComparator);
 
