@@ -10,6 +10,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
@@ -70,6 +71,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
+
         if (sortingMode instanceof eCardsList_SortingMode) {
             switch ((eCardsList_SortingMode) sortingMode) {
                 case BY_COMMENTS:
@@ -79,6 +81,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     return eSortingOrder.DIRECT;
             }
         }
+
+        if (sortingMode instanceof eBasicSortingMode) {
+            switch ((eBasicSortingMode) sortingMode) {
+                case BY_DATE:
+                    return eSortingOrder.REVERSE;
+            }
+        }
+
         return eSortingOrder.DIRECT;
     }
 

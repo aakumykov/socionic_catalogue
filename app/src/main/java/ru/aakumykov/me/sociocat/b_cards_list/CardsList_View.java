@@ -147,7 +147,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVPList_Presenter onPresenterPrepared() {
-                return new CardsList_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_NAME);
+                return new CardsList_Presenter(DEFAULT_VIEW_MODE, eBasicSortingMode.BY_DATE);
             }
         });
     }
