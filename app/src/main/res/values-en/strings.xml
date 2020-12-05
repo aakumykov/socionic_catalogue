@@ -154,7 +154,7 @@
     <string name="COMMENT_added">Comment added</string>
     <string name="DIALOG_MESSAGE_cannot_be_empty">Cannot be empty</string>
     <string name="action_denied">Action denied</string>
-    <string name="DIALOG_delete_comment">Deleting a comment</string>
+    <string name="DIALOG_delete_comment">Delete comment?</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card</string>
     <string name="error_deleting_card_tags">Error deleting card tags</string>
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
@@ -430,7 +430,7 @@
     <string name="CARD_SHOW_error_saving_comment">Error saving comment</string>
     <string name="CARD_SHOW_cancel_comment_edition_title">Cancel editing</string>
     <string name="CARD_SHOW_cancel_comment_edittion_message">Cancel editing and loose changes?</string>
-    <string name="CARD_SHOW_delete_comment_dialog_title">Deleting a comment</string>
+    <string name="CARD_SHOW_delete_comment_dialog_title">Delete comment?</string>
     <string name="CARD_SHOW_delete_comment_dialog_message">Delete comment «%1$s...»?</string>
     <string name="COMMENTS_VIEW_error_deleting_comment">Error deleting comment</string>
     <string name="MENU_user_logged_in">User logged in</string>
