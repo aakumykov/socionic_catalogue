@@ -23,17 +23,17 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.list_parts.Tag_ListItem;
 import ru.aakumykov.me.sociocat.c_tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.c_tags_list.view_holders.TagViewHolder;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class TagsList_Presenter
@@ -264,7 +264,7 @@ public class TagsList_Presenter
 
             Tag_ListItem newTagListItem = new Tag_ListItem(newTag);
 
-            int position = mListView.updateItemInList(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
+            int position = mListView.findAndUpdateItem(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
                 public boolean onCompareWithListItemPayload(Object itemPayload) {
                     Tag tagFromList = (Tag) itemPayload;

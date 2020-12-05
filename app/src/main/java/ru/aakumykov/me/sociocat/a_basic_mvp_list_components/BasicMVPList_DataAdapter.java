@@ -333,8 +333,8 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public int updateItemInList(@NonNull BasicMVPList_DataItem newListItem,
-                                @NonNull iFindItemComparisionCallback comparisionCallback)
+    public int findAndUpdateItem(@NonNull BasicMVPList_DataItem newListItem,
+                                 @NonNull iFindItemComparisionCallback comparisionCallback)
     {
         int visiblePosition = findVisibleObjectPosition(comparisionCallback);
         updateItemInVisibleList(visiblePosition, newListItem);
@@ -346,7 +346,7 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public void deleteItemFromList(@NonNull iFindItemComparisionCallback comparisionCallback)
+    public void findAndRemoveItem(@NonNull iFindItemComparisionCallback comparisionCallback)
     {
         int visiblePosition = findVisibleObjectPosition(comparisionCallback);
         deleteItemFromVisibleList(visiblePosition);

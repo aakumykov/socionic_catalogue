@@ -137,7 +137,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         {
             Card_ListItem newCardListItem = new Card_ListItem(newCard);
 
-            int position = mListView.updateItemInList(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
+            int position = mListView.findAndUpdateItem(newCardListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
                 public boolean onCompareWithListItemPayload(Object itemPayload) {
                     Card cardFromList = (Card) itemPayload;
@@ -153,7 +153,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         if (null == card)
             return;
 
-        mListView.deleteItemFromList(new iBasicList.iFindItemComparisionCallback() {
+        mListView.findAndRemoveItem(new iBasicList.iFindItemComparisionCallback() {
             @Override
             public boolean onCompareWithListItemPayload(Object itemPayload) {
                 Card cardFromList = (Card) itemPayload;
