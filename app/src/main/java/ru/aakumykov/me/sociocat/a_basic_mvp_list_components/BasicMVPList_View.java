@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -448,22 +450,23 @@ public abstract class BasicMVPList_View
     }
 
     protected void addSingleItemMenu(int menuResourceId, int itemId, int showAsAction) {
+
         mMenuInflater.inflate(menuResourceId, mMenu);
 
-//        MenuItem menuItem = mMenu.findItem(itemId);
+        // Если пункт меню настроен как скрытый, меняю цвет иконки на серый
+        if (MenuItem.SHOW_AS_ACTION_NEVER == showAsAction)
+        {
+            MenuItem menuItem = mMenu.findItem(itemId);
 
-        /*if (MenuItem.SHOW_AS_ACTION_NEVER == showAsAction) {
+            Drawable menuItemIcon = menuItem.getIcon();
 
-        }*/
-
-        /*Drawable menuItemIcon = menuItem.getIcon();
-
-        Drawable unwrappedDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_baseline_android_24);
-        if (null != unwrappedDrawable) {
-            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-            DrawableCompat.setTint(wrappedDrawable, Color.RED);
-            androidMenuItem.setIcon(wrappedDrawable);
-        }*/
+            if (null != menuItemIcon) {
+                Drawable wrappedDrawable = DrawableCompat.wrap(menuItemIcon);
+                int color = getResources().getColor(R.color.menu_icon_grey);
+                DrawableCompat.setTint(wrappedDrawable, color);
+                menuItem.setIcon(wrappedDrawable);
+            }
+        }
     }
 
     protected void addChangeViewModeMenu() {
