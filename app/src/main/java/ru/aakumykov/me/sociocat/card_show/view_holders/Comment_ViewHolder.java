@@ -40,9 +40,9 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.ratingView) TextView ratingView;
     @BindView(R.id.ratingThrobber) ProgressBar ratingThrobber;
 
-    @BindView(R.id.replyWidget) TextView replyWidget;
-    @BindView(R.id.editWidget) TextView editWidget;
-    @BindView(R.id.deleteWidget) TextView deleteWidget;
+    @BindView(R.id.replyWidget) View replyWidget;
+    @BindView(R.id.editWidget) View editWidget;
+    @BindView(R.id.deleteWidget) View deleteWidget;
 
     private final iCardShow.iPresenter presenter;
     private iList_Item currentListItem;
