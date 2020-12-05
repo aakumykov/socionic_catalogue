@@ -191,7 +191,7 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public void addItem(BasicMVPList_ListItem listItem) {
+    public void appendItem(BasicMVPList_ListItem listItem) {
         mCurrentItemsList.add(listItem);
         notifyItemInserted(getMaxIndex());
     }
@@ -357,7 +357,7 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public void showThrobberItem() {
-        addItem(new BasicMVPList_ThrobberItem());
+        appendItem(new BasicMVPList_ThrobberItem());
     }
 
     @Override
@@ -371,12 +371,12 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        addItem(new BasicMVPList_LoadmoreItem());
+        appendItem(new BasicMVPList_LoadmoreItem());
     }
 
     @Override
     public void showLoadmoreItem(int titleId) {
-        addItem(new BasicMVPList_LoadmoreItem(titleId));
+        appendItem(new BasicMVPList_LoadmoreItem(titleId));
     }
 
     @Override

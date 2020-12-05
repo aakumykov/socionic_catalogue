@@ -22,7 +22,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
     void appendListAndFilter(List<BasicMVPList_ListItem> inputList);
 
-    void addItem(BasicMVPList_ListItem item);
+    void appendItem(BasicMVPList_ListItem item);
     void insertItem(int position, BasicMVPList_ListItem item);
     void removeItem(BasicMVPList_ListItem item);
 
