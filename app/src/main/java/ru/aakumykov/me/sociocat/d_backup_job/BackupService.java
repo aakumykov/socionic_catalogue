@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.backup_job;
+package ru.aakumykov.me.sociocat.d_backup_job;
 
 import android.app.Notification;
 import android.app.PendingIntent;

@@ -46,7 +46,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".user_show.UserShow_View" />
-        <activity android:name=".backup_job.BackupActivity" />
+        <activity android:name=".d_backup_job.BackupActivity" />
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
@@ -125,7 +125,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".preferences.PreferencesActivity" />
         <activity
-            android:name=".backup_job.BackupStatus_Activity"
+            android:name=".d_backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
         <activity
             android:name=".card_show.CardShow_View"
@@ -205,12 +205,12 @@
         </service>
 
         <service
-            android:name=".backup_job.Backup_JobService"
+            android:name=".d_backup_job.Backup_JobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <service android:name=".backup_job.BackupService" />
+        <service android:name=".d_backup_job.BackupService" />
 
     </application>
 
