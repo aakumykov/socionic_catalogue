@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.stubs;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
@@ -91,6 +92,11 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     @Override
     public boolean isCommentFormDisabled() {
         return false;
+    }
+
+    @Override
+    public void openURI(@NonNull Uri uri) {
+
     }
 
     @Override

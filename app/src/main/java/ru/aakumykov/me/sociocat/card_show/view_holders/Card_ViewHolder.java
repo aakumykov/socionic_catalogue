@@ -160,6 +160,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         presenter.onCardRateDownClicked(this);
     }
 
+    @OnClick(R.id.quoteSourceView)
+    void onQuoteSourceClicked() {
+        presenter.onQuoteSourceClicked(currentCard);
+    }
+
     @OnClick(R.id.authorView)
     void onAuthorClicked() {
         presenter.onAuthorClicked();
@@ -329,11 +334,15 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void displayQuoteSource() {
+
         String quoteSource = currentCard.getQuoteSource();
+
         if (!TextUtils.isEmpty(quoteSource)) {
             quoteSourceView.setText(MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
             MyUtils.show(quoteSourceView);
         }
+        else
+            MyUtils.hide(quoteSourceView);
     }
 
     private void displayDescription() {

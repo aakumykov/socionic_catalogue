@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +50,8 @@ public interface iCardShow
         void closeAfterCardDeleted(@NonNull Card currentCard);
 
         boolean isCommentFormDisabled();
+
+        void openURI(@NonNull Uri uri);
     }
 
     interface iDataAdapter {
@@ -101,6 +104,7 @@ public interface iCardShow
 
         void processLoginRequest(Intent transitIntent) throws IllegalArgumentException;
 
+        void onQuoteSourceClicked(@NonNull Card card);
         void onAuthorClicked();
         void onTagClicked(String tagName);
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);

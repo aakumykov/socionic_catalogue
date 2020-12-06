@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -297,6 +298,15 @@ public class CardShow_View extends BaseView implements
     @Override
     public boolean isCommentFormDisabled() {
         return commentForm.isDisabled();
+    }
+
+    @Override
+    public void openURI(@NonNull Uri uri) {
+        Intent intent = new Intent();
+        intent.setData(uri);
+
+        if (null != getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY))
+            startActivity(intent);
     }
 
     @Override

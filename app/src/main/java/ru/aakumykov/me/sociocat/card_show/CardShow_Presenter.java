@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -258,6 +259,20 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             default:
                 throw new RuntimeException("Unknown replyAction: "+replyAction);
         }
+    }
+
+    @Override
+    public void onQuoteSourceClicked(@NonNull Card card) {
+        String quoteSource = card.getQuoteSource();
+        if (TextUtils.isEmpty(quoteSource))
+            return;
+
+        Uri uri;
+        try {
+            uri = Uri.parse(quoteSource);
+            pageView.openURI(uri);
+        }
+        catch (Exception e) { }
     }
 
     @Override
