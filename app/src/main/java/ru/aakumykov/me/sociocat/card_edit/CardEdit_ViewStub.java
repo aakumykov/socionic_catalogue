@@ -142,22 +142,22 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void prepareForQuote(String title, String quote) {
+    public void prepareForTextCard(String title, String quote) {
 
     }
 
     @Override
-    public void prepareForImage(Bitmap imageBitmap) {
+    public void prepareForImageCard(Bitmap imageBitmap) {
 
     }
 
     @Override
-    public void prepareForVideo(String videoCode, String timeCode) {
+    public void prepareForVideoCard(String videoCode, String timeCode) {
 
     }
 
     @Override
-    public void prepareForAudio(@Nullable String audioCode, Float timeCode) {
+    public void prepareForAudioCard(@Nullable String audioCode, Float timeCode) {
 
     }
 

@@ -370,7 +370,7 @@ public class CardEdit_Presenter implements
         String quote = IntentUtils.extractText(dataIntent);
         String title = MyUtils.cutToLength(quote, AppConfig.TITLE_MAX_LENGTH);
 
-        view.prepareForQuote(title, quote);
+        view.prepareForTextCard(title, quote);
     }
 
     private void prepareForImageCard(@Nullable Intent dataIntent) {
@@ -383,7 +383,7 @@ public class CardEdit_Presenter implements
                 mImageBitmap = bitmap.copy(bitmap.getConfig(), true);
                 mImageType = imageType;
 
-                view.prepareForImage(mImageBitmap);
+                view.prepareForImageCard(mImageBitmap);
             }
 
             @Override
@@ -392,7 +392,7 @@ public class CardEdit_Presenter implements
                     view.showLongToast(R.string.CARD_EDIT_error_processing_image);
                     Log.e(TAG, errorMsg);
                 }
-                view.prepareForImage(null);
+                view.prepareForImageCard(null);
             }
         });
     }
@@ -402,7 +402,7 @@ public class CardEdit_Presenter implements
 
         String videoCode = IntentUtils.extractYoutubeVideoCode(dataIntent);
         currentCard.setVideoCode(videoCode);
-        view.prepareForVideo(videoCode, null);
+        view.prepareForVideoCard(videoCode, null);
     }
 
     private void prepareForAudioCard(@Nullable Intent dataIntent) {
@@ -410,7 +410,7 @@ public class CardEdit_Presenter implements
 
         String audioCode = IntentUtils.extractYoutubeVideoCode(dataIntent);
         currentCard.setVideoCode(audioCode);
-        view.prepareForAudio(audioCode, null);
+        view.prepareForAudioCard(audioCode, null);
     }
 
     private void proceed2editCard(Intent intent) throws Exception {

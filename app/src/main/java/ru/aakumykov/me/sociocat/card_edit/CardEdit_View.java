@@ -574,7 +574,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void prepareForQuote(String title, String quote) {
+    public void prepareForTextCard(String title, String quote) {
         titleInput.setText(title);
         quoteInput.setText(quote);
 
@@ -583,7 +583,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void prepareForImage(@Nullable Bitmap imageBitmap) {
+    public void prepareForImageCard(@Nullable Bitmap imageBitmap) {
         if (null != imageBitmap) {
             imageIsSetted = true;
             imageView.setImageBitmap(imageBitmap);
@@ -592,10 +592,11 @@ public class CardEdit_View extends BaseView implements
             showImagePlaceholder();
 
         MyUtils.show(imageHolder);
+        MyUtils.show(quoteSourceInput);
     }
 
     @Override
-    public void prepareForVideo(@Nullable String videoCode, @Nullable String timeCode) {
+    public void prepareForVideoCard(@Nullable String videoCode, @Nullable String timeCode) {
         if (null != videoCode)
             displayVideo(videoCode, null);
         else
@@ -603,7 +604,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void prepareForAudio(@Nullable String audioCode, @Nullable Float timeCode) {
+    public void prepareForAudioCard(@Nullable String audioCode, @Nullable Float timeCode) {
         if (null != audioCode)
             displayAudio(audioCode, null);
         else
@@ -919,13 +920,17 @@ public class CardEdit_View extends BaseView implements
             quoteSourceInput.setText(quoteParts[1]);
 
         MyUtils.show(quoteInput);
-        MyUtils.show(quoteSourceInput);
     }
 
     private void displayCommonCardParts(Card card) {
         titleInput.setText(card.getTitle());
+
         descriptionInput.setText(card.getDescription());
+
         tagsContainer.setTags(card.getTags());
+
+        quoteSourceInput.setText(card.getQuoteSource());
+        MyUtils.show(quoteSourceInput);
     }
 
     private void showImagePlaceholder() {

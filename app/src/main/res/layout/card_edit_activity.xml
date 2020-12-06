@@ -50,21 +50,6 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <EditText
-                android:id="@+id/quoteSourceInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/CARD_EDIT_quote_source_label"
-                android:inputType=""
-                android:selectAllOnFocus="false"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                android:padding="8dp"
-                android:textStyle="italic"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
             <ProgressBar
                 android:id="@+id/mediaThrobber"
                 android:layout_width="match_parent"
@@ -231,6 +216,21 @@
                     tools:visibility="visible" />
 
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/quoteSourceInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/CARD_EDIT_quote_source_hint"
+                android:inputType=""
+                android:padding="8dp"
+                android:selectAllOnFocus="false"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <EditText
                 android:id="@+id/descriptionInput"
