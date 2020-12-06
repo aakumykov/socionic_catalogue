@@ -74,9 +74,7 @@
         android:textIsSelectable="true"
         android:textSize="16sp"
         android:textStyle="italic"
-        android:visibility="gone"
-        tools:text="Источник цитаты/медиа"
-        tools:visibility="visible" />
+        tools:text="Источник цитаты/медиа" />
 
     <TextView
         android:id="@+id/descriptionView"

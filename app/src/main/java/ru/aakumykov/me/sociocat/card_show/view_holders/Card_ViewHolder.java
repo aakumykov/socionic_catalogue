@@ -338,7 +338,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         String quoteSource = currentCard.getQuoteSource();
 
         if (!TextUtils.isEmpty(quoteSource)) {
-            quoteSourceView.setText(MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
+            String text = MyUtils.getStringWithString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource);
+            quoteSourceView.setText(text);
             MyUtils.show(quoteSourceView);
         }
         else
