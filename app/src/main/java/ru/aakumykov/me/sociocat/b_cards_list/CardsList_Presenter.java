@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -15,12 +14,10 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Present
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iItemsComparator;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
@@ -38,7 +35,6 @@ import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.utils.SortAndFilterUtils;
 
 public class CardsList_Presenter extends BasicMVPList_Presenter implements iCardsList_ItemClickListener {
 
@@ -233,13 +229,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 List<BasicMVPList_ListItem> list2display = new ArrayList<>(loadedList);
 
                 // Разбираемся с сортировкой
-                if (mListView.isSorted()) {
+                /*if (mListView.isSorted()) {
                     iItemsComparator comparator = mListView.getItemsComparator(getCurrentSortingMode(), getCurrentSortingOrder());
                     list2display = SortAndFilterUtils.sortList(loadedList, comparator);
                 }
+                */
 
                 // Разбираемся с фильтрацией
-                if (mListView.isFilteredWithText()) {
+                /*if (mListView.isFilteredWithText()) {
                     String filterText = mListView.getFilterText();
 
                     list2display = SortAndFilterUtils.filterList(list2display, new Predicate<BasicMVPList_ListItem>() {
@@ -253,9 +250,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                         }
                     });
                 }
+                */
 
-                mListView.setOriginalList(loadedList);
                 mListView.setList(list2display);
+
                 mListView.showLoadmoreItem();
             }
 
@@ -294,12 +292,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     mListView.appendListAndFilter(list2append);
                 }
                 else {
-                    String msg = TextUtils.getPluralString(mPageView.getAppContext(), R.plurals.CARDS_LIST_n_cards_mode_loaded, list.size());
-                    mPageView.showToast(msg);
-
                     int firstNewCardPosition = mListView.getVisibleItemsCount();
                     mListView.appendList(list2append);
-
                     mPageView.scroll2position(firstNewCardPosition);
                 }
 
@@ -342,8 +336,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 });
 
-                mListView.setOriginalList(itemsList);
                 mListView.setList(itemsList);
+
                 mListView.showLoadmoreItem();
             }
 

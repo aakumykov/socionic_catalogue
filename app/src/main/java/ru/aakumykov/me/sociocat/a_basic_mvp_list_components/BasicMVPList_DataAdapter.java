@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderCreator;
@@ -140,41 +142,48 @@ public abstract class BasicMVPList_DataAdapter
     @Override
     public void setList(List<BasicMVPList_ListItem> inputList) {
         mIsVirgin = false;
-        mCurrentItemsList.clear();
-        mCurrentItemsList.addAll(inputList);
-        notifyDataSetChanged();
-    }
 
-    @Override
-    public void setOriginalList(List<BasicMVPList_ListItem> list) {
-        mOriginalItemsList.clear();
-        mOriginalItemsList.addAll(list);
-
-        storeTailDataItem(list);
-    }
-
-    @Override
-    public void setListAndFilter(List<BasicMVPList_ListItem> inputList) {
-        mIsVirgin = false;
+        storeTailDataItem(inputList);
 
         mOriginalItemsList.clear();
         mOriginalItemsList.addAll(inputList);
-        applyFilter(mFilterPattern);
 
-//        mItemsList.clear();
-//        mItemsList.addAll(inputList);
+        mCurrentItemsList.clear();
+        mCurrentItemsList.addAll(inputList);
+
         notifyDataSetChanged();
     }
 
     @Override
-    public void appendList(List<BasicMVPList_ListItem> inputList) {
+    public void setListAndFilter(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate) {
+        mIsVirgin = false;
+
         storeTailDataItem(inputList);
-        appendListAndSort(inputList, null, null);
+
+        mOriginalItemsList.clear();
+        mOriginalItemsList.addAll(inputList);
+
+        List<BasicMVPList_ListItem> filteredList = filterList(inputList, filterPredicate);
+        mOriginalItemsList.clear();
+        mOriginalItemsList.addAll(filteredList);
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void appendList(List<BasicMVPList_ListItem> appendedList) {
+        storeTailDataItem(appendedList);
+
+        mOriginalItemsList.addAll(appendedList);
+
+        mCurrentItemsList.addAll(appendedList);
+        int startPosition = mCurrentItemsList.size();
+        notifyItemRangeInserted(startPosition, appendedList.size());
     }
 
     @Override
     public void appendListAndSort(List<BasicMVPList_ListItem> inputList, @Nullable iSortingMode sortingMode, @Nullable eSortingOrder sortingOrder) {
-        hideThrobberItem();
+        /*hideThrobberItem();
         hideLoadmoreItem();
 
         int insertPosition = getMaxIndex() + 1;
@@ -184,13 +193,13 @@ public abstract class BasicMVPList_DataAdapter
             if (null != sortingMode && null != sortingOrder)
                 sortCurrentList(sortingMode, sortingOrder);
 
-        notifyItemRangeInserted(insertPosition, inputList.size());
+        notifyItemRangeInserted(insertPosition, inputList.size());*/
     }
 
     @Override
     public void appendListAndFilter(List<BasicMVPList_ListItem> inputList) {
-        addToOriginalItemsList(inputList);
-        applyFilter();
+        /*addToOriginalItemsList(inputList);
+        applyFilter();*/
     }
 
     @Override
@@ -432,6 +441,11 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
+    public void sortList(iItemsComparator itemsComparator) {
+
+    }
+
+    @Override
     public List<BasicMVPList_ListItem> applyCurrentSortingToList(List<BasicMVPList_ListItem> inputList) {
         return SortAndFilterUtils.sortList(inputList, mCurrentItemsComparator);
     }
@@ -646,14 +660,20 @@ public abstract class BasicMVPList_DataAdapter
 
         ListIterator<BasicMVPList_ListItem> listIterator = inputList.listIterator(inputList.size());
 
-        BasicMVPList_ListItem currentItem;
+        BasicMVPList_ListItem item;
 
         while (listIterator.hasPrevious()) {
-            currentItem = listIterator.previous();
-            if (currentItem instanceof BasicMVPList_DataItem) {
-                mTailDataItem = (BasicMVPList_DataItem) currentItem;
+            item = listIterator.previous();
+            if (item instanceof BasicMVPList_DataItem) {
+                mTailDataItem = (BasicMVPList_DataItem) item;
                 return;
             }
         }
+    }
+
+    private List<BasicMVPList_ListItem> filterList(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate) {
+        return inputList.stream()
+                .filter(filterPredicate)
+                .collect(Collectors.toList());
     }
 }
