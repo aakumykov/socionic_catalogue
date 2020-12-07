@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 
 
-import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
@@ -439,8 +438,8 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public boolean isFilteredWithText() {
-        return !TextUtils.isEmpty(mFilterPattern);
+    public boolean isFiltered() {
+        return null != mCurrentItemsFilter;
     }
 
     // Сортировка
@@ -688,12 +687,8 @@ public abstract class BasicMVPList_DataAdapter
                 .collect(Collectors.toList());
     }*/
 
-    private boolean isFiltered() {
-        return null != mCurrentItemsFilter;
-    }
-
     private void filterCurrentList() {
-//        SortAndFilterUtils.filterList(mCurrentItemsList, mCurrentItemsFilter);
+        filterList(mFilterPattern);
     }
 
     // TODO: сделать внутренним методом...?

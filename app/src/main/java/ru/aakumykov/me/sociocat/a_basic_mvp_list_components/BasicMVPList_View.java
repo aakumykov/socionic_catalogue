@@ -52,6 +52,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ListFilteredViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
@@ -248,6 +249,9 @@ public abstract class BasicMVPList_View
         if (viewState instanceof NeutralViewState) {
             setNeutralViewState();
         }
+        else if (viewState instanceof ListFilteredViewState) {
+            setListFilteredViewState((ListFilteredViewState) viewState);
+        }
         else if (viewState instanceof CancelableProgressViewState) {
             setCancelableProgressViewState((CancelableProgressViewState) viewState);
         }
@@ -270,6 +274,10 @@ public abstract class BasicMVPList_View
         }
         else
             throw new RuntimeException("Unknown view state: "+viewState);
+    }
+
+    private void setListFilteredViewState(ListFilteredViewState listFilteredViewState) {
+        restoreSearchView(listFilteredViewState.getFilterText());
     }
 
     @Override

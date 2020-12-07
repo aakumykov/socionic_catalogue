@@ -203,7 +203,7 @@ public abstract class BasicMVPList_Presenter
     // iSearchViewListener
     @Override
     public void onSearchViewCreated() {
-        if (mListView.isFilteredWithText())
+        if (mListView.isFiltered())
             mPageView.restoreSearchView(mListView.getFilterText());
     }
 

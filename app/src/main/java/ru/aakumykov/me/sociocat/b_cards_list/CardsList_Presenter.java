@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ListFilteredViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
@@ -223,7 +224,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                setViewState(new CardsWithoutTag_ViewState(mHasParent));
+                if (mListView.isFiltered())
+                    setViewState(new ListFilteredViewState(mListView.getFilterText()));
+                else
+                    setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override

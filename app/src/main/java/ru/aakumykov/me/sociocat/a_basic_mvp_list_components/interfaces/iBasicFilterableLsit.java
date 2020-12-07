@@ -11,5 +11,5 @@ public interface iBasicFilterableLsit extends Filterable {
     String getFilterText();
 
     void filterItems(String pattern);
-    boolean isFilteredWithText();
+    boolean isFiltered();
 }
