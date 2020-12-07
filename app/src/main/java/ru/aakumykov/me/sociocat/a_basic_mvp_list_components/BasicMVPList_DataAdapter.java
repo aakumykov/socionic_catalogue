@@ -145,6 +145,11 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
+    public BasicMVPList_ItemsFilter2 getCurrentFilter() {
+        return mCurrentItemsFilter;
+    }
+
+    @Override
     public void filterList(String pattern) {
 
         if (null != mCurrentItemsFilter)

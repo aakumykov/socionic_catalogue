@@ -30,4 +30,8 @@ public class BasicMVPList_ItemsFilter2 implements Predicate<BasicMVPList_ListIte
         }
         return false;
     }
+
+    public String getFilterText() {
+        return mFilterPattern;
+    }
 }

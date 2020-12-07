@@ -225,7 +225,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             public void onListLoadSuccess(List<Card> list) {
 
                 if (mListView.isFiltered())
-                    setViewState(new ListFilteredViewState(mListView.getFilterText()));
+                    restoreFilterWidget(mListView.getCurrentFilter());
                 else
                     setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
@@ -384,5 +384,15 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private void showNoMoreCards() {
         mListView.hideThrobberItem();
         mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
+    }
+
+    // TODO: перенести в Basic
+    private void restoreFilterWidget(BasicMVPList_ItemsFilter2 itemsFilter) {
+        if (itemsFilter instanceof BasicMVPList_ItemsFilter2) {
+            String filterTxt = ((BasicMVPList_ItemsFilter2) itemsFilter).getFilterText();
+            ListFilteredViewState listFilteredViewState =
+                    new ListFilteredViewState(filterTxt);
+            setViewState(listFilteredViewState);
+        }
     }
 }

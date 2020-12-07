@@ -71,6 +71,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     int getVisibleListSize();
 
     void setFilter(BasicMVPList_ItemsFilter2 itemsFilter);
+    BasicMVPList_ItemsFilter2 getCurrentFilter();
     void filterList(String pattern);
     void clearFilter();
 
