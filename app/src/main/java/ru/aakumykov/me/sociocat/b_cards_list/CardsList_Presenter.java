@@ -337,6 +337,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     return;
                 }
 
+                int position2scroll = mListView.getVisibleListSize();
+
                 mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object payload) {
@@ -344,8 +346,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 }));
 
-                mListView.hideThrobberItem();
                 mListView.showLoadmoreItem();
+
+                mPageView.scroll2position(position2scroll);
             }
 
             @Override

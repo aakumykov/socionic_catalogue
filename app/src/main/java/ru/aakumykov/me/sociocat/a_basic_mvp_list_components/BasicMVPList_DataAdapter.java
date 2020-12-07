@@ -166,7 +166,9 @@ public abstract class BasicMVPList_DataAdapter
 
         mOriginalItemsList.addAll(appendedList);
 
+        hideThrobberItem();
         mCurrentItemsList.addAll(appendedList);
+
         int startPosition = mCurrentItemsList.size();
         notifyItemRangeInserted(startPosition, appendedList.size());
     }
