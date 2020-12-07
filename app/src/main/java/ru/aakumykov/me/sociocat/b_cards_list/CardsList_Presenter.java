@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -220,39 +219,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
                 setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
-                List<BasicMVPList_ListItem> loadedList = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
-                });
-                List<BasicMVPList_ListItem> list2display = new ArrayList<>(loadedList);
-
-                // Разбираемся с сортировкой
-                /*if (mListView.isSorted()) {
-                    iItemsComparator comparator = mListView.getItemsComparator(getCurrentSortingMode(), getCurrentSortingOrder());
-                    list2display = SortAndFilterUtils.sortList(loadedList, comparator);
-                }
-                */
-
-                // Разбираемся с фильтрацией
-                /*if (mListView.isFilteredWithText()) {
-                    String filterText = mListView.getFilterText();
-
-                    list2display = SortAndFilterUtils.filterList(list2display, new Predicate<BasicMVPList_ListItem>() {
-                        @Override
-                        public boolean test(BasicMVPList_ListItem listItem) {
-                            if (listItem instanceof BasicMVPList_DataItem) {
-                                Card card = (Card) ((BasicMVPList_DataItem) listItem).getPayload();
-                                return card.getTitle().toLowerCase().contains(filterText.toLowerCase());
-                            }
-                            return false;
-                        }
-                    });
-                }
-                */
-
-                mListView.setList(list2display);
+                }));
 
                 mListView.showLoadmoreItem();
             }
@@ -329,14 +301,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
                 setViewState(new CardsWithTag_ViewState(mTagFilter));
 
-                List<BasicMVPList_ListItem> itemsList = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
-                });
-
-                mListView.setList(itemsList);
+                }));
 
                 mListView.showLoadmoreItem();
             }

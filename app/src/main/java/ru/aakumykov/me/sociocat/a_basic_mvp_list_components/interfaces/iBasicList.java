@@ -4,7 +4,6 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces;
 import androidx.annotation.NonNull;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
@@ -16,7 +15,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     boolean isVirgin();
 
     void setList(List<BasicMVPList_ListItem> inputList);
-    void setListAndFilter(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
     void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
@@ -58,7 +56,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     // TODO: переименовать в sortList()
     void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder);
-    void sortList(iItemsComparator itemsComparator);
     boolean isSorted();
 
 //    <T> void filterList(Comparator<T> comparator);

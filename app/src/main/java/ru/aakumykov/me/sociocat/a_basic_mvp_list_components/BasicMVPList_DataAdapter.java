@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderCreator;
@@ -56,6 +55,7 @@ public abstract class BasicMVPList_DataAdapter
     private BasicMVPList_DataItem mCurrentHighlightedItem;
     private BasicViewMode mCurrentViewMode;
     private iItemsComparator mCurrentItemsComparator;
+    private Predicate<? super BasicMVPList_ListItem> mCurrentItemsFilter;
 
 
     public BasicMVPList_DataAdapter(
@@ -108,11 +108,6 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public boolean isSorted() {
-        return mIsSorted;
-    }
-
-    @Override
     public void highlightItem(int position) {
         int oldHighlightedPosition = mCurrentItemsList.indexOf(mCurrentHighlightedItem);
 
@@ -151,21 +146,11 @@ public abstract class BasicMVPList_DataAdapter
         mCurrentItemsList.clear();
         mCurrentItemsList.addAll(inputList);
 
-        notifyDataSetChanged();
-    }
+        if (isSorted())
+            sortCurrentList();
 
-    @Override
-    public void setListAndFilter(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate) {
-        mIsVirgin = false;
-
-        storeTailDataItem(inputList);
-
-        mOriginalItemsList.clear();
-        mOriginalItemsList.addAll(inputList);
-
-        List<BasicMVPList_ListItem> filteredList = filterList(inputList, filterPredicate);
-        mOriginalItemsList.clear();
-        mOriginalItemsList.addAll(filteredList);
+        if (isFiltered())
+            filterCurrentList();
 
         notifyDataSetChanged();
     }
@@ -413,7 +398,7 @@ public abstract class BasicMVPList_DataAdapter
         else
             mFilterPattern = pattern;
 
-        applyFilter(pattern);
+        applyFilter();
     }
 
     @Override
@@ -438,11 +423,6 @@ public abstract class BasicMVPList_DataAdapter
 
             mIsSorted = true;
         }
-    }
-
-    @Override
-    public void sortList(iItemsComparator itemsComparator) {
-
     }
 
     @Override
@@ -594,18 +574,8 @@ public abstract class BasicMVPList_DataAdapter
         mOriginalItemsList.addAll(getVisibleDataItems());
     }
 
-    private void addToOriginalItemsList(List<BasicMVPList_ListItem> list) {
-        mOriginalItemsList.addAll(list);
-    }
-
     private void applyFilter() {
-        applyFilter(null);
-    }
-
-    private void applyFilter(@Nullable String pattern) {
-        Filter filter = getFilter();
-
-        filter.filter(mFilterPattern);
+        getFilter().filter(mFilterPattern);
     }
 
     private void addToSelectedItemsList(BasicMVPList_DataItem dataItem) {
@@ -671,9 +641,27 @@ public abstract class BasicMVPList_DataAdapter
         }
     }
 
-    private List<BasicMVPList_ListItem> filterList(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate) {
+    /*private List<BasicMVPList_ListItem> filterList(List<BasicMVPList_ListItem> inputList, Predicate<? super BasicMVPList_ListItem> filterPredicate) {
         return inputList.stream()
                 .filter(filterPredicate)
                 .collect(Collectors.toList());
+    }*/
+
+    private boolean isFiltered() {
+        return null != mCurrentItemsFilter;
+    }
+
+    private void filterCurrentList() {
+//        SortAndFilterUtils.filterList(mCurrentItemsList, mCurrentItemsFilter);
+    }
+
+    // TODO: сделать внутренним методом...?
+    @Override
+    public boolean isSorted() {
+        return mIsSorted;
+    }
+
+    private void sortCurrentList() {
+
     }
 }

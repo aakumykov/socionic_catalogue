@@ -485,7 +485,6 @@ public abstract class BasicMVPList_View
         if (null != searchMenuItem) {
             mSearchView = (SearchView) searchMenuItem.getActionView();
             mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-//            mSearchView.setMaxWidth(Integer.MAX_VALUE);
 
             mSearchView.setOnSearchClickListener(new View.OnClickListener() {
                 @Override
