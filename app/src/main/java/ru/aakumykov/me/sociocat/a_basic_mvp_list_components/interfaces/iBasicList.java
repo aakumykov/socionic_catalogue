@@ -47,7 +47,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     BasicMVPList_ListItem getItem(int position);
     BasicMVPList_DataItem getLastDataItem();
-    BasicMVPList_DataItem getLastUnfilteredDataItem();
 
     void refreshItem(int position); // сделать внутренним
 

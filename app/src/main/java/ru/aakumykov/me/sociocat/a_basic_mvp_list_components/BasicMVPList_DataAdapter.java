@@ -40,6 +40,7 @@ public abstract class BasicMVPList_DataAdapter
     private final List<BasicMVPList_ListItem> mCurrentItemsList;
     private final List<BasicMVPList_ListItem> mOriginalItemsList;
     private final ArrayList<BasicMVPList_DataItem> mSelectedItemsList;
+    private BasicMVPList_DataItem mTailDataItem;
 
     protected BasicMVPList_ViewHolderCreator mViewHolderCreator;
     protected BasicMVPList_ViewHolderBinder mViewHolderBinder;
@@ -139,7 +140,6 @@ public abstract class BasicMVPList_DataAdapter
     @Override
     public void setList(List<BasicMVPList_ListItem> inputList) {
         mIsVirgin = false;
-
         mCurrentItemsList.clear();
         mCurrentItemsList.addAll(inputList);
         notifyDataSetChanged();
@@ -149,6 +149,8 @@ public abstract class BasicMVPList_DataAdapter
     public void setOriginalList(List<BasicMVPList_ListItem> list) {
         mOriginalItemsList.clear();
         mOriginalItemsList.addAll(list);
+
+        storeTailDataItem(list);
     }
 
     @Override
@@ -166,6 +168,7 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public void appendList(List<BasicMVPList_ListItem> inputList) {
+        storeTailDataItem(inputList);
         appendListAndSort(inputList, null, null);
     }
 
@@ -293,38 +296,7 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public BasicMVPList_DataItem getLastDataItem() {
-
-        ListIterator<BasicMVPList_ListItem> listIterator =
-                mCurrentItemsList.listIterator(mCurrentItemsList.size());
-
-        BasicMVPList_ListItem listItem;
-
-        while (listIterator.hasPrevious()) {
-            listItem = listIterator.previous();
-            if (listItem instanceof BasicMVPList_DataItem)
-                return (BasicMVPList_DataItem) listItem;
-        }
-
-        return null;
-    }
-
-    @Override
-    public BasicMVPList_DataItem getLastUnfilteredDataItem() {
-
-        ListIterator<BasicMVPList_ListItem> listIterator =
-                (0 == mOriginalItemsList.size()) ?
-                        mCurrentItemsList.listIterator(mCurrentItemsList.size()) :
-                        mOriginalItemsList.listIterator(mOriginalItemsList.size());
-
-        BasicMVPList_ListItem listItem;
-
-        while (listIterator.hasPrevious()) {
-            listItem = listIterator.previous();
-            if (listItem instanceof BasicMVPList_DataItem)
-                return (BasicMVPList_DataItem) listItem;
-        }
-
-        return null;
+        return mTailDataItem;
     }
 
     @Override
@@ -668,5 +640,20 @@ public abstract class BasicMVPList_DataAdapter
     private void deleteItemFromOriginalList(int position) {
         if (positionIsInListRange(position, mOriginalItemsList))
             mOriginalItemsList.remove(position);
+    }
+
+    private void storeTailDataItem(List<BasicMVPList_ListItem> inputList) {
+
+        ListIterator<BasicMVPList_ListItem> listIterator = inputList.listIterator(inputList.size());
+
+        BasicMVPList_ListItem currentItem;
+
+        while (listIterator.hasPrevious()) {
+            currentItem = listIterator.previous();
+            if (currentItem instanceof BasicMVPList_DataItem) {
+                mTailDataItem = (BasicMVPList_DataItem) currentItem;
+                return;
+            }
+        }
     }
 }
