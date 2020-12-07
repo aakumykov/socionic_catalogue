@@ -18,6 +18,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicLis
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
@@ -92,6 +93,11 @@ public class TagsList_Presenter
     @Override
     public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
 
+    }
+
+    @Override
+    protected BasicMVPList_ItemsFilter2 getItemsFilter() {
+        return new BasicMVPList_ItemsFilter2();
     }
 
     @Override

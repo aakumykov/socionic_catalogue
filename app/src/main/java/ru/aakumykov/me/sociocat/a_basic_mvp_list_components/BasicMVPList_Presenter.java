@@ -11,6 +11,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicVie
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
@@ -208,23 +209,26 @@ public abstract class BasicMVPList_Presenter
 
     @Override
     public void onSearchViewOpened() {
-        mListView.prepareFilter();
-    }
-
-    @Override
-    public void onSearchViewClosed() {
-        mListView.removeFilter();
+        mListView.setFilter(getItemsFilter());
     }
 
     @Override
     public void onSearchViewTextChanged(String pattern) {
-        mListView.filterItems(pattern);
+        mListView.filterList(pattern);
     }
 
     @Override
     public void onSearchViewTextSubmitted(String pattern) {
-
+        mListView.filterList(pattern);
     }
+
+    @Override
+    public void onSearchViewClosed() {
+        mListView.clearFilter();
+    }
+
+
+    protected abstract BasicMVPList_ItemsFilter2 getItemsFilter();
 
 
     // iSelectionCommandsListener

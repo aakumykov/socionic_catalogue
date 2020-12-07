@@ -8,6 +8,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
 public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
@@ -68,6 +69,10 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void setViewMode(BasicViewMode viewMode);
 
     int getVisibleListSize();
+
+    void setFilter(BasicMVPList_ItemsFilter2 itemsFilter);
+    void filterList(String pattern);
+    void clearFilter();
 
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);

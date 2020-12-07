@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderBinder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewHolderCreator;
@@ -27,7 +26,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_LoadmoreItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ThrobberItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.utils.SortAndFilterUtils;
 
@@ -55,7 +54,7 @@ public abstract class BasicMVPList_DataAdapter
     private BasicMVPList_DataItem mCurrentHighlightedItem;
     private BasicViewMode mCurrentViewMode;
     private iItemsComparator mCurrentItemsComparator;
-    private Predicate<? super BasicMVPList_ListItem> mCurrentItemsFilter;
+    private BasicMVPList_ItemsFilter2 mCurrentItemsFilter;
 
 
     public BasicMVPList_DataAdapter(
@@ -137,6 +136,37 @@ public abstract class BasicMVPList_DataAdapter
     @Override
     public int getVisibleListSize() {
         return mCurrentItemsList.size();
+    }
+
+    @Override
+    public void setFilter(BasicMVPList_ItemsFilter2 itemsFilter) {
+        mCurrentItemsFilter = itemsFilter;
+    }
+
+    @Override
+    public void filterList(String pattern) {
+
+        if (null != mCurrentItemsFilter)
+        {
+            mCurrentItemsFilter.setFilterPattern(pattern);
+
+            List<BasicMVPList_ListItem> filteredList = SortAndFilterUtils.filterList(mOriginalItemsList, mCurrentItemsFilter);
+
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(filteredList);
+            showLoadmoreItem();
+
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void clearFilter() {
+        mCurrentItemsFilter = null;
+
+        mCurrentItemsList.clear();
+        mCurrentItemsList.addAll(mOriginalItemsList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -364,7 +394,7 @@ public abstract class BasicMVPList_DataAdapter
     // Фильтрация
     @Override
     public void prepareFilter() {
-        if (null == mFilter) {
+        /*if (null == mFilter) {
             saveOriginalItemsList();
 
             mFilter = new BasicMVPList_ItemsFilter(mOriginalItemsList, new BasicMVPList_ItemsFilter.CompleteCallback() {
@@ -374,14 +404,12 @@ public abstract class BasicMVPList_DataAdapter
                     showLoadmoreItem();
                 }
             });
-        }
+        }*/
     }
 
     @Override
     public void removeFilter() {
-        mFilter = null;
-        mOriginalItemsList.clear();
-        mFilterPattern = null;
+
     }
 
     @Override
