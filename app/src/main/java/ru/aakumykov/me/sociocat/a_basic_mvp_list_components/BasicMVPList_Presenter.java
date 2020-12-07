@@ -219,7 +219,7 @@ public abstract class BasicMVPList_Presenter
 
     @Override
     public void onSearchViewTextSubmitted(String pattern) {
-        mListView.filterList(pattern);
+
     }
 
     @Override

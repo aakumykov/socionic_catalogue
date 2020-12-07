@@ -388,11 +388,11 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     // TODO: перенести в Basic
     private void restoreFilterWidget(BasicMVPList_ItemsFilter2 itemsFilter) {
-        if (itemsFilter instanceof BasicMVPList_ItemsFilter2) {
-            String filterTxt = ((BasicMVPList_ItemsFilter2) itemsFilter).getFilterText();
-            ListFilteredViewState listFilteredViewState =
-                    new ListFilteredViewState(filterTxt);
-            setViewState(listFilteredViewState);
+
+        if (itemsFilter instanceof BasicMVPList_ItemsFilter2)
+        {
+            String filterTxt = itemsFilter.getFilterText();
+            setViewState( new ListFilteredViewState(filterTxt) );
         }
     }
 }

@@ -277,6 +277,7 @@ public abstract class BasicMVPList_View
     }
 
     private void setListFilteredViewState(ListFilteredViewState listFilteredViewState) {
+        setNeutralViewState();
         restoreSearchView(listFilteredViewState.getFilterText());
     }
 

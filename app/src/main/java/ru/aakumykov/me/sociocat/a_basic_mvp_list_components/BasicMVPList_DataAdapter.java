@@ -154,6 +154,7 @@ public abstract class BasicMVPList_DataAdapter
 
         if (null != mCurrentItemsFilter)
         {
+            mFilterPattern = pattern;
             mCurrentItemsFilter.setFilterPattern(pattern);
 
             List<BasicMVPList_ListItem> filteredList = SortAndFilterUtils.filterList(mOriginalItemsList, mCurrentItemsFilter);
