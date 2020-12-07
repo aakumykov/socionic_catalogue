@@ -135,6 +135,11 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
+    public int getVisibleListSize() {
+        return mCurrentItemsList.size();
+    }
+
+    @Override
     public void setList(List<BasicMVPList_ListItem> inputList) {
         mIsVirgin = false;
 

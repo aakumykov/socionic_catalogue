@@ -253,23 +253,18 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             public void onListLoadSuccess(List<Card> list) {
                 mListView.hideThrobberItem();
 
-                List<BasicMVPList_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                int position2scroll = mListView.getVisibleListSize();
+
+                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object object) {
                         return new Card_ListItem((Card) object);
                     }
-                });
-
-                if (mListView.isFilteredWithText()) {
-                    mListView.appendListAndFilter(list2append);
-                }
-                else {
-                    int firstNewCardPosition = mListView.getVisibleItemsCount();
-                    mListView.appendList(list2append);
-                    mPageView.scroll2position(firstNewCardPosition);
-                }
+                }));
 
                 mListView.showLoadmoreItem();
+
+                mPageView.scroll2position(position2scroll);
             }
 
             @Override

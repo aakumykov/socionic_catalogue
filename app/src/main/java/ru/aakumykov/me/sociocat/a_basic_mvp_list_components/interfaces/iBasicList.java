@@ -67,6 +67,8 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     void setViewMode(BasicViewMode viewMode);
 
+    int getVisibleListSize();
+
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);
     }
