@@ -55,6 +55,8 @@ public abstract class BasicMVPList_DataAdapter
     private BasicViewMode mCurrentViewMode;
     private iItemsComparator mCurrentItemsComparator;
     private BasicMVPList_ItemsFilter2 mCurrentItemsFilter;
+    private iSortingMode mCurrentSortingMode;
+    private eSortingOrder mCurrentSortingOrder;
 
 
     public BasicMVPList_DataAdapter(
@@ -445,7 +447,11 @@ public abstract class BasicMVPList_DataAdapter
     @Override
     public void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
 
-        mCurrentItemsComparator = getItemsComparator(sortingMode, sortingOrder);
+        mCurrentSortingMode = sortingMode;
+        mCurrentSortingOrder = sortingOrder;
+        sortCurrentList();
+
+        /*mCurrentItemsComparator = getItemsComparator(sortingMode, sortingOrder);
 
         if (null != mCurrentItemsComparator) {
             List<BasicMVPList_ListItem> sortedListCurrent = SortAndFilterUtils.sortList(mCurrentItemsList, mCurrentItemsComparator);
@@ -457,7 +463,7 @@ public abstract class BasicMVPList_DataAdapter
             mOriginalItemsList.addAll(sortedListOriginal);
 
             mIsSorted = true;
-        }
+        }*/
     }
 
     @Override
@@ -697,6 +703,15 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     private void sortCurrentList() {
+        iItemsComparator itemsComparator = getItemsComparator(mCurrentSortingMode, mCurrentSortingOrder);
 
+        if (null != itemsComparator)
+        {
+            List<BasicMVPList_ListItem> sortedList = SortAndFilterUtils.sortList(mCurrentItemsList, itemsComparator);
+
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(sortedList);
+            notifyDataSetChanged();
+        }
     }
 }
