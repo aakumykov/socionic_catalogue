@@ -712,6 +712,8 @@ public abstract class BasicMVPList_DataAdapter
             mCurrentItemsList.clear();
             mCurrentItemsList.addAll(sortedList);
             notifyDataSetChanged();
+
+            mIsSorted = true;
         }
     }
 }
