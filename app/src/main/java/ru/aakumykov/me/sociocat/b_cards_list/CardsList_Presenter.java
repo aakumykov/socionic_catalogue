@@ -17,6 +17,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.CardTitle_ItemsFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
@@ -129,7 +130,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected BasicMVPList_ItemsFilter2 getItemsFilter() {
-        return new BasicMVPList_ItemsFilter2();
+        return new CardTitle_ItemsFilter();
     }
 
 
@@ -388,11 +389,11 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     // TODO: перенести в Basic
     private void restoreFilterWidget(BasicMVPList_ItemsFilter2 itemsFilter) {
-        if (itemsFilter instanceof BasicMVPList_ItemsFilter2) {
-            String filterTxt = ((BasicMVPList_ItemsFilter2) itemsFilter).getFilterText();
-            ListFilteredViewState listFilteredViewState =
-                    new ListFilteredViewState(filterTxt);
-            setViewState(listFilteredViewState);
+
+        if (itemsFilter instanceof CardTitle_ItemsFilter)
+        {
+            String filterTxt = (String) itemsFilter.getFilterPattern();
+            setViewState( new ListFilteredViewState(filterTxt) );
         }
     }
 }
