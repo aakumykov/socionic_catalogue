@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
@@ -30,6 +32,8 @@ public abstract class BasicMVPList_Presenter
         iSearchViewListener,
         iSelectionCommandsListener
 {
+    private static final String TAG = BasicMVPList_Presenter.class.getSimpleName();
+
     protected iBasicList_Page mPageView;
     protected iBasicList mListView;
 
@@ -203,6 +207,7 @@ public abstract class BasicMVPList_Presenter
     // iSearchViewListener
     @Override
     public void onSearchViewCreated() {
+        Log.d(TAG, "onSearchViewCreated()");
 //        if (mListView.isFiltered())
 //            mPageView.restoreSearchView(mListView.getFilterText());
     }
@@ -214,6 +219,7 @@ public abstract class BasicMVPList_Presenter
 
     @Override
     public void onSearchViewTextChanged(String pattern) {
+        Log.d(TAG, "onSearchViewTextChanged()");
         // При создании SearchView срабатывает этот метод
 //        if ("".equals(pattern))
 //            return;
