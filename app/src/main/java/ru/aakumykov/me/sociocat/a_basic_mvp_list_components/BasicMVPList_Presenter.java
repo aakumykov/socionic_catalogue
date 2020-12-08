@@ -11,7 +11,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicVie
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
@@ -203,18 +203,22 @@ public abstract class BasicMVPList_Presenter
     // iSearchViewListener
     @Override
     public void onSearchViewCreated() {
-        if (mListView.isFiltered())
-            mPageView.restoreSearchView(mListView.getFilterText());
+//        if (mListView.isFiltered())
+//            mPageView.restoreSearchView(mListView.getFilterText());
     }
 
     @Override
     public void onSearchViewOpened() {
-        mListView.setFilter(getItemsFilter());
+        mListView.setTextFilter(getItemsTextFilter());
     }
 
     @Override
     public void onSearchViewTextChanged(String pattern) {
-        mListView.filterList(pattern);
+        // При создании SearchView срабатывает этот метод
+//        if ("".equals(pattern))
+//            return;
+
+        mListView.filterCurrentList(pattern);
     }
 
     @Override
@@ -224,11 +228,11 @@ public abstract class BasicMVPList_Presenter
 
     @Override
     public void onSearchViewClosed() {
-        mListView.clearFilter();
+        mListView.removeTextFilter();
     }
 
 
-    protected abstract BasicMVPList_ItemsFilter2 getItemsFilter();
+    protected abstract BasicMVPList_ItemsTextFilter getItemsTextFilter();
 
 
     // iSelectionCommandsListener

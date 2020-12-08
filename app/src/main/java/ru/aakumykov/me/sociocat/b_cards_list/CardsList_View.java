@@ -256,7 +256,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     private void setCardsWithoutTagViewState(CardsWithoutTag_ViewState cardsWithoutTagViewState) {
-        setNeutralViewState();
+
+        hideRefreshThrobber();
+        hideProgressMessage();
+        hideTagFilter();
+
         if (cardsWithoutTagViewState.isDisplayBackButton())
             activateUpButton();
     }

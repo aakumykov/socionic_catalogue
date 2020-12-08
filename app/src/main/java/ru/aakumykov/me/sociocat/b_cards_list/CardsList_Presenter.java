@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.b_cards_list;
 
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -16,7 +15,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicLis
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
@@ -52,13 +51,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected void onColdStart() {
-        Log.d("onColdStart", "onColdStart()");
         super.onColdStart();
 
+        setNeutralViewState();
+
         String action = getActionFromIntent();
-
         mHasParent = Intent.ACTION_VIEW.equals(action);
-
 
         if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
             loadCardsWithTag(false);
@@ -128,8 +126,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     @Override
-    protected BasicMVPList_ItemsFilter2 getItemsFilter() {
-        return new BasicMVPList_ItemsFilter2();
+    protected BasicMVPList_ItemsTextFilter getItemsTextFilter() {
+        return new BasicMVPList_ItemsTextFilter();
     }
 
 
@@ -224,10 +222,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
+/*
                 if (mListView.isFiltered())
                     restoreFilterWidget(mListView.getCurrentFilter());
-                else
+                else*/
                     setViewState(new CardsWithoutTag_ViewState(mHasParent));
+
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -387,9 +387,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     // TODO: перенести в Basic
-    private void restoreFilterWidget(BasicMVPList_ItemsFilter2 itemsFilter) {
+    private void restoreFilterWidget(BasicMVPList_ItemsTextFilter itemsFilter) {
 
-        if (itemsFilter instanceof BasicMVPList_ItemsFilter2)
+        if (itemsFilter instanceof BasicMVPList_ItemsTextFilter)
         {
             String filterTxt = itemsFilter.getFilterText();
             setViewState( new ListFilteredViewState(filterTxt) );

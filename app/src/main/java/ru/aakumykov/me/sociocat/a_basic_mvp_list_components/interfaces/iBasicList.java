@@ -8,7 +8,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsFilter2;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
 public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
@@ -59,6 +59,11 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder);
     boolean isSorted();
 
+    void setTextFilter(BasicMVPList_ItemsTextFilter predicate);
+    void removeTextFilter();
+    void filterCurrentList(String stringPattern);
+    boolean isFiltered();
+
 //    <T> void filterList(Comparator<T> comparator);
 //    boolean isFiltered();
 
@@ -70,8 +75,8 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     int getVisibleListSize();
 
-    void setFilter(BasicMVPList_ItemsFilter2 itemsFilter);
-    BasicMVPList_ItemsFilter2 getCurrentFilter();
+    void setFilter(BasicMVPList_ItemsTextFilter itemsFilter);
+    BasicMVPList_ItemsTextFilter getCurrentFilter();
     void filterList(String pattern);
     void clearFilter();
 
