@@ -303,7 +303,7 @@ public abstract class BasicMVPList_View
 
     @Override
     public void restoreSearchView(String filterText) {
-        invalidateOptionsMenu();
+//        invalidateOptionsMenu();
 
         if (null != mSearchView) {
             mSearchView.setQuery(filterText, false);

@@ -222,9 +222,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                if (mListView.isFiltered())
-                    restoreFilterWidget(mListView.getCurrentFilter());
-                else
+//                if (mListView.isFiltered())
+//                    restoreFilterWidget(mListView.getCurrentFilter());
+//                else
                     setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {

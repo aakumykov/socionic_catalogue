@@ -10,10 +10,6 @@ public class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_List
 
     private String mFilterPattern;
 
-    public void setFilterPattern(String filterPattern) {
-        mFilterPattern = filterPattern;
-    }
-
     @Override
     public boolean test(BasicMVPList_ListItem listItem) {
 
@@ -34,7 +30,15 @@ public class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_List
         return false;
     }
 
+    public void setFilterPattern(String filterPattern) {
+        mFilterPattern = filterPattern;
+    }
+
     public String getFilterText() {
         return mFilterPattern;
+    }
+
+    public boolean alreadyFilteredWith(String textPattern) {
+        return null != mFilterPattern && mFilterPattern.equals(textPattern);
     }
 }

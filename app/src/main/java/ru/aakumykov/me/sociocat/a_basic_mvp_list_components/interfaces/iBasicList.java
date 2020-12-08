@@ -56,12 +56,12 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
 
     // TODO: переименовать в sortList()
-    void sortCurrentList(iSortingMode sortingMode, eSortingOrder sortingOrder);
+    void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder);
     boolean isSorted();
 
+    // TODO: удалить
     void setTextFilter(BasicMVPList_ItemsTextFilter predicate);
     void removeTextFilter();
-    void filterCurrentList(String stringPattern);
     boolean isFiltered();
 
 //    <T> void filterList(Comparator<T> comparator);

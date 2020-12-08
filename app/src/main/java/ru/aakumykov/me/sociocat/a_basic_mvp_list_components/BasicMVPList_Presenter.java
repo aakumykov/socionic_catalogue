@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
@@ -101,7 +99,7 @@ public abstract class BasicMVPList_Presenter
         // !!! Присваивание sortingMode должно производиться после sortingOrder !!!
         mCurrentSortingMode = sortingMode;
 
-        mListView.sortCurrentList(mCurrentSortingMode, mCurrentSortingOrder);
+        mListView.sortList(mCurrentSortingMode, mCurrentSortingOrder);
 
         mPageView.refreshMenu();
     }
@@ -207,9 +205,8 @@ public abstract class BasicMVPList_Presenter
     // iSearchViewListener
     @Override
     public void onSearchViewCreated() {
-        Log.d(TAG, "onSearchViewCreated()");
-//        if (mListView.isFiltered())
-//            mPageView.restoreSearchView(mListView.getFilterText());
+        if (mListView.isFiltered())
+            mPageView.restoreSearchView(mListView.getFilterText());
     }
 
     @Override
@@ -219,12 +216,7 @@ public abstract class BasicMVPList_Presenter
 
     @Override
     public void onSearchViewTextChanged(String pattern) {
-        Log.d(TAG, "onSearchViewTextChanged()");
-        // При создании SearchView срабатывает этот метод
-//        if ("".equals(pattern))
-//            return;
-
-        mListView.filterCurrentList(pattern);
+        mListView.filterList(pattern);
     }
 
     @Override
