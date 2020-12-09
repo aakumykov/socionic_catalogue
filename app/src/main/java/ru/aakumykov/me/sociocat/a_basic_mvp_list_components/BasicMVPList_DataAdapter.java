@@ -141,25 +141,6 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public void setFilter(BasicMVPList_ItemsTextFilter itemsFilter) {
-        mCurrentFilter = itemsFilter;
-    }
-
-    @Override
-    public BasicMVPList_ItemsTextFilter getCurrentFilter() {
-        return mCurrentFilter;
-    }
-
-    @Override
-    public void clearFilter() {
-        mCurrentFilter = null;
-
-        mCurrentItemsList.clear();
-        mCurrentItemsList.addAll(mOriginalItemsList);
-        notifyDataSetChanged();
-    }
-
-    @Override
     public void setList(List<BasicMVPList_ListItem> inputList) {
         mIsVirgin = false;
 
@@ -175,8 +156,7 @@ public abstract class BasicMVPList_DataAdapter
             sortCurrentList();
 
         if (isFiltered())
-            filterCurrentList();
-
+            filterListWithCurrentParams();
 
         addLoadmoreItem(false);
 
@@ -727,10 +707,40 @@ public abstract class BasicMVPList_DataAdapter
 //        restoreOriginalList();
     }
 
+
     @Override
     public void filterList(String textPattern) {
-        filterListReal(textPattern, false);
+        if (setFilterParams(textPattern))
+            filterListWithCurrentParams();
     }
+
+    private boolean setFilterParams(String textPattern) {
+        if (null == mCurrentFilter)
+            return false;
+
+        if (mCurrentFilter.alreadyFilteredWith(textPattern))
+            return false;
+
+        mCurrentFilter.setFilterPattern(textPattern);
+        return true;
+    }
+
+    private void filterListWithCurrentParams() {
+        if (null != mCurrentFilter)
+        {
+            List<BasicMVPList_ListItem> filteredList =
+                    SortAndFilterUtils.filterList(mOriginalItemsList, mCurrentFilter);
+
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(filteredList);
+
+            addLoadmoreItem(false);
+
+            notifyDataSetChanged();
+        }
+    }
+
+
 
     private void filterCurrentList() {
 

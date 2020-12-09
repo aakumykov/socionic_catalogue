@@ -59,11 +59,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder);
     boolean isSorted();
 
-    // TODO: удалить
-    void setTextFilter(BasicMVPList_ItemsTextFilter predicate);
-    void removeTextFilter();
-    boolean isFiltered();
-
 //    <T> void filterList(Comparator<T> comparator);
 //    boolean isFiltered();
 
@@ -75,10 +70,11 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     int getVisibleListSize();
 
-    void setFilter(BasicMVPList_ItemsTextFilter itemsFilter);
-    BasicMVPList_ItemsTextFilter getCurrentFilter();
+    void setTextFilter(BasicMVPList_ItemsTextFilter predicate);
+    void removeTextFilter();
     void filterList(String pattern);
-    void clearFilter();
+    boolean isFiltered();
+
 
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);
