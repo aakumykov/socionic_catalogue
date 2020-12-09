@@ -37,7 +37,7 @@ public abstract class BasicMVPList_DataAdapter
     private boolean mIsSorted = false;
 
     private final List<BasicMVPList_ListItem> mCurrentItemsList;
-    private final List<BasicMVPList_ListItem> mOriginalItemsList;
+    private List<BasicMVPList_ListItem> mOriginalItemsList;
     private final ArrayList<BasicMVPList_DataItem> mSelectedItemsList;
     private BasicMVPList_DataItem mTailDataItem;
 
@@ -430,7 +430,11 @@ public abstract class BasicMVPList_DataAdapter
     @Override
     public void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
         setSortingParams(sortingMode, sortingOrder);
-        sortCurrentList();
+
+        mCurrentItemsList.clear();
+        mCurrentItemsList.addAll(sortListWithCurrentParams(mCurrentItemsList));
+        addLoadmoreItem(false);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -675,6 +679,7 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     private List<BasicMVPList_ListItem> sortListWithCurrentParams(List<BasicMVPList_ListItem> inputList) {
+        mOriginalItemsList = SortAndFilterUtils.sortList(mOriginalItemsList, mCurrentItemsComparator);
         return SortAndFilterUtils.sortList(inputList, mCurrentItemsComparator);
     }
 
