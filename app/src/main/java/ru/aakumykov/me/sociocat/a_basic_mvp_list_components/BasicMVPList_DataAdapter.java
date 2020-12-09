@@ -149,14 +149,18 @@ public abstract class BasicMVPList_DataAdapter
         mOriginalItemsList.clear();
         mOriginalItemsList.addAll(inputList);
 
-        mCurrentItemsList.clear();
-        mCurrentItemsList.addAll(inputList);
-
         if (isSorted())
             sortCurrentList();
 
-        if (isFiltered())
-            filterListWithCurrentParams();
+        mCurrentItemsList.clear();
+
+        if (isFiltered()) {
+            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(inputList);
+            mCurrentItemsList.addAll(filteredList);
+        }
+        else {
+            mCurrentItemsList.addAll(inputList);
+        }
 
         addLoadmoreItem(false);
 
@@ -167,14 +171,18 @@ public abstract class BasicMVPList_DataAdapter
     public void appendList(List<BasicMVPList_ListItem> appendedList) {
 
         hideThrobberItem();
-
         storeTailDataItem(appendedList);
-
-        mOriginalItemsList.addAll(appendedList);
 
         int startPosition = mCurrentItemsList.size();
 
-        mCurrentItemsList.addAll(appendedList);
+        mOriginalItemsList.addAll(appendedList);
+
+        if (isFiltered()) {
+            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(appendedList);
+            mCurrentItemsList.addAll(filteredList);
+        }
+        else
+            mCurrentItemsList.addAll(appendedList);
 
         addLoadmoreItem(false);
 
@@ -710,8 +718,13 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public void filterList(String textPattern) {
-        if (setFilterParams(textPattern))
-            filterListWithCurrentParams();
+        if (setFilterParams(textPattern)) {
+            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(mOriginalItemsList);
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(filteredList);
+            mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
+            notifyDataSetChanged();
+        }
     }
 
     private boolean setFilterParams(String textPattern) {
@@ -725,19 +738,20 @@ public abstract class BasicMVPList_DataAdapter
         return true;
     }
 
-    private void filterListWithCurrentParams() {
+    private List<BasicMVPList_ListItem> filterListWithCurrentParams(List<BasicMVPList_ListItem> inputList) {
         if (null != mCurrentFilter)
         {
-            List<BasicMVPList_ListItem> filteredList =
-                    SortAndFilterUtils.filterList(mOriginalItemsList, mCurrentFilter);
+            return SortAndFilterUtils.filterList(inputList, mCurrentFilter);
 
-            mCurrentItemsList.clear();
+            /*mCurrentItemsList.clear();
             mCurrentItemsList.addAll(filteredList);
 
             addLoadmoreItem(false);
 
-            notifyDataSetChanged();
+            notifyDataSetChanged();*/
         }
+        else
+            return inputList;
     }
 
 
