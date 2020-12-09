@@ -438,6 +438,8 @@ public abstract class BasicMVPList_DataAdapter
 
         addLoadmoreItem(false);
         notifyDataSetChanged();
+
+        mIsSorted = true;
     }
 
     @Override
