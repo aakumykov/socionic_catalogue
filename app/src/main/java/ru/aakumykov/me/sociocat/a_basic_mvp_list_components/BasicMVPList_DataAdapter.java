@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 
 
-import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
@@ -552,15 +551,6 @@ public abstract class BasicMVPList_DataAdapter
         notifyItemRemoved(position);
     }
 
-    /*private void removeLastNonDataItem() {
-        BasicMVPList_ListItem listItem = getTailItem();
-
-        if (listItem instanceof BasicMVPList_DataItem)
-            return;
-
-        removeItem(listItem);
-    }*/
-
     private void addLoadmoreItem(boolean showImmediately) {
         BasicMVPList_ListItem tailItem = getTailItem();
 
@@ -674,7 +664,6 @@ public abstract class BasicMVPList_DataAdapter
         }
     }
 
-
     private void setSortingParams(iSortingMode sortingMode, eSortingOrder sortingOrder) {
         mCurrentSortingMode = sortingMode;
         mCurrentSortingOrder = sortingOrder;
@@ -692,38 +681,6 @@ public abstract class BasicMVPList_DataAdapter
             notifyDataSetChanged();
 
             mIsSorted = true;
-        }
-    }
-
-
-    // TODO: сделать внутренним методом...?
-    @Override
-    public boolean isSorted() {
-        return mIsSorted;
-    }
-
-    @Override
-    public void setTextFilter(BasicMVPList_ItemsTextFilter itemsTextFilter) {
-        if (null == mCurrentFilter)
-            mCurrentFilter = itemsTextFilter;
-    }
-
-    @Override
-    public void removeTextFilter() {
-        mCurrentFilter = null;
-
-//        restoreOriginalList();
-    }
-
-
-    @Override
-    public void filterList(String textPattern) {
-        if (setFilterParams(textPattern)) {
-            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(mOriginalItemsList);
-            mCurrentItemsList.clear();
-            mCurrentItemsList.addAll(filteredList);
-            mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
-            notifyDataSetChanged();
         }
     }
 
@@ -755,36 +712,32 @@ public abstract class BasicMVPList_DataAdapter
     }
 
 
-
-    private void filterCurrentList() {
-
-        if (null == mCurrentFilter)
-            return;
-
-        String currentFilterText = mCurrentFilter.getFilterText();
-        if (TextUtils.isEmpty(currentFilterText))
-            return;
-
-        filterListReal(currentFilterText, true);
+    // TODO: сделать внутренним методом...?
+    @Override
+    public boolean isSorted() {
+        return mIsSorted;
     }
 
-    private void filterListReal(String textPattern, boolean force) {
-
+    @Override
+    public void setTextFilter(BasicMVPList_ItemsTextFilter itemsTextFilter) {
         if (null == mCurrentFilter)
-            return;
-
-        if (!force && mCurrentFilter.alreadyFilteredWith(textPattern))
-            return;
-
-        mCurrentFilter.setFilterPattern(textPattern);
-
-        List<BasicMVPList_ListItem> filteredList = SortAndFilterUtils.filterList(mOriginalItemsList, mCurrentFilter);
-
-        mCurrentItemsList.clear();
-        mCurrentItemsList.addAll(filteredList);
-
-        mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
-
-        notifyDataSetChanged();
+            mCurrentFilter = itemsTextFilter;
     }
+
+    @Override
+    public void removeTextFilter() {
+        mCurrentFilter = null;
+    }
+
+    @Override
+    public void filterList(String textPattern) {
+        if (setFilterParams(textPattern)) {
+            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(mOriginalItemsList);
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(filteredList);
+            mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
+            notifyDataSetChanged();
+        }
+    }
+
 }
