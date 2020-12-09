@@ -431,8 +431,11 @@ public abstract class BasicMVPList_DataAdapter
     public void sortList(iSortingMode sortingMode, eSortingOrder sortingOrder) {
         setSortingParams(sortingMode, sortingOrder);
 
+        List<BasicMVPList_ListItem> sortedList = sortListWithCurrentParams(mCurrentItemsList);
+
         mCurrentItemsList.clear();
-        mCurrentItemsList.addAll(sortListWithCurrentParams(mCurrentItemsList));
+        mCurrentItemsList.addAll(sortedList);
+
         addLoadmoreItem(false);
         notifyDataSetChanged();
     }
@@ -674,7 +677,7 @@ public abstract class BasicMVPList_DataAdapter
         mCurrentSortingOrder = sortingOrder;
 
         // TODO: если хранится itemsComparator, можно не хранить mode и order ?
-        if (null == mCurrentItemsComparator)
+//        if (null == mCurrentItemsComparator)
             mCurrentItemsComparator = getItemsComparator(mCurrentSortingMode, mCurrentSortingOrder);
     }
 
