@@ -257,8 +257,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                mListView.hideThrobberItem();
-
                 int position2scroll = mListView.getVisibleListSize();
 
                 mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
