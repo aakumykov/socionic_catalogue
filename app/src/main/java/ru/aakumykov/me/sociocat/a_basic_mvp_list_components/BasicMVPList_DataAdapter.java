@@ -148,21 +148,22 @@ public abstract class BasicMVPList_DataAdapter
         mOriginalItemsList.clear();
         mOriginalItemsList.addAll(inputList);
 
-        if (isSorted())
-            sortCurrentList();
-
         mCurrentItemsList.clear();
+        mCurrentItemsList.addAll(inputList);
+
+        if (isSorted()) {
+            List<BasicMVPList_ListItem> sortedList = sortListWithCurrentParams(inputList);
+            mCurrentItemsList.clear();
+            mCurrentItemsList.addAll(sortedList);
+        }
 
         if (isFiltered()) {
-            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(inputList);
+            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(mCurrentItemsList);
+            mCurrentItemsList.clear();
             mCurrentItemsList.addAll(filteredList);
-        }
-        else {
-            mCurrentItemsList.addAll(inputList);
         }
 
         addLoadmoreItem(false);
-
         notifyDataSetChanged();
     }
 
@@ -170,11 +171,10 @@ public abstract class BasicMVPList_DataAdapter
     public void appendList(List<BasicMVPList_ListItem> appendedList) {
 
         hideThrobberItem();
-        storeTailDataItem(appendedList);
-
         int startPosition = mCurrentItemsList.size();
 
         mOriginalItemsList.addAll(appendedList);
+        storeTailDataItem(appendedList);
 
         if (isFiltered()) {
             List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(appendedList);
@@ -664,9 +664,18 @@ public abstract class BasicMVPList_DataAdapter
         }
     }
 
+
     private void setSortingParams(iSortingMode sortingMode, eSortingOrder sortingOrder) {
         mCurrentSortingMode = sortingMode;
         mCurrentSortingOrder = sortingOrder;
+
+        // TODO: если хранится itemsComparator, можно не хранить mode и order ?
+        if (null == mCurrentItemsComparator)
+            mCurrentItemsComparator = getItemsComparator(mCurrentSortingMode, mCurrentSortingOrder);
+    }
+
+    private List<BasicMVPList_ListItem> sortListWithCurrentParams(List<BasicMVPList_ListItem> inputList) {
+        return SortAndFilterUtils.sortList(inputList, mCurrentItemsComparator);
     }
 
     private void sortCurrentList() {
@@ -683,6 +692,7 @@ public abstract class BasicMVPList_DataAdapter
             mIsSorted = true;
         }
     }
+
 
     private boolean setFilterParams(String textPattern) {
         if (null == mCurrentFilter)
