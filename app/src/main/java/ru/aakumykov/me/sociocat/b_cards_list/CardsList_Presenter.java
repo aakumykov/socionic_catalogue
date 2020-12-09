@@ -222,10 +222,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-//                if (mListView.isFiltered())
-//                    restoreFilterWidget(mListView.getCurrentFilter());
-//                else
-                    setViewState(new CardsWithoutTag_ViewState(mHasParent));
+                setViewState(new CardsWithoutTag_ViewState(mHasParent));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -234,7 +231,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 }));
 
-                mListView.showLoadmoreItem();
+//                mListView.showLoadmoreItem();
             }
 
             @Override
@@ -259,6 +256,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mCardsSingleton.loadCardsAfter(tailCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 mListView.hideThrobberItem();
 
                 int position2scroll = mListView.getVisibleListSize();
@@ -269,8 +267,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                         return new Card_ListItem((Card) object);
                     }
                 }));
-
-                mListView.showLoadmoreItem();
 
                 mPageView.scroll2position(position2scroll);
             }

@@ -175,22 +175,30 @@ public abstract class BasicMVPList_DataAdapter
             sortCurrentList();
 
         if (isFiltered())
-            applyCurrentFilter();
+            filterCurrentList();
+
+
+        addLoadmoreItem(false);
 
         notifyDataSetChanged();
     }
 
     @Override
     public void appendList(List<BasicMVPList_ListItem> appendedList) {
+
+        hideThrobberItem();
+
         storeTailDataItem(appendedList);
 
         mOriginalItemsList.addAll(appendedList);
 
-        hideThrobberItem();
+        int startPosition = mCurrentItemsList.size();
+
         mCurrentItemsList.addAll(appendedList);
 
-        int startPosition = mCurrentItemsList.size();
-        notifyItemRangeInserted(startPosition, appendedList.size());
+        addLoadmoreItem(false);
+
+        notifyItemRangeInserted(startPosition, appendedList.size() + 1);
     }
 
     @Override
@@ -565,6 +573,22 @@ public abstract class BasicMVPList_DataAdapter
         removeItem(listItem);
     }*/
 
+    private void addLoadmoreItem(boolean showImmediately) {
+        BasicMVPList_ListItem tailItem = getTailItem();
+
+        if (tailItem instanceof BasicMVPList_LoadmoreItem) {
+        }
+        else if (tailItem instanceof BasicMVPList_ThrobberItem) {
+            replaceItem(mCurrentItemsList.indexOf(tailItem), new BasicMVPList_LoadmoreItem());
+        }
+        else {
+            mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
+        }
+
+        if (showImmediately)
+            notifyItemInserted(getMaxIndex());
+    }
+
     private BasicMVPList_ListItem getTailItem() {
         int maxIndex = getMaxIndex();
 
@@ -708,7 +732,7 @@ public abstract class BasicMVPList_DataAdapter
         filterListReal(textPattern, false);
     }
 
-    private void applyCurrentFilter() {
+    private void filterCurrentList() {
 
         if (null == mCurrentFilter)
             return;
@@ -734,6 +758,9 @@ public abstract class BasicMVPList_DataAdapter
 
         mCurrentItemsList.clear();
         mCurrentItemsList.addAll(filteredList);
+
+        mCurrentItemsList.add(new BasicMVPList_LoadmoreItem());
+
         notifyDataSetChanged();
     }
 }
