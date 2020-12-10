@@ -13,11 +13,19 @@ public class Card_ListItem extends BasicMVPList_DataItem {
 
     @Override
     public String getTitle() {
-        return ((Card) getPayload()).getTitle();
+        return getCard().getTitle();
     }
 
     @NonNull @Override
     public String toString() {
-        return "Card_ListItem { " + getTitle() + " }";
+        return "Card_ListItem { " + getTitle() + ", comments: " + getCommentsCount() + " }";
+    }
+
+    private int getCommentsCount() {
+        return getCard().getCommentsKeys().size();
+    }
+
+    private Card getCard() {
+        return (Card) getPayload();
     }
 }

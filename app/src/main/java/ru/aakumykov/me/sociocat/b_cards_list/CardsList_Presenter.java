@@ -20,7 +20,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ListUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ListFilteredViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
@@ -272,10 +271,18 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             }
         };
 
-        if (null == tagFilter)
-            mCardsSingleton.loadCardsFromNewestTo(tailCard, listCallbacks);
-        else {
+        if (null != tagFilter)
             mCardsSingleton.loadCardsWithTagFromNewestTo(tagFilter, tailCard, listCallbacks);
+        else {
+            if (mListView.isFiltered()) {
+                // Если карточки отфильтрованы, то обновляю весь список, чтобы получить тот же диапазон карточек,
+                // потому что много раз подгружать неудобно (ведь при подгрузке они фильтруются).
+                mCardsSingleton.loadCardsFromNewestTo(tailCard, listCallbacks);
+            }
+            else {
+                // Если не отфильтрованы, гружу как при первом запуске
+                mCardsSingleton.loadFirstPortion(listCallbacks);
+            }
         }
     }
 
@@ -412,15 +419,5 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private void showNoMoreCards() {
         mListView.hideThrobberItem();
         mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
-    }
-
-    // TODO: перенести в Basic
-    private void restoreFilterWidget(BasicMVPList_ItemsTextFilter itemsFilter) {
-
-        if (itemsFilter instanceof BasicMVPList_ItemsTextFilter)
-        {
-            String filterTxt = itemsFilter.getFilterText();
-            setViewState( new ListFilteredViewState(filterTxt) );
-        }
     }
 }
