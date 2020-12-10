@@ -94,11 +94,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected void onRefreshRequested() {
-        if (null == mTagFilter) {
-            refreshCardsList();
-        }
-        else
-            loadCardsWithTag(true);
+        refreshCardsList(mTagFilter);
     }
 
     @Override
@@ -240,7 +236,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         });
     }
 
-    private void refreshCardsList() {
+    private void refreshCardsList(@Nullable String tagFilter) {
 
         BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
 
@@ -253,11 +249,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         setViewState(new LoadingCards_ViewState(mHasParent));
 
-        mCardsSingleton.loadCardsFromNewestTo(tailCard, new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                setViewState(new CardsWithoutTag_ViewState(mHasParent));
+                if (null == tagFilter)
+                    setViewState(new CardsWithoutTag_ViewState(mHasParent));
+                else
+                    setViewState(new CardsWithTag_ViewState(tagFilter));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -271,7 +270,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             public void onListLoadFail(String errorMessage) {
                 setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
             }
-        });
+        };
+
+        if (null == tagFilter)
+            mCardsSingleton.loadCardsFromNewestTo(tailCard, listCallbacks);
+        else {
+            mCardsSingleton.loadCardsWithTagFromNewestTo(tagFilter, tailCard, listCallbacks);
+        }
     }
 
     private void loadMoreCards() {
@@ -337,8 +342,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                         return new Card_ListItem((Card) payload);
                     }
                 }));
-
-                mListView.showLoadmoreItem();
             }
 
             @Override
