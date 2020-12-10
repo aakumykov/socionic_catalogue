@@ -20,8 +20,6 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     void setList(List<BasicMVPList_ListItem> inputList, @Nullable iSetListCallback callback);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
-    void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
-    void appendListAndFilter(List<BasicMVPList_ListItem> inputList);
 
     void appendItem(BasicMVPList_ListItem item);
     void insertItem(int position, BasicMVPList_ListItem item);

@@ -197,26 +197,6 @@ public abstract class BasicMVPList_DataAdapter
         notifyItemRangeInserted(startPosition, appendedList.size() + 1);
     }
 
-    @Override
-    public void appendListAndSort(List<BasicMVPList_ListItem> inputList, @Nullable iSortingMode sortingMode, @Nullable eSortingOrder sortingOrder) {
-        /*hideThrobberItem();
-        hideLoadmoreItem();
-
-        int insertPosition = getMaxIndex() + 1;
-        mCurrentItemsList.addAll(inputList);
-
-        if (isSorted())
-            if (null != sortingMode && null != sortingOrder)
-                sortCurrentList(sortingMode, sortingOrder);
-
-        notifyItemRangeInserted(insertPosition, inputList.size());*/
-    }
-
-    @Override
-    public void appendListAndFilter(List<BasicMVPList_ListItem> inputList) {
-        /*addToOriginalItemsList(inputList);
-        applyFilter();*/
-    }
 
     @Override
     public void appendItem(BasicMVPList_ListItem listItem) {
