@@ -730,6 +730,7 @@
     <string name="aquotes" translatable="false">«%1$s»</string>
     <string name="REGISTER_email" translatable="false">E-mail</string>
     <string name="cards_are_filtered_out_all">All cards are filtered</string>
+    <string name="two_words_with_new_line" translatable="false">%1$s\n%2$s</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

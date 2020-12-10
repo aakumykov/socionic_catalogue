@@ -46,9 +46,16 @@
         <item quantity="many">%1$d комментариев</item>
     </plurals>
 
-    <plurals name="cards_are_filtered_out">
-        <item quantity="one">%1$d карточка отфильтрована</item>
-        <item quantity="few">%1$d карточки отфильтрованы</item>
-        <item quantity="many">%1$d карточек отфильтровано</item>
+    <plurals name="cards_are_added">
+        <item quantity="one">%1$d карточка добавлена</item>
+        <item quantity="few">%1$d карточки добавлено</item>
+        <item quantity="many">%1$d карточек добавлено</item>
     </plurals>
+
+    <plurals name="cards_are_filtered_out">
+        <item quantity="one">%1$d отфильтрована</item>
+        <item quantity="few">%1$d отфильтрованы</item>
+        <item quantity="many">%1$d отфильтровано</item>
+    </plurals>
+
 </resources>

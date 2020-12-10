@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.b_cards_list;
 
+import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsList_Presenter extends BasicMVPList_Presenter implements iCardsList_ItemClickListener {
 
@@ -330,13 +332,20 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     private void notifyAboutFilteredOutItems(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
-        int num = (0 == addedItemsCount) ? 0 : filteredOutItemsCount;
-        mPageView.showToast(TextUtils.getPluralString(
-                mPageView.getAppContext(),
-                R.plurals.cards_are_filtered_out,
-                R.string.cards_are_filtered_out_all,
-                num
-        ));
+
+        Context context = mPageView.getAppContext();
+
+        String addedCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_added, addedItemsCount);
+        String filteredOutCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_filtered_out, filteredOutItemsCount);
+
+        String msg = TextUtils.getText(
+                context,
+                R.string.two_words_with_new_line,
+                addedCardsMsg,
+                filteredOutCardsMsg
+        );
+
+        MyUtils.showCustomToast(context, msg);
     }
 
 
