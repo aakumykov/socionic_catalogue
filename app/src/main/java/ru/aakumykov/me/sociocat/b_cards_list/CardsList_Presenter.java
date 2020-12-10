@@ -94,8 +94,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected void onRefreshRequested() {
-        if (null == mTagFilter)
-            loadCards();
+        if (null == mTagFilter) {
+            refreshCardsList();
+        }
         else
             loadCardsWithTag(true);
     }
@@ -230,8 +231,40 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                         return new Card_ListItem((Card) payload);
                     }
                 }));
+            }
 
-//                mListView.showLoadmoreItem();
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        });
+    }
+
+    private void refreshCardsList() {
+
+        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+
+        if (null == tailDataItem) {
+            loadCards();
+            return;
+        }
+
+        Card tailCard = (Card) tailDataItem.getPayload();
+
+        setViewState(new LoadingCards_ViewState(mHasParent));
+
+        mCardsSingleton.loadCardsFromNewestTo(tailCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+
+                setViewState(new CardsWithoutTag_ViewState(mHasParent));
+
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
             }
 
             @Override
@@ -245,7 +278,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         showThrobberItem();
 
-        BasicMVPList_DataItem tailDataItem = mListView.getLastDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
         if (null == tailDataItem) {
             showNoMoreCards();
             return;
@@ -319,7 +352,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         showThrobberItem();
 
-        BasicMVPList_DataItem lastDataItem = mListView.getLastDataItem();
+        BasicMVPList_DataItem lastDataItem = mListView.getTailDataItem();
 
         if (null == lastDataItem) {
             showNoMoreCards();
