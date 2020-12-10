@@ -141,6 +141,11 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public void setList(List<BasicMVPList_ListItem> inputList) {
+        setList(inputList, null);
+    }
+
+    @Override
+    public void setList(List<BasicMVPList_ListItem> inputList, @Nullable iSetListCallback callback) {
         mIsVirgin = false;
 
         storeTailDataItem(inputList);
@@ -157,14 +162,18 @@ public abstract class BasicMVPList_DataAdapter
             mCurrentItemsList.addAll(sortedList);
         }
 
+        List<BasicMVPList_ListItem> filteredList = new ArrayList<>();
         if (isFiltered()) {
-            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(mCurrentItemsList);
+            filteredList = filterListWithCurrentParams(mCurrentItemsList);
             mCurrentItemsList.clear();
             mCurrentItemsList.addAll(filteredList);
         }
 
         addLoadmoreItem(false);
         notifyDataSetChanged();
+
+        if (null != callback)
+            callback.onListSet(inputList.size(), filteredList.size(), inputList.size() - filteredList.size());
     }
 
     @Override

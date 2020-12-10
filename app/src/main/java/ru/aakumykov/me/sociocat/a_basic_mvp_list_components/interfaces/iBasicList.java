@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     boolean isVirgin();
 
     void setList(List<BasicMVPList_ListItem> inputList);
+    void setList(List<BasicMVPList_ListItem> inputList, @Nullable iSetListCallback callback);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
     void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
@@ -78,5 +80,9 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);
+    }
+
+    interface iSetListCallback {
+        void onListSet(int allItemsCount, int addedItemsCount, int filteredOutItemsCount);
     }
 }
