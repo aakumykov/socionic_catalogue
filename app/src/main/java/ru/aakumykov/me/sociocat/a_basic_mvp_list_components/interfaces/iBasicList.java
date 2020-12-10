@@ -17,9 +17,10 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     boolean isVirgin();
 
     void setList(List<BasicMVPList_ListItem> inputList);
-    void setList(List<BasicMVPList_ListItem> inputList, @Nullable iSetListCallback callback);
+    void setList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
+    void appendList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback);
 
     void appendItem(BasicMVPList_ListItem item);
     void insertItem(int position, BasicMVPList_ListItem item);
@@ -80,7 +81,7 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
         boolean onCompareWithListItemPayload(Object itemPayload);
     }
 
-    interface iSetListCallback {
-        void onListSet(int allItemsCount, int addedItemsCount, int filteredOutItemsCount);
+    interface iFilterListCallback {
+        void onListFiltered(int allItemsCount, int addedItemsCount, int filteredOutItemsCount);
     }
 }

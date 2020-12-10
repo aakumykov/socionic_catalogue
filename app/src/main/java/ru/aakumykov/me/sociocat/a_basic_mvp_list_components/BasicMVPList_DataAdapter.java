@@ -145,7 +145,7 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public void setList(List<BasicMVPList_ListItem> inputList, @Nullable iSetListCallback callback) {
+    public void setList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback) {
         mIsVirgin = false;
 
         storeTailDataItem(inputList);
@@ -173,28 +173,36 @@ public abstract class BasicMVPList_DataAdapter
         notifyDataSetChanged();
 
         if (null != callback)
-            callback.onListSet(inputList.size(), filteredList.size(), inputList.size() - filteredList.size());
+            callback.onListFiltered(inputList.size(), filteredList.size(), inputList.size() - filteredList.size());
     }
 
     @Override
     public void appendList(List<BasicMVPList_ListItem> appendedList) {
+        appendList(appendedList, null);
+    }
+
+    @Override
+    public void appendList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback) {
 
         hideThrobberItem();
         int startPosition = mCurrentItemsList.size();
 
-        mOriginalItemsList.addAll(appendedList);
-        storeTailDataItem(appendedList);
+        mOriginalItemsList.addAll(inputList);
+        storeTailDataItem(inputList);
 
+        List<BasicMVPList_ListItem> filteredList = new ArrayList<>();
         if (isFiltered()) {
-            List<BasicMVPList_ListItem> filteredList = filterListWithCurrentParams(appendedList);
+            filteredList = filterListWithCurrentParams(inputList);
             mCurrentItemsList.addAll(filteredList);
         }
         else
-            mCurrentItemsList.addAll(appendedList);
+            mCurrentItemsList.addAll(inputList);
 
         addLoadmoreItem(false);
+        notifyItemRangeInserted(startPosition, inputList.size() + 1);
 
-        notifyItemRangeInserted(startPosition, appendedList.size() + 1);
+        if (null != callback)
+            callback.onListFiltered(inputList.size(), filteredList.size(), inputList.size() - filteredList.size());
     }
 
 

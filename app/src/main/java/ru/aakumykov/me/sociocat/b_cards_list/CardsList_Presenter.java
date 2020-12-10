@@ -253,35 +253,17 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                List<BasicMVPList_ListItem> list2set = ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVPList_DataItem createDataItem(Object payload) {
-                        return new Card_ListItem((Card) payload);
-                    }
-                });
-
                 if (null == tagFilter)
                     setViewState(new CardsList_ViewState(mHasParent));
                 else
                     setViewState(new CardsWithTag_ViewState(tagFilter));
 
-                if (mListView.isFiltered()) {
-                    mListView.setList(list2set, new iBasicList.iSetListCallback() {
-                        @Override
-                        public void onListSet(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
-                            int num = (0 == addedItemsCount) ? 0 : filteredOutItemsCount;
-                            mPageView.showToast(TextUtils.getPluralString(
-                                    mPageView.getAppContext(),
-                                    R.plurals.cards_are_filtered_out,
-                                    R.string.cards_are_filtered_out_all,
-                                    num
-                            ));
-                        }
-                    });
-                }
-                else {
+                List<BasicMVPList_ListItem> list2set = ListUtils.incapsulateObjects2basicItemsList(list, (payload) -> new Card_ListItem((Card) payload));
+
+                if (mListView.isFiltered())
+                    mListView.setList(list2set, (allItemsCount, addedItemsCount, filteredOutItemsCount) -> notifyAboutFilteredOutItems(allItemsCount, addedItemsCount, filteredOutItemsCount));
+                else
                     mListView.setList(list2set);
-                }
             }
 
             @Override
@@ -323,12 +305,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
                 int position2scroll = mListView.getVisibleListSize();
 
-                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVPList_DataItem createDataItem(Object object) {
-                        return new Card_ListItem((Card) object);
-                    }
-                }));
+                List<BasicMVPList_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, object -> new Card_ListItem((Card) object));
+
+                if (mListView.isFiltered())
+                    mListView.appendList(list2append, (allItemsCount, addedItemsCount, filteredOutItemsCount) -> notifyAboutFilteredOutItems(allItemsCount, addedItemsCount, filteredOutItemsCount));
+                else
+                    mListView.appendList(list2append);
 
                 mPageView.scroll2position(position2scroll);
             }
@@ -340,6 +322,16 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 mListView.showLoadmoreItem();
             }
         });
+    }
+
+    private void notifyAboutFilteredOutItems(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
+        int num = (0 == addedItemsCount) ? 0 : filteredOutItemsCount;
+        mPageView.showToast(TextUtils.getPluralString(
+                mPageView.getAppContext(),
+                R.plurals.cards_are_filtered_out,
+                R.string.cards_are_filtered_out_all,
+                num
+        ));
     }
 
 
