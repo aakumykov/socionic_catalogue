@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.stubs;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,11 @@ public class BasicMVPList_ViewStub implements iBasicList_Page {
 
     @Override
     public void setDefaultPageTitle() {
+
+    }
+
+    @Override
+    public void runDelayed(@NonNull Runnable runnable, long delay) {
 
     }
 

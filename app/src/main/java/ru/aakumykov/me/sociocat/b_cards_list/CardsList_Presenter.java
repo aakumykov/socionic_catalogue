@@ -54,13 +54,18 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         setNeutralViewState();
 
-        String action = getActionFromIntent();
-        mHasParent = Intent.ACTION_VIEW.equals(action);
+        mPageView.runDelayed(
+                () -> {
+                    String action = getActionFromIntent();
+                    mHasParent = Intent.ACTION_VIEW.equals(action);
 
-        if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
-            loadCardsWithTag(false);
-        else
-            loadCards();
+                    if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
+                        loadCardsWithTag(false);
+                    else
+                        loadCards();
+                },
+                500L
+        );
     }
 
     @Override

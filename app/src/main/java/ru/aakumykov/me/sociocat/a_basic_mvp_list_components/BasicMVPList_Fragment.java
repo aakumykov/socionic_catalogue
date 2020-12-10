@@ -159,6 +159,11 @@ public abstract class BasicMVPList_Fragment
     @Override
     public abstract void setDefaultPageTitle();
 
+    @Override
+    public void runDelayed(@NonNull Runnable runnable, long delay) {
+
+    }
+
     public void assembleMenu() {
         if (null != mMenu) {
             clearMenu();

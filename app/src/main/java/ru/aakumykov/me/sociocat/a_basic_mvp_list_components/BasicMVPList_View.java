@@ -356,6 +356,12 @@ public abstract class BasicMVPList_View
     @Override
     public abstract void setListScrollOffset(int offset);
 
+    @Override
+    public void runDelayed(@NonNull Runnable runnable, long delay) {
+        findViewById(android.R.id.content)
+                .postDelayed(runnable, delay);
+    }
+
 
     public abstract void assembleMenu();
 

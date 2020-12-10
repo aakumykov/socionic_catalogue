@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,9 @@ public interface iBasicList_Page {
     void setPageTitle(String title);
 
     void setDefaultPageTitle();
+
+    void runDelayed(@NonNull Runnable runnable, long delay);
+
     void assembleMenu();
 
     RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode);
@@ -49,4 +53,5 @@ public interface iBasicList_Page {
 
     int getListScrollOffset();
     void setListScrollOffset(int offset);
+
 }
