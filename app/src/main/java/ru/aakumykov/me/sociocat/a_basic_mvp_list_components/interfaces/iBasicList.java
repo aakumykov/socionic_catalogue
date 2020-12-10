@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
     boolean isVirgin();
 
     void setList(List<BasicMVPList_ListItem> inputList);
+    void setList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback);
 
     void appendList(List<BasicMVPList_ListItem> inputList);
-    void appendListAndSort(List<BasicMVPList_ListItem> inputList, iSortingMode sortingMode, eSortingOrder sortingOrder);
-    void appendListAndFilter(List<BasicMVPList_ListItem> inputList);
+    void appendList(List<BasicMVPList_ListItem> inputList, @Nullable iFilterListCallback callback);
 
     void appendItem(BasicMVPList_ListItem item);
     void insertItem(int position, BasicMVPList_ListItem item);
@@ -78,5 +79,9 @@ public interface iBasicList extends iBasicFilterableLsit, iBasicSelectableList
 
     interface iFindItemComparisionCallback {
         boolean onCompareWithListItemPayload(Object itemPayload);
+    }
+
+    interface iFilterListCallback {
+        void onListFiltered(int allItemsCount, int addedItemsCount, int filteredOutItemsCount);
     }
 }

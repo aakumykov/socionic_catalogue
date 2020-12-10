@@ -16,11 +16,13 @@ public class TextUtils {
     }
 
     public static String getPluralString(@NonNull Context context, int pluralResourceId, int count) {
-        return context.getResources()
-                .getQuantityString(
-                        pluralResourceId,
-                        count,
-                        count
-                );
+        return getPluralString(context, pluralResourceId, null, count);
+    }
+
+    public static String getPluralString(@NonNull Context context, int pluralResourceId, @Nullable Integer zeroCountStringResourceId, int count) {
+        if (null != zeroCountStringResourceId && 0 == count)
+            return context.getResources().getString(zeroCountStringResourceId);
+        else
+            return context.getResources().getQuantityString(pluralResourceId, count, count);
     }
 }

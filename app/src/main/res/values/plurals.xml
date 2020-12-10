@@ -30,4 +30,10 @@
         <item quantity="one">%1$d comment</item>
         <item quantity="other">%1$d comments</item>
     </plurals>
+
+    <plurals name="cards_are_filtered_out">
+        <item quantity="one">%1$d card is filtered out</item>
+        <item quantity="other">%1$d cards are filtered out</item>
+    </plurals>
+
 </resources>
