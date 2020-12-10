@@ -15,6 +15,9 @@ public class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_List
 
         if (listItem instanceof BasicMVPList_DataItem)
         {
+            if (null == mFilterPattern)
+                return true;
+
             if ("".equals(mFilterPattern))
                 return true;
 
