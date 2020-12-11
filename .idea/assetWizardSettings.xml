@@ -87,7 +87,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Andrey\Downloads\painting-palette-icon.png" />
+                                                <entry key="imagePath" value="C:\Users\Andrey\Pictures\иконки для программы\значёк программы\палитра.svg" />
                                                 <entry key="scalingPercent" value="94" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
@@ -122,7 +122,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="backgroundColor" value="f5f5f5" />
                                     </map>
                                   </option>
                                 </PersistentState>
