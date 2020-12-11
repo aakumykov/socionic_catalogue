@@ -34,7 +34,6 @@ import butterknife.BindView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.DateUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -69,7 +68,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
             return;
         }
 
-        displayCard(card);
+        displayMainContent(card);
     }
 
     @Override
@@ -78,8 +77,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
     @Override
-    protected void displayCard(@NonNull Card card) {
-        super.displayCard(card);
+    protected void displayMainContent(@NonNull Card card) {
+        super.displayMainContent(card);
 
         showAuthor(card);
         showDate(card);
