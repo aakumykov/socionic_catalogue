@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.helper.widget.Flow;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import ru.aakumykov.me.sociocat.utils.AspectsHelper;
 public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
-    @BindView(R.id.aspectsContainer) ViewGroup aspectsContainer;
+    @BindView(R.id.aspectsContainer) ConstraintLayout aspectsContainer;
     @BindView(R.id.aspectsContainerFlowHelper) Flow aspectsContainerFlowHelper;
 
     private final static int ASPECT_ICON_SIZE = 12;
@@ -39,7 +40,7 @@ public class CardViewHolder_List extends CardViewHolder {
         }
 
         displayMainContent(card);
-        displayCardIcons(card);
+        //displayCardIcons(card);
         displayCardType(card);
     }
 
