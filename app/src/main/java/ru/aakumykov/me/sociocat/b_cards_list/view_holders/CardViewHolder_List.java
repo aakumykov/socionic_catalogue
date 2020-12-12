@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -74,6 +75,7 @@ public class CardViewHolder_List extends CardViewHolder {
         List<String> tagsList = card.getTags();
 
         removeCanonicalTags(card.getTags());
+        flowHelper.setReferencedIds(new int[]{});
 
         if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
             ViewUtils.hide(flowHelper);
@@ -84,9 +86,11 @@ public class CardViewHolder_List extends CardViewHolder {
 
             ImageView imageView = new ImageView(elementView.getContext());
 
+            float density = Resources.getSystem().getDisplayMetrics().density;
+
             imageView.setLayoutParams(new ConstraintLayout.LayoutParams(
-                    DisplayUtils.pxToDp(ASPECT_ICON_SIZE),
-                    DisplayUtils.pxToDp(ASPECT_ICON_SIZE)
+                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE),
+                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE)
             ));
 
             imageView.setId(mCanonicalTagsHelper.getTagId(tagName));
