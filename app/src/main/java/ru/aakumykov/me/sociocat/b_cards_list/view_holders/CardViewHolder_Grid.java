@@ -29,7 +29,7 @@ public class CardViewHolder_Grid extends CardViewHolder {
             return;
         }
 
-        displayCard(card);
+        displayMainContent(card);
         displatCardType(card);
     }
 

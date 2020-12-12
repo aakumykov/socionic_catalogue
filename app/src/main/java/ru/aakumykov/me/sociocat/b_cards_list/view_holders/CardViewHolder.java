@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
 
     @BindView(R.id.elementView)
-    View elementView;
+    ViewGroup elementView;
 
     @BindView(R.id.checkMark)
     View checkMark;
@@ -76,7 +77,7 @@ public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
 
     protected abstract void showNoCardError();
 
-    protected void displayCard(@NonNull Card card) {
+    protected void displayMainContent(@NonNull Card card) {
         displayTitle(card);
     }
 

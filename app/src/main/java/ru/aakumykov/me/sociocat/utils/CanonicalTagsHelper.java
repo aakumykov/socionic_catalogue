@@ -1,12 +1,10 @@
 package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.ArrayMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 
 import java.util.List;
 import java.util.Map;
@@ -24,8 +22,8 @@ public class CanonicalTagsHelper {
     }
 
 
-    private final Map<String, Integer> mTagDrawableMap = new ArrayMap<>();
     private final Map<String, Integer> mTagIdMap = new ArrayMap<>();
+    private final Map<String, Integer> mTagDrawableMap = new ArrayMap<>();
 
     private CanonicalTagsHelper(@NonNull Context context) {
         mTagDrawableMap.put("БЛ", R.drawable.aspect_logic);
@@ -60,12 +58,10 @@ public class CanonicalTagsHelper {
         return mTagDrawableMap.containsKey(tagName);
     }
 
-    public Drawable getTagIcon(@NonNull Context context, @NonNull String tagName) {
-        if (!isCanonicalTag(tagName))
-            return null;
-
-        //noinspection ConstantConditions
-        return ResourcesCompat.getDrawable(context.getResources(), mTagDrawableMap.get(tagName), null);
+    public int getIconId(@NonNull String tagName) {
+        if (isCanonicalTag(tagName))
+            return mTagDrawableMap.get(tagName);
+        return -1;
     }
 
     public int getTagId(@NonNull String tagName) {
