@@ -86,6 +86,7 @@ public class CardViewHolder_List extends CardViewHolder {
                 ImageView imageView = new ImageView(elementView.getContext());
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(ASPECT_ICON_SIZE, ASPECT_ICON_SIZE));
                 imageView.setAdjustViewBounds(true);
+                imageView.setImageResource(mCanonicalTagsHelper.getTagIconId(tagName));
                 imageView.setId(mCanonicalTagsHelper.getTagId(tagName));
 
                 elementView.addView(imageView);
