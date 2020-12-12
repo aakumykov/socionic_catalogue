@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="logic" />
+    <item type="id" name="emotion" />
+    <item type="id" name="sense" />
+    <item type="id" name="intuition" />
+    <item type="id" name="time" />
+    <item type="id" name="force" />
+    <item type="id" name="relation" />
+    <item type="id" name="practice" />
+</resources>

@@ -86,7 +86,7 @@ public class MVPUtils {
         aspectsMap.put("БЛ", R.drawable.aspect_logic);
         aspectsMap.put("ЧЛ", R.drawable.aspect_practice);
         aspectsMap.put("БЭ", R.drawable.aspect_relation);
-        aspectsMap.put("БС", R.drawable.aspect_sence);
+        aspectsMap.put("БС", R.drawable.aspect_sense);
         aspectsMap.put("БИ", R.drawable.aspect_time);
     }
 
