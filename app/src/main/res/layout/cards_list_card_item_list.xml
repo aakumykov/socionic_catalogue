@@ -26,17 +26,36 @@
         android:id="@+id/titleView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="14dp"
         android:textAlignment="viewStart"
         android:textColor="@color/titleTextColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/aspectsContainer"
+        app:layout_constraintEnd_toStartOf="@+id/canonicalTagsFlowHelper"
         app:layout_constraintStart_toEndOf="@+id/checkMark"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Название элемента" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/canonicalTagsFlowHelper"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:maxWidth="80dp"
+        android:orientation="horizontal"
+        app:flow_horizontalAlign="center"
+        app:flow_horizontalGap="4dp"
+        app:flow_horizontalStyle="spread"
+        app:flow_maxElementsWrap="4"
+        app:flow_verticalAlign="center"
+        app:flow_verticalGap="4dp"
+        app:flow_verticalStyle="spread"
+        app:flow_wrapMode="chain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cardTypeImageView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/cardTypeImageView"
@@ -62,64 +81,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/aspectsContainer"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="#E8F5E9"
-        android:maxWidth="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardTypeImageView"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/aspectsContainerFlowHelper"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:maxWidth="100dp"
-            android:orientation="horizontal"
-            app:constraint_referenced_ids="aspectLogic,aspectSense,aspectEmotions,aspectForce"
-            app:flow_horizontalAlign="center"
-            app:flow_horizontalGap="4dp"
-            app:flow_horizontalStyle="spread"
-            app:flow_maxElementsWrap="4"
-            app:flow_verticalAlign="center"
-            app:flow_verticalGap="4dp"
-            app:flow_verticalStyle="spread"
-            app:flow_wrapMode="chain"
-            app:layout_constraintBottom_toBottomOf="@+id/aspectsContainer"
-            app:layout_constraintEnd_toEndOf="@+id/aspectsContainer"
-            app:layout_constraintStart_toStartOf="@+id/aspectsContainer"
-            app:layout_constraintTop_toTopOf="@+id/aspectsContainer" />
-
-        <ImageView
-            android:id="@+id/aspectLogic"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:srcCompat="@drawable/aspect_logic" />
-
-        <ImageView
-            android:id="@+id/aspectEmotions"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:srcCompat="@drawable/aspect_emotion" />
-
-        <ImageView
-            android:id="@+id/aspectSense"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:srcCompat="@drawable/aspect_sence" />
-
-        <ImageView
-            android:id="@+id/aspectForce"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:srcCompat="@drawable/aspect_force" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

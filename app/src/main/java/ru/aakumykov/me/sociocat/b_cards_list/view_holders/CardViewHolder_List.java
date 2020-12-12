@@ -6,7 +6,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.helper.widget.Flow;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.List;
 
@@ -15,18 +14,19 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.AspectsHelper;
+import ru.aakumykov.me.sociocat.utils.CanonicalTagsHelper;
 
 public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
-    @BindView(R.id.aspectsContainer) ConstraintLayout aspectsContainer;
-    @BindView(R.id.aspectsContainerFlowHelper) Flow aspectsContainerFlowHelper;
+    @BindView(R.id.canonicalTagsFlowHelper) Flow aspectsContainerFlowHelper;
 
     private final static int ASPECT_ICON_SIZE = 12;
+    private CanonicalTagsHelper mCanonicalTagsHelper;
 
     public CardViewHolder_List(@NonNull View itemView) {
         super(itemView);
+        mCanonicalTagsHelper = CanonicalTagsHelper.getInstance(elementView.getContext());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class CardViewHolder_List extends CardViewHolder {
         }
 
         displayMainContent(card);
-        //displayCardIcons(card);
+        displayCardIcons(card);
         displayCardType(card);
     }
 
@@ -72,69 +72,37 @@ public class CardViewHolder_List extends CardViewHolder {
 
         List<String> tagsList = card.getTags();
 
-        if (!AspectsHelper.containsAspectTag(tagsList)) {
-            ViewUtils.hide(aspectsContainer);
+        removeCanonicalTags(card.getTags());
+
+        if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
             ViewUtils.hide(aspectsContainerFlowHelper);
             return;
         }
 
-        aspectsContainer.removeAllViews();
-        aspectsContainerFlowHelper.setReferencedIds(new int[]{});
-
         for (String tagName : tagsList) {
 
-            if (AspectsHelper.isAspectTag(tagName)) {
-
+            if (mCanonicalTagsHelper.isCanonicalTag(tagName))
+            {
                 ImageView imageView = new ImageView(elementView.getContext());
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(ASPECT_ICON_SIZE, ASPECT_ICON_SIZE));
                 imageView.setAdjustViewBounds(true);
+                imageView.setId(mCanonicalTagsHelper.getTagId(tagName));
 
-                switch (tagName) {
-                    case AspectsHelper.LOGIC:
-                        imageView.setImageResource(R.drawable.aspect_logic);
-                        break;
-
-                    case AspectsHelper.EMOTION:
-                        imageView.setImageResource(R.drawable.aspect_emotion);
-                        break;
-
-                    case AspectsHelper.INTUITION:
-                        imageView.setImageResource(R.drawable.aspect_intuition);
-                        break;
-
-                    case AspectsHelper.SENCE:
-                        imageView.setImageResource(R.drawable.aspect_sence);
-                        break;
-
-                    case AspectsHelper.FORCE:
-                        imageView.setImageResource(R.drawable.aspect_force);
-                        break;
-
-                    case AspectsHelper.TIME:
-                        imageView.setImageResource(R.drawable.aspect_time);
-                        break;
-
-                    case AspectsHelper.RELATION:
-                        imageView.setImageResource(R.drawable.aspect_relation);
-                        break;
-
-                    case AspectsHelper.PRACTIVE:
-                        imageView.setImageResource(R.drawable.aspect_practice);
-                        break;
-
-                    default:
-                        throw new RuntimeException("Не найдено соответствие инфоаспекту для метки '"+tagName+"'");
-                }
-
-                imageView.setId(View.generateViewId());
-
-                aspectsContainer.addView(imageView);
+                elementView.addView(imageView);
                 aspectsContainerFlowHelper.addView(imageView);
             }
         }
 
-        ViewUtils.show(aspectsContainer);
         ViewUtils.show(aspectsContainerFlowHelper);
+    }
+
+    private void removeCanonicalTags(List<String> tags) {
+        for (String tagName : tags) {
+            int tagViewId = mCanonicalTagsHelper.getTagId(tagName);
+            View view = elementView.findViewById(tagViewId);
+            if (null != view)
+                elementView.removeView(view);
+        }
     }
 
     private void addTagImageToContainer(@NonNull String tagName) {

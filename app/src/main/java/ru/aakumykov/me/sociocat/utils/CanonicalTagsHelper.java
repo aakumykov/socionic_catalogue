@@ -60,6 +60,12 @@ public class CanonicalTagsHelper {
         return mTagDrawableMap.containsKey(tagName);
     }
 
+    public int getTagIconId(@NonNull String tagName) {
+        if (isCanonicalTag(tagName))
+            return mTagIdMap.get(tagName);
+        return -1;
+    }
+
     public Drawable getTagIcon(@NonNull Context context, @NonNull String tagName) {
         if (!isCanonicalTag(tagName))
             return null;
