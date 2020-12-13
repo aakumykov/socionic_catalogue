@@ -21,7 +21,7 @@ import ru.aakumykov.me.sociocat.utils.DisplayUtils;
 public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
-    @BindView(R.id.canonicalTagsFlowHelper) Flow flowHelper;
+    @BindView(R.id.canonicalTagsFlowHelper) Flow canonicalTagsFlowHelper;
 
     private final static int ASPECT_ICON_SIZE = 12;
     private CanonicalTagsHelper mCanonicalTagsHelper;
@@ -77,7 +77,7 @@ public class CardViewHolder_List extends CardViewHolder {
         removeOldTags();
 
         if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
-            ViewUtils.hide(flowHelper);
+            ViewUtils.hide(canonicalTagsFlowHelper);
             return;
         }
 
@@ -97,15 +97,15 @@ public class CardViewHolder_List extends CardViewHolder {
             imageView.setAdjustViewBounds(true);
 
             elementView.addView(imageView);
-            flowHelper.addView(imageView);
+            canonicalTagsFlowHelper.addView(imageView);
         }
 
-        ViewUtils.show(flowHelper);
+        ViewUtils.show(canonicalTagsFlowHelper);
     }
 
     private void removeOldTags() {
 
-        flowHelper.setReferencedIds(new int[]{});
+        canonicalTagsFlowHelper.setReferencedIds(new int[]{});
 
         for (String tagName : mCanonicalTagsHelper.getTagNames())
         {

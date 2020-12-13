@@ -33,49 +33,29 @@
         android:textColor="@color/titleTextColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/canonicalTagsContainer"
+        app:layout_constraintEnd_toStartOf="@+id/canonicalTagsFlowHelper"
         app:layout_constraintStart_toEndOf="@+id/checkMark"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Название элемента" />
 
-    <!--<com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/canonicalTagsContainer"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-
-        android:background="#FFF9C4"
-
-        app:flexDirection="row"
-        app:flexWrap="wrap"
-        app:flow_maxElementsWrap="4"
-        app:justifyContent="flex_start"
-        app:layout_flexShrink="0"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardTypeImageView"
-        app:layout_constraintTop_toTopOf="parent"
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/canonicalTagsFlowHelper"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="16dp"
-         />-->
-
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/canonicalTagsContainer"
-
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-
-        android:background="#FFF9C4"
-
-        app:flexDirection="row"
-        app:flexWrap="wrap"
-        app:layout_flexShrink="0"
-        app:flow_maxElementsWrap="2"
-        app:justifyContent="center"
-
-
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        app:flow_horizontalAlign="center"
+        app:flow_horizontalGap="4dp"
+        app:flow_horizontalStyle="spread"
+        app:flow_maxElementsWrap="4"
+        app:flow_verticalAlign="center"
+        app:flow_verticalGap="4dp"
+        app:flow_verticalStyle="spread"
+        app:flow_wrapMode="chain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardTypeImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="16dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/cardTypeImageView"
