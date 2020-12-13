@@ -89,7 +89,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.getTimecodeButton) Button getTimecodeButton;
     @BindView(R.id.setTimecodeButton) Button setTimecodeButton;
 
-    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.canonicalTagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
 

@@ -245,7 +245,7 @@
                 android:textSize="18sp" />
 
             <co.lujun.androidtagview.TagContainerLayout
-                android:id="@+id/tagsContainer"
+                android:id="@+id/canonicalTagsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"

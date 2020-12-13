@@ -1,12 +1,10 @@
 package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.helper.widget.Flow;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.List;
 
@@ -16,14 +14,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CanonicalTagsHelper;
-import ru.aakumykov.me.sociocat.utils.DisplayUtils;
 
 public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
-    @BindView(R.id.canonicalTagsFlowHelper) Flow canonicalTagsFlowHelper;
+    @BindView(R.id.canonicalTagsContainer) LinearLayout canonicalTagsContainer;
 
-    private final static int ASPECT_ICON_SIZE = 12;
+    private final static int ASPECT_ICON_SIZE = 24;
     private CanonicalTagsHelper mCanonicalTagsHelper;
 
     public CardViewHolder_List(@NonNull View itemView) {
@@ -42,7 +39,7 @@ public class CardViewHolder_List extends CardViewHolder {
         }
 
         displayMainContent(card);
-        //displayCardIcons(card);
+        displayCardIcons(card);
         displayCardType(card);
     }
 
@@ -74,10 +71,10 @@ public class CardViewHolder_List extends CardViewHolder {
 
         List<String> tagsList = card.getTags();
 
-        removeOldTags();
+        canonicalTagsContainer.removeAllViews();
 
         if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
-            ViewUtils.hide(canonicalTagsFlowHelper);
+            ViewUtils.hide(canonicalTagsContainer);
             return;
         }
 
@@ -85,36 +82,29 @@ public class CardViewHolder_List extends CardViewHolder {
 
             ImageView imageView = new ImageView(elementView.getContext());
 
-            float density = Resources.getSystem().getDisplayMetrics().density;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    ASPECT_ICON_SIZE,
+                    ASPECT_ICON_SIZE
+            );
 
-            imageView.setLayoutParams(new ConstraintLayout.LayoutParams(
-                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE),
-                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE)
-            ));
+//            layoutParams.setMargins(
+//                    DisplayUtils.dpToPx(4),
+//                    DisplayUtils.dpToPx(4),
+//                    DisplayUtils.dpToPx(4),
+//                    DisplayUtils.dpToPx(4)
+//            );
+
+            imageView.setLayoutParams(layoutParams);
 
             imageView.setId(mCanonicalTagsHelper.getTagId(tagName));
             imageView.setImageResource(mCanonicalTagsHelper.getIconId(tagName));
-            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//            imageView.setAdjustViewBounds(true);
 
             elementView.addView(imageView);
-            canonicalTagsFlowHelper.addView(imageView);
+            canonicalTagsContainer.addView(imageView);
         }
 
-        ViewUtils.show(canonicalTagsFlowHelper);
-    }
-
-    private void removeOldTags() {
-
-        canonicalTagsFlowHelper.setReferencedIds(new int[]{});
-
-        for (String tagName : mCanonicalTagsHelper.getTagNames())
-        {
-            int tagId = mCanonicalTagsHelper.getTagId(tagName);
-            View tagView = elementView.findViewById(tagId);
-            while (null != tagView) {
-                elementView.removeView(tagView);
-                tagView = elementView.findViewById(tagId);
-            }
-        }
+        ViewUtils.show(canonicalTagsContainer);
     }
 }

@@ -61,7 +61,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     @BindView(R.id.authorView) TextView authorView;
 
-    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.canonicalTagsContainer) TagContainerLayout tagsContainer;
 
     @BindView(R.id.cardRateUpWidget) ImageView cardRatingUpWidget;
     @BindView(R.id.cardRateDownWidget) ImageView cardRatingDownWidget;
