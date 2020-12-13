@@ -302,8 +302,7 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void openURI(@NonNull Uri uri) {
-        Intent intent = new Intent();
-        intent.setData(uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         if (null != getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY))
             startActivity(intent);
