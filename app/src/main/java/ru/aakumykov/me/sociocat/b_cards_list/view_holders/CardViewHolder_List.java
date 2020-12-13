@@ -42,7 +42,7 @@ public class CardViewHolder_List extends CardViewHolder {
         }
 
         displayMainContent(card);
-        displayCardIcons(card);
+        //displayCardIcons(card);
         displayCardType(card);
     }
 
