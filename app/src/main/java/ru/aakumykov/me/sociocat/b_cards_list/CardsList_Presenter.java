@@ -416,8 +416,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 }));
 
-                mListView.showLoadmoreItem();
-
                 mPageView.scroll2position(position2scroll);
             }
 
