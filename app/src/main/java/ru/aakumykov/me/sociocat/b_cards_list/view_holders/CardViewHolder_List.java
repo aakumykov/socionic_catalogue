@@ -1,12 +1,12 @@
 package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.flexbox.FlexboxLayout;
+import androidx.constraintlayout.helper.widget.Flow;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ import ru.aakumykov.me.sociocat.utils.DisplayUtils;
 public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
-    @BindView(R.id.canonicalTagsContainer) FlexboxLayout canonicalTagsContainer;
+    @BindView(R.id.canonicalTagsFlowHelper) Flow flowHelper;
 
-    private final static int TAG_ICON_SIZE = 12;
+    private final static int ASPECT_ICON_SIZE = 12;
     private CanonicalTagsHelper mCanonicalTagsHelper;
 
     public CardViewHolder_List(@NonNull View itemView) {
@@ -74,37 +74,47 @@ public class CardViewHolder_List extends CardViewHolder {
 
         List<String> tagsList = card.getTags();
 
-        canonicalTagsContainer.removeAllViews();
+        removeOldTags();
 
         if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
-            ViewUtils.hide(canonicalTagsContainer);
+            ViewUtils.hide(flowHelper);
             return;
         }
 
         for (String tagName : tagsList) {
 
             ImageView imageView = new ImageView(elementView.getContext());
+
+            float density = Resources.getSystem().getDisplayMetrics().density;
+
+            imageView.setLayoutParams(new ConstraintLayout.LayoutParams(
+                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE),
+                    DisplayUtils.dpToPx(ASPECT_ICON_SIZE)
+            ));
+
             imageView.setId(mCanonicalTagsHelper.getTagId(tagName));
             imageView.setImageResource(mCanonicalTagsHelper.getIconId(tagName));
             imageView.setAdjustViewBounds(true);
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    DisplayUtils.dpToPx(TAG_ICON_SIZE),
-                    DisplayUtils.dpToPx(TAG_ICON_SIZE)
-            );
-
-            layoutParams.setMargins(
-                    DisplayUtils.dpToPx(4),
-                    DisplayUtils.dpToPx(4),
-                    DisplayUtils.dpToPx(4),
-                    DisplayUtils.dpToPx(4)
-            );
-
-            imageView.setLayoutParams(layoutParams);
-
-            canonicalTagsContainer.addView(imageView);
+            elementView.addView(imageView);
+            flowHelper.addView(imageView);
         }
 
-        ViewUtils.show(canonicalTagsContainer);
+        ViewUtils.show(flowHelper);
+    }
+
+    private void removeOldTags() {
+
+        flowHelper.setReferencedIds(new int[]{});
+
+        for (String tagName : mCanonicalTagsHelper.getTagNames())
+        {
+            int tagId = mCanonicalTagsHelper.getTagId(tagName);
+            View tagView = elementView.findViewById(tagId);
+            while (null != tagView) {
+                elementView.removeView(tagView);
+                tagView = elementView.findViewById(tagId);
+            }
+        }
     }
 }

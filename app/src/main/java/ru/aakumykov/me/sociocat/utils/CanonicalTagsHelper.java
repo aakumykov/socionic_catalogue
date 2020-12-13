@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ru.aakumykov.me.sociocat.R;
 
@@ -69,5 +70,9 @@ public class CanonicalTagsHelper {
             return mTagIdMap.get(tagName);
 
         return -1;
+    }
+
+    public Set<String> getTagNames() {
+        return mTagIdMap.keySet();
     }
 }
