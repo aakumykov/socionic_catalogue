@@ -25,10 +25,10 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicView
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 
 public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
@@ -51,11 +51,9 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     @Override
     public void assembleMenu() {
         addSearchView();
-        addChangeViewModeMenu();
         addSortByNameMenu();
         addSortByCardsCountMenuItem();
-
-//        makeSortingMenuVisible();
+        makeSortingMenuVisible();
     }
 
     @Override
