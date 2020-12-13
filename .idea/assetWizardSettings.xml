@@ -87,8 +87,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\Andrey\Pictures\иконки для программы\значёк программы\палитра.svg" />
-                                                <entry key="scalingPercent" value="94" />
+                                                <entry key="imagePath" value="C:\Users\Andrey\Downloads\sweater1024.png" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -122,7 +121,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="f5f5f5" />
+                                      <entry key="backgroundColor" value="ffffff" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -316,7 +315,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$PROJECT_DIR$/../../Sdk-Android-Linux/icons/material/materialicons/person_outline/baseline_person_outline_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/reply/baseline_reply_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -327,8 +326,8 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_person_outline" />
-                            <entry key="sourceFile" value="$USER_HOME$/Рабочий стол/tag_outlined.svg" />
+                            <entry key="outputName" value="ic_comment_reply" />
+                            <entry key="sourceFile" value="C:\Users\Andrey\Desktop\ic_menu_logout.svg" />
                           </map>
                         </option>
                       </PersistentState>
