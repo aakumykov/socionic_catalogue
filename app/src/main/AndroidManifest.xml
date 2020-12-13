@@ -19,10 +19,10 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".start_page.StartPage">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
@@ -30,10 +30,10 @@
         </activity>
 
         <activity android:name=".b_cards_list.CardsList_View" android:exported="true">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".c_tags_list.TagsList_View" android:exported="true">
