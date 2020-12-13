@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
 import ru.aakumykov.me.sociocat.b_cards_list.list_items.Card_ListItem;
+import ru.aakumykov.me.sociocat.b_cards_list.list_utils.CardsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
@@ -131,7 +132,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     protected BasicMVPList_ItemsTextFilter getItemsTextFilter() {
-        return new BasicMVPList_ItemsTextFilter();
+        return new CardsList_ItemsTextFilter();
     }
 
 

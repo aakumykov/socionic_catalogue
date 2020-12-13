@@ -1,12 +1,13 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils;
 
+import androidx.annotation.NonNull;
+
 import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.models.Card;
 
-public class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_ListItem> {
+public abstract class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_ListItem> {
 
     private String mFilterPattern;
 
@@ -23,15 +24,12 @@ public class BasicMVPList_ItemsTextFilter implements Predicate<BasicMVPList_List
 
             BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) listItem;
 
-            Card card = (Card) dataItem.getPayload();
-
-            String title = card.getTitle().toLowerCase();
-            String patternReal = mFilterPattern.toLowerCase();
-
-            return title.contains(patternReal);
+            return testDataItem(dataItem, mFilterPattern);
         }
         return false;
     }
+
+    protected abstract boolean testDataItem(@NonNull BasicMVPList_DataItem dataItem, @NonNull String filterPattern);
 
     public void setFilterPattern(String filterPattern) {
         mFilterPattern = filterPattern;

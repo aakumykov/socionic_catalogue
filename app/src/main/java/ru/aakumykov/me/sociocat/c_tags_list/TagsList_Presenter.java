@@ -28,6 +28,7 @@ import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.list_parts.Tag_ListItem;
+import ru.aakumykov.me.sociocat.c_tags_list.list_utils.TagsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.c_tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.c_tags_list.view_holders.TagViewHolder;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -97,7 +98,7 @@ public class TagsList_Presenter
 
     @Override
     protected BasicMVPList_ItemsTextFilter getItemsTextFilter() {
-        return new BasicMVPList_ItemsTextFilter();
+        return new TagsList_ItemsTextFilter();
     }
 
     @Override
