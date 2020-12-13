@@ -74,8 +74,7 @@ public class CardViewHolder_List extends CardViewHolder {
 
         List<String> tagsList = card.getTags();
 
-        removeCanonicalTags(card.getTags());
-        flowHelper.setReferencedIds(new int[]{});
+        removeOldTags();
 
         if (! mCanonicalTagsHelper.containsCanonicalTag(tagsList)) {
             ViewUtils.hide(flowHelper);
@@ -104,12 +103,18 @@ public class CardViewHolder_List extends CardViewHolder {
         ViewUtils.show(flowHelper);
     }
 
-    private void removeCanonicalTags(List<String> tags) {
-        for (String tagName : tags) {
-            int tagViewId = mCanonicalTagsHelper.getTagId(tagName);
-            View view = elementView.findViewById(tagViewId);
-            if (null != view)
-                elementView.removeView(view);
+    private void removeOldTags() {
+
+        flowHelper.setReferencedIds(new int[]{});
+
+        for (String tagName : mCanonicalTagsHelper.getTagNames())
+        {
+            int tagId = mCanonicalTagsHelper.getTagId(tagName);
+            View tagView = elementView.findViewById(tagId);
+            while (null != tagView) {
+                elementView.removeView(tagView);
+                tagView = elementView.findViewById(tagId);
+            }
         }
     }
 }
