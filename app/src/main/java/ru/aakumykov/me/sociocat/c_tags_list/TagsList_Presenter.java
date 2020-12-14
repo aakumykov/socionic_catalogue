@@ -27,7 +27,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Cancelab
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
-import ru.aakumykov.me.sociocat.c_tags_list.list_parts.Tag_ListItem;
+import ru.aakumykov.me.sociocat.c_tags_list.list_items.Tag_ListItem;
 import ru.aakumykov.me.sociocat.c_tags_list.list_utils.TagsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.c_tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.c_tags_list.view_holders.TagViewHolder;

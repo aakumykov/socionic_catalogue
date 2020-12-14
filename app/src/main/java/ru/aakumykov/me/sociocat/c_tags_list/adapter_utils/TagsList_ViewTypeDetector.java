@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.adapter_utils.BasicMVPList_ViewTypeDetector;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.data_types.BasicMVPList_ItemTypes;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
-import ru.aakumykov.me.sociocat.c_tags_list.list_parts.Tag_ListItem;
+import ru.aakumykov.me.sociocat.c_tags_list.list_items.Tag_ListItem;
 
 public class TagsList_ViewTypeDetector extends BasicMVPList_ViewTypeDetector {
 
