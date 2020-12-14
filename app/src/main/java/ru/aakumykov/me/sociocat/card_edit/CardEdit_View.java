@@ -72,7 +72,7 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageProgressBar) ProgressBar imageThrobber;
-    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.mediaView) ImageView imageView;
     @BindView(R.id.restoreImageButton) ImageView restoreImageButton;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
@@ -632,7 +632,7 @@ public class CardEdit_View extends BaseView implements
 
 
     // Нажатия
-    @OnClick(R.id.imageView)
+    @OnClick(R.id.mediaView)
     public void onSelectImageClicked() {
         presenter.onImageViewClicked();
     }

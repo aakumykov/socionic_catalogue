@@ -79,11 +79,7 @@ public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
 
     protected abstract void showNoCardError();
 
-    protected void displayMainContent(@NonNull Card card) {
-        displayTitle(card);
-    }
-
-    private void displayTitle(Card card) {
+    protected void displayCommonParts(@NonNull Card card) {
         titleView.setText(card.getTitle());
     }
 }

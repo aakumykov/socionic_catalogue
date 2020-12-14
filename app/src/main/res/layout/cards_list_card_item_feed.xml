@@ -55,7 +55,7 @@
             tools:text="«Если вы ищете истину, вы можете в конце концов найти успокоение; если вы ищете успокоение, вы не найдёте ни успокоение, ни истины – вы лишь начнёте с мягкого мыла и выдачи желаемого за действительное, а закончите отчаянием»" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/mediaView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -76,7 +76,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/mediaView"
             tools:visibility="gone" />
 
         <FrameLayout
@@ -125,7 +125,7 @@
             android:textColor="@color/cards_feed_comments_count_text_color"
             app:layout_constraintBottom_toBottomOf="@+id/authorView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/mediaView"
             tools:text="10 комментариев" />
 
         <TextView

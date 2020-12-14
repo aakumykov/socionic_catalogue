@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat;
 
 public final class AppConfig {
+    public static final int CARDS_GRID_QUOTE_LENGTH = 50;
+
     private AppConfig() {}
 
     // Длины
