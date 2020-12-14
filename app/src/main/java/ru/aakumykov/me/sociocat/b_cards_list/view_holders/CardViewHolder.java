@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
     @BindView(R.id.elementView)
     ViewGroup elementView;
 
+    @Nullable
     @BindView(R.id.checkMark)
     View checkMark;
 

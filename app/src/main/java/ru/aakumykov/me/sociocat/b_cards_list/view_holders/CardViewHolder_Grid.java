@@ -8,11 +8,13 @@ import androidx.annotation.NonNull;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardViewHolder_Grid extends CardViewHolder {
 
     @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
+    @BindView(R.id.selectionOverlay) View selectionOverlay;
 
     public CardViewHolder_Grid(@NonNull View itemView) {
         super(itemView);
@@ -38,6 +40,10 @@ public class CardViewHolder_Grid extends CardViewHolder {
 
     }
 
+    @Override
+    public void displayIsChecked(boolean isChecked) {
+        ViewUtils.setVisibility(selectionOverlay, isChecked);
+    }
 
     private void displatCardType(@NonNull Card card) {
         if (card.isTextCard())
