@@ -4,6 +4,7 @@ package ru.aakumykov.me.sociocat.a_basic_mvp_list_components;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -387,11 +388,15 @@ public abstract class BasicMVPList_View
     protected abstract RecyclerView getRecyclerView();
 
     protected RecyclerView.LayoutManager createGridModeLayoutManager() {
-        int colsCount = MyUtils.isPortraitOrientation(this) ?
-            AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT :
-            AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+        int colsCount = getColumnsCountForGridLayout(MyUtils.getOrientation(this));
 
         return new StaggeredGridLayoutManager(colsCount, StaggeredGridLayoutManager.VERTICAL);
+    }
+
+    protected int getColumnsCountForGridLayout(int orientation) {
+        return (Configuration.ORIENTATION_PORTRAIT == orientation) ?
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT :
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
     }
 
     protected RecyclerView.LayoutManager createLinearModeLayoutManager() {

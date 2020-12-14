@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.b_cards_list;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -142,6 +143,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     @Override
     protected RecyclerView getRecyclerView() {
         return mRecyclerView;
+    }
+
+    @Override
+    protected int getColumnsCountForGridLayout(int orientation) {
+        return (Configuration.ORIENTATION_PORTRAIT == orientation) ? 3 : 5;
     }
 
     @Override
