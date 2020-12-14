@@ -28,6 +28,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.tag_edit.TagEdit_View;
 
 public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
@@ -88,7 +89,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     protected void setSelectedViewState(SelectionViewState viewState) {
         super.setSelectedViewState(viewState);
 
-//        if (((TagsList_Presenter) mPresenter).canDeleteTag())
+        if (AuthSingleton.isLoggedIn())
             inflateMenu(R.menu.tags_list_delete);
     }
 
