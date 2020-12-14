@@ -133,5 +133,5 @@ dependencies {
     implementation 'com.google.android:flexbox:2.0.1'
 
     // Custom Activity On Crash
-    implementation 'cat.ereza:customactivityoncrash:2.3.0'
+//    implementation 'cat.ereza:customactivityoncrash:2.3.0'
 }
