@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat;
 
 public final class AppConfig {
+
     private AppConfig() {}
 
     // Длины
@@ -37,6 +38,7 @@ public final class AppConfig {
 
     public static final int CARDS_GRID_COLUMNS_COUNT_PORTRAIT = 2;
     public static final int CARDS_GRID_COLUMNS_COUNT_LANDSCAPE = 4;
+    public static final int CARDS_GRID_QUOTE_LENGTH = 50;
 
     public static final String CREATE_CUSTOM_TOKEN_BASE_URL = "https://us-central1-sociocat-debug.cloudfunctions.net";
     public static final String CREATE_CUSTOM_TOKEN_PATH = "/vkAccessToken2FirebaseAccessToken";

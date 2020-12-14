@@ -65,7 +65,7 @@
                 tools:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/mediaView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal|center_vertical"

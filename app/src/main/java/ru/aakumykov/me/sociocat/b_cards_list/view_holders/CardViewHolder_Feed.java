@@ -43,7 +43,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardViewHolder_Feed extends CardViewHolder {
 
-    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.mediaView) ImageView imageView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.videoThrobber) ImageView videoThrobber;
     @BindView(R.id.audioVideoContainer) FrameLayout audioVideoContainer;
@@ -68,7 +68,7 @@ public class CardViewHolder_Feed extends CardViewHolder {
             return;
         }
 
-        displayMainContent(card);
+        displayCommonParts(card);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class CardViewHolder_Feed extends CardViewHolder {
     }
 
     @Override
-    protected void displayMainContent(@NonNull Card card) {
-        super.displayMainContent(card);
+    protected void displayCommonParts(@NonNull Card card) {
+        super.displayCommonParts(card);
 
         showAuthor(card);
         showDate(card);

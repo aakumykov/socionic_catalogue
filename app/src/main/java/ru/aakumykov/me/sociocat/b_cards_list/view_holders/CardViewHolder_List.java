@@ -17,7 +17,7 @@ import ru.aakumykov.me.sociocat.utils.CanonicalTagsHelper;
 
 public class CardViewHolder_List extends CardViewHolder {
 
-    @BindView(R.id.cardTypeImageView) ImageView cardTypeImageView;
+    @BindView(R.id.mediaView) ImageView cardTypeImageView;
     @BindView(R.id.canonicalTagsContainer) LinearLayout canonicalTagsContainer;
 
     private final static int ASPECT_ICON_SIZE = 24;
@@ -38,7 +38,7 @@ public class CardViewHolder_List extends CardViewHolder {
             return;
         }
 
-        displayMainContent(card);
+        displayCommonParts(card);
 //        displayCardIcons(card);
         displayCardType(card);
     }
