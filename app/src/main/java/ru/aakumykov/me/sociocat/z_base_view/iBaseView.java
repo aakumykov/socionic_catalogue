@@ -79,6 +79,7 @@ public interface iBaseView {
     void hideMenuItem(Menu menu, int menuItemId);
     void clearMenu();
     void inflateMenu(int menuId);
+    void makeMenuItemVisible(int menuItemId, @Nullable Integer menuIconId);
 
     void showUserProfile(String userId);
 

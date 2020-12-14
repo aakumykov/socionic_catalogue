@@ -51,14 +51,14 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicView
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllSelectedViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ListFilteredViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
@@ -263,13 +263,13 @@ public abstract class BasicMVPList_View
         else if (viewState instanceof RefreshingViewState) {
             setRefreshingViewState();
         }
-        // AllSelectedViewState - частный случай SelectionViewState,
+        // AllItemsSelectedViewState - частный случай ItemsSelectedViewState,
         // поэтому должен идти перед ним.
-        else if (viewState instanceof AllSelectedViewState) {
-            setAllSelectedViewState((AllSelectedViewState) viewState);
+        else if (viewState instanceof AllItemsSelectedViewState) {
+            setAllSelectedViewState((AllItemsSelectedViewState) viewState);
         }
-        else if (viewState instanceof SelectionViewState) {
-            setSelectedViewState((SelectionViewState) viewState);
+        else if (viewState instanceof ItemsSelectedViewState) {
+            setItemSelectedViewState((ItemsSelectedViewState) viewState);
         }
         else if (viewState instanceof ErrorViewState) {
             setErrorViewState((ErrorViewState) viewState);
@@ -434,12 +434,12 @@ public abstract class BasicMVPList_View
         showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
     }
 
-    protected void setSelectedViewState(SelectionViewState viewState) {
+    protected void setItemSelectedViewState(ItemsSelectedViewState viewState) {
         showSelectionMenu();
         showSelectedItemsCount(viewState.getSelectedItemsCount());
     }
 
-    protected void setAllSelectedViewState(AllSelectedViewState viewState) {
+    protected void setAllSelectedViewState(AllItemsSelectedViewState viewState) {
         showAllSelectedMenu();
         showSelectedItemsCount(viewState.getSelectedItemsCount());
     }

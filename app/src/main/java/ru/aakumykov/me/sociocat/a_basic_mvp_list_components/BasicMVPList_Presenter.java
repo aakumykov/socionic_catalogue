@@ -18,11 +18,11 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicView
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllSelectedViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
 
 public abstract class BasicMVPList_Presenter
         implements
@@ -69,13 +69,13 @@ public abstract class BasicMVPList_Presenter
         int selectedItemsCount = mListView.getSelectedItemsCount();
 
         if (selectedItemsCount == visibleDataItemsCount) {
-            setViewState(new AllSelectedViewState(selectedItemsCount));
+            setViewState(new AllItemsSelectedViewState(selectedItemsCount));
         }
         else if (0 == selectedItemsCount) {
             setViewState(new NeutralViewState());
         }
         else {
-            setViewState(new SelectionViewState(selectedItemsCount));
+            setViewState(new ItemsSelectedViewState(selectedItemsCount));
         }
     }
 
@@ -243,7 +243,7 @@ public abstract class BasicMVPList_Presenter
     @Override
     public void onSelectAllClicked() {
         mListView.selectAll();
-        setViewState(new AllSelectedViewState(mListView.getSelectedItemsCount()));
+        setViewState(new AllItemsSelectedViewState(mListView.getSelectedItemsCount()));
     }
 
     @Override
@@ -255,7 +255,7 @@ public abstract class BasicMVPList_Presenter
     @Override
     public void onInvertSelectionClicked() {
         mListView.invertSelection();
-        setViewState(new SelectionViewState(mListView.getSelectedItemsCount()));
+        setViewState(new ItemsSelectedViewState(mListView.getSelectedItemsCount()));
     }
 
 

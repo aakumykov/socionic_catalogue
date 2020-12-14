@@ -209,6 +209,11 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void makeMenuItemVisible(int menuItemId, @Nullable Integer menuIconId) {
+
+    }
+
+    @Override
     public void showUserProfile(String userId) {
 
     }

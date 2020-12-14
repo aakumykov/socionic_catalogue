@@ -36,6 +36,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -186,6 +187,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             throw new RuntimeException("Unsupported menu itemId: "+itemId);
 
         ((CardsList_View) mPageView).goCreateCard(cardType);
+    }
+
+    public void onEditCardClicked() {
+
     }
 
     public void onCardCreated(@Nullable Card newCard) {
@@ -445,5 +450,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private void showNoMoreCards() {
         mListView.hideThrobberItem();
         mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
+    }
+
+
+    public boolean canEditCard() {
+        return UsersSingleton.getInstance().currentUserIsAdmin();
     }
 }

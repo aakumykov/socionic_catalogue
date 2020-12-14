@@ -23,7 +23,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_U
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
@@ -85,8 +85,8 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     }
 
     @Override
-    protected void setSelectedViewState(SelectionViewState viewState) {
-        super.setSelectedViewState(viewState);
+    protected void setItemSelectedViewState(ItemsSelectedViewState viewState) {
+        super.setItemSelectedViewState(viewState);
 
         if (((TagsList_Presenter) mPresenter).canDeleteTag())
             inflateMenu(R.menu.tags_list_delete);
@@ -168,13 +168,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
 
     private void makeSortingMenuVisible() {
-        if (null != mMenu) {
-            MenuItem sortMenuItem = mMenu.findItem(R.id.actionSort);
-            if (null != sortMenuItem) {
-                sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                sortMenuItem.setIcon(R.drawable.ic_sort_visible);
-            }
-        }
+        makeMenuItemVisible(R.id.actionSort, R.drawable.ic_sort_visible);
     }
 
     private void addSortByCardsCountMenuItem() {

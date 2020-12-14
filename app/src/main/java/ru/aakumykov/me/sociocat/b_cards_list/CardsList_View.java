@@ -36,6 +36,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
@@ -105,6 +106,9 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         }
         else if (R.id.actionSortByRating == id) {
             mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_RATING);
+        }
+        else if (R.id.actionEdit == id) {
+            ((CardsList_Presenter) mPresenter).onEditCardClicked();
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -233,6 +237,9 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         else if (viewState instanceof CardsWithTag_ViewState) {
             setCardsWithTagViewState((CardsWithTag_ViewState) viewState);
         }
+        else if (viewState instanceof ItemsSelectedViewState) {
+            setItemSelectedViewState((ItemsSelectedViewState) viewState);
+        }
         else {
             super.setViewState(viewState);
         }
@@ -286,6 +293,22 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         setPageTitle(msg);
 
         showTagFilter(msg);
+    }
+
+    @Override
+    protected void setItemSelectedViewState(ItemsSelectedViewState selectionViewState) {
+        super.setItemSelectedViewState(selectionViewState);
+
+        boolean canEditCard = ((CardsList_Presenter) mPresenter).canEditCard();
+        boolean singleCardSelected = 1 == selectionViewState.getSelectedItemsCount();
+
+        if (canEditCard && singleCardSelected) {
+            inflateMenu(R.menu.edit);
+            makeMenuItemVisible(R.id.actionEdit, R.drawable.ic_edit);
+            refreshMenu();
+        }
+        else
+            super.setItemSelectedViewState(selectionViewState);
     }
 
 

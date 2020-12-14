@@ -497,6 +497,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void makeMenuItemVisible(int menuItemId, @Nullable Integer menuIconId) {
+        if (null != mMenu) {
+            MenuItem sortMenuItem = mMenu.findItem(menuItemId);
+            if (null != sortMenuItem) {
+                sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                if (null != menuIconId)
+                    sortMenuItem.setIcon(menuIconId);
+            }
+        }
+    }
+
+    @Override
     public void showUserProfile(String userId) {
         Intent intent = new Intent(this, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, userId);
