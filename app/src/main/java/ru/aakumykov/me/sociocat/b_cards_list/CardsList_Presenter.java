@@ -320,6 +320,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 else
                     mListView.appendList(list2append);
 
+                updateSelectionModeMenu();
                 mPageView.scroll2position(position2scroll);
             }
 
@@ -417,6 +418,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 }));
 
+                updateSelectionModeMenu();
                 mPageView.scroll2position(position2scroll);
             }
 
