@@ -161,6 +161,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
                 processTagEditionResult(mActivityResultCode, mActivityResultData);
                 break;
             default:
+                super.processActivityResult();
                 break;
         }
     }

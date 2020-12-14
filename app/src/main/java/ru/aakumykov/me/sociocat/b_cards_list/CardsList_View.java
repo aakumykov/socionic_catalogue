@@ -74,9 +74,10 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     @Override
-    protected void processActivityResult() {
+    public void processActivityResult() {
 
         switch (mActivityRequestCode) {
+
             case Constants.CODE_CREATE_CARD:
                 processCardCreationResult();
                 break;
@@ -86,6 +87,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
                 break;
 
             default:
+                super.processActivityResult();
                 break;
         }
     }

@@ -32,6 +32,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.exceptions.UnknownViewModeException;
@@ -88,7 +89,6 @@ public abstract class BasicMVPList_View
 
     // Абстрактные методы
     protected abstract void setActivityView();
-    protected abstract void processActivityResult();
     protected abstract BasicMVPList_Presenter preparePresenter();
     protected abstract BasicMVPList_DataAdapter prepareDataAdapter();
 
@@ -434,6 +434,18 @@ public abstract class BasicMVPList_View
         showSelectedItemsCount(viewState.getSelectedItemsCount());
     }
 
+    protected void processActivityResult() {
+        switch (mActivityRequestCode) {
+            case Constants.CODE_LOGIN:
+                processLoginResult();
+                break;
+
+            default:
+                Log.w(TAG, "Unknown request code: "+mActivityRequestCode);
+                break;
+        }
+    }
+
 
 
     // Внутренние
@@ -600,6 +612,10 @@ public abstract class BasicMVPList_View
                 .create();
     }
 
+    private void processLoginResult() {
+        refreshMenu();
+    }
+
     private void showProgressMessage(Object data) {
         showMessage(data);
         showProgressBar();
@@ -694,6 +710,9 @@ public abstract class BasicMVPList_View
         mActivityResultCode = Integer.MAX_VALUE;
         mActivityResultData = null;
     }
+
+
+
 
     @SuppressLint("RestrictedApi")
     private void activateIconsInMenu(Menu menu) {
