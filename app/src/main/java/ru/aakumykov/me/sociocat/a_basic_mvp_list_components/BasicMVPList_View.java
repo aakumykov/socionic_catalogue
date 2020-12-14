@@ -59,6 +59,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Progress
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SelectionViewState;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public abstract class BasicMVPList_View
@@ -386,7 +387,11 @@ public abstract class BasicMVPList_View
     protected abstract RecyclerView getRecyclerView();
 
     protected RecyclerView.LayoutManager createGridModeLayoutManager() {
-        return new StaggeredGridLayoutManager(AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT,StaggeredGridLayoutManager.VERTICAL);
+        int colsCount = MyUtils.isPortraitOrientation(this) ?
+            AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT :
+            AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+
+        return new StaggeredGridLayoutManager(colsCount, StaggeredGridLayoutManager.VERTICAL);
     }
 
     protected RecyclerView.LayoutManager createLinearModeLayoutManager() {
@@ -468,12 +473,15 @@ public abstract class BasicMVPList_View
 
     private RecyclerView.LayoutManager prepareLayoutManager(BasicViewMode viewMode) {
 
-        if (viewMode instanceof ListViewMode || viewMode instanceof FeedViewMode)
-                return createLinearModeLayoutManager();
-        else if (viewMode instanceof GridViewMode)
-                return createGridModeLayoutManager();
-        else
+        if (viewMode instanceof ListViewMode || viewMode instanceof FeedViewMode) {
+            return createLinearModeLayoutManager();
+        }
+        else if (viewMode instanceof GridViewMode) {
+            return createGridModeLayoutManager();
+        }
+        else {
             throw new UnknownViewModeException(viewMode);
+        }
     }
 
     protected void addSingleItemMenu(int menuResourceId, int itemId, int showAsAction) {
