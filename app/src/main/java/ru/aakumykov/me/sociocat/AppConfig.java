@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
 public final class AppConfig {
-
     private AppConfig() {}
 
     // Длины
