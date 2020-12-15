@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <string name="test_email" tools:ignore="MissingTranslation" translatable="false">aakumykov@gmail.com</string>
-    <string name="test_password" tools:ignore="MissingTranslation" translatable="false">123456</string>
-    <string name="test_new_user_email" tools:ignore="MissingTranslation" translatable="false">aakumykov@mail.ru</string>
-
-</resources>
