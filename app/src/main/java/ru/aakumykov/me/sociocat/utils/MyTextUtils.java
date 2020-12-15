@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
 import android.text.Html;
