@@ -56,7 +56,6 @@
             tools:visibility="visible" />
 
         <Space
-            android:id="@+id/space"
             android:layout_width="0dp"
             android:layout_height="10dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -5,22 +5,15 @@
     <color name="colorAccent">#ff4081</color>
 
     <color name="transparent">#00FFFFFF</color>
-    <color name="semi_transparent">#cfffffff</color>
     <color name="grey">#949494</color>
     <color name="light_grey">#dadada</color>
-    <color name="lightest_grey">#F3F3F3</color>
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
 
     <color name="menu_icon_grey">#949494</color>
 
-    <color name="undefined">#a4a4a4</color>
     <color name="debug">#a4a4a4</color>
     <color name="info">#6F80DA</color>
     <color name="info_background">#FFFFFF</color>
-    <color name="debug_background">@color/lightest_grey</color>
-    <color name="warning">#FF7140</color>
-    <color name="alert">#EC407A</color>
     <color name="error">#ff4081</color>
     <color name="error_background">#FFEDF4</color>
 
@@ -33,39 +26,21 @@
     <color name="red_swipe">#ff4444</color>
     <color name="orange_swipe">#ffbb33</color>
 
-    <color name="selected_list_item_bg">#e1e1e1</color>
-
-    <color name="tag_filter">#92a4ff</color>
-    <color name="tag_filter_label">#73c4bd</color>
-
     <!-- Кнопки рейтинга -->
     <color name="rating_up">#a7ffb0</color>
     <color name="rating_down">#f7b8b8</color>
     <color name="rating_neutral">@color/light_grey</color>
 
-    <color name="text_mode">#00ddff</color>
-    <color name="image_mode">#99cc00</color>
-    <color name="video_mode">#4C39AB</color>
-    <color name="audio_mode">#E53935</color>
-
-    <color name="card_show_title">#272727</color>
-    <color name="card_show_description">#272727</color>
-
     <!--Кнопки режима редактирования карточки-->
     <color name="card_edit_convert_button_background">#C5E1A5</color>
 
     <!--MyYoutubePlayer-->
-    <color name="my_youtube_player_msg_animation_from">#C7C7C7</color>
-    <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
 
     <!-- Плиточный вид карточек -->
-    <color name="cards_grid_pressed_background_color">#ECECEC</color>
 
     <!-- Комментарии -->
-    <color name="comment_pressed_background_color">#E2E2E2</color>
     <color name="comment_load_mode_background">#E2E2E2</color>
     <color name="comment_form_replied_comment_background">#E2E2E2</color>
-    <color name="comment_form_replied_comment_discard_button_background">#D6D6D6</color>
 
     <!-- ... -->
     <color name="defaultTextColor">#3C3C3C</color>
@@ -75,27 +50,18 @@
     <color name="descriptionTextColor">#222222</color>
 
     <!-- Всплывающие сообщения -->
-    <color name="toastBorder">#E2E2E2</color>
 
     <!-- Метки -->
-    <color name="tags_list_item_border">#C4CBF1</color>
 
     <!-- Элемент "Есть новые карточки" -->
-    <color name="new_cards_notification_background">#FFF176</color>
 
     <!--  Цвет выделенного элемента RecyclerView  -->
-    <color name="element_is_selected">#459575CD</color>
 
     <!--  Цвет удаляемого элемента RecyclerView  -->
-    <color name="element_is_now_deleting">#6BF48FB1</color>
 
     <!--  Цвета нижней границы фона элементов списка (визуальный разделитель)  -->
-    <color name="neutral_list_item_divider_color">#DADADA</color>
-    <color name="colored_list_item_divider_color">#B5B5B5</color>
 
     <!--  Цвета BottomSheetMenu  -->
-    <color name="bottom_sheet_list_item_color_light">@color/black</color>
-    <color name="bottom_sheet_list_item_color_dark">@color/lightest_grey</color>
 
     <!--  Цвет иконок меню, вызываемого плавающей кнопкой  -->
     <color name="bottom_sheet_menu_icon_color">@color/grey</color>
@@ -103,7 +69,6 @@
     <!--  Цвета иконок типа карточки  -->
     <color name="card_type_icon_text">#888888</color>
     <color name="card_type_icon_audio">#7E57C2</color>
-    <color name="card_type_icon_video">#F48FB1</color>
     <color name="card_type_icon_image">#8BC34A</color>
 
     <color name="highlighted_comment_border">#FFF59D</color>
@@ -111,7 +76,6 @@
 
     <color name="colorErrorText">#E6453A</color>
 
-    <color name="tags_list_selection_background_color">#DFDFDF</color>
     <color name="cards_list_background">#F4F4F4</color>
 
     <color name="cards_feed_author_text_color">#222222</color>

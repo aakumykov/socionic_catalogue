@@ -1,22 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="CARDS_GRID_delete_selected_cards_title">
-        <item quantity="zero">Удалить %1$d выбранных карточек?</item>
-        <item quantity="one">Удалить %1$d выбранную карточку?</item>
-        <item quantity="two">Удалить %1$d выбранные карточки?</item>
-        <item quantity="few">Удалить %1$d выбранные карточки?</item>
-        <item quantity="many">Удалить %1$d выбранных карточек?</item>
-        <item quantity="other">Удалить %1$d выбранных карточек?</item>
-    </plurals>
-
-    <plurals name="LIST_TEMPLATE_delete_selected_items_dialog_title">
-        <item quantity="zero">Удалить %1$d выбранных элементов?</item>
-        <item quantity="one">Удалить %1$d выбранный элемент?</item>
-        <item quantity="two">Удалить %1$d выбранных элемента?</item>
-        <item quantity="few">Удалить %1$d выбранных элемента?</item>
-        <item quantity="many">Удалить %1$d выбранных элементов?</item>
-        <item quantity="other">Удалить %1$d выбранных элементов?</item>
-    </plurals>
 
     <plurals name="TAGS_LIST_deleting_dialog_title">
         <item quantity="one">Удалить %1$d выбранную метку?</item>
@@ -28,14 +11,6 @@
         <item quantity="one">Нельзя удалить больше %1$d метки за раз</item>
         <item quantity="few">Нельзя удалить больше %1$d меток за раз</item>
         <item quantity="many">Нельзя удалить больше %1$d меток за раз</item>
-    </plurals>
-
-    <plurals name="CARDS_LIST_n_cards_mode_loaded">
-        <item quantity="zero">+ %1$d карточек</item>
-        <item quantity="one">+ %1$d карточка</item>
-        <item quantity="two">+ %1$d карточки</item>
-        <item quantity="few">%1$d карточки</item>
-        <item quantity="many">+ %1$d карточек</item>
     </plurals>
 
     <plurals name="comments_count">

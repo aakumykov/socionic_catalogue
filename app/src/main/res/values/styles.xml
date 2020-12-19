@@ -9,25 +9,6 @@
     </style>
 
     <!--  Меню внизу страницы, для тёмного фона -->
-    <style name="MyBottomSheetMenuStyleForDark" parent="@style/Theme.BottomSheetMenuDialog">
-        <item name="bottom_sheet_menu_title_text_appearance">@style/TitleAppearanceOnDark</item>
-        <item name="bottom_sheet_menu_list_text_appearance">@style/ListAppearanceOnDark</item>
-        <item name="bottom_sheet_menu_grid_text_appearance">@style/GridAppearanceOnDark</item>
-    </style>
-
-    <style name="TitleAppearanceOnDark" parent="BottomSheetMenu.Title.TextAppearance">
-        <item name="android:textColor">@color/lightest_grey</item>
-    </style>
-
-    <style name="ListAppearanceOnDark" parent="BottomSheetMenu.ListItem.TextAppearance">
-<!--        <item name="android:textColor">@color/lightest_grey</item>-->
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="GridAppearanceOnDark" parent="BottomSheetMenu.GridItem.TextAppearance">
-<!--        <item name="android:textColor">@color/lightest_grey</item>-->
-        <item name="android:textSize">20sp</item>
-    </style>
 
     <!--  Меню внизу страницы, для светлого фона -->
     <style name="MyBottomSheetMenuStyleForLight" parent="@style/Theme.BottomSheetMenuDialog.Light">
@@ -48,10 +29,6 @@
     <style name="GridAppearanceOnLight" parent="BottomSheetMenu.GridItem.TextAppearance.Light">
 <!--        <item name="android:textColor">@color/lightest_grey</item>-->
         <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="NoPopupAnimation" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupAnimationStyle">@null</item>
     </style>
 
     <style name="main_button">

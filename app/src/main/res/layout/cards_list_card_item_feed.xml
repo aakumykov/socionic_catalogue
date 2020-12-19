@@ -141,7 +141,6 @@
             tools:text="Рейтинг: 5" />
 
         <Space
-            android:id="@+id/space"
             android:layout_width="0dp"
             android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
