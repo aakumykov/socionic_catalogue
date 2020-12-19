@@ -161,9 +161,9 @@ public class CardShow_View extends BaseView implements
                 presenter.onDeleteCardClicked();
                 break;
 
-            case R.id.actionOpenInBrowser:
+            /*case R.id.actionOpenInBrowser:
                 presenter.onOpenInBrowserClicked();
-                break;
+                break;*/
 
             default:
                 break;
