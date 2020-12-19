@@ -169,10 +169,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 goTagsList();
                 break;
 
-            case R.id.actionProbe:
-                //doProbe();
-                break;
-
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -479,7 +475,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void hideMenuItem(Menu menu, int menuItemId) {
-        MenuItem menuItem = menu.findItem(R.id.actionNewCards);
+        MenuItem menuItem = menu.findItem(menuItemId);
         if (null != menuItem)
             menuItem.setVisible(false);
     }
