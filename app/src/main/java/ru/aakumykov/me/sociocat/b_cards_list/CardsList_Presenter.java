@@ -454,6 +454,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
 
     public boolean canEditCard() {
+        return isAdmin();
+    }
+
+    public boolean canDeleteCard() {
+        return isAdmin();
+    }
+
+    private boolean isAdmin() {
         return UsersSingleton.getInstance().currentUserIsAdmin();
     }
 }

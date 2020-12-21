@@ -80,6 +80,7 @@
 
     <color name="cards_feed_author_text_color">#222222</color>
     <color name="cards_feed_comments_count_text_color">#222222</color>
+    <color name="visible_menu_icon_color">@android:color/white</color>
 
 
 </resources>

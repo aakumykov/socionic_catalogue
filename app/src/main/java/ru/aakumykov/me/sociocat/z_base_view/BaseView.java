@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -56,6 +57,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
@@ -495,11 +497,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void makeMenuItemVisible(int menuItemId, @Nullable Integer menuIconId) {
         if (null != mMenu) {
+
             MenuItem sortMenuItem = mMenu.findItem(menuItemId);
             if (null != sortMenuItem) {
                 sortMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 if (null != menuIconId)
                     sortMenuItem.setIcon(menuIconId);
+            }
+
+            Drawable menuItemIcon = sortMenuItem.getIcon();
+            if (null != menuItemIcon) {
+                Drawable drawable = menuItemIcon.mutate();
+                ImageUtils.setDrawableColor(this, drawable, R.color.visible_menu_icon_color);
             }
         }
     }
