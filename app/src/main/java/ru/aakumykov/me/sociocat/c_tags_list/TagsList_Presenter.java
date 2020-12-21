@@ -174,7 +174,7 @@ public class TagsList_Presenter
 
         if (count > Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT) {
             String msg = TextUtils.getPluralString(
-                    mPageView.getAppContext(),
+                    mPageView.getGlobalContext(),
                     R.plurals.TAGS_LIST_cannot_delete_more_tags_at_once,
                     Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT
             );
@@ -191,13 +191,13 @@ public class TagsList_Presenter
         }
 
         String title = TextUtils.getPluralString(
-                mPageView.getAppContext(),
+                mPageView.getGlobalContext(),
                 R.plurals.TAGS_LIST_deleting_dialog_title,
                 count
         );
 
         SimpleYesNoDialog.show(
-                mPageView.getPageContext(),
+                mPageView.getLocalContext(),
                 title,
                 messageBuilder.toString(),
                 new SimpleYesNoDialog.AbstractCallbacks() {
@@ -242,7 +242,7 @@ public class TagsList_Presenter
         itemsList.remove(0);
         Tag tag = (Tag) dataItem.getPayload();
 
-        String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
+        String msg = TextUtils.getText(mPageView.getGlobalContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
         setViewState(new CancelableProgressViewState(msg));
 
         mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {

@@ -308,7 +308,7 @@ public class CardEdit_Presenter implements
         /*if (editMode.equals(CardEditMode.CREATE)) {
 
             MVPUtils.subscribeToTopicNotifications(
-                    view.getAppContext(),
+                    view.getGlobalContext(),
                     card.getKey(),
                     new MVPUtils.TopicNotificationsCallbacks.SubscribeCallbacks() {
                         @Override

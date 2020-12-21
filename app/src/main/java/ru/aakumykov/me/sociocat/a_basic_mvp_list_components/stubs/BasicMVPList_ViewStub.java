@@ -110,12 +110,12 @@ public class BasicMVPList_ViewStub implements iBasicList_Page {
     }
 
     @Override
-    public Context getAppContext() {
+    public Context getGlobalContext() {
         return null;
     }
 
     @Override
-    public Context getPageContext() {
+    public Context getLocalContext() {
         return null;
     }
 

@@ -44,8 +44,8 @@ public interface iBasicList_Page {
 
     // Эти два здесь неуместны
     Intent getInputIntent();
-    Context getAppContext();
-    Context getPageContext();
+    Context getGlobalContext();
+    Context getLocalContext();
 
     String getText(int stringResourceId, Object... formatArgs);
 

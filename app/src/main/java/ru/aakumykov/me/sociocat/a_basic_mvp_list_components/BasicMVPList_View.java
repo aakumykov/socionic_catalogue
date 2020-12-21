@@ -323,12 +323,12 @@ public abstract class BasicMVPList_View
     }
 
     @Override
-    public Context getAppContext() {
+    public Context getGlobalContext() {
         return getApplicationContext();
     }
 
     @Override
-    public Context getPageContext() {
+    public Context getLocalContext() {
         return this;
     }
 

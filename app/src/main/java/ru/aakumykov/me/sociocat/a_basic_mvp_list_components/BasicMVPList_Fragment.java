@@ -258,13 +258,13 @@ public abstract class BasicMVPList_Fragment
     }
 
     @Override
-    public Context getAppContext() {
+    public Context getGlobalContext() {
         // FIXME: исправить это. Только как?
         return getActivity().getApplicationContext();
     }
 
     @Override
-    public Context getPageContext() {
+    public Context getLocalContext() {
         return getContext();
     }
 
