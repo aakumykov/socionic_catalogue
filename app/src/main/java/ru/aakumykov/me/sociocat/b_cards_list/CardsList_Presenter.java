@@ -343,7 +343,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     private void notifyAboutFilteredOutItems(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
 
-        Context context = mPageView.getAppContext();
+        Context context = mPageView.getLocalContext();
 
         String addedCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_added, addedItemsCount);
         String filteredOutCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_filtered_out, filteredOutItemsCount);
@@ -474,7 +474,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         if (count > Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT) {
             String msg = TextUtils.getPluralString(
-                    mPageView.getAppContext(),
+                    mPageView.getLocalContext(),
                     R.plurals.CARDS_LIST_cannot_delete_more_tags_at_once,
                     Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT
             );
@@ -497,13 +497,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         }
 
         String title = TextUtils.getPluralString(
-                mPageView.getAppContext(),
+                mPageView.getLocalContext(),
                 R.plurals.CARDS_LIST_deleting_dialog_title,
                 count
         );
 
         SimpleYesNoDialog.show(
-                mPageView.getPageContext(),
+                mPageView.getLocalContext(),
                 title,
                 messageBuilder.toString(),
                 new SimpleYesNoDialog.AbstractCallbacks() {
