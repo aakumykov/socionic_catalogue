@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.CollectionReference;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +49,8 @@ public interface iUsersSingleton {
     void updateUserFromServer(String userId);
 
     void changeEmail(@NonNull String newEmail, ChangeEmailCallbacks callbacks);
+
+    CollectionReference getUsersCollection();
 
 
     interface CreateCallbacks {

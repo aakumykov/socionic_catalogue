@@ -542,6 +542,11 @@ public class UsersSingleton implements iUsersSingleton {
                 });
     }
 
+    @Override
+    public CollectionReference getUsersCollection() {
+        return firebaseFirestore.collection(Constants.USERS_PATH);
+    }
+
 
     // Внутренние методы
     private void checkUserWithAttributeExists(String attrName, String attrValue, CheckExistanceCallbacks callbacks) {
