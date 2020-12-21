@@ -2,7 +2,9 @@ package ru.aakumykov.me.sociocat.b_cards_list;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
@@ -528,15 +531,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         deleteCardsFromList(mListView.getSelectedItems());
     }
 
-    private void deleteCardsFromList(List<BasicMVPList_DataItem> itemsList) {
+    private void deleteCardsFromList(List<BasicMVPList_DataItem> deletedItemsList) {
 
-        mListView.clearSelection();
-        setNeutralViewState();
-        clearInterruptFlag();
-        mPageView.showToast("Не реализовно");
-        return;
-
-        /*if (hasInterruptFlag()) {
+        if (hasInterruptFlag()) {
             mPageView.showToast(R.string.CARDS_LIST_deletion_process_interrupted);
             mListView.clearSelection();
             setNeutralViewState();
@@ -544,34 +541,32 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             return;
         }
 
-        if (0 == itemsList.size()) {
-            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
+        if (0 == deletedItemsList.size()) {
+            mPageView.showToast(R.string.CARDS_LIST_selected_card_are_processed);
             setNeutralViewState();
             return;
         }
 
-        BasicMVPList_DataItem dataItem = itemsList.get(0);
-        itemsList.remove(0);
+        BasicMVPList_DataItem dataItem = deletedItemsList.get(0);
+        deletedItemsList.remove(0);
         Card card = (Card) dataItem.getPayload();
 
-        String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, card.getName());
-        setViewState(new CancelableProgressViewState(msg));*/
+        String msg = TextUtils.getText(mPageView.getLocalContext(), R.string.CARDS_LIST_deleting_card, card.getName());
+        setViewState(new CancelableProgressViewState(msg));
 
-        /*mComplexSingleton.deleteCard(card, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
+        mComplexSingleton.deleteCard(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
             @Override
-            public void onTagDeleteSuccess(@NonNull Card card) {
+            public void onCardDeleteSuccess(@NonNull Card card) {
                 mListView.removeItem(dataItem);
-                deleteCardsFromList(itemsList);
+                deleteCardsFromList(deletedItemsList);
             }
 
             @Override
-            public void onTagDeleteError(@NonNull String errorMsg) {
-                mPageView.showToast(mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, card.getName()));
+            public void onCardDeleteFailed(@NonNull String errorMsg) {
+                mPageView.showToast(mPageView.getText(R.string.CARDS_LIST_error_deleting_card, card.getTitle()));
                 Log.e(TAG, errorMsg);
-
-                deleteCardsFromList(itemsList);
+                deleteCardsFromList(deletedItemsList);
             }
-        });*/
-
+        });
     }
 }

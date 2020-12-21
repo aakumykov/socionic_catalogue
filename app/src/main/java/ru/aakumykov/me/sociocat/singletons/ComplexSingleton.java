@@ -18,14 +18,17 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.User;
 
 public class ComplexSingleton {
 
     private final static String TAG = ComplexSingleton.class.getSimpleName();
 
+    private final FirebaseFirestore mFirebaseFirestore = FirebaseFirestore.getInstance();
+
     private final iTagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final iCardsSingleton mCardsSingleton = CardsSingleton.getInstance();
-    private final FirebaseFirestore mFirebaseFirestore = FirebaseFirestore.getInstance();
+    private final iUsersSingleton mIUsersSingleton = UsersSingleton.getInstance();
 
 
     public void deleteTag(@NonNull Tag tag, iComplexSingleton_TagDeletionCallbacks deleteCallbacks) {
@@ -33,7 +36,7 @@ public class ComplexSingleton {
         List<String> initialCardsList = tag.getCards();
         List<String> existedCardsList = new ArrayList<>();
 
-        checkCardsExistance(initialCardsList, existedCardsList, new CheckCardsExistanceCallback() {
+        checkCardsExistance(initialCardsList, existedCardsList, new iCheckCardsExistanceCallback() {
             @Override
             public void onComplete() {
                 deleteTagWithCheckedListOfCards(tag, existedCardsList, deleteCallbacks);
@@ -46,7 +49,7 @@ public class ComplexSingleton {
         List<String> initialCardsList = new ArrayList<>(newTag.getCards());
         List<String> existedCardsList = new ArrayList<>();
 
-        checkCardsExistance(initialCardsList, existedCardsList, new CheckCardsExistanceCallback() {
+        checkCardsExistance(initialCardsList, existedCardsList, new iCheckCardsExistanceCallback() {
             @Override
             public void onComplete() {
                 updateTagWithCheckedListOfCards(oldTag, newTag, existedCardsList, saveCallbacks);
@@ -54,7 +57,7 @@ public class ComplexSingleton {
         });
     }
 
-    private void checkCardsExistance(List<String> initialCardsList, List<String> existingCardsList, CheckCardsExistanceCallback callback) {
+    private void checkCardsExistance(List<String> initialCardsList, List<String> existingCardsList, iCheckCardsExistanceCallback callback) {
 
         if (0 == initialCardsList.size()) {
             callback.onComplete();
@@ -177,6 +180,42 @@ public class ComplexSingleton {
     }
 
 
+    public void deleteCard(@NonNull Card card, iComplexSingleton_CardDeletionCallbacks callbacks) {
+        
+        String cardKey = card.getKey();
+        String userKey = card.getUserId();
+
+        CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
+        CollectionReference usersCollection = mIUsersSingleton.getUsersCollection();
+
+        DocumentReference cardRef = cardsCollection.document(cardKey);
+        DocumentReference cardAuthorRef = usersCollection.document(userKey);
+
+        WriteBatch writeBatch = mFirebaseFirestore.batch();
+        writeBatch.delete(cardRef);
+        writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
+        
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardDeleteSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String errorMsg = e.getMessage();
+                        if (null == errorMsg)
+                            errorMsg = "Error removing card: "+card;
+                   
+                        callbacks.onCardDeleteFailed(errorMsg);
+                        Log.e(TAG, errorMsg, e);
+                    }
+                });
+    }
+
+
     public interface iComplexSingleton_TagDeletionCallbacks {
         void onTagDeleteSuccess(@NonNull Tag tag);
         void onTagDeleteError(@NonNull String errorMsg);
@@ -187,8 +226,13 @@ public class ComplexSingleton {
         void onTagSaveError(@NonNull String errorMsg);
     }
 
-    private interface CheckCardsExistanceCallback {
+    private interface iCheckCardsExistanceCallback {
         void onComplete();
+    }
+
+    public interface iComplexSingleton_CardDeletionCallbacks {
+        void onCardDeleteSuccess(@NonNull Card card);
+        void onCardDeleteFailed(@NonNull String errorMsg);
     }
 
 

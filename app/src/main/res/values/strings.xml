@@ -395,6 +395,9 @@
     <string name="RESET_PASSWORD1_email_hint">Email</string>
     <string name="CARDS_LIST_you_cannot_delete_cards">You cannot delete cards</string>
     <string name="CARDS_LIST_deletion_process_interrupted">Cards deleting is interrupted</string>
+    <string name="CARDS_LIST_deleting_card">Deleting card «%1$s»</string>
+    <string name="CARDS_LIST_error_deleting_card">Error deleting card «%1$s»</string>
+    <string name="CARDS_LIST_selected_card_are_processed">Selected cards are processed</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
