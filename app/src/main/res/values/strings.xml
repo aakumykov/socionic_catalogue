@@ -360,7 +360,7 @@
     <string name="TAGS_LIST_selected_tags_are_processed">Selected tags are processed</string>
     <string name="MENU_interrupt_running_action">Interrupt running action</string>
     <string name="interrupt">Interrupt</string>
-    <string name="TAGS_LIST_deletion_process_interrupted">Deletion process is interrupted</string>
+    <string name="TAGS_LIST_deletion_process_interrupted">Tags deleting is interrupted</string>
     <string name="TAG_EDIT_name_input_hint">Tag name</string>
     <string name="TAG_EDIT_loading_tag">Loading tag</string>
     <string name="TAG_EDIT_error_loading_tag">Error loading tag</string>
@@ -393,6 +393,8 @@
     <string name="LOGIN_email_hint">Email address</string>
     <string name="LOGIN_password_hint">Password</string>
     <string name="RESET_PASSWORD1_email_hint">Email</string>
+    <string name="CARDS_LIST_you_cannot_delete_cards">You cannot delete cards</string>
+    <string name="CARDS_LIST_deletion_process_interrupted">Cards deleting is interrupted</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

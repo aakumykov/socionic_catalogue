@@ -35,7 +35,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
@@ -51,7 +51,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsList_View extends BasicMVPList_View implements iCardsList_View {
 
-    private static final BasicViewMode DEFAULT_VIEW_MODE = new FeedViewMode();
+    private static final BasicViewMode DEFAULT_VIEW_MODE = new ListViewMode();
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.tagFilter) Chip tagFilterChip;
@@ -109,6 +109,9 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         }
         else if (R.id.actionEdit == id) {
             ((CardsList_Presenter) mPresenter).onEditCardClicked();
+        }
+        else if (R.id.actionDelete == id) {
+            ((CardsList_Presenter) mPresenter).onDeleteMenuItemClicked();
         }
         else {
             return super.onOptionsItemSelected(item);

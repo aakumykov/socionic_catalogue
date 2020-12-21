@@ -11,6 +11,16 @@
         <item quantity="other">Cannot delete more then %1$d tags at once</item>
     </plurals>
 
+    <plurals name="CARDS_LIST_deleting_dialog_title">
+        <item quantity="one">Delete %1$d selected card?</item>
+        <item quantity="other">Delete %1$d selected cards?</item>
+    </plurals>
+
+    <plurals name="CARDS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Cannot delete more then %1$d card at once</item>
+        <item quantity="other">Cannot delete more then %1$d cards at once</item>
+    </plurals>
+
     <plurals name="comments_count" tools:ignore="UnusedQuantity">
         <item quantity="zero">no comments</item>
         <item quantity="one">%1$d comment</item>

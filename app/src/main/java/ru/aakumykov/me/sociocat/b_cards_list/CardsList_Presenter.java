@@ -36,14 +36,17 @@ import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class CardsList_Presenter extends BasicMVPList_Presenter implements iCardsList_ItemClickListener {
 
     private static final String TAG = CardsList_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
+    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private String mTagFilter;
     private boolean mHasParent;
 
@@ -463,5 +466,112 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     private boolean isAdmin() {
         return UsersSingleton.getInstance().currentUserIsAdmin();
+    }
+
+    public void onDeleteMenuItemClicked() {
+
+        int count = mListView.getSelectedItemsCount();
+
+        if (count > Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT) {
+            String msg = TextUtils.getPluralString(
+                    mPageView.getAppContext(),
+                    R.plurals.CARDS_LIST_cannot_delete_more_tags_at_once,
+                    Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT
+            );
+            mPageView.showToast(msg);
+            return;
+        }
+
+        List<BasicMVPList_DataItem> selectedItems = mListView.getSelectedItems();
+        StringBuilder messageBuilder = new StringBuilder();
+        int counter = 1;
+        for (BasicMVPList_DataItem dataItem : selectedItems) {
+            Card card = (Card) dataItem.getPayload();
+
+            messageBuilder.append(counter++);
+            messageBuilder.append(") ");
+
+            messageBuilder.append(card.getTitle());
+
+            messageBuilder.append("\n");
+        }
+
+        String title = TextUtils.getPluralString(
+                mPageView.getAppContext(),
+                R.plurals.CARDS_LIST_deleting_dialog_title,
+                count
+        );
+
+        SimpleYesNoDialog.show(
+                mPageView.getPageContext(),
+                title,
+                messageBuilder.toString(),
+                new SimpleYesNoDialog.AbstractCallbacks() {
+                    @Override
+                    public void onYes() {
+                        super.onYes();
+                        onCardsDeletionConfirmed();
+                    }
+                }
+        );
+    }
+
+    private void onCardsDeletionConfirmed() {
+
+        if (!isAdmin()) {
+            mPageView.showSnackbar(R.string.CARDS_LIST_you_cannot_delete_cards, R.string.SNACKBAR_got_it, 10000);
+            mListView.clearSelection();
+            setNeutralViewState();
+            return;
+        }
+
+        deleteCardsFromList(mListView.getSelectedItems());
+    }
+
+    private void deleteCardsFromList(List<BasicMVPList_DataItem> itemsList) {
+
+        mListView.clearSelection();
+        setNeutralViewState();
+        clearInterruptFlag();
+        mPageView.showToast("Не реализовно");
+        return;
+
+        /*if (hasInterruptFlag()) {
+            mPageView.showToast(R.string.CARDS_LIST_deletion_process_interrupted);
+            mListView.clearSelection();
+            setNeutralViewState();
+            clearInterruptFlag();
+            return;
+        }
+
+        if (0 == itemsList.size()) {
+            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
+            setNeutralViewState();
+            return;
+        }
+
+        BasicMVPList_DataItem dataItem = itemsList.get(0);
+        itemsList.remove(0);
+        Card card = (Card) dataItem.getPayload();
+
+        String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, card.getName());
+        setViewState(new CancelableProgressViewState(msg));*/
+
+        /*mComplexSingleton.deleteCard(card, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
+            @Override
+            public void onTagDeleteSuccess(@NonNull Card card) {
+                mListView.removeItem(dataItem);
+                deleteCardsFromList(itemsList);
+            }
+
+            @Override
+            public void onTagDeleteError(@NonNull String errorMsg) {
+                mPageView.showToast(mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, card.getName()));
+                Log.e(TAG, errorMsg);
+
+                deleteCardsFromList(itemsList);
+            }
+        });*/
+
     }
 }

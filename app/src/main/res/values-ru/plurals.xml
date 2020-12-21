@@ -13,6 +13,18 @@
         <item quantity="many">Нельзя удалить больше %1$d меток за раз</item>
     </plurals>
 
+    <plurals name="CARDS_LIST_deleting_dialog_title">
+        <item quantity="one">Удалить %1$d выбранную карточку?</item>
+        <item quantity="few">Удалить %1$d выбранные карточки?</item>
+        <item quantity="many">Удалить %1$d выбранных карточек?</item>
+    </plurals>
+
+    <plurals name="CARDS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Нельзя удалить больше %1$d карточки за раз</item>
+        <item quantity="few">Нельзя удалить больше %1$d карточек за раз</item>
+        <item quantity="many">Нельзя удалить больше %1$d карточек за раз</item>
+    </plurals>
+
     <plurals name="comments_count">
         <item quantity="zero">нет комментариев</item>
         <item quantity="one">%1$d комментарий</item>

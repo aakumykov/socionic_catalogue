@@ -211,7 +211,6 @@ public class TagsList_Presenter
     }
 
     private void onTagsDeletionConfirmed() {
-        List<BasicMVPList_DataItem> selectedItemsList = mListView.getSelectedItems();
 
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showSnackbar(R.string.TAGS_LIST_you_cannot_delete_tags, R.string.SNACKBAR_got_it, 10000);
@@ -220,10 +219,10 @@ public class TagsList_Presenter
             return;
         }
 
-        deleteTagsFromList(selectedItemsList);
+        deleteTagsFromList(mListView.getSelectedItems());
     }
 
-    private void deleteTagsFromList(List<BasicMVPList_DataItem> tagsList) {
+    private void deleteTagsFromList(List<BasicMVPList_DataItem> itemsList) {
 
         if (hasInterruptFlag()) {
             mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
@@ -233,14 +232,14 @@ public class TagsList_Presenter
             return;
         }
 
-        if (0 == tagsList.size()) {
+        if (0 == itemsList.size()) {
             mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
             setNeutralViewState();
             return;
         }
 
-        BasicMVPList_DataItem dataItem = tagsList.get(0);
-        tagsList.remove(0);
+        BasicMVPList_DataItem dataItem = itemsList.get(0);
+        itemsList.remove(0);
         Tag tag = (Tag) dataItem.getPayload();
 
         String msg = TextUtils.getText(mPageView.getAppContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
@@ -250,7 +249,7 @@ public class TagsList_Presenter
             @Override
             public void onTagDeleteSuccess(@NonNull Tag tag) {
                 mListView.removeItem(dataItem);
-                deleteTagsFromList(tagsList);
+                deleteTagsFromList(itemsList);
             }
 
             @Override
@@ -258,7 +257,7 @@ public class TagsList_Presenter
                 mPageView.showToast(mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName()));
                 Log.e(TAG, errorMsg);
 
-                deleteTagsFromList(tagsList);
+                deleteTagsFromList(itemsList);
             }
         });
     }
