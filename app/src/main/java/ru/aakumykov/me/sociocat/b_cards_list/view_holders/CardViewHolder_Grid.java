@@ -29,7 +29,6 @@ public class CardViewHolder_Grid extends CardViewHolder {
 
     @BindView(R.id.mediaView) ImageView imageView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.selectionOverlay) View selectionOverlay;
 
     public CardViewHolder_Grid(@NonNull View itemView) {
         super(itemView);
@@ -59,7 +58,7 @@ public class CardViewHolder_Grid extends CardViewHolder {
 
     @Override
     public void displayIsChecked(boolean isChecked) {
-        ViewUtils.setVisibility(selectionOverlay, isChecked);
+        ViewUtils.setVisibility(checkingOverlay, isChecked);
     }
 
     private void resetSpecificParts() {

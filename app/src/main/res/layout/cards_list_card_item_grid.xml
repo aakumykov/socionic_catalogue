@@ -64,10 +64,10 @@
             app:layout_constraintTop_toBottomOf="@+id/mediaView" />
 
         <View
-            android:id="@+id/highlightingOverlay"
+            android:id="@+id/checkingOverlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/simple_list_item_background_highlighted"
+            android:background="@drawable/simple_list_item_background_selected"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,10 +76,10 @@
             tools:visibility="gone" />
 
         <View
-            android:id="@+id/selectionOverlay"
+            android:id="@+id/highlightingOverlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/simple_list_item_background_selected"
+            android:background="@drawable/simple_list_item_background_highlighted"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
