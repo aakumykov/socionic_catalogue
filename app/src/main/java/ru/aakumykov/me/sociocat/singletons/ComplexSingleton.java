@@ -29,6 +29,7 @@ public class ComplexSingleton {
     private final iTagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final iCardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private final iUsersSingleton mUsersSingleton = UsersSingleton.getInstance();
+    private final iStorageSingleton mStorageSingleton = StorageSingleton.getInstance();
 
 
     public void deleteTag(@NonNull Tag tag, iComplexSingleton_TagDeletionCallbacks deleteCallbacks) {
@@ -56,6 +57,7 @@ public class ComplexSingleton {
             }
         });
     }
+
 
     private void checkCardsExistance(List<String> initialCardsList, List<String> existingCardsList, iCheckCardsExistanceCallback callback) {
 
@@ -199,7 +201,18 @@ public class ComplexSingleton {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onCardDeleteSuccess(card);
+
+                        mStorageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+                            @Override
+                            public void onDeleteSuccess() {
+                                callbacks.onCardDeleteSuccess(card);
+                            }
+
+                            @Override
+                            public void onDeleteFail(String errorMSg) {
+                                callbacks.onCardDeleteFailed(errorMSg);
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
