@@ -54,4 +54,6 @@ public interface iBasicList_Page {
     int getListScrollOffset();
     void setListScrollOffset(int offset);
 
+    void showStyledToast(int messageId);
+    void showStyledToast(String text);
 }

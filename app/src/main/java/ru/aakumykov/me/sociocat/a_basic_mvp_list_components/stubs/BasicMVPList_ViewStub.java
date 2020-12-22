@@ -139,4 +139,14 @@ public class BasicMVPList_ViewStub implements iBasicList_Page {
 
     }
 
+    @Override
+    public void showStyledToast(int messageId) {
+
+    }
+
+    @Override
+    public void showStyledToast(String text) {
+
+    }
+
 }

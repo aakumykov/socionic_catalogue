@@ -359,6 +359,16 @@ public abstract class BasicMVPList_View
     public abstract void setListScrollOffset(int offset);
 
     @Override
+    public void showStyledToast(int messageId) {
+        MyUtils.showCustomToast(this, messageId);
+    }
+
+    @Override
+    public void showStyledToast(String text) {
+        MyUtils.showCustomToast(this, text);
+    }
+
+    @Override
     public void runDelayed(@NonNull Runnable runnable, long delay) {
         findViewById(android.R.id.content)
                 .postDelayed(runnable, delay);

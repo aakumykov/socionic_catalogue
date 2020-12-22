@@ -288,6 +288,16 @@ public abstract class BasicMVPList_Fragment
 
     }
 
+    @Override
+    public void showStyledToast(int messageId) {
+
+    }
+
+    @Override
+    public void showStyledToast(String text) {
+
+    }
+
 
     // Внутренние
     private void onBackPressed() {
