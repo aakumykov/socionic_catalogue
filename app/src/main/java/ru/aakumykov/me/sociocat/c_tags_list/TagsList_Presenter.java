@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.c_tags_list.enums.eTagsList_SortingMode;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.c_tags_list.interfaces.iTagsList_View;
@@ -254,10 +255,9 @@ public class TagsList_Presenter
 
             @Override
             public void onTagDeleteError(@NonNull String errorMsg) {
-                mPageView.showToast(mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName()));
+                String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
+                setViewState(new ErrorViewState(msg, errorMsg));
                 Log.e(TAG, errorMsg);
-
-                deleteTagsFromList(itemsList);
             }
         });
     }
