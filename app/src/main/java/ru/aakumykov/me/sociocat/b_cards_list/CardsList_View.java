@@ -306,6 +306,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         boolean canDeleteCard = ((CardsList_Presenter) mPresenter).canDeleteCard();
         boolean cardsAreSelected = selectionViewState.getSelectedItemsCount() > 0;
         boolean singleCardSelected = 1 == selectionViewState.getSelectedItemsCount();
+        boolean cardsCountIsDeletable = selectionViewState.getSelectedItemsCount() <= Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT;
 
         if (canEditCard || canDeleteCard) {
 
@@ -314,7 +315,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
                 makeMenuItemVisible(R.id.actionEdit, R.drawable.ic_edit);
             }
 
-            if (cardsAreSelected && canDeleteCard) {
+            if (cardsAreSelected && canDeleteCard && cardsCountIsDeletable) {
                 inflateMenu(R.menu.delete);
                 makeMenuItemVisible(R.id.actionDelete, R.drawable.ic_delete);
             }
