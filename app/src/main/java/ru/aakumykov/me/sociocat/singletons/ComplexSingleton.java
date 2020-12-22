@@ -28,7 +28,7 @@ public class ComplexSingleton {
 
     private final iTagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final iCardsSingleton mCardsSingleton = CardsSingleton.getInstance();
-    private final iUsersSingleton mIUsersSingleton = UsersSingleton.getInstance();
+    private final iUsersSingleton mUsersSingleton = UsersSingleton.getInstance();
 
 
     public void deleteTag(@NonNull Tag tag, iComplexSingleton_TagDeletionCallbacks deleteCallbacks) {
@@ -186,7 +186,7 @@ public class ComplexSingleton {
         String userKey = card.getUserId();
 
         CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
-        CollectionReference usersCollection = mIUsersSingleton.getUsersCollection();
+        CollectionReference usersCollection = mUsersSingleton.getUsersCollection();
 
         DocumentReference cardRef = cardsCollection.document(cardKey);
         DocumentReference cardAuthorRef = usersCollection.document(userKey);
