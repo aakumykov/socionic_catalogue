@@ -234,7 +234,7 @@ public class TagsList_Presenter
         }
 
         if (0 == itemsList.size()) {
-            mPageView.showToast(R.string.TAGS_LIST_selected_tags_are_processed);
+            mPageView.showStyledToast(R.string.TAGS_LIST_selected_tags_are_processed);
             setNeutralViewState();
             return;
         }
