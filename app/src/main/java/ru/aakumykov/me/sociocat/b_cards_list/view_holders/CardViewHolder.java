@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,12 +22,11 @@ public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
     @BindView(R.id.elementView)
     ViewGroup elementView;
 
-    @Nullable
-    @BindView(R.id.checkMark)
-    View checkMark;
-
     @BindView(R.id.titleView)
     TextView titleView;
+
+    @BindView(R.id.checkingOverlay)
+    View checkingOverlay;
 
     @BindView(R.id.highlightingOverlay)
     View highlightingOverlay;
@@ -41,7 +39,7 @@ public abstract class CardViewHolder extends BasicMVPList_DataViewHolder {
 
     @Override
     public void displayIsChecked(boolean isChecked) {
-        ViewUtils.setVisibility(checkMark, isChecked);
+        ViewUtils.setVisibility(checkingOverlay, isChecked);
     }
 
     @Override

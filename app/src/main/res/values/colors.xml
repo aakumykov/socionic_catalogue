@@ -82,5 +82,9 @@
     <color name="cards_feed_comments_count_text_color">#222222</color>
     <color name="visible_menu_icon_color">@android:color/white</color>
 
+    <color name="default_highlighting_background">#43FFFDE7</color>
+    <color name="default_basic_highlighting_border">#FFF9C4</color>
+    <color name="default_checking_background">#4DD1C4E9</color>
+    <color name="default_basic_checking_border">#D1C4E9</color>
 
 </resources>
