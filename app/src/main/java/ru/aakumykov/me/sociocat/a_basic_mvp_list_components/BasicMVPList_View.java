@@ -431,7 +431,7 @@ public abstract class BasicMVPList_View
 
     protected void setErrorViewState(ErrorViewState errorViewState) {
         setNeutralViewState();
-        showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
+        showErrorMsg(errorViewState.getMessage(this), errorViewState.getDebugMessage());
     }
 
     protected void setItemSelectedViewState(ItemsSelectedViewState viewState) {
@@ -650,15 +650,18 @@ public abstract class BasicMVPList_View
             swipeRefreshLayout.setRefreshing(false);
     }
 
-    public void showErrorMsg(int userMessageId, String debugMessage) {
+    public void showErrorMsg(int userMessageId, String debugErrorMsg) {
+        String msg = TextUtils.getText(this, userMessageId);
+        showErrorMsg(msg, debugErrorMsg);
+    }
+
+    public void showErrorMsg(String errorMsg, String debugErrorMsg) {
         setNeutralViewState();
 
-        String msg = TextUtils.getText(this, userMessageId);
-
         if (BuildConfig.DEBUG)
-            msg += ": " + debugMessage;
+            errorMsg += ": " + debugErrorMsg;
 
-        showMessage(msg);
+        showMessage(errorMsg);
         setMessageColor(R.color.colorErrorText);
     }
 

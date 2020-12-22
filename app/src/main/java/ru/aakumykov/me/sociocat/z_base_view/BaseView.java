@@ -234,7 +234,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     protected void setErrorViewState(ErrorViewState errorViewState) {
         setNeutralViewState();
-        showErrorMsg(errorViewState.getMessageId(), errorViewState.getDebugMessage());
+        showErrorMsg(errorViewState.getMessage(this), errorViewState.getDebugMessage(), false);
     }
 
     // Сообщения вверху страницы
@@ -303,14 +303,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showErrorMsg(int messageId, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
         String msg = getResources().getString(messageId);
-
-        if (forceShowConsoleMessage) {
-            msg = msg + ": " + consoleMessage;
-            Log.e(TAG, "" + consoleMessage);
-        }
-
-        hideProgressMessage();
-        showMsg(msg, R.color.error, R.color.error_background);
+        showErrorMsg(msg, consoleMessage, forceShowConsoleMessage);
     }
 
     @Override
@@ -552,6 +545,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
+    private void showErrorMsg(String errorMsg, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
+
+        if (forceShowConsoleMessage) {
+            errorMsg = errorMsg + ": " + consoleMessage;
+            Log.e(TAG, "" + consoleMessage);
+        }
+
+        hideProgressMessage();
+        showMsg(errorMsg, R.color.error, R.color.error_background);
+    }
+
     private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
 
