@@ -25,6 +25,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_ItemClickListener;
@@ -542,7 +543,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         }
 
         if (0 == deletedItemsList.size()) {
-            mPageView.showToast(R.string.CARDS_LIST_selected_card_are_processed);
+//            mPageView.showToast(R.string.CARDS_LIST_selected_card_are_processed);
             setNeutralViewState();
             return;
         }
@@ -557,15 +558,15 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mComplexSingleton.deleteCard(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(@NonNull Card card) {
+                mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
                 mListView.removeItem(dataItem);
                 deleteCardsFromList(deletedItemsList);
             }
 
             @Override
             public void onCardDeleteFailed(@NonNull String errorMsg) {
-                mPageView.showToast(mPageView.getText(R.string.CARDS_LIST_error_deleting_card, card.getTitle()));
+                setViewState(new ErrorViewState(mPageView.getText(R.string.CARDS_LIST_error_deleting_card, card.getTitle()), errorMsg));
                 Log.e(TAG, errorMsg);
-                deleteCardsFromList(deletedItemsList);
             }
         });
     }

@@ -394,8 +394,8 @@
     <string name="CARDS_LIST_deleting_card">Удаляем карточку «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки «%1$s»</string>
     <string name="CARDS_LIST_selected_card_are_processed">Выбранные карточки обработаны</string>
+    <string name="card_has_been_deleted">Карточка «%1$s» удалена</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
-<!--пользователя %1$s к карточке «%2$s» -->
-<!-- «%1$s» -->
+<!-- «%1$s» «%2$s» -->

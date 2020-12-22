@@ -398,8 +398,8 @@
     <string name="CARDS_LIST_deleting_card">Deleting card «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card «%1$s»</string>
     <string name="CARDS_LIST_selected_card_are_processed">Selected cards are processed</string>
+    <string name="card_has_been_deleted">Card «%1$s» has been deleted</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
-<!-- «%1$s» -->
-<!--from user %1$s to card «%2$s»-->
+<!-- «%1$s» «%2$s» -->
