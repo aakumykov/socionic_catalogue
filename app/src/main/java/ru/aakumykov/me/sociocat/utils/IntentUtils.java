@@ -98,6 +98,18 @@ public class IntentUtils {
             return null;
     }
 
+    public static boolean intentActionIs(@NonNull String referenceAction, @Nullable Intent intent) {
+        if (null == intent)
+            return false;
+
+        String action = intent.getAction();
+        if (null == action)
+            return false;
+
+        return action.equals(referenceAction);
+    }
+
+
 
     public interface ImageExtractionCallbacks {
         void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI);
