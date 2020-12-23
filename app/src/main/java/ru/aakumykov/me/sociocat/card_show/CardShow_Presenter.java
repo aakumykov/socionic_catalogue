@@ -84,7 +84,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     @Override
     public void onTagClicked(String tagName) {
-        pageView.showCardsWithTag(tagName);
+        pageView.goShowCardsWithTag(tagName);
     }
 
     @Override

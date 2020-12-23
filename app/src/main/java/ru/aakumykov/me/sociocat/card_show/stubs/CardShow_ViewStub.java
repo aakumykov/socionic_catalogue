@@ -50,7 +50,7 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
-    public void showCardsWithTag(String tagName) {
+    public void goShowCardsWithTag(String tagName) {
 
     }
 

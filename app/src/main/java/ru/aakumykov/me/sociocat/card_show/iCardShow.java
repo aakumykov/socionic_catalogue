@@ -35,7 +35,7 @@ public interface iCardShow
 
         void scrollToComment(int position);
 
-        void showCardsWithTag(String tagName);
+        void goShowCardsWithTag(String tagName);
 
         void goEditCard(Card card);
         void goUserProfile(String userId);

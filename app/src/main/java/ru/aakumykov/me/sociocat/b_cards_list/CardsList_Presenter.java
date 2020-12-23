@@ -221,7 +221,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mHasParent = isViewAction;
 
         if (isViewAction) {
-            if (intent.hasExtra(Constants.TAG)) {
+            if (intent.hasExtra(Constants.TAG_NAME)) {
                 loadCardsWithTag(intent, false);
                 return;
             }
