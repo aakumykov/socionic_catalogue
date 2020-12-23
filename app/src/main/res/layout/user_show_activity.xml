@@ -161,19 +161,30 @@
 
         <TextView
             android:id="@+id/changePasswordWidget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            style="@style/user_show_outlined_button"
             android:text="@string/USER_EDIT_change_password"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:background="@drawable/shape_change_password_button_background"
-            android:textSize="16sp"
             android:visibility="gone"
-            android:padding="8dp"
             tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/showUserCardsButton"
+            style="@style/user_show_outlined_button"
+            android:text="@string/USER_SHOW_cards_of_user" />
+
+        <Button
+            android:id="@+id/showUserCommentsButton"
+            style="@style/user_show_outlined_button"
+            android:text="@string/USER_SHOW_comments_of_user" />
+
+        <!--<Button
+            android:width=""
+            android:id="@+id/showUserCardsButton"
+            android:text="@string/USER_SHOW_cards_of_user" />-->
+
+        <!--<Button
+            android:width=""
+            android:id="@+id/showUserCommentsButton"
+            android:text="@string/USER_SHOW_comments_of_user" />-->
 
     </LinearLayout>
 

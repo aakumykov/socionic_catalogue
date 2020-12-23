@@ -399,6 +399,8 @@
     <string name="CARDS_LIST_error_deleting_card">Error deleting card «%1$s»</string>
     <string name="CARDS_LIST_selected_card_are_processed">Selected cards are processed</string>
     <string name="card_has_been_deleted">Card «%1$s» has been deleted</string>
+    <string name="USER_SHOW_cards_of_user">Cards of user (%1$d)</string>
+    <string name="USER_SHOW_comments_of_user">Comments of user (%1$d)</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

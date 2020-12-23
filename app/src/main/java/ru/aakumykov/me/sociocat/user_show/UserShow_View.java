@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,6 +40,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.aboutView) TextView aboutView;
     @BindView(R.id.changePasswordWidget) View changePasswordWidget;
+    @BindView(R.id.showUserCardsButton) Button showUserCardsButton;
+    @BindView(R.id.showUserCommentsButton) Button showUserCommentsButton;
 
     private iUserShow.iPresenter presenter;
     private boolean isReturnFromActivity = false;
@@ -174,7 +178,18 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         else
             MyUtils.hide(changePasswordWidget);
 
+        showUserCardsCount(user);
+        showUserCommentsCount(user);
+
         refreshMenu();
+    }
+
+    private void showUserCardsCount(@NonNull User user) {
+        showUserCardsButton.setText( getString(R.string.USER_SHOW_cards_of_user, user.getCardsKeys().size()) );
+    }
+
+    private void showUserCommentsCount(@NonNull User user) {
+        showUserCommentsButton.setText( getString(R.string.USER_SHOW_comments_of_user, user.getCommentsKeys().size()) );
     }
 
     @Override
@@ -238,6 +253,16 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     @OnClick(R.id.changePasswordWidget)
     void onChangePasswordClicked() {
         startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
+    }
+
+    @OnClick(R.id.showUserCardsButton)
+    void onShowUserCardsButtonClicked() {
+
+    }
+
+    @OnClick(R.id.showUserCommentsButton)
+    void onShowUserCommentsButtonClicked() {
+
     }
 
 

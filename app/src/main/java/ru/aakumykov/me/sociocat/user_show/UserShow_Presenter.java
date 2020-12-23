@@ -17,7 +17,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     private final static String TAG = "UserShow_Presenter";
     private iUserShow.iView view;
-    private User profileUser;
+    private User mCurrentUser;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iUserShow.ViewState currentViewState;
     private int currentMessageId;
@@ -43,7 +43,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public boolean hasUser() {
-        return null != profileUser;
+        return null != mCurrentUser;
     }
 
     @Override
@@ -73,8 +73,8 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        if (null != profileUser)
-            loadAndShowUser(profileUser.getKey());
+        if (null != mCurrentUser)
+            loadAndShowUser(mCurrentUser.getKey());
         else
             view.setState(currentViewState, currentMessageId, currentMessagePayload);
     }
@@ -93,11 +93,11 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     public void onUserEdited(@Nullable Intent data) {
         if (null == data) {
             view.setState(iUserShow.ViewState.ERROR, R.string.data_error, "There is no User in intent");
-            profileUser = null;
+            mCurrentUser = null;
             return;
         }
 
-        profileUser = data.getParcelableExtra(Constants.USER);
+        mCurrentUser = data.getParcelableExtra(Constants.USER);
 
         showUserProfile();
     }
@@ -109,16 +109,16 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         if (null == currentUserId)
             return false;
 
-        if (null == profileUser)
+        if (null == mCurrentUser)
             return false;
 
-        return usersSingleton.currentUserIsAdmin() || currentUserId.equals(profileUser.getKey());
+        return usersSingleton.currentUserIsAdmin() || currentUserId.equals(mCurrentUser.getKey());
     }
 
     @Override
     public void onEditClicked() {
         if (!isGuest()) {
-            view.goUserEdit(profileUser.getKey());
+            view.goUserEdit(mCurrentUser.getKey());
         } else {
             view.showToast(R.string.not_authorized);
         }
@@ -137,7 +137,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                profileUser = user;
+                mCurrentUser = user;
                 showUserProfile();
             }
 
@@ -150,9 +150,9 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     private void showUserProfile() {
 
-        if (null != profileUser) {
+        if (null != mCurrentUser) {
 
-            String profileUserId = profileUser.getKey();
+            String profileUserId = mCurrentUser.getKey();
             String currentUserId = AuthSingleton.currentUserId();
 
             boolean isPrivateMode =
@@ -160,9 +160,9 @@ class UserShow_Presenter implements iUserShow.iPresenter {
                             UsersSingleton.getInstance().currentUserIsAdmin();
 
             if (isPrivateMode)
-                view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, profileUser);
+                view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, mCurrentUser);
             else
-                view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, profileUser);
+                view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, mCurrentUser);
 
         }
     }
