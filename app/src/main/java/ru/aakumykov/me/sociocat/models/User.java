@@ -221,7 +221,7 @@ public class User implements Parcelable, iSortableData {
         this.emailVerified = emailVerified;
     }
 
-    @Exclude public List<String> getCardsKeys() {
+    public List<String> getCardsKeys() {
         return this.cardsKeys;
     }
     public void setCardsKeysList(List<String> cardsKeysList) {
@@ -237,7 +237,7 @@ public class User implements Parcelable, iSortableData {
         return hashMap;
     }
 
-    @Exclude public List<String> getCommentsKeys() {
+    public List<String> getCommentsKeys() {
         return this.commentsKeys;
     }
     public void setCommentsKeysList(List<String> commentsKeysList) {
