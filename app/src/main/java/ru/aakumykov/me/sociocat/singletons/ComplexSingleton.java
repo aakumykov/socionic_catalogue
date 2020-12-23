@@ -202,17 +202,21 @@ public class ComplexSingleton {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        mStorageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
-                            @Override
-                            public void onDeleteSuccess() {
-                                callbacks.onCardDeleteSuccess(card);
-                            }
+                        if (card.isImageCard()) {
+                            mStorageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+                                @Override
+                                public void onDeleteSuccess() {
+                                    callbacks.onCardDeleteSuccess(card);
+                                }
 
-                            @Override
-                            public void onDeleteFail(String errorMSg) {
-                                callbacks.onCardDeleteFailed(errorMSg);
-                            }
-                        });
+                                @Override
+                                public void onDeleteFail(String errorMSg) {
+                                    callbacks.onCardDeleteFailed(errorMSg);
+                                }
+                            });
+                        }
+                        else
+                            callbacks.onCardDeleteSuccess(card);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
