@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.b_cards_list.list_utils.CardsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
@@ -457,7 +458,23 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         else
             setViewState(new LoadingCardsOfUser_ViewState(userName));
 
-//        mCardsSingleton
+        mCardsSingleton.loadCardsOfUser(userId, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setViewState(new CardsOfUser_ViewState(userName));
+                mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setViewState(new ErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage));
+            }
+        });
     }
 
 

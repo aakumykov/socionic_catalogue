@@ -30,6 +30,7 @@ public class User implements Parcelable, iSortableData {
     public static final String KEY_RATED_DOWN_CARD_KEYS = "ratedDownCardKeys";
     public static final String KEY_RATED_UP_COMMENT_KEYS = "ratedUpCommentKeys";
     public static final String KEY_RATED_DOWN_COMMENT_KEYS = "ratedDownCommentKeys";
+    public static final String KEY_USER_ID = "userId";
 
     private String key;
     private String name;
