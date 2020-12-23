@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -199,7 +201,7 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void loadCardsOfUser(@NonNull String userId, ListCallbacks callbacks) {
+    public void loadCardsOfUser(@NonNull String userId, @NotNull ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
@@ -212,6 +214,11 @@ public class CardsSingleton implements iCardsSingleton {
                 null,
                 callbacks
         );
+    }
+
+    @Override
+    public void loadCardsOfUserAfter(@NonNull Card card, @NonNull User userFilter, ListCallbacks callbacks) {
+
     }
 
     @Override

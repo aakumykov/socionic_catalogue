@@ -8,6 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.User;
 
 public interface iCardsSingleton {
 
@@ -40,7 +41,9 @@ public interface iCardsSingleton {
     void loadCardsWithTagAfter(String tagName, Card cardToLoadAfter, ListCallbacks callbacks);
     void loadCardsFromNewestTo(Card endAtCard, ListCallbacks callbacks);
     void loadCardsWithTagFromNewestTo(String tag, Card endAtCard, ListCallbacks callbacks);
-    void loadCardsOfUser(@NonNull String userKey, ListCallbacks callbacks);
+
+    void loadCardsOfUser(@NonNull String userKey, @NonNull ListCallbacks callbacks);
+    void loadCardsOfUserAfter(@NonNull Card card, @NonNull User userFilter, ListCallbacks callbacks);
 
     void loadAllCards(ListCallbacks callbacks);
 

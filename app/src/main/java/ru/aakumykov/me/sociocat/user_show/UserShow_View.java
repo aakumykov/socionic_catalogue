@@ -246,8 +246,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     public void goShowUserCards(@NonNull User user) {
         Intent intent = new Intent(this, CardsList_View.class);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(Constants.USER_ID, user.getKey());
-        intent.putExtra(Constants.USER_NAME, user.getName());
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
     }
 

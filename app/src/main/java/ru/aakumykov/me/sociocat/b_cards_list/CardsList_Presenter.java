@@ -41,6 +41,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_Vie
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -55,6 +56,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private String mTagFilter;
+    private User mUserFilter;
     private boolean mHasParent;
 
 
@@ -129,10 +131,18 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     @Override
     public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
-        if (null != mTagFilter)
+
+        if (null != mTagFilter) {
             loadMoreCardsWithTag();
-        else
-            loadMoreCards();
+            return;
+        }
+
+        if (null != mUserFilter) {
+            loadMoreCardsOfUser();
+            return;
+        }
+
+        loadMoreCards();
     }
 
     @Override
@@ -225,7 +235,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 loadCardsWithTag(intent, false);
                 return;
             }
-            else if (intent.hasExtra(Constants.USER_ID)) {
+
+            if (intent.hasExtra(Constants.USER)) {
                 loadCardsOfUser(intent, false);
                 return;
             }
@@ -401,13 +412,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     private void loadMoreCardsWithTag() {
-
         showThrobberItem();
 
         BasicMVPList_DataItem lastDataItem = mListView.getTailDataItem();
-
         if (null == lastDataItem) {
-            showNoMoreCards();
+            mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
+            mListView.hideThrobberItem();
+            mListView.showLoadmoreItem();
             return;
         }
 
@@ -446,12 +457,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     private void loadCardsOfUser(@NonNull Intent intent, boolean isOnRefreshing) {
 
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        String userName = intent.getStringExtra(Constants.USER_NAME);
-        if (null == userId || null == userName) {
+        mUserFilter = intent.getParcelableExtra(Constants.USER);
+        if (null == mUserFilter) {
             setErrorViewState(R.string.CARDS_LIST_error_user_key_missing, "Отсутствует id или имя пользователя");
             return;
         }
+
+        String userId = mUserFilter.getKey();
+        String userName = mUserFilter.getName();
 
         if (isOnRefreshing)
             setViewState(new RefreshingViewState());
@@ -473,6 +486,38 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadFail(String errorMessage) {
                 setViewState(new ErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage));
+            }
+        });
+    }
+
+    private void loadMoreCardsOfUser() {
+        showThrobberItem();
+
+        BasicMVPList_DataItem lastDataItem = mListView.getTailDataItem();
+        if (null == lastDataItem) {
+            mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
+            mListView.hideThrobberItem();
+            mListView.showLoadmoreItem();
+            return;
+        }
+
+        Card card = (Card) lastDataItem.getPayload();
+
+        mCardsSingleton.loadCardsOfUserAfter(card, mUserFilter, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                setNeutralViewState();
+                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
+                    @Override
+                    public BasicMVPList_DataItem createDataItem(Object payload) {
+                        return new Card_ListItem((Card) payload);
+                    }
+                }));
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
             }
         });
     }
