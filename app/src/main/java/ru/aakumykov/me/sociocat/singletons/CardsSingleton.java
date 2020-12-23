@@ -218,7 +218,18 @@ public class CardsSingleton implements iCardsSingleton {
 
     @Override
     public void loadCardsOfUserAfter(@NonNull Card card, @NonNull User userFilter, ListCallbacks callbacks) {
-
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                Card.KEY_USER_ID,
+                FilterOperator.EQUALS,
+                userFilter.getKey(),
+                card,
+                null,
+                null,
+                callbacks
+        );
     }
 
     @Override
