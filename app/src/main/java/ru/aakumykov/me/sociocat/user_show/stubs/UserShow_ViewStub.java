@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_show.stubs;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.models.User;
@@ -48,6 +49,16 @@ public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView 
 
     @Override
     public void hideAvatarThrobber() {
+
+    }
+
+    @Override
+    public void goShowUserCards(@NonNull String userKey) {
+
+    }
+
+    @Override
+    public void goShowUserComments(@NonNull String userKey) {
 
     }
 

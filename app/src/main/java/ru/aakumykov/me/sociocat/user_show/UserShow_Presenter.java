@@ -124,6 +124,16 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         }
     }
 
+    @Override
+    public void onShowUserCardsClicked() {
+        view.goShowUserCards(mCurrentUser.getKey());
+    }
+
+    @Override
+    public void onShowUserCommentsClicked() {
+        view.goShowUserComments(mCurrentUser.getKey());
+    }
+
 
     // Внутренние методы
     private boolean isGuest() {

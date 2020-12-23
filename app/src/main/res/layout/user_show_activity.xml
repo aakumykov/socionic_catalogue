@@ -160,8 +160,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:padding="8dp"
             android:id="@+id/changePasswordWidget"
-            style="@style/user_show_outlined_button"
+            android:textColor="@color/colorPrimary"
             android:text="@string/USER_EDIT_change_password"
             android:visibility="gone"
             tools:visibility="visible" />
@@ -169,12 +174,16 @@
         <Button
             android:id="@+id/showUserCardsButton"
             style="@style/user_show_outlined_button"
-            android:text="@string/USER_SHOW_cards_of_user" />
+            android:text="@string/USER_SHOW_cards_of_user"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/showUserCommentsButton"
             style="@style/user_show_outlined_button"
-            android:text="@string/USER_SHOW_comments_of_user" />
+            android:text="@string/USER_SHOW_comments_of_user"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <!--<Button
             android:width=""

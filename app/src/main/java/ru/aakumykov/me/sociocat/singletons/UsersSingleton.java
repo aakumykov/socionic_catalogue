@@ -166,6 +166,8 @@ public class UsersSingleton implements iUsersSingleton {
                 });
     }
 
+    /* Запись пользователя на сервере обновляется "вручную", выборочно (не все поля).
+    Сохранять просто объект User нельзя! Это ведёт к потерям в полях cardsKeys, commentsKeys и других. */
     @Override
     public void saveUser(User user, @Nullable SaveCallbacks callbacks) {
 

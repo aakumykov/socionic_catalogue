@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
+import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
@@ -184,14 +186,6 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         refreshMenu();
     }
 
-    private void showUserCardsCount(@NonNull User user) {
-        showUserCardsButton.setText( getString(R.string.USER_SHOW_cards_of_user, user.getCardsKeys().size()) );
-    }
-
-    private void showUserCommentsCount(@NonNull User user) {
-        showUserCommentsButton.setText( getString(R.string.USER_SHOW_comments_of_user, user.getCommentsKeys().size()) );
-    }
-
     @Override
     public void setState(iUserShow.ViewState viewState, int messageId) {
         setState(viewState, messageId, null);
@@ -248,6 +242,23 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         avatarView.setAlpha(1.0f);
     }
 
+    @Override
+    public void goShowUserCards(@NonNull String userKey) {
+        Intent intent = new Intent(this, CardsList_View.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra(Constants.USER_ID, userKey);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goShowUserComments(@NonNull String userKey) {
+        /*Intent intent = new Intent(this, CommentsList_View.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra(Constants.USER_ID, userKey);
+        startActivity(intent);*/
+        showToast(R.string.not_implemented_yet);
+    }
+
 
     // Нажатия
     @OnClick(R.id.changePasswordWidget)
@@ -257,12 +268,12 @@ public class UserShow_View extends BaseView implements iUserShow.iView
 
     @OnClick(R.id.showUserCardsButton)
     void onShowUserCardsButtonClicked() {
-
+        presenter.onShowUserCardsClicked();
     }
 
     @OnClick(R.id.showUserCommentsButton)
     void onShowUserCommentsButtonClicked() {
-
+        presenter.onShowUserCommentsClicked();
     }
 
 
@@ -334,6 +345,14 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         });
     }
 
+    private void showUserCardsCount(@NonNull User user) {
+        showUserCardsButton.setText( getString(R.string.USER_SHOW_cards_of_user, user.getCardsKeys().size()) );
+        ViewUtils.show(showUserCardsButton);
+    }
 
+    private void showUserCommentsCount(@NonNull User user) {
+        showUserCommentsButton.setText( getString(R.string.USER_SHOW_comments_of_user, user.getCommentsKeys().size()) );
+        ViewUtils.show(showUserCommentsButton);
+    }
 
 }

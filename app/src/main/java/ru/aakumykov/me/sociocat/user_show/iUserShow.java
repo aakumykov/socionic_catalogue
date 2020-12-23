@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.models.User;
@@ -30,6 +31,8 @@ public interface iUserShow {
         void showAvatarTrobber();
         void hideAvatarThrobber();
 
+        void goShowUserCards(@NonNull String userKey);
+        void goShowUserComments(@NonNull String userKey);
     }
 
     interface iPresenter {
@@ -55,6 +58,8 @@ public interface iUserShow {
 
         void onEditClicked();
 
+        void onShowUserCardsClicked();
+        void onShowUserCommentsClicked();
     }
 
 }
