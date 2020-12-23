@@ -199,6 +199,22 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
+    public void loadCardsOfUser(@NonNull String userId, ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                Card.KEY_USER_ID,
+                FilterOperator.EQUALS,
+                userId,
+                null,
+                null,
+                null,
+                callbacks
+        );
+    }
+
+    @Override
     public void loadAllCards(ListCallbacks callbacks) {
         cardsCollection.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -463,21 +479,21 @@ public class CardsSingleton implements iCardsSingleton {
 
     // Внутренниие методы
     private <T> void loadListEnhanced(
-            String orderKey,
-            SortOrder sortOrder,
+            @Nullable String orderKey,
+            @Nullable SortOrder sortOrder,
 
-            String withTag,
+            @Nullable String withTag,
 
-            String filterKey,
-            FilterOperator filterOperator,
-            T filterValue,
+            @Nullable String filterKey,
+            @Nullable FilterOperator filterOperator,
+            @Nullable T filterValue,
 
-            Card startAfterCard,
-            Card endAtCard,
+            @Nullable Card startAfterCard,
+            @Nullable Card endAtCard,
 
-            Integer limit,
+            @Nullable Integer limit,
 
-            ListCallbacks callbacks
+            @NonNull ListCallbacks callbacks
     )
     {
         Query query = cardsCollection;
