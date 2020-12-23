@@ -401,6 +401,9 @@
     <string name="card_has_been_deleted">Card «%1$s» has been deleted</string>
     <string name="USER_SHOW_cards_of_user">Cards of user (%1$d)</string>
     <string name="USER_SHOW_comments_of_user">Comments of user (%1$d)</string>
+    <string name="CARDS_LIST_error_user_key_missing">Unknown user</string>
+    <string name="CARDS_LIST_loading_cards_of_user">Loading cards of user «%1$s»</string>
+    <string name="CARDS_LIST_cards_of_user">Cards of user «%1$s»</string>
 
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>

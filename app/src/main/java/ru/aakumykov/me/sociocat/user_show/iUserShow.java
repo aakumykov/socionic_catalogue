@@ -31,8 +31,8 @@ public interface iUserShow {
         void showAvatarTrobber();
         void hideAvatarThrobber();
 
-        void goShowUserCards(@NonNull String userKey);
-        void goShowUserComments(@NonNull String userKey);
+        void goShowUserCards(@NonNull User user);
+        void goShowUserComments(@NonNull User user);
     }
 
     interface iPresenter {

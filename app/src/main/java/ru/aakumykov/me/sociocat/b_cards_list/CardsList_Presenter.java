@@ -35,6 +35,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.list_utils.CardsList_ItemsTextFilte
 import ru.aakumykov.me.sociocat.b_cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
@@ -43,6 +44,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
@@ -68,13 +70,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         mPageView.runDelayed(
                 () -> {
-                    String action = getActionFromIntent();
-                    mHasParent = Intent.ACTION_VIEW.equals(action);
-
-                    if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action))
-                        loadCardsWithTag(false);
-                    else
-                        loadCards();
+                    makeStartDecision();
                 },
                 500L
         );
@@ -216,20 +212,26 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
 
 
-    private String getActionFromIntent() {
-        Intent intent = mPageView.getInputIntent();
-        if (null != intent)
-            return intent.getAction();
-        return null;
-    }
+    private void makeStartDecision() {
 
-    private String getTagNameFromIntent() {
         Intent intent = mPageView.getInputIntent();
-        if (null != intent)
-            return intent.getStringExtra(Constants.TAG_NAME);
-        return null;
-    }
 
+        boolean isViewAction = IntentUtils.intentActionIs(Intent.ACTION_VIEW, intent);
+        mHasParent = isViewAction;
+
+        if (isViewAction) {
+            if (intent.hasExtra(Constants.TAG)) {
+                loadCardsWithTag(intent, false);
+                return;
+            }
+            else if (intent.hasExtra(Constants.USER_ID)) {
+                loadCardsOfUser(intent, false);
+                return;
+            }
+        }
+
+        loadCards();
+    }
 
     private void loadCards() {
 
@@ -363,9 +365,9 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
 
-    private void loadCardsWithTag(boolean isOnRefreshing) {
+    private void loadCardsWithTag(@NonNull Intent intent, boolean isOnRefreshing) {
 
-        mTagFilter = getTagNameFromIntent();
+        mTagFilter = intent.getStringExtra(Constants.TAG_NAME);
         if (null == mTagFilter) {
             setErrorViewState(R.string.CARDS_LIST_error_tag_name_missing, "Нет имени метки");
             return;
@@ -439,6 +441,23 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
             }
         });
+    }
+
+    private void loadCardsOfUser(@NonNull Intent intent, boolean isOnRefreshing) {
+
+        String userId = intent.getStringExtra(Constants.USER_ID);
+        String userName = intent.getStringExtra(Constants.USER_NAME);
+        if (null == userId || null == userName) {
+            setErrorViewState(R.string.CARDS_LIST_error_user_key_missing, "Отсутствует id или имя пользователя");
+            return;
+        }
+
+        if (isOnRefreshing)
+            setViewState(new RefreshingViewState());
+        else
+            setViewState(new LoadingCardsOfUser_ViewState(userName));
+
+//        mCardsSingleton
     }
 
 

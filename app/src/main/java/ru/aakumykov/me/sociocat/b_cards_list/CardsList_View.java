@@ -41,7 +41,9 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Progress
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -240,6 +242,12 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         else if (viewState instanceof CardsWithTag_ViewState) {
             setCardsWithTagViewState((CardsWithTag_ViewState) viewState);
         }
+        else if (viewState instanceof LoadingCardsOfUser_ViewState) {
+            setLoadingCardsOfUserViewState((LoadingCardsOfUser_ViewState) viewState);
+        }
+        else if (viewState instanceof CardsOfUser_ViewState) {
+            setCardsOfUserViewState((CardsOfUser_ViewState) viewState);
+        }
         else if (viewState instanceof ItemsSelectedViewState) {
             setItemSelectedViewState((ItemsSelectedViewState) viewState);
         }
@@ -295,6 +303,24 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_with_tag, tagName);
         setPageTitle(msg);
 
+        showTagFilter(msg);
+    }
+
+    private void setLoadingCardsOfUserViewState(LoadingCardsOfUser_ViewState viewState) {
+        activateUpButton();
+        setProgressViewState(
+                new ProgressViewState(
+                        TextUtils.getText(this, R.string.CARDS_LIST_loading_cards_of_user, viewState.getUserName())
+                )
+        );
+    }
+
+    private void setCardsOfUserViewState(CardsOfUser_ViewState viewState) {
+        setNeutralViewState();
+        activateUpButton();
+
+        String msg = TextUtils.getText(this, R.string.CARDS_LIST_cards_of_user, viewState.getUserName());
+        setPageTitle(msg);
         showTagFilter(msg);
     }
 

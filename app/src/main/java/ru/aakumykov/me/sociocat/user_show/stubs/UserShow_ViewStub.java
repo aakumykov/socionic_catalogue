@@ -53,12 +53,12 @@ public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView 
     }
 
     @Override
-    public void goShowUserCards(@NonNull String userKey) {
+    public void goShowUserCards(@NonNull User user) {
 
     }
 
     @Override
-    public void goShowUserComments(@NonNull String userKey) {
+    public void goShowUserComments (@NonNull User user) {
 
     }
 

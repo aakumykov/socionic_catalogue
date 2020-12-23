@@ -53,6 +53,7 @@ public final class Constants
 
     public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";
+    public static final String USER_NAME = "USER_NAME";
     public final static String USER_EMAIL = "USER_EMAIL";
 
     public final static String FILTER_KEY = "FILTER_KEY";

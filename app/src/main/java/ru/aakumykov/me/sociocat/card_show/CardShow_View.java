@@ -237,7 +237,8 @@ public class CardShow_View extends BaseView implements
     @Override
     public void showCardsWithTag(String tagName) {
         Intent intent = new Intent(this, CardsList_View.class);
-        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
+        //intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
+        intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Constants.TAG_NAME, tagName);
         startActivity(intent);
     }

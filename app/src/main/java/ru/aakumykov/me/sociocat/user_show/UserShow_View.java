@@ -243,15 +243,16 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     }
 
     @Override
-    public void goShowUserCards(@NonNull String userKey) {
+    public void goShowUserCards(@NonNull User user) {
         Intent intent = new Intent(this, CardsList_View.class);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(Constants.USER_ID, userKey);
+        intent.putExtra(Constants.USER_ID, user.getKey());
+        intent.putExtra(Constants.USER_NAME, user.getName());
         startActivity(intent);
     }
 
     @Override
-    public void goShowUserComments(@NonNull String userKey) {
+    public void goShowUserComments(@NonNull User user) {
         /*Intent intent = new Intent(this, CommentsList_View.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Constants.USER_ID, userKey);

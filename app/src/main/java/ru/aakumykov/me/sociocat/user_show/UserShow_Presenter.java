@@ -126,12 +126,12 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onShowUserCardsClicked() {
-        view.goShowUserCards(mCurrentUser.getKey());
+        view.goShowUserCards(mCurrentUser);
     }
 
     @Override
     public void onShowUserCommentsClicked() {
-        view.goShowUserComments(mCurrentUser.getKey());
+        view.goShowUserComments(mCurrentUser);
     }
 
 
