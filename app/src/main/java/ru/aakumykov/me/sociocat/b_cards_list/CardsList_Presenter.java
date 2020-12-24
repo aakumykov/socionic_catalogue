@@ -33,12 +33,12 @@ import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
 import ru.aakumykov.me.sociocat.b_cards_list.list_items.Card_ListItem;
 import ru.aakumykov.me.sociocat.b_cards_list.list_utils.CardsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_cards_list.stubs.CardsList_ViewStub;
-import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.SimpleCardsList_ViewState;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
@@ -68,8 +68,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     @Override
     protected void onColdStart() {
         super.onColdStart();
-
-        setNeutralViewState();
 
         mPageView.runDelayed(
                 () -> {
@@ -245,6 +243,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         loadCards();
     }
 
+
     private void loadCards() {
 
         setViewState(new LoadingCards_ViewState(mHasParent));
@@ -253,7 +252,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                setViewState(new CardsList_ViewState(mHasParent));
+                setViewState(new SimpleCardsList_ViewState(mHasParent));
 
                 mListView.setList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
@@ -270,64 +269,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         });
     }
 
-    private void refreshCardsList(@Nullable String tagFilter) {
-
-        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
-
-        if (null == tailDataItem) {
-            loadCards();
-            return;
-        }
-
-        Card tailCard = (Card) tailDataItem.getPayload();
-
-        setViewState(new LoadingCards_ViewState(mHasParent));
-
-        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-
-                if (null == tagFilter)
-                    setViewState(new CardsList_ViewState(mHasParent));
-                else
-                    setViewState(new CardsWithTag_ViewState(tagFilter));
-
-                List<BasicMVPList_ListItem> list2set = ListUtils.incapsulateObjects2basicItemsList(list, (payload) -> new Card_ListItem((Card) payload));
-
-                if (mListView.isFiltered())
-                    mListView.setList(list2set, (allItemsCount, addedItemsCount, filteredOutItemsCount) -> notifyAboutFilteredOutItems(allItemsCount, addedItemsCount, filteredOutItemsCount));
-                else
-                    mListView.setList(list2set);
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
-            }
-        };
-
-        if (null != tagFilter)
-            mCardsSingleton.loadCardsWithTagFromNewestTo(tagFilter, tailCard, listCallbacks);
-        else {
-            if (mListView.isFiltered()) {
-                // Если карточки отфильтрованы, то обновляю весь список, чтобы получить тот же диапазон карточек,
-                // потому что много раз подгружать неудобно (ведь при подгрузке они фильтруются).
-                mCardsSingleton.loadCardsFromNewestTo(tailCard, listCallbacks);
-            }
-            else {
-                // Если не отфильтрованы, гружу как при первом запуске
-                mCardsSingleton.loadFirstPortion(listCallbacks);
-            }
-        }
-    }
-
     private void loadMoreCards() {
 
         showThrobberItem();
 
         BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
         if (null == tailDataItem) {
-            showNoMoreCards();
+            showErrorLoadingMore();
             return;
         }
 
@@ -336,6 +284,11 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mCardsSingleton.loadCardsAfter(tailCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
+                if (0 == list.size()) {
+                    showNoMoreCards();
+                    return;
+                }
 
                 int position2scroll = mListView.getVisibleListSize();
 
@@ -357,23 +310,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 mListView.showLoadmoreItem();
             }
         });
-    }
-
-    private void notifyAboutFilteredOutItems(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
-
-        Context context = mPageView.getLocalContext();
-
-        String addedCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_added, addedItemsCount);
-        String filteredOutCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_filtered_out, filteredOutItemsCount);
-
-        String msg = TextUtils.getText(
-                context,
-                R.string.two_words_with_new_line,
-                addedCardsMsg,
-                filteredOutCardsMsg
-        );
-
-        MyUtils.showCustomToast(context, msg);
     }
 
 
@@ -412,17 +348,16 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     private void loadMoreCardsWithTag() {
+
         showThrobberItem();
 
-        BasicMVPList_DataItem lastDataItem = mListView.getTailDataItem();
-        if (null == lastDataItem) {
-            mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
-            mListView.hideThrobberItem();
-            mListView.showLoadmoreItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        if (null == tailDataItem) {
+            showErrorLoadingMore();
             return;
         }
 
-        Card card = (Card) lastDataItem.getPayload();
+        Card card = (Card) tailDataItem.getPayload();
 
         mCardsSingleton.loadCardsWithTagAfter(mTagFilter, card, new iCardsSingleton.ListCallbacks() {
             @Override
@@ -445,6 +380,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 }));
 
                 updateSelectionModeMenu();
+
                 mPageView.scroll2position(position2scroll);
             }
 
@@ -454,6 +390,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             }
         });
     }
+
 
     private void loadCardsOfUser(@NonNull Intent intent, boolean isOnRefreshing) {
 
@@ -491,28 +428,38 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     }
 
     private void loadMoreCardsOfUser() {
+
         showThrobberItem();
 
-        BasicMVPList_DataItem lastDataItem = mListView.getTailDataItem();
-        if (null == lastDataItem) {
-            mPageView.showToast(R.string.CARDS_LIST_error_loading_list);
-            mListView.hideThrobberItem();
-            mListView.showLoadmoreItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        if (null == tailDataItem) {
+            showErrorLoadingMore();
             return;
         }
 
-        Card card = (Card) lastDataItem.getPayload();
+        Card card = (Card) tailDataItem.getPayload();
 
         mCardsSingleton.loadCardsOfUserAfter(card, mUserFilter, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                setNeutralViewState();
+
+                if (0 == list.size()) {
+                    showNoMoreCards();
+                    return;
+                }
+
+                int position2scroll = mListView.getVisibleListSize();
+
                 mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
                     @Override
                     public BasicMVPList_DataItem createDataItem(Object payload) {
                         return new Card_ListItem((Card) payload);
                     }
                 }));
+
+                updateSelectionModeMenu();
+
+                mPageView.scroll2position(position2scroll);
             }
 
             @Override
@@ -538,6 +485,75 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private void showNoMoreCards() {
         mListView.hideThrobberItem();
         mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
+    }
+
+
+    private void refreshCardsList(@Nullable String tagFilter) {
+
+        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+
+        if (null == tailDataItem) {
+            loadCards();
+            return;
+        }
+
+        Card tailCard = (Card) tailDataItem.getPayload();
+
+        setViewState(new LoadingCards_ViewState(mHasParent));
+
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+
+                if (null == tagFilter)
+                    setViewState(new SimpleCardsList_ViewState(mHasParent));
+                else
+                    setViewState(new CardsWithTag_ViewState(tagFilter));
+
+                List<BasicMVPList_ListItem> list2set = ListUtils.incapsulateObjects2basicItemsList(list, (payload) -> new Card_ListItem((Card) payload));
+
+                if (mListView.isFiltered())
+                    mListView.setList(list2set, (allItemsCount, addedItemsCount, filteredOutItemsCount) -> notifyAboutFilteredOutItems(allItemsCount, addedItemsCount, filteredOutItemsCount));
+                else
+                    mListView.setList(list2set);
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                setErrorViewState(R.string.CARDS_LIST_error_loading_list, errorMessage);
+            }
+        };
+
+        if (null != tagFilter)
+            mCardsSingleton.loadCardsWithTagFromNewestTo(tagFilter, tailCard, listCallbacks);
+        else {
+            if (mListView.isFiltered()) {
+                // Если карточки отфильтрованы, то обновляю весь список, чтобы получить тот же диапазон карточек,
+                // потому что много раз подгружать неудобно (ведь при подгрузке они фильтруются).
+                mCardsSingleton.loadCardsFromNewestTo(tailCard, listCallbacks);
+            }
+            else {
+                // Если не отфильтрованы, гружу как при первом запуске
+                mCardsSingleton.loadFirstPortion(listCallbacks);
+            }
+        }
+    }
+
+    private void notifyAboutFilteredOutItems(int allItemsCount, int addedItemsCount, int filteredOutItemsCount) {
+
+        Context context = mPageView.getLocalContext();
+
+        String addedCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_added, addedItemsCount);
+        String filteredOutCardsMsg = TextUtils.getPluralString(context, R.plurals.cards_are_filtered_out, filteredOutItemsCount);
+
+        String msg = TextUtils.getText(
+                context,
+                R.string.two_words_with_new_line,
+                addedCardsMsg,
+                filteredOutCardsMsg
+        );
+
+        MyUtils.showCustomToast(context, msg);
     }
 
 
@@ -650,5 +666,12 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 Log.e(TAG, errorMsg);
             }
         });
+    }
+
+    private void showErrorLoadingMore() {
+        mPageView.runDelayed(() -> {
+            mListView.hideThrobberItem();
+            mListView.showLoadmoreItem();
+        }, 500);
     }
 }

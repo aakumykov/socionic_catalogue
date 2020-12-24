@@ -140,7 +140,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     @Override
     public void goShowCardsWithTag(@NonNull Tag tag) {
         Intent intent = new Intent(this, CardsList_View.class);
-        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
+        intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivity(intent);
     }

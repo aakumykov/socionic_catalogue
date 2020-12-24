@@ -40,12 +40,12 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSel
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
-import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsList_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
+import ru.aakumykov.me.sociocat.b_cards_list.view_states.SimpleCardsList_ViewState;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.eCardType;
@@ -233,8 +233,8 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         if (viewState instanceof LoadingCards_ViewState) {
             setLoadingCardsViewState((LoadingCards_ViewState) viewState);
         }
-        else if (viewState instanceof CardsList_ViewState) {
-            setCardsWithoutTagViewState((CardsList_ViewState) viewState);
+        else if (viewState instanceof SimpleCardsList_ViewState) {
+            setSimpleCardsListViewState((SimpleCardsList_ViewState) viewState);
         }
         else if (viewState instanceof LoadingCardsWithTag_ViewState) {
             setLoadingCardsWithTagViewState((LoadingCardsWithTag_ViewState) viewState);
@@ -281,7 +281,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             activateUpButton();
     }
 
-    private void setCardsWithoutTagViewState(CardsList_ViewState cardsWithoutTagViewState) {
+    private void setSimpleCardsListViewState(SimpleCardsList_ViewState cardsWithoutTagViewState) {
         setNeutralViewState();
         if (cardsWithoutTagViewState.isDisplayBackButton())
             activateUpButton();
