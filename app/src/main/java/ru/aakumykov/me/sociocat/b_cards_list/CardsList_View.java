@@ -26,18 +26,18 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAda
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.enums.eCardsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_cards_list.interfaces.iCardsList_View;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.CardsOfUser_ViewState;
@@ -228,7 +228,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     @Override
-    public void setViewState(iViewState viewState) {
+    public void setViewState(iBasicViewState viewState) {
 
         if (viewState instanceof LoadingCards_ViewState) {
             setLoadingCardsViewState((LoadingCards_ViewState) viewState);
@@ -248,8 +248,8 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         else if (viewState instanceof CardsOfUser_ViewState) {
             setCardsOfUserViewState((CardsOfUser_ViewState) viewState);
         }
-        else if (viewState instanceof SomeItemsSelectedViewState) {
-            setSomeItemSelectedViewState((SomeItemsSelectedViewState) viewState);
+        else if (viewState instanceof ItemsSelectedViewState) {
+            setItemSelectedViewState((ItemsSelectedViewState) viewState);
         }
         else {
             super.setViewState(viewState);
@@ -325,8 +325,8 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     @Override
-    protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState selectionViewState) {
-        super.setSomeItemSelectedViewState(selectionViewState);
+    protected void setItemSelectedViewState(ItemsSelectedViewState selectionViewState) {
+        super.setItemSelectedViewState(selectionViewState);
 
         boolean canEditCard = ((CardsList_Presenter) mPresenter).canEditCard();
         boolean canDeleteCard = ((CardsList_Presenter) mPresenter).canDeleteCard();
@@ -349,7 +349,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             refreshMenu();
         }
         else {
-            super.setSomeItemSelectedViewState(selectionViewState);
+            super.setItemSelectedViewState(selectionViewState);
         }
     }
 

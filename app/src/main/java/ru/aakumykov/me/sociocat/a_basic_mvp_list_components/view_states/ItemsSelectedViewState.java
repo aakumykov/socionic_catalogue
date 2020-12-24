@@ -1,13 +1,13 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states;
 
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
-public class SomeItemsSelectedViewState implements iViewState {
+public class ItemsSelectedViewState implements iBasicViewState {
 
     private int mSelectedItemsCount = -1;
 
-    public SomeItemsSelectedViewState(int selectedItemsCount) {
+    public ItemsSelectedViewState(int selectedItemsCount) {
         mSelectedItemsCount = selectedItemsCount;
     }
 

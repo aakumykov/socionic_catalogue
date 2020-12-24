@@ -8,7 +8,7 @@ import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
 public interface iBaseView {
 
@@ -17,7 +17,7 @@ public interface iBaseView {
     Activity getActivity();
 
     // Состояние страницы
-    void setViewState(iViewState viewState);
+    void setViewState(iBasicViewState viewState);
 
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);

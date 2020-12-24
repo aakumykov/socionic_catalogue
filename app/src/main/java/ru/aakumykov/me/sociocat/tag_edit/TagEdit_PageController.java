@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -29,7 +29,7 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
 
     private iTagEdit_View mPageView;
     private Tag mCurrentTag;
-    private iViewState mCurrentViewState;
+    private iBasicViewState mCurrentViewState;
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
@@ -88,7 +88,7 @@ public class TagEdit_PageController extends ViewModel implements LifecycleObserv
         setViewState(mCurrentViewState);
     }
 
-    private void setViewState(iViewState viewState) {
+    private void setViewState(iBasicViewState viewState) {
         mCurrentViewState = viewState;
         mPageView.setViewState(viewState);
     }

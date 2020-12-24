@@ -34,7 +34,7 @@ public interface iBasicList_Page {
 
     void activateUpButton();
 
-    void setViewState(iViewState viewState);
+    void setViewState(iBasicViewState viewState);
 
     void refreshMenu();
 

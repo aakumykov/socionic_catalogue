@@ -9,7 +9,7 @@ import android.view.Menu;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
 public class BaseView_Stub implements iBaseView {
 
@@ -24,7 +24,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void setViewState(iViewState viewState) {
+    public void setViewState(iBasicViewState viewState) {
 
     }
 

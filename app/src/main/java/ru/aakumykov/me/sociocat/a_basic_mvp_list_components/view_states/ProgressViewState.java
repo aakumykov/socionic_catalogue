@@ -1,9 +1,9 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states;
 
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 
-public class ProgressViewState implements iViewState {
+public class ProgressViewState implements iBasicViewState {
 
     private final int messageId;
     private final String messageString;
