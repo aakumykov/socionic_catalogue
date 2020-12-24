@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states;
 
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 
-public class NeutralViewState implements iBasicViewState {
+public class NeutralViewState implements iViewState {
 }

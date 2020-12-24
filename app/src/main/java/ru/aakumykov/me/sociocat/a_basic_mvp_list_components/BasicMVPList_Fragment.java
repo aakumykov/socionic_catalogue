@@ -30,8 +30,8 @@ import butterknife.BindView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.PageUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
@@ -210,7 +210,7 @@ public abstract class BasicMVPList_Fragment
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
+    public void setViewState(iViewState viewState) {
 
     }
 

@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 
 public class BasicMVPList_ViewStub implements iBasicList_Page {
@@ -55,7 +55,7 @@ public class BasicMVPList_ViewStub implements iBasicList_Page {
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
+    public void setViewState(iViewState viewState) {
 
     }
 

@@ -5,9 +5,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 
-public class ErrorViewState implements iBasicViewState {
+public class ErrorViewState implements iViewState {
 
     private final int mMessageId;
     private final String mDebugMessage;

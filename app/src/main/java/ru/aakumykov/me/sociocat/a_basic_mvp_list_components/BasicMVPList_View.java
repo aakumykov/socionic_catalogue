@@ -38,8 +38,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.exceptions.UnknownViewModeException;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.RecyclerViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
@@ -54,11 +54,12 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ListFilteredViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NoneItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
@@ -247,7 +248,7 @@ public abstract class BasicMVPList_View
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
+    public void setViewState(iViewState viewState) {
         if (viewState instanceof NeutralViewState) {
             setNeutralViewState();
         }
@@ -263,13 +264,16 @@ public abstract class BasicMVPList_View
         else if (viewState instanceof RefreshingViewState) {
             setRefreshingViewState();
         }
-        // AllItemsSelectedViewState - частный случай ItemsSelectedViewState,
+        // AllItemsSelectedViewState - частный случай SomeItemsSelectedViewState,
         // поэтому должен идти перед ним.
         else if (viewState instanceof AllItemsSelectedViewState) {
             setAllSelectedViewState((AllItemsSelectedViewState) viewState);
         }
-        else if (viewState instanceof ItemsSelectedViewState) {
-            setItemSelectedViewState((ItemsSelectedViewState) viewState);
+        else if (viewState instanceof SomeItemsSelectedViewState) {
+            setSomeItemSelectedViewState((SomeItemsSelectedViewState) viewState);
+        }
+        else if (viewState instanceof NoneItemsSelectedViewState) {
+            setNoneItemsSelectedViewState();
         }
         else if (viewState instanceof ErrorViewState) {
             setErrorViewState((ErrorViewState) viewState);
@@ -444,9 +448,14 @@ public abstract class BasicMVPList_View
         showErrorMsg(errorViewState.getMessage(this), errorViewState.getDebugMessage());
     }
 
-    protected void setItemSelectedViewState(ItemsSelectedViewState viewState) {
+    protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState viewState) {
         showSelectionMenu();
         showSelectedItemsCount(viewState.getSelectedItemsCount());
+    }
+
+    protected void setNoneItemsSelectedViewState() {
+        clearMenu();
+        assembleMenu();
     }
 
     protected void setAllSelectedViewState(AllItemsSelectedViewState viewState) {
