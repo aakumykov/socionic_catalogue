@@ -269,7 +269,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     @Override
     protected void setNeutralViewState() {
         super.setNeutralViewState();
-        hideTagFilter();
+//        hideTagFilter();
     }
 
 
