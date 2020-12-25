@@ -450,15 +450,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
                 int position2scroll = mListView.getVisibleListSize();
 
-                mListView.appendList(ListUtils.incapsulateObjects2basicItemsList(list, new ListUtils.iIncapsulationCallback() {
-                    @Override
-                    public BasicMVPList_DataItem createDataItem(Object payload) {
-                        return new Card_ListItem((Card) payload);
-                    }
-                }));
+                List<BasicMVPList_ListItem> list2append = ListUtils.incapsulateObjects2basicItemsList(list, object -> new Card_ListItem((Card) object));
+
+                if (mListView.isFiltered())
+                    mListView.appendList(list2append, (allItemsCount, addedItemsCount, filteredOutItemsCount) -> notifyAboutFilteredOutItems(allItemsCount, addedItemsCount, filteredOutItemsCount));
+                else
+                    mListView.appendList(list2append);
 
                 updateSelectionModeMenu();
-
                 mPageView.scroll2position(position2scroll);
             }
 
