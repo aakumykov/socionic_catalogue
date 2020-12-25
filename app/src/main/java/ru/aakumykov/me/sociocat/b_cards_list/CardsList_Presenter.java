@@ -210,7 +210,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             int insertPosition = 0;
             mListView.insertItem(insertPosition, new Card_ListItem(newCard));
             mPageView.scroll2position(insertPosition);
-            mListView.highlightItem(insertPosition);
+            //mListView.highlightItem(insertPosition);
         }
     }
 
