@@ -497,8 +497,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             return;
         }
 
-        Card tailCard = (Card) tailDataItem.getPayload();
-
         setViewState(new LoadingCards_ViewState(mHasParent));
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
@@ -524,8 +522,14 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             }
         };
 
-        if (null != tagFilter)
+        Card tailCard = (Card) tailDataItem.getPayload();
+
+        if (null != tagFilter) {
             mCardsSingleton.loadCardsWithTagFromNewestTo(tagFilter, tailCard, listCallbacks);
+        }
+        if (null != mUserFilter) {
+            mCardsSingleton.loadCardsOfUser(mUserFilter.getKey(), listCallbacks);
+        }
         else {
             if (mListView.isFiltered()) {
                 // Если карточки отфильтрованы, то обновляю весь список, чтобы получить тот же диапазон карточек,
