@@ -12,6 +12,7 @@ public final class Constants
     public final static String ADMINS_PATH = "admins";
     public final static String AVATARS_PATH = "avatars";
     public final static String DEVICE_ID_PATH = "device_id";
+    public static final String CARDS_IN_TAG_PATH = "cards";
 
     // TODO: добавлять к ACTION_* и EXTRA_* константам имя пакета
 

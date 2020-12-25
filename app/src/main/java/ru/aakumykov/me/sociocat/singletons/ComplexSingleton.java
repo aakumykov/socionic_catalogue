@@ -16,6 +16,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
@@ -188,6 +189,7 @@ public class ComplexSingleton {
         String userKey = card.getUserId();
 
         CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
+        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
         CollectionReference usersCollection = mUsersSingleton.getUsersCollection();
 
         DocumentReference cardRef = cardsCollection.document(cardKey);
@@ -196,6 +198,11 @@ public class ComplexSingleton {
         WriteBatch writeBatch = mFirebaseFirestore.batch();
         writeBatch.delete(cardRef);
         writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
+
+        for (String tagName : card.getTags()) {
+            DocumentReference tagRef = tagsCollection.document(tagName);
+            writeBatch.update(tagRef, Constants.CARDS_IN_TAG_PATH, FieldValue.arrayRemove(card.getKey()));
+        }
         
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
