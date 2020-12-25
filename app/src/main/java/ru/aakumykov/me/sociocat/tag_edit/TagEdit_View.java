@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tag_edit.other.TagEditViewState;
@@ -100,7 +100,7 @@ public class TagEdit_View extends BaseView
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
+    public void setViewState(iViewState viewState) {
         if (viewState instanceof TagEditViewState)
             setTagEditViewState((TagEditViewState) viewState);
         else

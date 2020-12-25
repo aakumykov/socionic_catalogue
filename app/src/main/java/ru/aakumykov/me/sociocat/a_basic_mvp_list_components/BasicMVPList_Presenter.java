@@ -7,10 +7,10 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVP_ItemClickListener;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSearchViewListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSelectionCommandsListener;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
@@ -20,9 +20,10 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.GridViewM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.AllItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NoneItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 
 public abstract class BasicMVPList_Presenter
         implements
@@ -36,7 +37,7 @@ public abstract class BasicMVPList_Presenter
     protected iBasicList mListView;
 
     protected BasicViewMode mCurrentViewMode;
-    protected iBasicViewState mCurrentViewState;
+    protected iViewState mCurrentViewState;
     protected iSortingMode mCurrentSortingMode;
     protected eSortingOrder mCurrentSortingOrder;
 
@@ -72,10 +73,10 @@ public abstract class BasicMVPList_Presenter
             setViewState(new AllItemsSelectedViewState(selectedItemsCount));
         }
         else if (0 == selectedItemsCount) {
-            setViewState(new NeutralViewState());
+            setViewState(new NoneItemsSelectedViewState());
         }
         else {
-            setViewState(new ItemsSelectedViewState(selectedItemsCount));
+            setViewState(new SomeItemsSelectedViewState(selectedItemsCount));
         }
     }
 
@@ -156,7 +157,7 @@ public abstract class BasicMVPList_Presenter
 
     protected abstract void onRefreshRequested();
 
-    protected void setViewState(@NonNull iBasicViewState viewState) {
+    protected void setViewState(@NonNull iViewState viewState) {
         mCurrentViewState = viewState;
 
         mPageView.setViewState(viewState);
@@ -243,19 +244,19 @@ public abstract class BasicMVPList_Presenter
     @Override
     public void onSelectAllClicked() {
         mListView.selectAll();
-        setViewState(new AllItemsSelectedViewState(mListView.getSelectedItemsCount()));
+        updateSelectionModeMenu();
     }
 
     @Override
     public void onClearSelectionClicked() {
         mListView.clearSelection();
-        setViewState(new NeutralViewState());
+        updateSelectionModeMenu();
     }
 
     @Override
     public void onInvertSelectionClicked() {
         mListView.invertSelection();
-        setViewState(new ItemsSelectedViewState(mListView.getSelectedItemsCount()));
+        updateSelectionModeMenu();
     }
 
 

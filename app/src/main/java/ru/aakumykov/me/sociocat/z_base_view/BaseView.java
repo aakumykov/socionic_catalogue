@@ -39,7 +39,7 @@ import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
@@ -191,7 +191,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void setViewState(iBasicViewState viewState) {
+    public void setViewState(iViewState viewState) {
         if (viewState instanceof NeutralViewState)
             setNeutralViewState();
         else if (viewState instanceof ProgressViewState)
