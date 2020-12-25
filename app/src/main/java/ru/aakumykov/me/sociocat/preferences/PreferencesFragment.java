@@ -14,6 +14,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
@@ -22,50 +23,39 @@ public class PreferencesFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "PreferencesFragment";
-    private SharedPreferences sharedPreferences;
-
+    private static final String PREFERENCE_KEY_DELIMITER = "__"; // Если поменять, старые настройки станут недоступны!
+    private SharedPreferences mSharedPreferences;
+    private String mCurrentUserId;
 
     // PreferencesFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        sharedPreferences = getPreferenceScreen().getSharedPreferences();
 
-        if (!UsersSingleton.getInstance().currentUserIsAdmin()) {
-            String categoryName = getString(R.string.PREFERENCE_category_backup_key);
-            PreferenceCategory category = (PreferenceCategory) findPreference(categoryName);
-            PreferenceScreen preferenceScreen = getPreferenceScreen();
-            preferenceScreen.removePreference(category);
-        }
+        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
+        mCurrentUserId = AuthSingleton.currentUserId();
+
+        configureBackupCategory();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
 
-    // SharedPreferences.OnSharedPreferenceChangeListener
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        PreferencesProcessor.processPreferenceKey(getActivity(), sharedPreferences, key);
-
         switch (key) {
-//            case "perform_database_backup":
-//                MyUtils.showCustomToast(this.getActivity().getApplicationContext(), R.string.not_implemented_yet);
-//                boolean enabled = sharedPreferences.getBoolean(key, false);
-//                if (enabled) Backup_JobService.scheduleJob(getActivity());
-//                else Backup_JobService.unscheduleJob(getActivity());
-//                break;
             case Constants.PREFERENCE_KEY_notify_about_new_cards:
                 processNewCardsNotification(key);
                 break;
@@ -82,8 +72,26 @@ public class PreferencesFragment
 
 
     // Внутренние методы
+    private void configureBackupCategory() {
+        if (!UsersSingleton.getInstance().currentUserIsAdmin()) {
+            String categoryName = getString(R.string.PREFERENCE_category_backup_key);
+            PreferenceCategory category = (PreferenceCategory) findPreference(categoryName);
+            PreferenceScreen preferenceScreen = getPreferenceScreen();
+            preferenceScreen.removePreference(category);
+        }
+    }
+
+
     private void processNewCardsNotification(String preferencesKey) {
-        boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
+
+        if (null == mCurrentUserId)
+            return;
+
+        String keyReal = preferencesKey + PREFERENCE_KEY_DELIMITER + mCurrentUserId;
+        boolean enabled = mSharedPreferences.getBoolean(keyReal, false);
+
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean()
 
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
@@ -120,7 +128,12 @@ public class PreferencesFragment
     }
 
     private void processCommentsNotification(String preferencesKey) {
-        boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
+
+        String userId = AuthSingleton.currentUserId();
+        if (null == userId)
+            return;
+
+        boolean enabled = mSharedPreferences.getBoolean(preferencesKey, false);
 
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
@@ -162,6 +175,7 @@ public class PreferencesFragment
             @Override
             public void onSubscribeSuccess() {
                 showToast(successMessageId);
+                savePreferenceBooleanForCurrentUser(preferencesKey, true);
             }
 
             @Override
@@ -177,6 +191,7 @@ public class PreferencesFragment
             @Override
             public void onUnsubscribeSuccess() {
                 showToast(successMsgId);
+                savePreferenceBooleanForCurrentUser(preferencesKey, false);
             }
 
             @Override
@@ -187,9 +202,17 @@ public class PreferencesFragment
         });
     }
 
+    private void savePreferenceBooleanForCurrentUser(String key, boolean booleanValue) {
+        String personalizedKey = key + PREFERENCE_KEY_DELIMITER + mCurrentUserId;
+
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(personalizedKey, booleanValue);
+        editor.commit();
+    }
+
 
     private void revertPreferencesKey(String key, boolean toValue) {
-        sharedPreferences.edit().putBoolean(key, toValue).apply();
+        mSharedPreferences.edit().putBoolean(key, toValue).apply();
         showToast(R.string.PREFERENCES_error_changing_preference);
     }
 
