@@ -158,7 +158,8 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".tag_edit.TagEdit_View" />
-        <activity android:name=".preferences2.Preferences2_Activity" />
+
+        <activity android:name=".preferences2.Preferences2_Activity" android:exported="true" />
 
         <!--
 <activity
