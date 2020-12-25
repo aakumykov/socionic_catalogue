@@ -3,13 +3,15 @@ package ru.aakumykov.me.sociocat.preferences2;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class Preferences2_Fragment
         extends PreferenceFragmentCompat
@@ -18,23 +20,28 @@ public class Preferences2_Fragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-        PreferenceManager preferenceManager = getPreferenceManager();
-//        PreferenceScreen preferenceScreen = preferenceManager.getPreferenceScreen();
-        PreferenceScreen preferenceScreen = preferenceManager.createPreferenceScreen(getContext());
+        String currentUserId = AuthSingleton.currentUserId();
+        if (null != currentUserId) {
+            String cardsNotificationsPrefKey = Constants.PREFERENCE_KEY_notify_about_new_cards + "__" + currentUserId;
 
-        PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
-        preferenceCategory.setTitle(R.string.PREFERENCE_category_notifications);
+            PreferenceManager preferenceManager = getPreferenceManager();
+            PreferenceScreen preferenceScreen = preferenceManager.createPreferenceScreen(getContext());
 
-        Preference preference = new Preference(getContext());
-        preference.setTitle(R.string.PREFERENCE_notify_about_new_cards_title);
-        preference.setSummary(R.string.PREFERENCE_notify_about_new_cards_description);
-        preference.setKey("nonc");
-        preference.setDefaultValue(false);
-        preference.setEnabled(true);
+            PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
+            preferenceCategory.setTitle(R.string.PREFERENCE_category_notifications);
 
-        preferenceCategory.addPreference(preference);
+            preferenceScreen.addPreference(preferenceCategory);
 
-        preferenceScreen.addPreference(preferenceCategory);
+            SwitchPreference switchPreference = new SwitchPreference(getContext());
+            switchPreference.setTitle(R.string.PREFERENCE_notify_about_new_cards_title);
+            switchPreference.setSummary(R.string.PREFERENCE_notify_about_new_cards_description);
+            switchPreference.setKey(cardsNotificationsPrefKey);
+            switchPreference.setDefaultValue(true);
+
+            preferenceCategory.addPreference(switchPreference);
+
+            setPreferenceScreen(preferenceScreen);
+        }
     }
 
     @Override
