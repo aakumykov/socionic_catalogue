@@ -36,7 +36,7 @@ public class Preferences2_Fragment
             switchPreference.setTitle(R.string.PREFERENCE_notify_about_new_cards_title);
             switchPreference.setSummary(R.string.PREFERENCE_notify_about_new_cards_description);
             switchPreference.setKey(cardsNotificationsPrefKey);
-            switchPreference.setDefaultValue(true);
+            switchPreference.setDefaultValue(false);
 
             preferenceCategory.addPreference(switchPreference);
 
