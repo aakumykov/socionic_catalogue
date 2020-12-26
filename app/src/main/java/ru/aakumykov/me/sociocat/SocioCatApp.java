@@ -4,12 +4,14 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
@@ -73,11 +75,27 @@ public class SocioCatApp extends Application {
 
     private void authorizeUser(User user) {
         EventBus.getDefault().post(new UserAuthorizedEvent(user));
+        rememberCurrentUserId(user);
     }
 
     private void deauthorizeUser() {
-        EventBus.getDefault().post(new UserUnauthorizedEvent());
+        forgetCurrentUserId();
         usersSingleton.clearCurrentUser();
+        EventBus.getDefault().post(new UserUnauthorizedEvent());
+    }
+
+    private void rememberCurrentUserId(@NonNull User user) {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putString(PreferencesConstants.key_current_user_id, user.getKey())
+                .apply();
+    }
+
+    private void forgetCurrentUserId() {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .remove(PreferencesConstants.key_current_user_id)
+                .apply();
     }
 
 }

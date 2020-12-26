@@ -9,4 +9,6 @@ public class PreferencesConstants {
 
     public final static String key_perform_database_backup = "perform_database_backup";
     public final static String dropbox_access_token_key = "dropbox_access_token";
+
+    public static String key_current_user_id = "current_user_id";
 }
