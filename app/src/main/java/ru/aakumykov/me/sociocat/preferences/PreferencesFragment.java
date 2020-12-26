@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -56,11 +56,11 @@ public class PreferencesFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         switch (key) {
-            case Constants.PREFERENCE_KEY_notify_about_new_cards:
+            case PreferencesConstants.notify_on_new_cards_key:
                 processNewCardsNotification(key);
                 break;
 
-            case Constants.PREFERENCE_KEY_notify_on_comments:
+            case PreferencesConstants.notify_on_new_comments_key:
                 processCommentsNotification(key);
                 break;
 

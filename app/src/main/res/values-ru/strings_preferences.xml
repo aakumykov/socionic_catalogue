@@ -5,8 +5,6 @@
     <string name="PREFERENCES_category_name_notifications">Уведомления</string>
     <string name="PREFERENCES_category_name_backup">Резервное копирование</string>
 
-
-
     <string name="PREFERENCES_notify_on_new_cards_title">Новые карточки</string>
     <string name="PREFERENCES_notify_on_new_cards_description">Уведомлять о новых карточках</string>
 

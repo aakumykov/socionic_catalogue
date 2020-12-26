@@ -8,8 +8,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class PreferencesActivity extends BaseView {
@@ -71,7 +71,7 @@ public class PreferencesActivity extends BaseView {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Проверяю, первый ли это запуск программы?
-        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_is_first_run, true);
+        boolean isFirstRun = defaultSharedPreferences.getBoolean(PreferencesConstants.is_first_run_key, true);
 
         // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию
         if (isFirstRun) {
@@ -80,7 +80,7 @@ public class PreferencesActivity extends BaseView {
 
             // Помечаю, что теперь это не первый запуск
             SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            editor.putBoolean(Constants.PREFERENCE_KEY_is_first_run, false);
+            editor.putBoolean(PreferencesConstants.is_first_run_key, false);
             editor.apply();
         }
     }

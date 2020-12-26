@@ -11,6 +11,7 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
@@ -51,6 +52,7 @@ public class Preferences2_Fragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+
     }
 
 
@@ -65,7 +67,7 @@ public class Preferences2_Fragment
 
 
         // Переключатель "Карточки"
-        String cardsNotificationsKey = getString(R.string.PREFERENCES_notify_on_new_cards_key);
+        String cardsNotificationsKey = PreferencesConstants.notify_on_new_cards_key;
         SwitchPreference cardsSwitch = createSwitchPreference(
                 cardsNotificationsKey,
                 R.string.PREFERENCES_notify_on_new_cards_title,
@@ -76,7 +78,7 @@ public class Preferences2_Fragment
 
 
         // Переключатель "Комментарии"
-        String commentsNotificationsKey = getString(R.string.PREFERENCES_notify_on_new_comments_key);
+        String commentsNotificationsKey = PreferencesConstants.notify_on_new_comments_key;
         SwitchPreference commentsSwitch = createSwitchPreference(
                 commentsNotificationsKey,
                 R.string.PREFERENCES_notify_on_new_comments_title,
@@ -96,7 +98,7 @@ public class Preferences2_Fragment
 
 
         // Выполнять резервное копирование
-        String performBackupKey = getString(R.string.PREFERENCES_perform_backup_key);
+        String performBackupKey = PreferencesConstants.perform_database_backup_key;
         SwitchPreference performBackupSwitch = createSwitchPreference(
                 performBackupKey,
                 R.string.PREFERENCES_perform_backup_title,
@@ -107,7 +109,7 @@ public class Preferences2_Fragment
 
 
         // Ключ доступа Dropbox
-        String dropboxAccessTokenKey = getString(R.string.PREFERENCES_dropbox_access_token_key);
+        String dropboxAccessTokenKey = PreferencesConstants.dropbox_access_token_key;
         EditTextPreference dropboxAccessTokenEditText = createEditTextPreference(
                 dropboxAccessTokenKey,
                 R.string.PREFERENCES_dropbox_access_token_title,

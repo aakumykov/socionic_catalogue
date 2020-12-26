@@ -45,6 +45,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Refreshi
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.TagsList_View;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.d_backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
@@ -697,7 +698,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
             boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
+                    .getBoolean(PreferencesConstants.perform_database_backup_key, false);
             boolean backupIsRunning  = BackupService.isRunning();
 
             if (backupIsEnabled && isAdmin && !backupIsRunning) {
