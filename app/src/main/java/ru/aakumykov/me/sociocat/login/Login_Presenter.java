@@ -311,7 +311,7 @@ public class Login_Presenter implements
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
             @Override
-            public void onUserRefreshSuccess(User user) {
+            public void onUserRefreshSuccess(@NonNull User user) {
                 usersSingleton.storeCurrentUser(user);
                 callbacks.onUserLoadSuccess(user);
             }
