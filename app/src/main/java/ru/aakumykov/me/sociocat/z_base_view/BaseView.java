@@ -96,7 +96,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        subscribeToAuthorizationEvents();
+//        subscribeToAuthorizationEvents();
         saveLastLoginTime();
         makeBackup();
     }

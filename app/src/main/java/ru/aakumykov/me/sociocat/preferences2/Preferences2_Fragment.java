@@ -21,23 +21,31 @@ public class Preferences2_Fragment
     private final static String PER_USER_PREFS_KEY_DELIMITER = "__";
     private PreferenceScreen mPreferenceScreen;
 
+    public Preferences2_Fragment() {
+    }
+
+    public void rebuildPrefs() {
+        if (null != mPreferenceScreen)
+        {
+            String currentUserId = AuthSingleton.currentUserId();
+
+            if (null == currentUserId)
+                return;
+
+            createNotificationsPreferences();
+
+            if (UsersSingleton.getInstance().currentUserIsAdmin())
+                createBackupPreferences();
+        }
+    }
+
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
         mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
-
-        String currentUserId = AuthSingleton.currentUserId();
-        boolean userIsAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
-
-        if (null == currentUserId)
-            return;
-
-        createNotificationsPreferences();
-        createBackupPreferences();
-
         setPreferenceScreen(mPreferenceScreen);
 
-//        dropboxAccessTokenEditText.setDependency(performBackupKey);
+        rebuildPrefs();
     }
 
     @Override
@@ -75,6 +83,8 @@ public class Preferences2_Fragment
                 null
         );
         categoryBackup.addPreference(dropboxAccessTokenEditText);
+
+        dropboxAccessTokenEditText.setDependency(performBackupKey);
     }
 
     private void createNotificationsPreferences() {
@@ -137,4 +147,6 @@ public class Preferences2_Fragment
         editTextPreference.setDialogTitle(titleId);
         return editTextPreference;
     }
+
+
 }
