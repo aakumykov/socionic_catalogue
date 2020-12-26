@@ -3,11 +3,13 @@ package ru.aakumykov.me.sociocat.preferences2;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class Preferences2_Fragment
@@ -25,7 +27,7 @@ public class Preferences2_Fragment
 
         PreferenceScreen preferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
 
-        // Категория "Уведомления"
+        // ==== Категория "Уведомления" ====
         PreferenceCategory categoryNotifications = createPreferenceCategory(
                 "Уведомления",
                 preferenceScreen
@@ -53,11 +55,39 @@ public class Preferences2_Fragment
         );
         categoryNotifications.addPreference(commentsSwitch);
 
+
+
+        // ==== Категория "Резервное копирование" ====
+        PreferenceCategory categoryBackup = createPreferenceCategory(
+                "Резервное копирование",
+                preferenceScreen
+        );
+        preferenceScreen.addPreference(categoryBackup);
+
+        // Выполнять резервное копирование
+        String performBackupKey = "perform_backup";
+        SwitchPreference performBackupSwitch = createSwitchPreference(
+                performBackupKey,
+                "Базы данных",
+                "Выполнять резервное копирование базы данных на сервер DropBox",
+                false
+        );
+        categoryBackup.addPreference(performBackupSwitch);
+
+        // Ключ доступа Dropbox
+        String dropboxAccessTokenKey = "dropbox_api_key";
+        EditTextPreference dropboxAccessTokenInput = new EditTextPreference(getContext());
+        dropboxAccessTokenInput.setKey(dropboxAccessTokenKey);
+        dropboxAccessTokenInput.setTitle(R.string.PREFERENCE_dropbox_access_token_title);
+        dropboxAccessTokenInput.setSummary(R.string.PREFERENCE_dropbox_access_token_description);
+        dropboxAccessTokenInput.setIconSpaceReserved(false);
+        categoryBackup.addPreference(dropboxAccessTokenInput);
+
         // Отображаю настройки
         setPreferenceScreen(preferenceScreen);
 
         // Настраиваю зависимости
-        commentsSwitch.setDependency(cardsNotificationsKey);
+        dropboxAccessTokenInput.setDependency(performBackupKey);
     }
 
     @Override
