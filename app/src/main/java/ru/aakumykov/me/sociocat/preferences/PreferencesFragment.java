@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.preferences2;
+package ru.aakumykov.me.sociocat.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
-public class Preferences2_Fragment
+public class PreferencesFragment
         extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -27,7 +27,7 @@ public class Preferences2_Fragment
     private PreferenceScreen mPreferenceScreen;
     private SharedPreferences mSharedPreferences;
 
-    public Preferences2_Fragment() {
+    public PreferencesFragment() {
     }
 
     public void assemblePreferences() {

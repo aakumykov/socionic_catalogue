@@ -50,7 +50,7 @@ import ru.aakumykov.me.sociocat.d_backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.preferences2.Preferences2_Activity;
+import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
@@ -606,7 +606,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void openPreferences() {
-        Intent intent = new Intent(this, Preferences2_Activity.class);
+        Intent intent = new Intent(this, PreferencesActivity.class);
         startActivity(intent);
     }
 

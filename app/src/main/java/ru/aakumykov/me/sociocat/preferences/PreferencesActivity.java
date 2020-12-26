@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.preferences2;
+package ru.aakumykov.me.sociocat.preferences;
 
 import android.os.Bundle;
 
@@ -7,9 +7,9 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
-public class Preferences2_Activity extends BaseView {
+public class PreferencesActivity extends BaseView {
 
-    private Preferences2_Fragment mPreferencesFragment;
+    private PreferencesFragment mPreferencesFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class Preferences2_Activity extends BaseView {
         setPageTitle(R.string.PREFERENCES_ACTIVITY_page_title);
         activateUpButton();
 
-        mPreferencesFragment = new Preferences2_Fragment();
+        mPreferencesFragment = new PreferencesFragment();
 
         getSupportFragmentManager()
                 .beginTransaction()
