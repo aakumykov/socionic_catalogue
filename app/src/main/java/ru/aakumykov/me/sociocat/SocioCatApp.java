@@ -20,9 +20,9 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
-public class MyApp extends Application {
+public class SocioCatApp extends Application {
 
-    private final static String TAG = "=MyApp=";
+    private final static String TAG = "=SocioCatApp=";
     private iUsersSingleton usersSingleton;
 
     // Методы Application
