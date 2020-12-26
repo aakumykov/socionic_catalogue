@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -77,20 +76,13 @@ public class Preferences2_Fragment
 
         // Ключ доступа Dropbox
         String dropboxAccessTokenKey = "dropbox_api_key";
+
         EditTextPreference dropboxAccessTokenEditText = new EditTextPreference(getContext());
         dropboxAccessTokenEditText.setKey(dropboxAccessTokenKey);
         dropboxAccessTokenEditText.setTitle(R.string.PREFERENCE_dropbox_access_token_title);
         dropboxAccessTokenEditText.setSummary(R.string.PREFERENCE_dropbox_access_token_description);
         dropboxAccessTokenEditText.setIconSpaceReserved(false);
-
-        dropboxAccessTokenEditText.setDialogLayoutResource(R.layout.preference_multiline_text_input);
-
-        dropboxAccessTokenEditText.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                return false;
-            }
-        });
+        dropboxAccessTokenEditText.setDialogTitle("Ключ доступа Dropbox");
 
         categoryBackup.addPreference(dropboxAccessTokenEditText);
 
