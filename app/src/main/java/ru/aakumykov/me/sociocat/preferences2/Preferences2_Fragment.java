@@ -12,59 +12,47 @@ import androidx.preference.SwitchPreference;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class Preferences2_Fragment
         extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private final static String PER_USER_PREFS_KEY_DELIMITER = "__";
+    private PreferenceScreen mPreferenceScreen;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
+        mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
+
         String currentUserId = AuthSingleton.currentUserId();
+        boolean userIsAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
+
         if (null == currentUserId)
             return;
 
-        PreferenceScreen preferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
+        createNotificationsPreferences();
+        createBackupPreferences();
+
+        setPreferenceScreen(mPreferenceScreen);
+
+//        dropboxAccessTokenEditText.setDependency(performBackupKey);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+    }
 
 
-        // ==== Категория "Уведомления" ====
-        PreferenceCategory categoryNotifications = createPreferenceCategory(
-                "Уведомления",
-                preferenceScreen
-        );
-        preferenceScreen.addPreference(categoryNotifications);
-
-
-        // Переключатель "Карточки"
-        String cardsNotificationsKey = "notify_about_new_cards";
-        SwitchPreference cardsSwitch = createSwitchPreference(
-                cardsNotificationsKey,
-                "О новых карточках",
-                "Уведомлять о новых карточках",
-                false
-        );
-        categoryNotifications.addPreference(cardsSwitch);
-
-
-        // Переключатель "Комментарии"
-        String commentsNotificationsKey = "notify_about_new_comments";
-        SwitchPreference commentsSwitch = createSwitchPreference(
-                commentsNotificationsKey,
-                "О новых комментариях",
-                "Уведомлять о новых комментариях",
-                false
-        );
-        categoryNotifications.addPreference(commentsSwitch);
-
-
+    private void createBackupPreferences() {
         // ==== Категория "Резервное копирование" ====
         PreferenceCategory categoryBackup = createPreferenceCategory(
                 "Резервное копирование",
-                preferenceScreen
+                mPreferenceScreen
         );
-        preferenceScreen.addPreference(categoryBackup);
+        mPreferenceScreen.addPreference(categoryBackup);
 
 
         // Выполнять резервное копирование
@@ -87,18 +75,38 @@ public class Preferences2_Fragment
                 null
         );
         categoryBackup.addPreference(dropboxAccessTokenEditText);
-
-
-        // Отображаю настройки
-        setPreferenceScreen(preferenceScreen);
-
-        // Настраиваю зависимости
-        dropboxAccessTokenEditText.setDependency(performBackupKey);
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    private void createNotificationsPreferences() {
 
+        // ==== Категория "Уведомления" ====
+        PreferenceCategory categoryNotifications = createPreferenceCategory(
+                "Уведомления",
+                mPreferenceScreen
+        );
+        mPreferenceScreen.addPreference(categoryNotifications);
+
+
+        // Переключатель "Карточки"
+        String cardsNotificationsKey = "notify_about_new_cards";
+        SwitchPreference cardsSwitch = createSwitchPreference(
+                cardsNotificationsKey,
+                "О новых карточках",
+                "Уведомлять о новых карточках",
+                false
+        );
+        categoryNotifications.addPreference(cardsSwitch);
+
+
+        // Переключатель "Комментарии"
+        String commentsNotificationsKey = "notify_about_new_comments";
+        SwitchPreference commentsSwitch = createSwitchPreference(
+                commentsNotificationsKey,
+                "О новых комментариях",
+                "Уведомлять о новых комментариях",
+                false
+        );
+        categoryNotifications.addPreference(commentsSwitch);
     }
 
 
