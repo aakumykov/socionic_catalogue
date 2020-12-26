@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,11 +20,12 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class SocioCatApp extends Application {
 
     private final static String TAG = SocioCatApp.class.getSimpleName();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private final iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     @Override
     public void onCreate() {
         super.onCreate();
+        FirebaseApp.initializeApp(this);
         subscribeToAuthorizationEvents();
     }
 
