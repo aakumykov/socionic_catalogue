@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.preferences2;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -27,12 +28,14 @@ public class Preferences2_Fragment
 
         PreferenceScreen preferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
 
+
         // ==== Категория "Уведомления" ====
         PreferenceCategory categoryNotifications = createPreferenceCategory(
                 "Уведомления",
                 preferenceScreen
         );
         preferenceScreen.addPreference(categoryNotifications);
+
 
         // Переключатель "Карточки"
         String cardsNotificationsKey = "notify_about_new_cards";
@@ -56,13 +59,13 @@ public class Preferences2_Fragment
         categoryNotifications.addPreference(commentsSwitch);
 
 
-
         // ==== Категория "Резервное копирование" ====
         PreferenceCategory categoryBackup = createPreferenceCategory(
                 "Резервное копирование",
                 preferenceScreen
         );
         preferenceScreen.addPreference(categoryBackup);
+
 
         // Выполнять резервное копирование
         String performBackupKey = "perform_backup";
@@ -74,17 +77,17 @@ public class Preferences2_Fragment
         );
         categoryBackup.addPreference(performBackupSwitch);
 
+
         // Ключ доступа Dropbox
         String dropboxAccessTokenKey = "dropbox_api_key";
-
-        EditTextPreference dropboxAccessTokenEditText = new EditTextPreference(getContext());
-        dropboxAccessTokenEditText.setKey(dropboxAccessTokenKey);
-        dropboxAccessTokenEditText.setTitle(R.string.PREFERENCE_dropbox_access_token_title);
-        dropboxAccessTokenEditText.setSummary(R.string.PREFERENCE_dropbox_access_token_description);
-        dropboxAccessTokenEditText.setIconSpaceReserved(false);
-        dropboxAccessTokenEditText.setDialogTitle("Ключ доступа Dropbox");
-
+        EditTextPreference dropboxAccessTokenEditText = createEditTextPreference(
+                dropboxAccessTokenKey,
+                R.string.PREFERENCE_dropbox_access_token_title,
+                R.string.PREFERENCE_dropbox_access_token_description,
+                null
+        );
         categoryBackup.addPreference(dropboxAccessTokenEditText);
+
 
         // Отображаю настройки
         setPreferenceScreen(preferenceScreen);
@@ -115,5 +118,15 @@ public class Preferences2_Fragment
         switchPreference.setDefaultValue(defaultValue);
         switchPreference.setIconSpaceReserved(false);
         return switchPreference;
+    }
+
+    private EditTextPreference createEditTextPreference(String key, int titleId, int summaryId, @NonNull String defaultValue) {
+        EditTextPreference editTextPreference = new EditTextPreference(getContext());
+        editTextPreference.setKey(key);
+        editTextPreference.setTitle(titleId);
+        editTextPreference.setSummary(summaryId);
+        editTextPreference.setIconSpaceReserved(false);
+        editTextPreference.setDialogTitle(titleId);
+        return editTextPreference;
     }
 }
