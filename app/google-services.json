@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "161012924326",
+    "firebase_url": "https://sociocat-debug.firebaseio.com",
+    "project_id": "sociocat-debug",
+    "storage_bucket": "sociocat-debug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161012924326:android:f686e13ed5c8c979015967",
+        "android_client_info": {
+          "package_name": "ru.aakumykov.me.sociocat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeNAPnWmoVx4fE9WzLRT60MFoapfTA2Fg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "161012924326-vjltklgj50uhkb942ro0nmst7pujf5ov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
