@@ -160,12 +160,6 @@
 
     <string name="MENU_preferences">Настройки</string>
 
-    <string name="NOTIFICATIONS_new_cards_channel_title">Новые карточки</string>
-    <string name="NOTIFICATIONS_new_cards_channel_description">Уведомления о новых карточках</string>
-
-    <string name="NOTIFICATIONS_new_comments_channel_title">Комментарии</string>
-    <string name="NOTIFICATIONS_new_comments_channel_description">Уведомления о комментариях</string>
-
     <string name="SHORTCUT_create_text_card_short_label">Текст</string>
     <string name="SHORTCUT_create_text_card_long_label">Создать карточку с текстом</string>
     <string name="SHORTCUT_creation_unavailable">Создание карточки недоступно</string>
@@ -311,10 +305,6 @@
     <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Ошибка данных</string>
 
-    <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
-    <string name="NOTIFICATIONS_new_card_notification_message">Новая карточка от %1$s</string>
-
-    <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий к %1$s</string>
     <string name="add_new_card_bottom_sheet_title">Добавить</string>
     <string name="MENU_change_view_mode">Режим просмотра</string>
     <string name="LOGIN_requesting_google_sign_in">Запрашиваем вход через Google</string>
@@ -378,6 +368,5 @@
     <string name="CARDS_LIST_loading_cards_of_user">Получаем карточки пользователя «%1$s»</string>
     <string name="CARDS_LIST_cards_of_user">Карточки пользователя «%1$s»</string>
 
-    <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!-- «%1$s» «%2$s» -->

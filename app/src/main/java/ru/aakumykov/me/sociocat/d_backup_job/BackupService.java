@@ -581,7 +581,7 @@ public class BackupService extends Service {
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 R.string.BACKUP_SERVICE_channel_title,
                 R.string.BACKUP_SERVICE_channel_description,
-                new NotificationsHelper.NotificationChannelCreationCallbacks() {
+                new NotificationsHelper.iNotificationChannelCreationCallbacks() {
                     @Override
                     public void onNotificationChannelCreateSuccess() {
 

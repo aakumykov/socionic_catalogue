@@ -19,7 +19,7 @@ public class NotificationsHelper {
 
 
     // Каналы уведомлений
-    public interface NotificationChannelCreationCallbacks {
+    public interface iNotificationChannelCreationCallbacks {
         void onNotificationChannelCreateSuccess();
         void onNotificationChannelCreateError(String errorMsg);
     }
@@ -29,7 +29,7 @@ public class NotificationsHelper {
             String channelId,
             int channelTitleId,
             int channelDescriptionId,
-            NotificationChannelCreationCallbacks callbacks
+            iNotificationChannelCreationCallbacks callbacks
     ) {
 //        if (TextUtils.isEmpty(channelId)) {
 //            callbacks.onNotificationChannelCreateError("Channel id cannot be empty");

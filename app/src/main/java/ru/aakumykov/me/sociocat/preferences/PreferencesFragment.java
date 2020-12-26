@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.NotificationConstants;
 import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
-import ru.aakumykov.me.sociocat.push_notifications.PushSubscription_Helper;
+import ru.aakumykov.me.sociocat.push_notifications.PUSHSubscriptionHelper;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
@@ -56,11 +56,11 @@ public class PreferencesFragment
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         switch (key) {
-            case PreferencesConstants.notify_on_new_cards_key:
+            case PreferencesConstants.key_notify_on_new_cards:
                 processNewCardsNotification(key);
                 break;
 
-            case PreferencesConstants.notify_on_new_comments_key:
+            case PreferencesConstants.key_notify_on_new_comments:
                 processCommentsNotification(key);
                 break;
 
@@ -96,14 +96,14 @@ public class PreferencesFragment
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    NotificationConstants.NEW_CARDS_CHANNEL_NAME,
                     R.string.NOTIFICATIONS_new_cards_channel_title,
                     R.string.NOTIFICATIONS_new_cards_channel_description,
-                    new NotificationsHelper.NotificationChannelCreationCallbacks() {
+                    new NotificationsHelper.iNotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
                             subscribe2topic(
-                                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                                    NotificationConstants.NEW_CARDS_CHANNEL_NAME,
                                     preferencesKey,
                                     R.string.PREFERENCES_subscription_on_new_cards_success,
                                     R.string.PREFERENCES_subscription_on_new_cards_failed
@@ -119,7 +119,7 @@ public class PreferencesFragment
         }
         else {
             unsubscribe4romTopic(
-                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    NotificationConstants.NEW_CARDS_CHANNEL_NAME,
                     preferencesKey,
                     R.string.PREFERENCES_unsubscribe_from_new_cards_success,
                     R.string.PREFERENCES_unsubscribe_from_new_cards_failed
@@ -138,14 +138,14 @@ public class PreferencesFragment
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
+                    NotificationConstants.NEW_COMMENTS_CHANNEL_NAME,
                     R.string.NOTIFICATIONS_new_comments_channel_title,
                     R.string.NOTIFICATIONS_new_comments_channel_description,
-                    new NotificationsHelper.NotificationChannelCreationCallbacks() {
+                    new NotificationsHelper.iNotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
                             subscribe2topic(
-                                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
+                                    NotificationConstants.NEW_COMMENTS_CHANNEL_NAME,
                                     preferencesKey,
                                     R.string.PREFERENCES_subscription_on_new_comments_success,
                                     R.string.PREFERENCES_subscription_on_new_comments_failed
@@ -161,7 +161,7 @@ public class PreferencesFragment
         }
         else {
             unsubscribe4romTopic(
-                    NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
+                    NotificationConstants.NEW_CARDS_CHANNEL_NAME,
                     preferencesKey,
                     R.string.PREFERENCES_unsubscribe_from_new_comments_success,
                     R.string.PREFERENCES_unsubscribe_from_new_comments_failed
@@ -171,7 +171,7 @@ public class PreferencesFragment
 
 
     private void subscribe2topic(String topicName, String preferencesKey, int successMessageId, int errorMessageId) {
-        PushSubscription_Helper.subscribe2topic(topicName, new PushSubscription_Helper.SubscriptionCallbacks() {
+        PUSHSubscriptionHelper.subscribe2topic(topicName, new PUSHSubscriptionHelper.iSubscriptionCallbacks() {
             @Override
             public void onSubscribeSuccess() {
                 showToast(successMessageId);
@@ -187,7 +187,7 @@ public class PreferencesFragment
     }
 
     private void unsubscribe4romTopic(String topicName, String preferencesKey, int successMsgId, int errorMsgId) {
-        PushSubscription_Helper.unsubscribeFromTopic(topicName, new PushSubscription_Helper.UnsubscriptionCallbacks() {
+        PUSHSubscriptionHelper.unsubscribeFromTopic(topicName, new PUSHSubscriptionHelper.iUnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
                 showToast(successMsgId);

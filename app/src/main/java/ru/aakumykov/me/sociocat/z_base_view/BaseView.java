@@ -698,7 +698,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
             boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean(PreferencesConstants.perform_database_backup_key, false);
+                    .getBoolean(PreferencesConstants.key_perform_database_backup, false);
             boolean backupIsRunning  = BackupService.isRunning();
 
             if (backupIsEnabled && isAdmin && !backupIsRunning) {

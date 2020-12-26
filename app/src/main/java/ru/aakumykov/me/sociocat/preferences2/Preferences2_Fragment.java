@@ -11,9 +11,13 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.NotificationConstants;
 import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
+import ru.aakumykov.me.sociocat.push_notifications.PUSHSubscriptionHelper;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class Preferences2_Fragment
         extends PreferenceFragmentCompat
@@ -21,6 +25,7 @@ public class Preferences2_Fragment
 {
     private final static String PER_USER_PREFS_KEY_DELIMITER = "__";
     private PreferenceScreen mPreferenceScreen;
+    private SharedPreferences mSharedPreferences;
 
     public Preferences2_Fragment() {
     }
@@ -46,13 +51,9 @@ public class Preferences2_Fragment
         mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
         setPreferenceScreen(mPreferenceScreen);
 
+        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
+
         assemblePreferences();
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-
     }
 
 
@@ -67,7 +68,7 @@ public class Preferences2_Fragment
 
 
         // Переключатель "Карточки"
-        String cardsNotificationsKey = PreferencesConstants.notify_on_new_cards_key;
+        String cardsNotificationsKey = PreferencesConstants.key_notify_on_new_cards;
         SwitchPreference cardsSwitch = createSwitchPreference(
                 cardsNotificationsKey,
                 R.string.PREFERENCES_notify_on_new_cards_title,
@@ -78,7 +79,7 @@ public class Preferences2_Fragment
 
 
         // Переключатель "Комментарии"
-        String commentsNotificationsKey = PreferencesConstants.notify_on_new_comments_key;
+        String commentsNotificationsKey = PreferencesConstants.key_notify_on_new_comments;
         SwitchPreference commentsSwitch = createSwitchPreference(
                 commentsNotificationsKey,
                 R.string.PREFERENCES_notify_on_new_comments_title,
@@ -98,7 +99,7 @@ public class Preferences2_Fragment
 
 
         // Выполнять резервное копирование
-        String performBackupKey = PreferencesConstants.perform_database_backup_key;
+        String performBackupKey = PreferencesConstants.key_perform_database_backup;
         SwitchPreference performBackupSwitch = createSwitchPreference(
                 performBackupKey,
                 R.string.PREFERENCES_perform_backup_title,
@@ -154,5 +155,128 @@ public class Preferences2_Fragment
         return editTextPreference;
     }
 
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        switch (key) {
+            case PreferencesConstants.key_notify_on_new_cards:
+                processNewCardsNotificationPreference(key, sharedPreferences);
+                break;
+            case PreferencesConstants.key_notify_on_new_comments:
+                processNewCommentsNotificationPreference(key, sharedPreferences);
+                break;
+            case PreferencesConstants.key_perform_database_backup:
+                processPerformBackupPreference(key, sharedPreferences);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void processNewCardsNotificationPreference(String key, SharedPreferences sharedPreferences) {
+        boolean isEnabled = sharedPreferences.getBoolean(key, false);
+
+        if (isEnabled)
+            subscribe2topic(NotificationConstants.NEW_CARDS_CHANNEL_NAME, new iSubscribe2topicCallbacks() {
+                @Override
+                public void onSubscriptionSuccess() {
+                    showToast(R.string.PREFERENCES_subscription_on_new_cards_success);
+                }
+
+                @Override
+                public void onSubscriptionFailed(String errorMsg) {
+                    showToast(R.string.PREFERENCES_subscription_on_new_cards_failed);
+                    revertPreferencesKey(key, false);
+                }
+            });
+        else
+            unsubscribeFromTopic(NotificationConstants.NEW_CARDS_CHANNEL_NAME);
+    }
+
+    private void processNewCommentsNotificationPreference(String key, SharedPreferences sharedPreferences) {
+        boolean isEnabled = sharedPreferences.getBoolean(key, false);
+
+        if (isEnabled)
+            NotificationsHelper.
+    }
+
+    private void processPerformBackupPreference(String key, SharedPreferences sharedPreferences) {
+        boolean value = sharedPreferences.getBoolean(key, false);
+
+    }
+
+
+
+    private void revertPreferencesKey(String key, boolean toValue) {
+        mSharedPreferences.edit().putBoolean(key, toValue).apply();
+        showToast(R.string.PREFERENCES_error_changing_preference);
+    }
+
+    private void showToast(int messageId) {
+        MyUtils.showCustomToast(getContext(), messageId);
+    }
+
+
+    private void subscribe2topic(String channelName, iSubscribe2topicCallbacks callbacks) {
+        NotificationsHelper.createNotificationChannel(
+                getContext(),
+                NotificationConstants.NEW_CARDS_CHANNEL_NAME,
+                R.string.NOTIFICATIONS_new_cards_channel_title,
+                R.string.NOTIFICATIONS_new_cards_channel_description,
+                new NotificationsHelper.iNotificationChannelCreationCallbacks() {
+                    @Override
+                    public void onNotificationChannelCreateSuccess() {
+
+                        PUSHSubscriptionHelper.subscribe2topic(
+                                NotificationConstants.NEW_CARDS_CHANNEL_NAME,
+                                new PUSHSubscriptionHelper.iSubscriptionCallbacks() {
+                                    @Override
+                                    public void onSubscribeSuccess() {
+                                        callbacks.onSubscribeSuccess();
+                                    }
+
+                                    @Override
+                                    public void onSubscribeError(String errorMsg) {
+                                        callbacks.onSubscribeFailed(errorMsg);
+                                    }
+                                }
+                        );
+                    }
+
+                    @Override
+                    public void onNotificationChannelCreateError(String errorMsg) {
+                        callbacks.onSubscribeFailed(errorMsg);
+                    }
+                }
+        );
+    }
+
+    private interface iSubscribe2topicCallbacks {
+        void onSubscribeSuccess();
+        void onSubscribeFailed(String errorMsg);
+    }
+
+
+    private void unsubscribeFromTopic(String channelName) {
+        PUSHSubscriptionHelper.unsubscribeFromTopic(channelName, new PUSHSubscriptionHelper.iUnsubscriptionCallbacks() {
+            @Override
+            public void onUnsubscribeSuccess() {
+
+            }
+
+            @Override
+            public void onUnsubscribeError(String errorMsg) {
+
+            }
+        });
+    }
+
+    private interface iUnscribeFromTopicCallbacks {
+        void onUnsubscribeSuccess();
+        void onUnsubscribeFailed(String errorMsg);
+    }
 
 }
