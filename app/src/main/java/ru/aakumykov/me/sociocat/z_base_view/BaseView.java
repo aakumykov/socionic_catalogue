@@ -35,7 +35,6 @@ import java.util.TimerTask;
 
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
@@ -45,6 +44,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Refreshi
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.TagsList_View;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.d_backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;

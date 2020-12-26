@@ -6,8 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
@@ -18,7 +18,6 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
