@@ -11,39 +11,39 @@
         android:title="@string/PREFERENCES_notify_on_new_cards_title"
         />-->
 
-    <PreferenceCategory android:title="@string/PREFERENCE_category_notifications">
+    <PreferenceCategory android:title="@string/PREFERENCES_category_name_notifications">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="notify_about_new_cards"
-            android:summary="@string/PREFERENCE_notify_about_new_cards_description"
-            android:title="@string/PREFERENCE_notify_about_new_cards_title" />
+            android:summary="@string/PREFERENCES_notify_on_new_cards_description"
+            android:title="@string/PREFERENCES_notify_on_new_cards_title" />
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="notify_on_comments"
-            android:summary="@string/PREFERENCE_notify_on_comments_description"
-            android:title="@string/PREFERENCE_notify_on_comments_title" />
+            android:summary="@string/PREFERENCES_notify_on_new_comments_description"
+            android:title="@string/PREFERENCES_notify_on_new_comments_title" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="@string/PREFERENCES_category_backup_key"
-        android:title="@string/PREFERENCES_category_backup">
+        android:title="@string/PREFERENCES_category_name_backup">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="perform_database_backup"
-            android:summary="@string/PREFERENCES_database_backup_description"
-            android:title="@string/PREFERENCES_database_backup_title" />
+            android:summary="@string/PREFERENCES_perform_backup_description"
+            android:title="@string/PREFERENCES_perform_backup_title" />
 
         <EditTextPreference
             android:key="dropbox_access_token"
             android:dependency="perform_database_backup"
             android:selectAllOnFocus="true"
             android:singleLine="false"
-            android:summary="@string/PREFERENCE_dropbox_access_token_description"
-            android:title="@string/PREFERENCE_dropbox_access_token_title"
+            android:summary="@string/PREFERENCES_dropbox_access_token_description"
+            android:title="@string/PREFERENCES_dropbox_access_token_title"
             app:defaultValue="true" />
 
     </PreferenceCategory>

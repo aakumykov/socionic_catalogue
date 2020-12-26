@@ -28,11 +28,11 @@ public class Preferences2_Activity extends BaseView {
 
     @Override
     public void onUserLogin() {
-        mPreferencesFragment.rebuildPrefs();
+        mPreferencesFragment.assemblePreferences();
     }
 
     @Override
     public void onUserLogout() {
-        mPreferencesFragment.rebuildPrefs();
+        mPreferencesFragment.assemblePreferences();
     }
 }

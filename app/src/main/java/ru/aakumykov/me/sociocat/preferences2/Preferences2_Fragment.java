@@ -3,7 +3,7 @@ package ru.aakumykov.me.sociocat.preferences2;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -24,7 +24,7 @@ public class Preferences2_Fragment
     public Preferences2_Fragment() {
     }
 
-    public void rebuildPrefs() {
+    public void assemblePreferences() {
         if (null != mPreferenceScreen)
         {
             String currentUserId = AuthSingleton.currentUserId();
@@ -45,7 +45,7 @@ public class Preferences2_Fragment
         mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
         setPreferenceScreen(mPreferenceScreen);
 
-        rebuildPrefs();
+        assemblePreferences();
     }
 
     @Override
@@ -54,32 +54,64 @@ public class Preferences2_Fragment
     }
 
 
+    private void createNotificationsPreferences() {
+
+        // ==== Категория "Уведомления" ====
+        PreferenceCategory categoryNotifications = createPreferenceCategory(
+                R.string.PREFERENCES_category_name_notifications,
+                mPreferenceScreen
+        );
+        mPreferenceScreen.addPreference(categoryNotifications);
+
+
+        // Переключатель "Карточки"
+        String cardsNotificationsKey = getString(R.string.PREFERENCES_notify_on_new_cards_key);
+        SwitchPreference cardsSwitch = createSwitchPreference(
+                cardsNotificationsKey,
+                R.string.PREFERENCES_notify_on_new_cards_title,
+                R.string.PREFERENCES_notify_on_new_cards_description,
+                false
+        );
+        categoryNotifications.addPreference(cardsSwitch);
+
+
+        // Переключатель "Комментарии"
+        String commentsNotificationsKey = getString(R.string.PREFERENCES_notify_on_new_comments_key);
+        SwitchPreference commentsSwitch = createSwitchPreference(
+                commentsNotificationsKey,
+                R.string.PREFERENCES_notify_on_new_comments_title,
+                R.string.PREFERENCES_notify_on_new_comments_description,
+                false
+        );
+        categoryNotifications.addPreference(commentsSwitch);
+    }
+
     private void createBackupPreferences() {
         // ==== Категория "Резервное копирование" ====
         PreferenceCategory categoryBackup = createPreferenceCategory(
-                "Резервное копирование",
+                R.string.PREFERENCES_category_name_backup,
                 mPreferenceScreen
         );
         mPreferenceScreen.addPreference(categoryBackup);
 
 
         // Выполнять резервное копирование
-        String performBackupKey = "perform_backup";
+        String performBackupKey = getString(R.string.PREFERENCES_perform_backup_key);
         SwitchPreference performBackupSwitch = createSwitchPreference(
                 performBackupKey,
-                "Базы данных",
-                "Выполнять резервное копирование базы данных на сервер DropBox",
+                R.string.PREFERENCES_perform_backup_title,
+                R.string.PREFERENCES_perform_backup_description,
                 false
         );
         categoryBackup.addPreference(performBackupSwitch);
 
 
         // Ключ доступа Dropbox
-        String dropboxAccessTokenKey = "dropbox_api_key";
+        String dropboxAccessTokenKey = getString(R.string.PREFERENCES_dropbox_access_token_key);
         EditTextPreference dropboxAccessTokenEditText = createEditTextPreference(
                 dropboxAccessTokenKey,
-                R.string.PREFERENCE_dropbox_access_token_title,
-                R.string.PREFERENCE_dropbox_access_token_description,
+                R.string.PREFERENCES_dropbox_access_token_title,
+                R.string.PREFERENCES_dropbox_access_token_description,
                 null
         );
         categoryBackup.addPreference(dropboxAccessTokenEditText);
@@ -87,40 +119,8 @@ public class Preferences2_Fragment
         dropboxAccessTokenEditText.setDependency(performBackupKey);
     }
 
-    private void createNotificationsPreferences() {
 
-        // ==== Категория "Уведомления" ====
-        PreferenceCategory categoryNotifications = createPreferenceCategory(
-                "Уведомления",
-                mPreferenceScreen
-        );
-        mPreferenceScreen.addPreference(categoryNotifications);
-
-
-        // Переключатель "Карточки"
-        String cardsNotificationsKey = "notify_about_new_cards";
-        SwitchPreference cardsSwitch = createSwitchPreference(
-                cardsNotificationsKey,
-                "О новых карточках",
-                "Уведомлять о новых карточках",
-                false
-        );
-        categoryNotifications.addPreference(cardsSwitch);
-
-
-        // Переключатель "Комментарии"
-        String commentsNotificationsKey = "notify_about_new_comments";
-        SwitchPreference commentsSwitch = createSwitchPreference(
-                commentsNotificationsKey,
-                "О новых комментариях",
-                "Уведомлять о новых комментариях",
-                false
-        );
-        categoryNotifications.addPreference(commentsSwitch);
-    }
-
-
-    private PreferenceCategory createPreferenceCategory(String title, PreferenceScreen preferenceScreen) {
+    private PreferenceCategory createPreferenceCategory(int title, PreferenceScreen preferenceScreen) {
         PreferenceCategory preferenceCategory = new PreferenceCategory(getContext());
         preferenceCategory.setIconSpaceReserved(false);
         preferenceCategory.setTitle(title);
@@ -128,7 +128,7 @@ public class Preferences2_Fragment
         return preferenceCategory;
     }
 
-    private SwitchPreference createSwitchPreference(String key, String title, String subtitle, boolean defaultValue) {
+    private SwitchPreference createSwitchPreference(String key, int title, int subtitle, boolean defaultValue) {
         SwitchPreference switchPreference = new SwitchPreference(getContext());
         switchPreference.setTitle(title);
         switchPreference.setSummary(subtitle);
@@ -138,13 +138,17 @@ public class Preferences2_Fragment
         return switchPreference;
     }
 
-    private EditTextPreference createEditTextPreference(String key, int titleId, int summaryId, @NonNull String defaultValue) {
+    private EditTextPreference createEditTextPreference(String key, int titleId, int summaryId, @Nullable String defaultValue) {
         EditTextPreference editTextPreference = new EditTextPreference(getContext());
         editTextPreference.setKey(key);
         editTextPreference.setTitle(titleId);
         editTextPreference.setSummary(summaryId);
         editTextPreference.setIconSpaceReserved(false);
         editTextPreference.setDialogTitle(titleId);
+
+        if (null != defaultValue)
+            editTextPreference.setDefaultValue(defaultValue);
+
         return editTextPreference;
     }
 
