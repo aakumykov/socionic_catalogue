@@ -176,12 +176,11 @@ public class Preferences2_Fragment
             case PreferencesConstants.key_notify_on_new_cards:
                 processNewCardsNotificationPreference(key, sharedPreferences);
                 break;
+
             case PreferencesConstants.key_notify_on_new_comments:
                 processNewCommentsNotificationPreference(key, sharedPreferences);
                 break;
-            case PreferencesConstants.key_perform_database_backup:
-                processPerformBackupPreference(key, sharedPreferences);
-                break;
+
             default:
                 break;
         }
@@ -249,12 +248,6 @@ public class Preferences2_Fragment
                 }
             });
     }
-
-    private void processPerformBackupPreference(String key, SharedPreferences sharedPreferences) {
-        boolean value = sharedPreferences.getBoolean(key, false);
-
-    }
-
 
 
     private void showToast(int messageId) {
