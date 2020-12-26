@@ -159,8 +159,6 @@
     <string name="CARD_EDIT_remove_video">Remove</string>
     <string name="CARD_EDIT_paste_youtube_link">Paste Youtube link</string>
 
-    <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
-    <string name="PREFERENCES_ACTIVITY_page_title">App preferences</string>
     <string name="MENU_preferences">Preferences</string>
 
     <string name="NOTIFICATIONS_new_cards_channel_title">New cards</string>
@@ -212,11 +210,6 @@
 
     <string name="BACKUP_STATUS_page_title">Backup info</string>
 
-    <string name="PREFERENCE_category_backup_key">category_backup</string>
-    <string name="PREFERENCE_category_backup">Backup</string>
-    <string name="PREFERENCE_database_backup_title">Database</string>
-    <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
-
     <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Backup job is scheduled</string>
     <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
 
@@ -239,8 +232,6 @@
     <string name="error_deleting_card_short">Error deleting card</string>
     <string name="cannot_edit_card">Edition refused</string>
     <string name="CARD_SHOW_edit_cancelled">Card edition cancelled</string>
-    <string name="PREFERENCE_dropbox_access_token_title">Dropbox access token</string>
-    <string name="PREFERENCE_dropbox_access_token_description">Required for database backup</string>
     <string name="BACKUP_SERVICE_backup_impossible">Backup impossible</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Dropbox AccessToken is missing</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Avatar uploading cancelled</string>
@@ -319,12 +310,6 @@
     <string name="BACKUP_SERVICE_error_saving_image">Error saving image "%1$s" of card "%2$s": %3$s</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
-    <string name="PREFERENCE_category_notifications">Notifications</string>
-    <string name="PREFERENCE_notify_about_new_cards_title">New cards</string>
-    <string name="PREFERENCE_notify_about_new_cards_description">Notify about new cards</string>
-    <string name="PREFERENCE_notify_on_comments_title">Comments</string>
-    <string name="PREFERENCE_notify_on_comments_description">Notify about comments</string>
-    <string name="PREFERENCES_error_changing_preference">Error changing preference</string>
 
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
@@ -333,14 +318,6 @@
     <string name="add_new_card_bottom_sheet_title">Add</string>
     <string name="MENU_change_view_mode">View mode</string>
     <string name="LOGIN_requesting_google_sign_in">Requesting Google sign in</string>
-    <string name="PREFERENCES_subscription_on_new_comments_success">You are subscribed to comments</string>
-    <string name="PREFERENCES_subscription_on_new_comments_failed">Comments subscription failed</string>
-    <string name="PREFERENCES_subscription_on_new_cards_success">You are subscribed to cards</string>
-    <string name="PREFERENCES_subscription_on_new_cards_failed">Cards subscription failed</string>
-    <string name="PREFERENCES_unsubscribe_from_new_cards_success">You are unsubscribed from cards</string>
-    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Failed to unsubscribe from cards</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_success">You are unsubscribed from comments</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Failed to unsubscribe from comments</string>
 
     <string name="CARD_EDIT_impossible_without_network_connection">Impossible to create without network connection</string>
 

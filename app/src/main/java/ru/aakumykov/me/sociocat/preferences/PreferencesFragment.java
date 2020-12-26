@@ -74,7 +74,7 @@ public class PreferencesFragment
     // Внутренние методы
     private void configureBackupCategory() {
         if (!UsersSingleton.getInstance().currentUserIsAdmin()) {
-            String categoryName = getString(R.string.PREFERENCE_category_backup_key);
+            String categoryName = getString(R.string.PREFERENCES_category_backup_key);
             PreferenceCategory category = (PreferenceCategory) findPreference(categoryName);
             PreferenceScreen preferenceScreen = getPreferenceScreen();
             preferenceScreen.removePreference(category);

@@ -158,7 +158,6 @@
     <string name="CARD_EDIT_remove_video">Удалить</string>
     <string name="CARD_EDIT_paste_youtube_link">Вставьте ссылку на Ютуб</string>
 
-    <string name="PREFERENCES_ACTIVITY_page_title">Настройки приложения</string>
     <string name="MENU_preferences">Настройки</string>
 
     <string name="NOTIFICATIONS_new_cards_channel_title">Новые карточки</string>
@@ -210,10 +209,6 @@
 
     <string name="BACKUP_STATUS_page_title">Информация о резервном копировании</string>
 
-    <string name="PREFERENCE_category_backup">Резервное копирование</string>
-    <string name="PREFERENCE_database_backup_title">База данных</string>
-    <string name="PREFERENCE_database_backup_description">Выполнять рез. копирование базы данных силами телефона</string>
-
     <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Задача резервного копирования запланирована</string>
     <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Ошибка планирования задачи резервного копирования</string>
 
@@ -237,8 +232,6 @@
     <string name="error_deleting_card_short">Ошибка удаления карточки</string>
     <string name="cannot_edit_card">Редактирование запрещено</string>
     <string name="CARD_SHOW_edit_cancelled">Редактирование отменено</string>
-    <string name="PREFERENCE_dropbox_access_token_title">Ключ доступа Dropbox</string>
-    <string name="PREFERENCE_dropbox_access_token_description">Необходим для резервного копирования</string>
     <string name="BACKUP_SERVICE_backup_impossible">Резервное копирование невозможно</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Отсутствует Dropbox AccessToken</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Сохранение аватара прервано</string>
@@ -317,12 +310,6 @@
     <string name="BACKUP_SERVICE_error_saving_image">Ошибка сохранения картинки "%1$s" карточки "%2$s": %3$s</string>
     <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Ошибка данных</string>
-    <string name="PREFERENCE_category_notifications">Уведомления</string>
-    <string name="PREFERENCE_notify_about_new_cards_title">Новые карточки</string>
-    <string name="PREFERENCE_notify_about_new_cards_description">Уведомлять о новых карточках</string>
-    <string name="PREFERENCE_notify_on_comments_title">Комментарии</string>
-    <string name="PREFERENCE_notify_on_comments_description">Уведомлять о комментариях</string>
-    <string name="PREFERENCES_error_changing_preference">Ошибка изменения настройки</string>
 
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">Новая карточка от %1$s</string>
@@ -331,16 +318,6 @@
     <string name="add_new_card_bottom_sheet_title">Добавить</string>
     <string name="MENU_change_view_mode">Режим просмотра</string>
     <string name="LOGIN_requesting_google_sign_in">Запрашиваем вход через Google</string>
-
-    <string name="PREFERENCES_subscription_on_new_comments_success">Вы подписаны на комментарии</string>
-    <string name="PREFERENCES_subscription_on_new_comments_failed">Ошибка подписки на комментарии</string>
-    <string name="PREFERENCES_subscription_on_new_cards_success">Вы подписаны на карточки</string>
-    <string name="PREFERENCES_subscription_on_new_cards_failed">Ошибка подписки на карточки</string>
-
-    <string name="PREFERENCES_unsubscribe_from_new_cards_success">Вы отписаны от карточек</string>
-    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отписки от карточек</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_success">Вы отписаны от комментариев</string>
-    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отписки от комментариев</string>
 
     <string name="CARD_EDIT_impossible_without_network_connection">Создание невозможно без подключения к интернету</string>
 

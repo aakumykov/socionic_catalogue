@@ -28,14 +28,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="@string/PREFERENCE_category_backup_key"
-        android:title="@string/PREFERENCE_category_backup">
+        android:key="@string/PREFERENCES_category_backup_key"
+        android:title="@string/PREFERENCES_category_backup">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="perform_database_backup"
-            android:summary="@string/PREFERENCE_database_backup_description"
-            android:title="@string/PREFERENCE_database_backup_title" />
+            android:summary="@string/PREFERENCES_database_backup_description"
+            android:title="@string/PREFERENCES_database_backup_title" />
 
         <EditTextPreference
             android:key="dropbox_access_token"
