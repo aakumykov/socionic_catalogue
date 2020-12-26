@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:161012924326:android:ef8efae6a0111615",
+        "mobilesdk_app_id": "1:161012924326:android:b4e3cf6fdbe22d7d015967",
         "android_client_info": {
           "package_name": "ru.aakumykov.me.sociocat"
         }
@@ -21,32 +21,21 @@
             "package_name": "ru.aakumykov.me.sociocat",
             "certificate_hash": "7bf6ef2dcd007b4cb62c6510a2968711e5385c68"
           }
-        },
-        {
-          "client_id": "161012924326-lvq3lfbhveps5f2g7dnsdcsn9f8lcls0.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC6Rmnqf94TcCJub0tz0lPp3Acf6KOMsG0"
+          "current_key": "AIzaSyDeNAPnWmoVx4fE9WzLRT60MFoapfTA2Fg"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "161012924326-lvq3lfbhveps5f2g7dnsdcsn9f8lcls0.apps.googleusercontent.com",
+              "client_id": "161012924326-vjltklgj50uhkb942ro0nmst7pujf5ov.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
