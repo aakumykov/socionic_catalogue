@@ -55,6 +55,9 @@ public class Preferences2_Fragment
 
         // Отображаю настройки
         setPreferenceScreen(preferenceScreen);
+
+        // Настраиваю зависимости
+        commentsSwitch.setDependency(cardsNotificationsKey);
     }
 
     @Override
