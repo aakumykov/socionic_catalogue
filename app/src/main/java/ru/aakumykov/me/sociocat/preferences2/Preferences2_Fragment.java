@@ -56,6 +56,18 @@ public class Preferences2_Fragment
         assemblePreferences();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
 
     private void createNotificationsPreferences() {
 
@@ -182,25 +194,60 @@ public class Preferences2_Fragment
         if (isEnabled)
             subscribe2topic(NotificationConstants.NEW_CARDS_CHANNEL_NAME, new iSubscribe2topicCallbacks() {
                 @Override
-                public void onSubscriptionSuccess() {
+                public void onSubscribeSuccess() {
                     showToast(R.string.PREFERENCES_subscription_on_new_cards_success);
                 }
 
                 @Override
-                public void onSubscriptionFailed(String errorMsg) {
+                public void onSubscribeFailed(String errorMsg) {
                     showToast(R.string.PREFERENCES_subscription_on_new_cards_failed);
                     revertPreferencesKey(key, false);
                 }
             });
         else
-            unsubscribeFromTopic(NotificationConstants.NEW_CARDS_CHANNEL_NAME);
+            unsubscribeFromTopic(NotificationConstants.NEW_CARDS_CHANNEL_NAME, new iUnsubscribeFromTopicCallbacks() {
+                @Override
+                public void onUnsubscribeSuccess() {
+                    showToast(R.string.PREFERENCES_unsubscribe_from_new_cards_success);
+                }
+
+                @Override
+                public void onUnsubscribeFailed(String errorMsg) {
+                    showToast(R.string.PREFERENCES_unsubscribe_from_new_cards_failed);
+                    revertPreferencesKey(key, true);
+                }
+            });
     }
 
     private void processNewCommentsNotificationPreference(String key, SharedPreferences sharedPreferences) {
         boolean isEnabled = sharedPreferences.getBoolean(key, false);
 
         if (isEnabled)
-            NotificationsHelper.
+            subscribe2topic(NotificationConstants.NEW_COMMENTS_CHANNEL_NAME, new iSubscribe2topicCallbacks() {
+                @Override
+                public void onSubscribeSuccess() {
+                    showToast(R.string.PREFERENCES_subscription_on_new_comments_success);
+                }
+
+                @Override
+                public void onSubscribeFailed(String errorMsg) {
+                    showToast(R.string.PREFERENCES_subscription_on_new_comments_failed);
+                    revertPreferencesKey(key, false);
+                }
+            });
+        else
+            unsubscribeFromTopic(NotificationConstants.NEW_COMMENTS_CHANNEL_NAME, new iUnsubscribeFromTopicCallbacks() {
+                @Override
+                public void onUnsubscribeSuccess() {
+                    showToast(R.string.PREFERENCES_unsubscribe_from_new_comments_success);
+                }
+
+                @Override
+                public void onUnsubscribeFailed(String errorMsg) {
+                    showToast(R.string.PREFERENCES_unsubscribe_from_new_comments_failed);
+                    revertPreferencesKey(key, true);
+                }
+            });
     }
 
     private void processPerformBackupPreference(String key, SharedPreferences sharedPreferences) {
@@ -210,13 +257,13 @@ public class Preferences2_Fragment
 
 
 
+    private void showToast(int messageId) {
+        MyUtils.showCustomToast(getContext(), messageId);
+    }
+
     private void revertPreferencesKey(String key, boolean toValue) {
         mSharedPreferences.edit().putBoolean(key, toValue).apply();
         showToast(R.string.PREFERENCES_error_changing_preference);
-    }
-
-    private void showToast(int messageId) {
-        MyUtils.showCustomToast(getContext(), messageId);
     }
 
 
@@ -260,21 +307,21 @@ public class Preferences2_Fragment
     }
 
 
-    private void unsubscribeFromTopic(String channelName) {
+    private void unsubscribeFromTopic(String channelName, iUnsubscribeFromTopicCallbacks callbacks) {
         PUSHSubscriptionHelper.unsubscribeFromTopic(channelName, new PUSHSubscriptionHelper.iUnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
-
+                callbacks.onUnsubscribeSuccess();
             }
 
             @Override
             public void onUnsubscribeError(String errorMsg) {
-
+                callbacks.onUnsubscribeFailed(errorMsg);
             }
         });
     }
 
-    private interface iUnscribeFromTopicCallbacks {
+    private interface iUnsubscribeFromTopicCallbacks {
         void onUnsubscribeSuccess();
         void onUnsubscribeFailed(String errorMsg);
     }
