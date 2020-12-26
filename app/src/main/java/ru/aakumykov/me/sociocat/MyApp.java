@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,14 +13,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
-import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
-import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.push_notifications.NewCardNotification_Helper;
-import ru.aakumykov.me.sociocat.push_notifications.NewCommentNotification_Helper;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -30,11 +23,54 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
+    private iUsersSingleton usersSingleton;
 
     // Методы Application
     @Override
     public void onCreate() {
         super.onCreate();
+        usersSingleton = UsersSingleton.getInstance();
+
+        // Подписываюсь на события изменения авторизации Firebase
+        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
+
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+            if (null != firebaseUser) {
+
+                String userId = firebaseUser.getUid();
+
+                try {
+                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                        @Override
+                        public void onUserRefreshSuccess(User user) {
+                            if (null != user)
+                                authorizeUser(user);
+                        }
+
+                        @Override
+                        public void onUserNotExists() {
+
+                        }
+
+                        @Override
+                        public void onUserRefreshFail(String errorMsg) {
+                            deauthorizeUser();
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    deauthorizeUser();
+                }
+
+            } else {
+                Log.e(TAG, "FirebaseUser == NULL");
+                deauthorizeUser();
+            }
+        });
+
         //logFCMRegistrationToken();
     }
 
@@ -56,6 +92,63 @@ public class MyApp extends Application {
                         Log.w(TAG, e);
                     }
                 });
+    }
+
+
+    private void subscribeToAuthorizationEvents() {
+
+        usersSingleton = UsersSingleton.getInstance();
+
+        // Подписываюсь на события изменения авторизации Firebase
+        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
+
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+            if (null != firebaseUser) {
+
+                String userId = firebaseUser.getUid();
+
+                try {
+                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                        @Override
+                        public void onUserRefreshSuccess(User user) {
+                            if (null != user)
+                                authorizeUser(user);
+                        }
+
+                        @Override
+                        public void onUserNotExists() {
+
+                        }
+
+                        @Override
+                        public void onUserRefreshFail(String errorMsg) {
+                            deauthorizeUser();
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    deauthorizeUser();
+                }
+
+            } else {
+                Log.e(TAG, "FirebaseUser == NULL");
+                deauthorizeUser();
+            }
+        });
+    }
+
+    private void authorizeUser(User user) {
+        Log.d(TAG, "authorizeUser(), "+user.getName());
+        EventBus.getDefault().post(new UserAuthorizedEvent(user));
+    }
+
+    private void deauthorizeUser() {
+        Log.d(TAG, "deauthorizeUser()");
+        EventBus.getDefault().post(new UserUnauthorizedEvent());
+        usersSingleton.clearCurrentUser();
     }
 
 }
