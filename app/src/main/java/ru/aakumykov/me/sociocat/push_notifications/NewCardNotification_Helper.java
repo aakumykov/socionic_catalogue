@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -13,13 +15,10 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.constants.NotificationConstants;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class NewCardNotification_Helper {
 
-    public static void processNotification(Context context, NewCardEvent newCardEvent) {
-
-        String currentUserId = AuthSingleton.currentUserId();
+    public static void processNotification(@NonNull Context context, @NonNull NewCardEvent newCardEvent, @Nullable String currentUserId) {
 
         if (null != currentUserId) {
 

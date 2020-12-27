@@ -3,12 +3,14 @@ package ru.aakumykov.me.sociocat.push_notifications;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -17,6 +19,16 @@ import ru.aakumykov.me.sociocat.models.Comment;
 public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "FCM_Service";
+    private String mCurrentUserId;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mCurrentUserId = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getString(PreferencesConstants.key_current_user_id, null);
+    }
 
     // FirebaseMessagingService
     @Override
@@ -71,10 +83,12 @@ public class FCMService extends FirebaseMessagingService {
             newCardEvent.setUserId(data.get(Card.KEY_USER_ID));
             newCardEvent.setUserName(data.get(Card.KEY_USER_NAME));
 
-        NewCardNotification_Helper.processNotification(this, newCardEvent);
+        NewCardNotification_Helper.processNotification(
+                this, newCardEvent, mCurrentUserId);
     }
 
     private void processNewCommentNotification(Map<String, String> data) {
+
         NewCommentEvent newCommentEvent = new NewCommentEvent();
             newCommentEvent.setCommentKey(data.get(Comment.KEY_KEY));
             newCommentEvent.setText(data.get(Comment.KEY_TEXT));
@@ -83,9 +97,8 @@ public class FCMService extends FirebaseMessagingService {
             newCommentEvent.setCardId(data.get(Comment.KEY_CARD_ID));
             newCommentEvent.setCardTitle(data.get(Comment.KEY_CARD_TITLE));
 
-        //EventBus.getDefault().post(newCommentEvent);
-
-        NewCommentNotification_Helper.processNotification(this, newCommentEvent);
+        NewCommentNotification_Helper.processNotification(
+                this, newCommentEvent, mCurrentUserId);
     }
 
 }
