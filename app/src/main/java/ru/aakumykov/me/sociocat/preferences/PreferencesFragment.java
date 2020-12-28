@@ -26,28 +26,13 @@ public class PreferencesFragment
     private final static String PER_USER_PREFS_KEY_DELIMITER = "__";
     private PreferenceScreen mPreferenceScreen;
     private SharedPreferences mSharedPreferences;
+    private String mCurrentUserId;
+
 
     public PreferencesFragment() {
+
     }
 
-    public void assemblePreferences() {
-        if (null != mPreferenceScreen && null != AuthSingleton.currentUserId())
-        {
-            createNotificationsPreferences();
-            createBackupPreferences();
-        }
-    }
-
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
-        setPreferenceScreen(mPreferenceScreen);
-
-        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
-
-        assemblePreferences();
-    }
 
     @Override
     public void onStart() {
@@ -62,9 +47,33 @@ public class PreferencesFragment
     }
 
 
+    // Собственные внешние методы
+    public void assemblePreferences() {
+        if (null != mPreferenceScreen && null != mCurrentUserId)
+        {
+            createNotificationsPreferences();
+            createBackupPreferences();
+        }
+    }
+
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+        mCurrentUserId = AuthSingleton.currentUserId();
+
+        mPreferenceScreen = getPreferenceManager().createPreferenceScreen(getContext());
+        setPreferenceScreen(mPreferenceScreen);
+
+        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+        assemblePreferences();
+    }
+
+
     private void createNotificationsPreferences() {
 
-        // ==== Категория "Уведомления" ====
+        // ==== Создание категории "Уведомления" ====
         PreferenceCategory categoryNotifications = createPreferenceCategory(
                 R.string.PREFERENCES_category_name_notifications,
                 mPreferenceScreen
@@ -72,10 +81,13 @@ public class PreferencesFragment
         mPreferenceScreen.addPreference(categoryNotifications);
 
 
-        // Переключатель "Карточки"
+        // Создание переключателя "Карточки"
         String cardsNotificationsKey = PreferencesConstants.key_notify_on_new_cards;
+        String cardsNotificationsKeyReal = cardsNotificationsKey +
+                PER_USER_PREFS_KEY_DELIMITER + mCurrentUserId;
+
         SwitchPreference cardsSwitch = createSwitchPreference(
-                cardsNotificationsKey,
+                cardsNotificationsKeyReal,
                 R.string.PREFERENCES_notify_on_new_cards_title,
                 R.string.PREFERENCES_notify_on_new_cards_description,
                 false
@@ -83,10 +95,13 @@ public class PreferencesFragment
         categoryNotifications.addPreference(cardsSwitch);
 
 
-        // Переключатель "Комментарии"
+        // Создание переключателя "Комментарии"
         String commentsNotificationsKey = PreferencesConstants.key_notify_on_new_comments;
+        String commentsNotificationsKeyReal = PreferencesConstants.key_notify_on_new_comments +
+                PER_USER_PREFS_KEY_DELIMITER + mCurrentUserId;
+
         SwitchPreference commentsSwitch = createSwitchPreference(
-                commentsNotificationsKey,
+                commentsNotificationsKeyReal,
                 R.string.PREFERENCES_notify_on_new_comments_title,
                 R.string.PREFERENCES_notify_on_new_comments_description,
                 false
@@ -99,7 +114,7 @@ public class PreferencesFragment
         if (!UsersSingleton.getInstance().currentUserIsAdmin())
             return;
 
-        // ==== Категория "Резервное копирование" ====
+        // ==== Создание категории "Резервное копирование" ====
         PreferenceCategory categoryBackup = createPreferenceCategory(
                 R.string.PREFERENCES_category_name_backup,
                 mPreferenceScreen
@@ -107,7 +122,7 @@ public class PreferencesFragment
         mPreferenceScreen.addPreference(categoryBackup);
 
 
-        // Выполнять резервное копирование
+        // Создание переключателя "Выполнять резервное копирование"
         String performBackupKey = PreferencesConstants.key_perform_database_backup;
         SwitchPreference performBackupSwitch = createSwitchPreference(
                 performBackupKey,
@@ -118,7 +133,7 @@ public class PreferencesFragment
         categoryBackup.addPreference(performBackupSwitch);
 
 
-        // Ключ доступа Dropbox
+        // Создание поля "Ключ доступа Dropbox"
         String dropboxAccessTokenKey = PreferencesConstants.dropbox_access_token_key;
         EditTextPreference dropboxAccessTokenEditText = createEditTextPreference(
                 dropboxAccessTokenKey,
@@ -169,7 +184,9 @@ public class PreferencesFragment
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-        switch (key) {
+        String functionalKey = extractFunctionalKey(key);
+
+        switch (functionalKey) {
             case PreferencesConstants.key_notify_on_new_cards:
                 processNewCardsNotificationPreference(key, sharedPreferences);
                 break;
@@ -316,4 +333,14 @@ public class PreferencesFragment
         void onUnsubscribeFailed(String errorMsg);
     }
 
+
+
+    private String extractFunctionalKey(String key) {
+        if (null == key)
+            return null;
+
+        String[] keyParts = key.split(PER_USER_PREFS_KEY_DELIMITER);
+
+        return keyParts[0];
+    }
 }
