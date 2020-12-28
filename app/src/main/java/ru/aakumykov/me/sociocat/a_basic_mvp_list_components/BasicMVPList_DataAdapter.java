@@ -136,7 +136,8 @@ public abstract class BasicMVPList_DataAdapter
 
     @Override
     public int getVisibleListSize() {
-        return mCurrentItemsList.size();
+        return getVisibleDataItems().size();
+//        return mCurrentItemsList.size();
     }
 
     @Override
