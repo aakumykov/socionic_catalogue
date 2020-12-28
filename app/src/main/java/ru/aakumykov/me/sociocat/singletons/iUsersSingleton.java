@@ -84,7 +84,7 @@ public interface iUsersSingleton {
     }
 
     interface RefreshCallbacks {
-        void onUserRefreshSuccess(User user);
+        void onUserRefreshSuccess(@NonNull User user);
         void onUserNotExists();
         void onUserRefreshFail(String errorMsg);
     }

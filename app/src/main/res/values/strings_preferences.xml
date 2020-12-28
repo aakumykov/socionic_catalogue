@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="PREFERENCES_ACTIVITY_page_title">App preferences</string>
+
+    <string name="PREFERENCES_category_name_notifications">Notifications</string>
+    <string name="PREFERENCES_category_name_backup">Backup</string>
+
+    <string name="PREFERENCES_notify_on_new_cards_title">New cards</string>
+    <string name="PREFERENCES_notify_on_new_cards_description">Notify about new cards</string>
+
+    <string name="PREFERENCES_notify_on_new_comments_title">Comments</string>
+    <string name="PREFERENCES_notify_on_new_comments_description">Notify about comments</string>
+
+    <string name="PREFERENCES_perform_backup_title">Database</string>
+    <string name="PREFERENCES_perform_backup_description">Perform database backup with this phone</string>
+
+    <string name="PREFERENCES_dropbox_access_token_title">Dropbox access token</string>
+    <string name="PREFERENCES_dropbox_access_token_description">Required for database backup</string>
+
+
+    <string name="PREFERENCES_subscription_on_new_cards_success">You are subscribed to cards</string>
+    <string name="PREFERENCES_subscription_on_new_cards_failed">Cards subscription failed</string>
+
+    <string name="PREFERENCES_subscription_on_new_comments_success">You are subscribed to comments</string>
+    <string name="PREFERENCES_subscription_on_new_comments_failed">Comments subscription failed</string>
+
+
+    <string name="PREFERENCES_unsubscribe_from_new_cards_success">You are unsubscribed from cards</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Failed to unsubscribe from cards</string>
+
+    <string name="PREFERENCES_unsubscribe_from_new_comments_success">You are unsubscribed from comments</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Failed to unsubscribe from comments</string>
+
+
+    <string name="PREFERENCES_error_changing_preference">Error changing preference</string>
+
+
+    <!-- К удалению-->
+    <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
+    <string name="PREFERENCES_category_backup_key" translatable="false">category_backup</string>
+</resources>

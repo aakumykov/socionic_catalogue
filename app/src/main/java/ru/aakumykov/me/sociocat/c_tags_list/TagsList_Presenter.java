@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
@@ -32,6 +31,7 @@ import ru.aakumykov.me.sociocat.c_tags_list.list_items.Tag_ListItem;
 import ru.aakumykov.me.sociocat.c_tags_list.list_utils.TagsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.c_tags_list.stubs.TagsList_ViewStub;
 import ru.aakumykov.me.sociocat.c_tags_list.view_holders.TagViewHolder;
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;

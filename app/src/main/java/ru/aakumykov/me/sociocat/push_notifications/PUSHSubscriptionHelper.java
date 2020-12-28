@@ -8,14 +8,14 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class PushSubscription_Helper {
+public class PUSHSubscriptionHelper {
 
-    public interface SubscriptionCallbacks {
+    public interface iSubscriptionCallbacks {
         void onSubscribeSuccess();
         void onSubscribeError(String errorMsg);
     }
 
-    public interface UnsubscriptionCallbacks {
+    public interface iUnsubscriptionCallbacks {
         void onUnsubscribeSuccess();
         void onUnsubscribeError(String errorMsg);
     }
@@ -24,7 +24,7 @@ public class PushSubscription_Helper {
     private static final String TAG = "NotificationsHelper";
 
 
-    public static void subscribe2topic(String topicName, SubscriptionCallbacks callbacks) {
+    public static void subscribe2topic(String topicName, iSubscriptionCallbacks callbacks) {
 
         FirebaseMessaging.getInstance().subscribeToTopic(topicName)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -42,7 +42,7 @@ public class PushSubscription_Helper {
                 });
     }
 
-    public static void unsubscribeFromTopic(String topicName, UnsubscriptionCallbacks callbacks) {
+    public static void unsubscribeFromTopic(String topicName, iUnsubscriptionCallbacks callbacks) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

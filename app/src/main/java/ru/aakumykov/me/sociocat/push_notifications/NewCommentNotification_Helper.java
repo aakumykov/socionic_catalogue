@@ -5,30 +5,32 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.NotificationConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.constants.Constants;
+import ru.aakumykov.me.sociocat.constants.NotificationConstants;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class NewCommentNotification_Helper {
 
-    public static void processNotification(Context context, NewCommentEvent newCommentEvent) {
+    public static void processNotification(@NonNull Context context, @NonNull NewCommentEvent newCommentEvent, @Nullable String currentUserId) {
 
-        String currentUserId = AuthSingleton.currentUserId();
+        if (null != currentUserId)
+        {
+            if (! currentUserId.equals(newCommentEvent.getUserId()))
+            {
+                int notificationId = newCommentEvent.getCommentKey().hashCode();
 
-//        if (null != currentUserId && !currentUserId.equals(newCommentEvent.getUserId()))
-//        {
-            int notificationId = newCommentEvent.getCommentKey().hashCode();
+                Notification notification = prepareNotification(context, newCommentEvent);
 
-            Notification notification = prepareNotification(context, newCommentEvent);
-
-            NotificationManagerCompat.from(context).notify(notificationId, notification);
-//        }
+                NotificationManagerCompat.from(context).notify(notificationId, notification);
+            }
+        }
     }
 
     private static Notification prepareNotification(Context context, NewCommentEvent newCommentEvent) {
@@ -41,7 +43,7 @@ public class NewCommentNotification_Helper {
 
         PendingIntent pendingIntent = preparePendingIntent(context, newCommentEvent);
 
-        return new NotificationCompat.Builder(context, NotificationConstants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS)
+        return new NotificationCompat.Builder(context, NotificationConstants.NEW_COMMENTS_CHANNEL_NAME)
                 .setSmallIcon(R.drawable.ic_notification_new_comment)
                 .setContentTitle(title)
                 .setContentText(shortMessage)

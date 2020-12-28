@@ -11,10 +11,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;

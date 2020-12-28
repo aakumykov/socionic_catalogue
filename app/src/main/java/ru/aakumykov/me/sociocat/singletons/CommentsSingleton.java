@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.AppConfig;
-import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;

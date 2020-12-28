@@ -25,8 +25,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +35,6 @@ import java.util.TimerTask;
 
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
@@ -47,15 +44,15 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.Refreshi
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.c_tags_list.TagsList_View;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.constants.Constants;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.d_backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -69,7 +66,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private boolean intentMessageAlreadyShown = false;
     private Menu mMenu;
     private MenuInflater mMenuInflater;
-    private iUsersSingleton usersSingleton;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -96,7 +92,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        subscribeToAuthorizationEvents();
         saveLastLoginTime();
         makeBackup();
     }
@@ -703,7 +698,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
             boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
+                    .getBoolean(PreferencesConstants.key_perform_database_backup, false);
             boolean backupIsRunning  = BackupService.isRunning();
 
             if (backupIsEnabled && isAdmin && !backupIsRunning) {
@@ -722,63 +717,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             if (null != menuItemSave)
                 menuItemSave.setEnabled(isEnabled);
         }
-    }
-
-
-    private void subscribeToAuthorizationEvents() {
-
-        usersSingleton = UsersSingleton.getInstance();
-
-        // Подписываюсь на события изменения авторизации Firebase
-        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-            if (null != firebaseUser) {
-
-                String userId = firebaseUser.getUid();
-
-                try {
-                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                        @Override
-                        public void onUserRefreshSuccess(User user) {
-                            if (null != user)
-                                authorizeUser(user);
-                        }
-
-                        @Override
-                        public void onUserNotExists() {
-
-                        }
-
-                        @Override
-                        public void onUserRefreshFail(String errorMsg) {
-                            deauthorizeUser();
-                        }
-                    });
-                }
-                catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                    e.printStackTrace();
-                    deauthorizeUser();
-                }
-
-            } else {
-                Log.e(TAG, "FirebaseUser == NULL");
-                deauthorizeUser();
-            }
-        });
-    }
-
-    private void authorizeUser(User user) {
-        Log.d(TAG, "authorizeUser(), "+user.getName());
-        EventBus.getDefault().post(new UserAuthorizedEvent(user));
-    }
-
-    private void deauthorizeUser() {
-        Log.d(TAG, "deauthorizeUser()");
-        EventBus.getDefault().post(new UserUnauthorizedEvent());
-        usersSingleton.clearCurrentUser();
     }
 
 }

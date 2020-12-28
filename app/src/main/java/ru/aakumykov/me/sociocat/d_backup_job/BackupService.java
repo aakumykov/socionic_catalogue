@@ -33,8 +33,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.AppConfig;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.constants.Constants;
+import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -85,7 +86,7 @@ public class BackupService extends Service {
 
     private boolean backupIsPossible() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        dropboxAccessToken = sharedPreferences.getString(Constants.PREFERENCE_KEY_dropbox_access_token, null);
+        dropboxAccessToken = sharedPreferences.getString(PreferencesConstants.dropbox_access_token_key, null);
         return !TextUtils.isEmpty(dropboxAccessToken);
     }
 
@@ -580,7 +581,7 @@ public class BackupService extends Service {
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 R.string.BACKUP_SERVICE_channel_title,
                 R.string.BACKUP_SERVICE_channel_description,
-                new NotificationsHelper.NotificationChannelCreationCallbacks() {
+                new NotificationsHelper.iNotificationChannelCreationCallbacks() {
                     @Override
                     public void onNotificationChannelCreateSuccess() {
 
@@ -694,7 +695,7 @@ public class BackupService extends Service {
     public static boolean isTimeToDoBackup(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
 
-        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_last_backup_time, -1);
+        long lastBackupTime = sharedPreferences.getLong(PreferencesConstants.last_backup_time_key, -1);
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
         long elapsedTime = currentTimeInSeconds - lastBackupTime;
 
@@ -705,7 +706,7 @@ public class BackupService extends Service {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
-        editor.putLong(Constants.PREFERENCE_KEY_last_backup_time, currentTimeInSeconds);
+        editor.putLong(PreferencesConstants.last_backup_time_key, currentTimeInSeconds);
         editor.apply();
     }
 

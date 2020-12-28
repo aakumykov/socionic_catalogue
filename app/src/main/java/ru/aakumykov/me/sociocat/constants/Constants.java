@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.constants;
 
 public final class Constants
 {
@@ -122,15 +122,6 @@ public final class Constants
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
 
 //    public final static String NOTIFICATIONS_CHANNEL_BACKUP_SERVICE = "new_comments";
-
-    public final static String PREFERENCE_KEY_is_first_run = "IS_FIRST_RUN";
-    public static final String PREFERENCE_KEY_last_backup_time = "LAST_BACKUP_TIME";
-
-    public final static String PREFERENCE_KEY_notify_about_new_cards = "notify_about_new_cards";
-    public final static String PREFERENCE_KEY_notify_on_comments = "notify_on_comments";
-
-    public final static String PREFERENCE_KEY_perform_database_backup = "perform_database_backup";
-    public final static String PREFERENCE_KEY_dropbox_access_token = "dropbox_access_token";
 
     public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 
