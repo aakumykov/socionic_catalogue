@@ -325,9 +325,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_comment_reply" />
-                            <entry key="sourceFile" value="C:\Users\Andrey\Desktop\ic_menu_logout.svg" />
+                            <entry key="outputName" value="ic_image_remove2" />
+                            <entry key="sourceFile" value="C:\Users\Andrey\Pictures\иконки для программы\ic_image_remove2.svg" />
                           </map>
                         </option>
                       </PersistentState>
