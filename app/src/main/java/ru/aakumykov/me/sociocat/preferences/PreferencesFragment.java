@@ -31,17 +31,10 @@ public class PreferencesFragment
     }
 
     public void assemblePreferences() {
-        if (null != mPreferenceScreen)
+        if (null != mPreferenceScreen && null != AuthSingleton.currentUserId())
         {
-            String currentUserId = AuthSingleton.currentUserId();
-
-            if (null == currentUserId)
-                return;
-
             createNotificationsPreferences();
-
-            if (UsersSingleton.getInstance().currentUserIsAdmin())
-                createBackupPreferences();
+            createBackupPreferences();
         }
     }
 
@@ -102,6 +95,10 @@ public class PreferencesFragment
     }
 
     private void createBackupPreferences() {
+
+        if (!UsersSingleton.getInstance().currentUserIsAdmin())
+            return;
+
         // ==== Категория "Резервное копирование" ====
         PreferenceCategory categoryBackup = createPreferenceCategory(
                 R.string.PREFERENCES_category_name_backup,
