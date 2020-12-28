@@ -367,6 +367,7 @@
     <string name="CARDS_LIST_error_user_key_missing">Неизвестный пользователь</string>
     <string name="CARDS_LIST_loading_cards_of_user">Получаем карточки пользователя «%1$s»</string>
     <string name="CARDS_LIST_cards_of_user">Карточки пользователя «%1$s»</string>
+    <string name="USER_SHOW_user_id">id пользователя</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

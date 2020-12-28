@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
@@ -41,6 +42,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.aboutView) TextView aboutView;
+    @BindView(R.id.userIdLabel) TextView userIdLabel;
+    @BindView(R.id.userIdView) TextView userIdView;
     @BindView(R.id.changePasswordWidget) View changePasswordWidget;
     @BindView(R.id.showUserCardsButton) Button showUserCardsButton;
     @BindView(R.id.showUserCommentsButton) Button showUserCommentsButton;
@@ -175,6 +178,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView
 
         aboutView.setText(user.getAbout());
 
+        displayUserId(user);
+
         if (presenter.canEditUser())
             MyUtils.show(changePasswordWidget);
         else
@@ -184,6 +189,19 @@ public class UserShow_View extends BaseView implements iUserShow.iView
         showUserCommentsCount(user);
 
         refreshMenu();
+    }
+
+    private void displayUserId(@NonNull User user) {
+        if (BuildConfig.DEBUG) {
+            userIdView.setText(user.getKey());
+            MyUtils.show(userIdLabel);
+            MyUtils.show(userIdView);
+        }
+        else {
+            userIdView.setText("");
+            MyUtils.hide(userIdLabel);
+            MyUtils.hide(userIdView);
+        }
     }
 
     @Override

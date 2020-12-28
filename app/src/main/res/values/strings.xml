@@ -371,6 +371,7 @@
     <string name="CARDS_LIST_error_user_key_missing">Unknown user</string>
     <string name="CARDS_LIST_loading_cards_of_user">Loading cards of user «%1$s»</string>
     <string name="CARDS_LIST_cards_of_user">Cards of user «%1$s»</string>
+    <string name="USER_SHOW_user_id">User id</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->
