@@ -614,13 +614,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     @Override
                     public void onYes() {
                         super.onYes();
-                        onCardsDeletionConfirmed();
+                        onDeleteCardsConfirmed();
                     }
                 }
         );
     }
 
-    private void onCardsDeletionConfirmed() {
+    private void onDeleteCardsConfirmed() {
 
         if (!isAdmin()) {
             mPageView.showSnackbar(R.string.CARDS_LIST_you_cannot_delete_cards, R.string.SNACKBAR_got_it, 10000);
@@ -629,10 +629,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             return;
         }
 
-        deleteCardsFromList(mListView.getSelectedItems());
+        deleteCards(mListView.getSelectedItems());
     }
 
-    private void deleteCardsFromList(List<BasicMVPList_DataItem> deletedItemsList) {
+    private void deleteCards(List<BasicMVPList_DataItem> deletedItemsList) {
 
         if (hasInterruptFlag()) {
             mPageView.showToast(R.string.CARDS_LIST_deletion_process_interrupted);
@@ -660,7 +660,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             public void onCardDeleteSuccess(@NonNull Card card) {
                 mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
                 mListView.removeItem(dataItem);
-                deleteCardsFromList(deletedItemsList);
+                deleteCards(deletedItemsList);
             }
 
             @Override
