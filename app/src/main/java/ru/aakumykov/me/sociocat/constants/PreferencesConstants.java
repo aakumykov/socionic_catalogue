@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.constants;
 
 public class PreferencesConstants {
-    public final static String is_first_run_key = "IS_FIRST_RUN";
+
     public static final String last_backup_time_key = "LAST_BACKUP_TIME";
 
     public final static String key_notify_on_new_cards = "notify_on_new_cards";
