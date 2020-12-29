@@ -17,7 +17,7 @@ public interface iCardsComplexSingleton {
     }
 
     interface iCheckConditionCallback {
-        void doCheck(iCheckFinishCallback callback);
+        void doCheck();
     }
 
     interface iCheckFinishCallback {

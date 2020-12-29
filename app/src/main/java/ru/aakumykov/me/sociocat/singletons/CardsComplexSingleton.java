@@ -91,12 +91,7 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
                 });*/
 
         for (iCheckConditionCallback condition : checkConditionsList) {
-            condition.doCheck(new iCheckFinishCallback() {
-                @Override
-                public void onCheckFinished() {
-
-                }
-            });
+            condition.doCheck();
         }
     }
 
