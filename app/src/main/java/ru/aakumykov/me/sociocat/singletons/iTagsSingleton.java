@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.singletons;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -33,6 +34,10 @@ public interface iTagsSingleton {
             @Nullable UpdateCallbacks callbacks
     );
 
+    void checkTagExists(@Nullable String tagName, ExistanceCallbacks callbacks);
+
+
+
     interface TagCallbacks {
         void onTagSuccess(Tag tag);
         void onTagFail(String errorMsg);
@@ -56,5 +61,10 @@ public interface iTagsSingleton {
     interface ListCallbacks {
         void onTagsListSuccess(List<Tag> tagsList);
         void onTagsListFail(String errorMsg);
+    }
+
+    interface ExistanceCallbacks {
+        void onTagExists(@NonNull String tagName);
+        void onTagNotExists(@Nullable String tagName);
     }
 }

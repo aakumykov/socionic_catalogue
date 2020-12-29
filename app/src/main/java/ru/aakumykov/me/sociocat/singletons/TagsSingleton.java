@@ -238,6 +238,28 @@ public class TagsSingleton implements iTagsSingleton {
 
     }
 
+    @Override
+    public void checkTagExists(@Nullable String tagName, ExistanceCallbacks callbacks) {
+
+        if (null == tagName) {
+            callbacks.onTagNotExists(tagName);
+            return;
+        }
+        tagsCollection.document(tagName).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        callbacks.onTagExists(tagName);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onTagNotExists(tagName);
+                    }
+                });
+    }
+
     private boolean tagIsValid(Tag tag) {
         if (null == tag)
             return false;
