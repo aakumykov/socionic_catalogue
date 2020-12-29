@@ -159,6 +159,7 @@
         <activity android:name=".tag_edit.TagEdit_View" />
 
         <activity android:name=".preferences.PreferencesActivity" android:exported="true" />
+        <activity android:name=".z_rules_test.RulesTestActivity" android:exported="true"/>
 
         <!--
 <activity
