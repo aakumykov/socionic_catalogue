@@ -59,7 +59,7 @@ public class UsersSingleton implements iUsersSingleton {
 
 
     @Override
-    public void createUser(String userId, String userName, String email, CreateCallbacks callbacks) {
+    public void createUser(String userId, String userName, String email, iCreateCallbacks callbacks) {
 
         final User user = new User(userId);
         user.setEmail(email);
@@ -107,7 +107,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void getUserById(String userId, ReadCallbacks callbacks) {
+    public void getUserById(String userId, iReadCallbacks callbacks) {
         usersCollection.document(userId).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -131,7 +131,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void getUserByEmail(String email, ReadCallbacks callbacks) {
+    public void getUserByEmail(String email, iReadCallbacks callbacks) {
         Query query = usersCollection.whereEqualTo(Constants.USER_EMAIL_KEY, email);
 
         query.get()
@@ -169,7 +169,7 @@ public class UsersSingleton implements iUsersSingleton {
     /* Запись пользователя на сервере обновляется "вручную", выборочно (не все поля).
     Сохранять просто объект User нельзя! Это ведёт к потерям в полях cardsKeys, commentsKeys и других. */
     @Override
-    public void saveUser(User user, @Nullable SaveCallbacks callbacks) {
+    public void saveUser(User user, @Nullable iSaveCallbacks callbacks) {
 
         if (null == user)
             throw new IllegalArgumentException("User cannot be null");
@@ -225,7 +225,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks) {
+    public void deleteUser(User user, boolean recursive, iDeleteCallbacks callbacks) {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
@@ -267,7 +267,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void listUsers(ListCallbacks callbacks) {
+    public void listUsers(iListCallbacks callbacks) {
         usersCollection.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -303,19 +303,19 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void checkNameExists(String name, CheckExistanceCallbacks callbacks) {
+    public void checkNameExists(String name, iCheckExistanceCallbacks callbacks) {
         checkUserWithAttributeExists(Constants.USER_NAME_KEY, name, callbacks);
     }
 
     @Override
-    public void checkEmailExists(String email, CheckExistanceCallbacks callbacks) {
+    public void checkEmailExists(String email, iCheckExistanceCallbacks callbacks) {
         checkUserWithAttributeExists(Constants.USER_EMAIL_KEY, email, callbacks);
     }
 
 
 
     @Override
-    public void setEmailVerified(String userId, boolean isVerified, EmailVerificationCallbacks callbacks) {
+    public void setEmailVerified(String userId, boolean isVerified, iEmailVerificationCallbacks callbacks) {
 
         if (TextUtils.isEmpty(userId)) {
             callbacks.OnEmailVerificationFail("There is no id in User object.");
@@ -339,18 +339,18 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
+    public void storeDeviceId(String userId, String deviceId, iSaveDeviceIdCallbacks callbacks) {
         throw new RuntimeException("Не реализовано, так как не используется");
     }
 
     @Override
-    public void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId, CardCommentsSubscriptionCallbacks callbacks) {
+    public void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId, iCardCommentsSubscriptionCallbacks callbacks) {
         throw new RuntimeException("Не реализовано, так как не используется");
     }
 
     @Override
     public void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
-                                           CreateOrUpdateExternalUser_Callbacks callbacks) {
+                                           iCreateOrUpdateExternalUser_Callbacks callbacks) {
         if (TextUtils.isEmpty(internalUserId)) {
             callbacks.onCreateOrUpdateExternalUser_Error("internalUserId cannot be empty");
             return;
@@ -366,11 +366,11 @@ public class UsersSingleton implements iUsersSingleton {
             return;
         }
 
-        getUserById(internalUserId, new ReadCallbacks() {
+        getUserById(internalUserId, new iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 user.setName(userName);
-                saveUser(user, new SaveCallbacks() {
+                saveUser(user, new iSaveCallbacks() {
                         @Override
                         public void onUserSaveSuccess(User user) {
                             callbacks.onCreateOrUpdateExternalUser_Success(user);
@@ -386,7 +386,7 @@ public class UsersSingleton implements iUsersSingleton {
             @Override
             public void onUserReadFail(String errorMsg) {
 
-                createUser(internalUserId, userName, "", new CreateCallbacks() {
+                createUser(internalUserId, userName, "", new iCreateCallbacks() {
                     @Override
                     public void onUserCreateSuccess(User user) {
                         callbacks.onCreateOrUpdateExternalUser_Success(user);
@@ -402,7 +402,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
+    public void refreshUserFromServer(String userId, iRefreshCallbacks callbacks) {
 
         if (TextUtils.isEmpty(userId)) {
             callbacks.onUserRefreshFail("User id cannot be empty");
@@ -414,7 +414,7 @@ public class UsersSingleton implements iUsersSingleton {
             return;
         }
 
-        getUserById(userId, new ReadCallbacks() {
+        getUserById(userId, new iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
 
@@ -426,7 +426,7 @@ public class UsersSingleton implements iUsersSingleton {
                 storeCurrentUser(user);
                 callbacks.onUserRefreshSuccess(user);
 
-                readAdminsListFromServer(new ReadAdminsListCallbacks() {
+                readAdminsListFromServer(new iReadAdminsListCallbacks() {
                     @Override
                     public void onReadAdminsListSuccess() {
 
@@ -485,7 +485,7 @@ public class UsersSingleton implements iUsersSingleton {
     @Override
     public void updateUserFromServer(String userId) {
 
-        getUserById(userId, new ReadCallbacks() {
+        getUserById(userId, new iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 currentUser = user;
@@ -499,7 +499,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void changeEmail(@NonNull String newEmail, ChangeEmailCallbacks callbacks)
+    public void changeEmail(@NonNull String newEmail, iChangeEmailCallbacks callbacks)
     {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -521,7 +521,7 @@ public class UsersSingleton implements iUsersSingleton {
                         currentUser.setEmail(newEmail);
 
 
-                        saveUser(currentUser, new SaveCallbacks() {
+                        saveUser(currentUser, new iSaveCallbacks() {
                                 @Override
                                 public void onUserSaveSuccess(User user) {
                                     callbacks.onEmailChangeSuccess();
@@ -549,9 +549,35 @@ public class UsersSingleton implements iUsersSingleton {
         return firebaseFirestore.collection(Constants.USERS_PATH);
     }
 
+    @Override
+    public void checkUserExists(@Nullable String userId, iUserExistenceCallbacks callbacks) {
+        if (null == userId) {
+            callbacks.onUserNotExists();
+            return;
+        }
+
+        usersCollection.document(userId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (null != user)
+                            callbacks.inUserExists(user);
+                        else
+                            callbacks.onUserNotExists();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUserNotExists();
+                    }
+                });
+    }
+
 
     // Внутренние методы
-    private void checkUserWithAttributeExists(String attrName, String attrValue, CheckExistanceCallbacks callbacks) {
+    private void checkUserWithAttributeExists(String attrName, String attrValue, iCheckExistanceCallbacks callbacks) {
         Query query = usersCollection.whereEqualTo(attrName, attrValue);
 
         query.get()
@@ -574,7 +600,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
 /*
-    private void readCurrentUserFromServer(ReadCallbacks callbacks) throws Exception {
+    private void readCurrentUserFromServer(iReadCallbacks callbacks) throws Exception {
         if (null == currentUser)
             throw new RuntimeException("Current user id null");
 
@@ -582,7 +608,7 @@ public class UsersSingleton implements iUsersSingleton {
         if (TextUtils.isEmpty(userId))
             throw new RuntimeException("User id cannot be empty.");
 
-        getUserById(userId, new ReadCallbacks() {
+        getUserById(userId, new iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 currentUser = user;
@@ -596,7 +622,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 */
 
-    private void readAdminsListFromServer(ReadAdminsListCallbacks callbacks) {
+    private void readAdminsListFromServer(iReadAdminsListCallbacks callbacks) {
         adminsCollection.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

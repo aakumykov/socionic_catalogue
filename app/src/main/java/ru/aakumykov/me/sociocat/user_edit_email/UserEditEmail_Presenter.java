@@ -128,7 +128,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
             }
         });
 
-        /*usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+        /*usersSingleton.checkEmailExists(email, new iUsersSingleton.iCheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
 
@@ -173,7 +173,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
         view.setViewState(iUserEditEmail.ViewState.PROGRESS, R.string.USER_EDIT_EMAIL_updating_email);
 
-        usersSingleton.changeEmail(newEmail, new iUsersSingleton.ChangeEmailCallbacks() {
+        usersSingleton.changeEmail(newEmail, new iUsersSingleton.iChangeEmailCallbacks() {
             @Override
             public void onEmailChangeSuccess() {
 //                view.setViewState(iUserEditEmail.PageViewState.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);

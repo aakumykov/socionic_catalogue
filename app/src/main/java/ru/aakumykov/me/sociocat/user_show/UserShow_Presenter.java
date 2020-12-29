@@ -144,7 +144,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
         view.setState(iUserShow.ViewState.PROGRESS, -1, null);
 
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+        usersSingleton.getUserById(userId, new iUsersSingleton.iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 mCurrentUser = user;

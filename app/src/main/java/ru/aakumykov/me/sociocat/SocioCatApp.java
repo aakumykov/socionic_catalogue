@@ -42,7 +42,7 @@ public class SocioCatApp extends Application {
                 String userId = firebaseUser.getUid();
 
                 try {
-                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.iRefreshCallbacks() {
                         @Override
                         public void onUserRefreshSuccess(@NonNull User user) {
                             authorizeUser(user);

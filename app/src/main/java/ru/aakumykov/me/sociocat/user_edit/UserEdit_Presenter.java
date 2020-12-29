@@ -223,7 +223,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
         view.setState(iUserEdit.ViewState.PROGRESS, R.string.USER_EDIT_loading_user_profile);
 
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+        usersSingleton.getUserById(userId, new iUsersSingleton.iReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 editedUser = user;
@@ -322,7 +322,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         view.disableEditForm();
         view.showProgressMessage(R.string.USER_EDIT_saving_user_profile);
 
-        usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
+        usersSingleton.saveUser(editedUser, new iUsersSingleton.iSaveCallbacks() {
             @Override
             public void onUserSaveSuccess(User user) {
                 usersSingleton.storeCurrentUser(user);

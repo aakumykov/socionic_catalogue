@@ -309,7 +309,7 @@ public class Login_Presenter implements
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
-        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.iRefreshCallbacks() {
             @Override
             public void onUserRefreshSuccess(@NonNull User user) {
                 usersSingleton.storeCurrentUser(user);
@@ -352,7 +352,7 @@ public class Login_Presenter implements
         String userName = googleSignInAccount.getDisplayName();
         String email = googleSignInAccount.getEmail();
 
-        usersSingleton.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
+        usersSingleton.createUser(userId, userName, email, new iUsersSingleton.iCreateCallbacks() {
             @Override
             public void onUserCreateSuccess(User user) {
                 usersSingleton.storeCurrentUser(user);
@@ -429,7 +429,7 @@ public class Login_Presenter implements
                     internalUserId,
                     externalUserId,
                     userName,
-                    new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks() {
+                    new iUsersSingleton.iCreateOrUpdateExternalUser_Callbacks() {
                         @Override
                         public void onCreateOrUpdateExternalUser_Success(User user) {
                             view.hideProgressMessage();

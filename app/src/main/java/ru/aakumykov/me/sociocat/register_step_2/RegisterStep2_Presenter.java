@@ -91,7 +91,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             return;
         }
 
-        usersSingleton.checkNameExists(tempUserName, new iUsersSingleton.CheckExistanceCallbacks() {
+        usersSingleton.checkNameExists(tempUserName, new iUsersSingleton.iCheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
 
@@ -122,7 +122,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         String userId = AuthSingleton.currentUserId();
         String email = AuthSingleton.emailOfCurrentUser();
 
-        usersSingleton.createUser(userId, tempUserName, email, new iUsersSingleton.CreateCallbacks() {
+        usersSingleton.createUser(userId, tempUserName, email, new iUsersSingleton.iCreateCallbacks() {
             @Override
             public void onUserCreateSuccess(User user) {
                 usersSingleton.storeCurrentUser(user);
@@ -146,7 +146,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             setPassword();
         }
         else {
-            usersSingleton.checkNameExists(view.getUserName(), new iUsersSingleton.CheckExistanceCallbacks() {
+            usersSingleton.checkNameExists(view.getUserName(), new iUsersSingleton.iCheckExistanceCallbacks() {
                 @Override
                 public void onCheckComplete() {
 
@@ -194,7 +194,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         User user = usersSingleton.getCurrentUser();
         user.setName(view.getUserName());
 
-        usersSingleton.saveUser(user, new iUsersSingleton.SaveCallbacks() {
+        usersSingleton.saveUser(user, new iUsersSingleton.iSaveCallbacks() {
             @Override
             public void onUserSaveSuccess(User user) {
                 view.setViewState(iRegisterStep2.PageViewState.SUCCESS, R.string.REGISTER2_registration_success);

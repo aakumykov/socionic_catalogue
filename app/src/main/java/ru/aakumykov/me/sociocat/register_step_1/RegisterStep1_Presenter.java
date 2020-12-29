@@ -90,7 +90,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
         view.setState(iRegisterStep1.ViewStates.CHECKING, -1, null);
 
-        usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+        usersSingleton.checkEmailExists(email, new iUsersSingleton.iCheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
 
