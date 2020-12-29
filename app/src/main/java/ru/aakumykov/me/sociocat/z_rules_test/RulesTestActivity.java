@@ -14,12 +14,21 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.z_base_view.BaseView;
 
 public class RulesTestActivity extends BaseView {
@@ -28,6 +37,7 @@ public class RulesTestActivity extends BaseView {
     private AuthSingleton mAuthSingleton = AuthSingleton.getInstance();
     private UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
     private CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
+    private TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +50,11 @@ public class RulesTestActivity extends BaseView {
     @Override public void onUserLogout() { }
 
     @OnClick(R.id.updateNonexistentUserButton)
-    void updateNonexistentUser() {
+    void onUpdateNonexistentUserButtonClicked() {
+        threadPoolTest();
+    }
 
+    private void updateNonexistentUser() {
         String badUserId = "qwerty";
 
         WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
@@ -68,4 +81,70 @@ public class RulesTestActivity extends BaseView {
                     }
                 });
     }
+
+    private void threadPoolTest() {
+
+        List<String> checksList = new ArrayList<>();
+        checksList.add("userId");
+        checksList.add("tag1");
+        checksList.add("БЛ");
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                mUsersSingleton.checkUserExists("qwerty", new iUsersSingleton.iUserExistenceCallbacks() {
+                    @Override
+                    public void inUserExists(User user) {
+                        checksList.remove("userId");
+                    }
+
+                    @Override
+                    public void onUserNotExists() {
+
+                    }
+                });
+            }
+        });
+
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                mTagsSingleton.checkTagExists("БЛ", new iTagsSingleton.ExistanceCallbacks() {
+                    @Override
+                    public void onTagExists(@NonNull String tagName) {
+                        checksList.remove(tagName);
+                    }
+
+                    @Override
+                    public void onTagNotExists(@Nullable String tagName) {
+
+                    }
+                });
+            }
+        });
+
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                mTagsSingleton.checkTagExists("tag1", new iTagsSingleton.ExistanceCallbacks() {
+                    @Override
+                    public void onTagExists(@NonNull String tagName) {
+                        checksList.remove(tagName);
+                    }
+
+                    @Override
+                    public void onTagNotExists(@Nullable String tagName) {
+
+                    }
+                });
+            }
+        });
+
+
+        executorService.shutdown();
+        Log.d(TAG, "Работа выполнена: "+checksList);
+    }
+
 }
