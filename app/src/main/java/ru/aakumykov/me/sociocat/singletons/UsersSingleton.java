@@ -562,7 +562,7 @@ public class UsersSingleton implements iUsersSingleton {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         User user = documentSnapshot.toObject(User.class);
                         if (null != user)
-                            callbacks.inUserExists(user);
+                            callbacks.onUserExists(user);
                         else
                             callbacks.onUserNotExists();
                     }

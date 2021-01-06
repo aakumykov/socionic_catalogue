@@ -67,7 +67,7 @@ public interface iUsersSingleton {
     }
 
     interface iUserExistenceCallbacks {
-        void inUserExists(User user);
+        void onUserExists(User user);
         void onUserNotExists();
     }
 
