@@ -268,7 +268,7 @@ public class ComplexSingleton {
         WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
         writeBatch.delete(cardRef);
 
-        /*checksList.add(new Runnable() {
+        checksList.add(new Runnable() {
             @Override
             public void run() {
                 String userId = card.getUserId();
@@ -290,7 +290,7 @@ public class ComplexSingleton {
                     }
                 });
             }
-        });*/
+        });
 
         /*for (String tagName : card.getTags()) {
             checksList.add(new Runnable() {
@@ -321,7 +321,7 @@ public class ComplexSingleton {
         }*/
 
         SleepingThread sleepingThread = new SleepingThread(
-                30,
+                10,
                 new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
@@ -347,7 +347,9 @@ public class ComplexSingleton {
                             return;
                         }
 
-                        writeBatch.commit()
+                        Log.d(TAG, "Можно удалять");
+
+                        /*writeBatch.commit()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -363,7 +365,7 @@ public class ComplexSingleton {
                                         callbacks.onCardDeleteFailed(errorMsg);
                                         e.printStackTrace();
                                     }
-                                });
+                                });*/
                     }
                 }
         );
