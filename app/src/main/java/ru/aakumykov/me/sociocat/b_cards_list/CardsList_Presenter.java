@@ -655,7 +655,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         String msg = TextUtils.getText(mPageView.getLocalContext(), R.string.CARDS_LIST_deleting_card, card.getName());
         setViewState(new CancelableProgressViewState(msg));
 
-        mComplexSingleton.deleteCard(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
+        mComplexSingleton.deleteCardWithChecks(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(@NonNull Card card) {
                 mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
@@ -669,6 +669,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                 Log.e(TAG, errorMsg);
             }
         });
+
     }
 
     private void showErrorLoadingMore() {

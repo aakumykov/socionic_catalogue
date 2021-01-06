@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.singletons;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -14,12 +15,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.z_rules_test.SleepingThread;
 
 public class ComplexSingleton {
 
@@ -238,6 +244,96 @@ public class ComplexSingleton {
                     }
                 });
     }
+
+    public void deleteCardWithChecks(@Nullable Card card, iComplexSingleton_CardDeletionCallbacks callbacks) {
+
+        if (null == card) {
+            callbacks.onCardDeleteFailed("Card cannot be null");
+            return;
+        }
+
+        List<Runnable> checksList = new ArrayList<>();
+        Map<String,Boolean> checksMap = new HashMap<>();
+
+        checksList.add(new Runnable() {
+            @Override
+            public void run() {
+                String userId = card.getUserId();
+                mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iUserExistenceCallbacks() {
+                    @Override
+                    public void inUserExists(User user) {
+                        synchronized (checksMap) {
+                            checksMap.put(userId, true);
+                        }
+                    }
+
+                    @Override
+                    public void onUserNotExists() {
+                        synchronized (checksMap) {
+                            checksMap.put(userId, false);
+                        }
+                    }
+                });
+            }
+        });
+
+        for (String tagName : card.getTags()) {
+            checksList.add(new Runnable() {
+                @Override
+                public void run() {
+                    mTagsSingleton.checkTagExists(tagName, new iTagsSingleton.ExistanceCallbacks() {
+                        @Override
+                        public void onTagExists(@NonNull String tagName) {
+                            synchronized (checksMap) {
+                                checksMap.put(tagName, true);
+                            }
+                        }
+
+                        @Override
+                        public void onTagNotExists(@Nullable String tagName) {
+                            synchronized (checksMap) {
+                                checksMap.put(tagName, false);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        new SleepingThread(
+                30,
+                new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+                        return checkResults.size() == checksList.size();
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+
+                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+
+                        boolean allChecksAreOk = checkResults.stream().allMatch(new Predicate<Boolean>() {
+                            @Override
+                            public boolean test(Boolean aBoolean) {
+                                return aBoolean;
+                            }
+                        });
+
+                        if (allChecksAreOk)
+                            deleteCard(card, callbacks);
+                        else
+                            callbacks.onCardDeleteFailed("Not all checks are Ok");
+                    }
+                }
+        ).start();
+
+        for (Runnable runnable : checksList)
+            runnable.run();
+    }
+
 
 
     public interface iComplexSingleton_TagDeletionCallbacks {
