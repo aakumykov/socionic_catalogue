@@ -96,7 +96,7 @@ public class RulesTestActivity extends BaseView {
             public void run() {
                 mUsersSingleton.checkUserExists("qwerty", new iUsersSingleton.iUserExistenceCallbacks() {
                     @Override
-                    public void inUserExists(User user) {
+                    public void onUserExists(User user) {
                         checksList.remove("userId");
                     }
 

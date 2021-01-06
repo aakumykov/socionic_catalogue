@@ -39,7 +39,7 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
             public void doCheck() {
                 mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iUserExistenceCallbacks() {
                     @Override
-                    public void inUserExists(User user) {
+                    public void onUserExists(User user) {
                         DocumentReference userRef = mUsersSingleton.getUsersCollection().document(userId);
                         writeBatch.update(userRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
                     }

@@ -255,15 +255,30 @@ public class ComplexSingleton {
         List<Runnable> checksList = new ArrayList<>();
         Map<String,Boolean> checksMap = new HashMap<>();
 
-        checksList.add(new Runnable() {
+        String cardKey = card.getKey();
+        String userKey = card.getUserId();
+
+        CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
+        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
+        CollectionReference usersCollection = mUsersSingleton.getUsersCollection();
+
+        DocumentReference cardRef = cardsCollection.document(cardKey);
+        DocumentReference cardAuthorRef = usersCollection.document(userKey);
+
+        WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
+        writeBatch.delete(cardRef);
+
+        /*checksList.add(new Runnable() {
             @Override
             public void run() {
                 String userId = card.getUserId();
                 mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iUserExistenceCallbacks() {
                     @Override
-                    public void inUserExists(User user) {
+                    public void onUserExists(User user) {
                         synchronized (checksMap) {
                             checksMap.put(userId, true);
+                            writeBatch.update(cardAuthorRef,
+                                    User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
                         }
                     }
 
@@ -275,9 +290,9 @@ public class ComplexSingleton {
                     }
                 });
             }
-        });
+        });*/
 
-        for (String tagName : card.getTags()) {
+        /*for (String tagName : card.getTags()) {
             checksList.add(new Runnable() {
                 @Override
                 public void run() {
@@ -286,6 +301,11 @@ public class ComplexSingleton {
                         public void onTagExists(@NonNull String tagName) {
                             synchronized (checksMap) {
                                 checksMap.put(tagName, true);
+                                writeBatch.update(
+                                        tagsCollection.document(tagName),
+                                        Constants.CARDS_IN_TAG_PATH,
+                                        FieldValue.arrayRemove(card.getKey())
+                                );
                             }
                         }
 
@@ -298,9 +318,9 @@ public class ComplexSingleton {
                     });
                 }
             });
-        }
+        }*/
 
-        new SleepingThread(
+        SleepingThread sleepingThread = new SleepingThread(
                 30,
                 new Callable<Boolean>() {
                     @Override
@@ -322,16 +342,36 @@ public class ComplexSingleton {
                             }
                         });
 
-                        if (allChecksAreOk)
-                            deleteCard(card, callbacks);
-                        else
+                        if (!allChecksAreOk) {
                             callbacks.onCardDeleteFailed("Not all checks are Ok");
+                            return;
+                        }
+
+                        writeBatch.commit()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        callbacks.onCardDeleteSuccess(card);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        String errorMsg = e.getMessage();
+                                        if (null == errorMsg)
+                                            errorMsg = "Unknown error";
+                                        callbacks.onCardDeleteFailed(errorMsg);
+                                        e.printStackTrace();
+                                    }
+                                });
                     }
                 }
-        ).start();
+        );
 
-        for (Runnable runnable : checksList)
-            runnable.run();
+//        for (Runnable runnable : checksList)
+//            runnable.run();
+
+        sleepingThread.start();
     }
 
 
