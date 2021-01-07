@@ -159,8 +159,11 @@ public abstract class BasicMVPList_Presenter
 
     protected void setViewState(@NonNull iViewState viewState) {
         mCurrentViewState = viewState;
-
         mPageView.setViewState(viewState);
+    }
+
+    protected void runFromBackground(@NonNull Runnable runnable) {
+        mPageView.runDelayed(runnable, 0);
     }
 
     protected void setNeutralViewState() {
