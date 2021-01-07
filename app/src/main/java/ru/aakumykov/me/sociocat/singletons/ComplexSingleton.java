@@ -268,6 +268,11 @@ public class ComplexSingleton {
                                 checksMap.put(tagName, false);
                             }
                         }
+
+                        @Override
+                        public void onTagExistsCheckFailed(@NonNull String errorMsg) {
+
+                        }
                     });
                 }
             });

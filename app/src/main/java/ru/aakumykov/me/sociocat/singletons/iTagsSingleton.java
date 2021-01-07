@@ -66,5 +66,6 @@ public interface iTagsSingleton {
     interface ExistanceCallbacks {
         void onTagExists(@NonNull String tagName);
         void onTagNotExists(@Nullable String tagName);
+        void onTagExistsCheckFailed(@NonNull String errorMsg);
     }
 }

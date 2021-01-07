@@ -23,6 +23,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.utils.ErrorUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton implements iTagsSingleton {
@@ -245,17 +246,23 @@ public class TagsSingleton implements iTagsSingleton {
             callbacks.onTagNotExists(tagName);
             return;
         }
+
         tagsCollection.document(tagName).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        callbacks.onTagExists(tagName);
+                        if (documentSnapshot.exists())
+                            callbacks.onTagExists(tagName);
+                        else
+                            callbacks.onTagNotExists(tagName);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onTagNotExists(tagName);
+                        callbacks.onTagExistsCheckFailed(
+                                ErrorUtils.getErrorFromException(e, "Unknown error checking tag existance")
+                        );
                     }
                 });
     }

@@ -79,6 +79,11 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
                         public void onTagNotExists(@Nullable String tagName) {
 
                         }
+
+                        @Override
+                        public void onTagExistsCheckFailed(@NonNull String errorMsg) {
+
+                        }
                     });
                 }
             });

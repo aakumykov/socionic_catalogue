@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
@@ -94,14 +93,24 @@ public class RulesTestActivity extends BaseView {
         executorService.submit(new Runnable() {
             @Override
             public void run() {
-                mUsersSingleton.checkUserExists("qwerty", new iUsersSingleton.iUserExistenceCallbacks() {
+                mUsersSingleton.checkUserExists("qwerty", new iUsersSingleton.iCheckExistanceCallbacks() {
                     @Override
-                    public void onUserExists(User user) {
-                        checksList.remove("userId");
+                    public void onCheckComplete() {
+
                     }
 
                     @Override
-                    public void onUserNotExists() {
+                    public void onExists() {
+
+                    }
+
+                    @Override
+                    public void onNotExists() {
+
+                    }
+
+                    @Override
+                    public void onCheckFail(String errorMsg) {
 
                     }
                 });
@@ -121,6 +130,11 @@ public class RulesTestActivity extends BaseView {
                     public void onTagNotExists(@Nullable String tagName) {
 
                     }
+
+                    @Override
+                    public void onTagExistsCheckFailed(@NonNull String errorMsg) {
+
+                    }
                 });
             }
         });
@@ -136,6 +150,11 @@ public class RulesTestActivity extends BaseView {
 
                     @Override
                     public void onTagNotExists(@Nullable String tagName) {
+
+                    }
+
+                    @Override
+                    public void onTagExistsCheckFailed(@NonNull String errorMsg) {
 
                     }
                 });
