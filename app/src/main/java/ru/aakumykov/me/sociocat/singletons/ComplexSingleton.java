@@ -18,14 +18,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.z_rules_test.SleepingThread;
+import ru.aakumykov.me.sociocat.z_rules_test.DoubleSleepingThread;
 
 public class ComplexSingleton {
 
@@ -292,7 +291,7 @@ public class ComplexSingleton {
             }
         });
 
-        /*for (String tagName : card.getTags()) {
+        for (String tagName : card.getTags()) {
             checksList.add(new Runnable() {
                 @Override
                 public void run() {
@@ -318,21 +317,23 @@ public class ComplexSingleton {
                     });
                 }
             });
-        }*/
+        }
 
-        SleepingThread sleepingThread = new SleepingThread(
+        new DoubleSleepingThread(
                 10,
-                new Callable<Boolean>() {
+                new DoubleSleepingThread.iDSTCallbacks() {
                     @Override
-                    public Boolean call() throws Exception {
-                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
-                        return checkResults.size() == checksList.size();
-                    }
-                },
-                new Runnable() {
-                    @Override
-                    public void run() {
+                    public void onSleepingStart() {
 
+                    }
+
+                    @Override
+                    public void onSleepingTick(int counter) {
+
+                    }
+
+                    @Override
+                    public void onSleepingEnd() {
                         List<Boolean> checkResults = new ArrayList<>(checksMap.values());
 
                         boolean allChecksAreOk = checkResults.stream().allMatch(new Predicate<Boolean>() {
@@ -367,13 +368,23 @@ public class ComplexSingleton {
                                     }
                                 });*/
                     }
+
+                    @Override
+                    public boolean isReadyToFinish() {
+                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+                        boolean isReadyToFinish = checkResults.size() == checksList.size();
+                        return isReadyToFinish;
+                    }
+
+                    @Override
+                    public void onError(@NonNull String errorMsg) {
+                        callbacks.onCardDeleteFailed(errorMsg);
+                    }
                 }
-        );
+        ).start();
 
-//        for (Runnable runnable : checksList)
-//            runnable.run();
-
-        sleepingThread.start();
+        for (Runnable aCheck : checksList)
+            aCheck.run();
     }
 
 
