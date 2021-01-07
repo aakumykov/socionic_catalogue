@@ -658,14 +658,20 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         mComplexSingleton.deleteCardWithChecks(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(@NonNull Card card) {
-                mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
+                runFromBackground( () -> {
+                    mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
+                });
+
                 mListView.removeItem(dataItem);
+
                 deleteCards(deletedItemsList);
             }
 
             @Override
             public void onCardDeleteFailed(@NonNull String errorMsg) {
-                setViewState(new ErrorViewState(mPageView.getText(R.string.CARDS_LIST_error_deleting_card, card.getTitle()), errorMsg));
+                runFromBackground(() -> {
+                    setViewState(new ErrorViewState(mPageView.getText(R.string.CARDS_LIST_error_deleting_card, card.getTitle()), errorMsg));
+                });
                 Log.e(TAG, errorMsg);
             }
         });

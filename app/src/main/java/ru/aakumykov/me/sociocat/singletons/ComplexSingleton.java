@@ -24,7 +24,7 @@ import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.z_rules_test.DoubleSleepingThread;
+import ru.aakumykov.me.sociocat.z_rules_test.SleepingThread;
 
 public class ComplexSingleton {
 
@@ -319,16 +319,16 @@ public class ComplexSingleton {
             });
         }
 
-        new DoubleSleepingThread(
+        new SleepingThread(
                 10,
-                new DoubleSleepingThread.iDSTCallbacks() {
+                new SleepingThread.iSleepingThreadCallbacks() {
                     @Override
                     public void onSleepingStart() {
 
                     }
 
                     @Override
-                    public void onSleepingTick(int counter) {
+                    public void onSleepingTick(int secondsToWakeUp) {
 
                     }
 
@@ -343,14 +343,7 @@ public class ComplexSingleton {
                             }
                         });
 
-                        if (!allChecksAreOk) {
-                            callbacks.onCardDeleteFailed("Not all checks are Ok");
-                            return;
-                        }
-
-                        Log.d(TAG, "Можно удалять");
-
-                        /*writeBatch.commit()
+                        writeBatch.commit()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -366,18 +359,17 @@ public class ComplexSingleton {
                                         callbacks.onCardDeleteFailed(errorMsg);
                                         e.printStackTrace();
                                     }
-                                });*/
+                                });
                     }
 
                     @Override
-                    public boolean isReadyToFinish() {
+                    public boolean isReadyToWakeUpNow() {
                         List<Boolean> checkResults = new ArrayList<>(checksMap.values());
-                        boolean isReadyToFinish = checkResults.size() == checksList.size();
-                        return isReadyToFinish;
+                        return checkResults.size() == checksList.size();
                     }
 
                     @Override
-                    public void onError(@NonNull String errorMsg) {
+                    public void onSleepingError(@NonNull String errorMsg) {
                         callbacks.onCardDeleteFailed(errorMsg);
                     }
                 }

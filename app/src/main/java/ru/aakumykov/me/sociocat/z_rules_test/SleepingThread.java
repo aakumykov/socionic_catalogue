@@ -1,81 +1,53 @@
 package ru.aakumykov.me.sociocat.z_rules_test;
 
-import java.util.concurrent.Callable;
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.TimeUnit;
 
 public class SleepingThread extends Thread {
 
-    private int mTimeToSleep;
-    private boolean mIsFinishCondition = false;
-    private final Callable<Boolean> mFinishConditionCheckCallable;
-    private final Runnable mOnFinishActionRunnable;
+    private int mTimeout;
+    private iSleepingThreadCallbacks callbacks;
 
-
-    public SleepingThread(int maxSecondsToWait, Callable<Boolean> finishCondition, Runnable onFinishAction) {
-        mTimeToSleep = maxSecondsToWait;
-        mFinishConditionCheckCallable = finishCondition;
-        mOnFinishActionRunnable = onFinishAction;
+    public SleepingThread(
+            int timeToSleep,
+            iSleepingThreadCallbacks DSTCallbacks
+    ) {
+        mTimeout = timeToSleep;
+        callbacks = DSTCallbacks;
     }
 
     @Override
     public synchronized void start() {
-        while (mTimeToSleep > 0 && !mIsFinishCondition) {
-            sleepAPieceOfTime();
-        }
-        mOnFinishActionRunnable.run();
-    }
+        super.start(); // ?
 
-    private void sleepAPieceOfTime() {
-        try {
-            TimeUnit.SECONDS.sleep(1);
-            decreaseTimeCounter();
-            checkFinishCondition();
-        }
-        catch (InterruptedException e) {
-            setFinishFlag();
-        }
-    }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                callbacks.onSleepingStart();
 
-    private void setFinishFlag() {
-        mIsFinishCondition = true;
-    }
+                while (mTimeout >= 0 && !callbacks.isReadyToWakeUpNow()) {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-    private void decreaseTimeCounter() {
-        mTimeToSleep--;
-    }
+                    callbacks.onSleepingTick(mTimeout);
 
-    private void checkFinishCondition() {
-        try {
-            mIsFinishCondition = mFinishConditionCheckCallable.call();
-        } catch (Exception e) {
-            setFinishFlag();
-        }
-    }
+                    mTimeout--;
+                }
 
-    private void sleepWhileHasTime() {
-
-        boolean isFinishCondition = false;
-
-        try {
-            isFinishCondition = mFinishConditionCheckCallable.call();
-        } catch (Exception e) {
-            isFinishCondition = true;
-        }
-
-        if (0 == mTimeToSleep || isFinishCondition) {
-            mOnFinishActionRunnable.run();
-            return;
-        }
-        else {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                mOnFinishActionRunnable.run();
-                return;
+                callbacks.onSleepingEnd();
             }
+        }).start();
+    }
 
-            mTimeToSleep--;
-            sleepWhileHasTime();
-        }
+    public interface iSleepingThreadCallbacks {
+        void onSleepingStart();
+        void onSleepingTick(int secondsToWakeUp);
+        void onSleepingEnd();
+        boolean isReadyToWakeUpNow();
+        void onSleepingError(@NonNull String errorMsg);
     }
 }
