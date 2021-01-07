@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -293,32 +292,16 @@ public class ComplexSingleton {
 
                     @Override
                     public void onSleepingEnd() {
-                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+                        /*List<Boolean> checkResults = new ArrayList<>(checksMap.values());
 
                         boolean allChecksAreOk = checkResults.stream().allMatch(new Predicate<Boolean>() {
                             @Override
                             public boolean test(Boolean aBoolean) {
                                 return aBoolean;
                             }
-                        });
+                        });*/
 
-                        /*writeBatch.commit()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        callbacks.onCardDeleteSuccess(card);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        String errorMsg = e.getMessage();
-                                        if (null == errorMsg)
-                                            errorMsg = "Unknown error";
-                                        callbacks.onCardDeleteFailed(errorMsg);
-                                        e.printStackTrace();
-                                    }
-                                });*/
+                        executeCardDeletion(card, writeBatch, callbacks);
                     }
 
                     @Override
@@ -338,6 +321,25 @@ public class ComplexSingleton {
             aCheck.run();
     }
 
+    private void executeCardDeletion(@NonNull Card card, @NonNull WriteBatch writeBatch, @NonNull iComplexSingleton_CardDeletionCallbacks callbacks) {
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardDeleteSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String errorMsg = e.getMessage();
+                        if (null == errorMsg)
+                            errorMsg = "Unknown error";
+                        callbacks.onCardDeleteFailed(errorMsg);
+                        e.printStackTrace();
+                    }
+                });
+    }
 
 
     public interface iComplexSingleton_TagDeletionCallbacks {
