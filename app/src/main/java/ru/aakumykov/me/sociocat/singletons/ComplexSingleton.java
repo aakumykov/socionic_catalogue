@@ -188,62 +188,6 @@ public class ComplexSingleton {
     }
 
 
-    public void deleteCard(@NonNull Card card, iComplexSingleton_CardDeletionCallbacks callbacks) {
-        
-        String cardKey = card.getKey();
-        String userKey = card.getUserId();
-
-        CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
-        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
-        CollectionReference usersCollection = mUsersSingleton.getUsersCollection();
-
-        DocumentReference cardRef = cardsCollection.document(cardKey);
-        DocumentReference cardAuthorRef = usersCollection.document(userKey);
-
-        WriteBatch writeBatch = mFirebaseFirestore.batch();
-        writeBatch.delete(cardRef);
-        writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
-
-        for (String tagName : card.getTags()) {
-            DocumentReference tagRef = tagsCollection.document(tagName);
-            writeBatch.update(tagRef, Constants.CARDS_IN_TAG_PATH, FieldValue.arrayRemove(card.getKey()));
-        }
-        
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        if (card.isImageCard()) {
-                            mStorageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
-                                @Override
-                                public void onDeleteSuccess() {
-                                    callbacks.onCardDeleteSuccess(card);
-                                }
-
-                                @Override
-                                public void onDeleteFail(String errorMSg) {
-                                    callbacks.onCardDeleteFailed(errorMSg);
-                                }
-                            });
-                        }
-                        else
-                            callbacks.onCardDeleteSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String errorMsg = e.getMessage();
-                        if (null == errorMsg)
-                            errorMsg = "Error removing card: "+card;
-                   
-                        callbacks.onCardDeleteFailed(errorMsg);
-                        Log.e(TAG, errorMsg, e);
-                    }
-                });
-    }
-
     public void deleteCardWithChecks(@Nullable Card card, iComplexSingleton_CardDeletionCallbacks callbacks) {
 
         if (null == card) {
