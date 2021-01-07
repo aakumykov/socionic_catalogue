@@ -24,8 +24,9 @@ public interface iUsersSingleton {
     void saveUser(User user, @Nullable iSaveCallbacks callbacks);
     void deleteUser(User user, boolean recursive, iDeleteCallbacks callbacks);
     void listUsers(iListCallbacks callbacks);
-    void checkNameExists(String name, iCheckExistanceCallbacks callbacks);
-    void checkEmailExists(String email, iCheckExistanceCallbacks callbacks);
+    void checkNameExists(@Nullable String name, iCheckExistanceCallbacks callbacks);
+    void checkEmailExists(@Nullable String email, iCheckExistanceCallbacks callbacks);
+    void checkUserExists(@Nullable String userId, iCheckExistanceCallbacks callbacks);
     void setEmailVerified(String userId, boolean isVerified, final iEmailVerificationCallbacks callbacks);
 
     void storeDeviceId(String userId, String deviceId, iSaveDeviceIdCallbacks callbacks);
@@ -53,8 +54,6 @@ public interface iUsersSingleton {
 
     CollectionReference getUsersCollection();
 
-    void checkUserExists(@Nullable String userId, iUserExistenceCallbacks callbacks);
-
 
     interface iCreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -64,11 +63,6 @@ public interface iUsersSingleton {
     interface iReadCallbacks {
         void onUserReadSuccess(User user);
         void onUserReadFail(String errorMsg);
-    }
-
-    interface iUserExistenceCallbacks {
-        void onUserExists(User user);
-        void onUserNotExists();
     }
 
     interface iSaveCallbacks {

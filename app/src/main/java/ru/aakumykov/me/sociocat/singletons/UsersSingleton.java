@@ -303,15 +303,31 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void checkNameExists(String name, iCheckExistanceCallbacks callbacks) {
+    public void checkNameExists(@Nullable String name, iCheckExistanceCallbacks callbacks) {
+        if (null == name) {
+            callbacks.onNotExists();
+            return;
+        }
         checkUserWithAttributeExists(Constants.USER_NAME_KEY, name, callbacks);
     }
 
     @Override
-    public void checkEmailExists(String email, iCheckExistanceCallbacks callbacks) {
+    public void checkEmailExists(@Nullable String email, iCheckExistanceCallbacks callbacks) {
+        if (null == email) {
+            callbacks.onNotExists();
+            return;
+        }
         checkUserWithAttributeExists(Constants.USER_EMAIL_KEY, email, callbacks);
     }
 
+    @Override
+    public void checkUserExists(@Nullable String userId, iCheckExistanceCallbacks callbacks) {
+        if (null == userId) {
+            callbacks.onNotExists();
+            return;
+        }
+        checkUserWithAttributeExists(Constants.USER_NAME_KEY, userId, callbacks);
+    }
 
 
     @Override
@@ -547,32 +563,6 @@ public class UsersSingleton implements iUsersSingleton {
     @Override
     public CollectionReference getUsersCollection() {
         return firebaseFirestore.collection(Constants.USERS_PATH);
-    }
-
-    @Override
-    public void checkUserExists(@Nullable String userId, iUserExistenceCallbacks callbacks) {
-        if (null == userId) {
-            callbacks.onUserNotExists();
-            return;
-        }
-
-        usersCollection.document(userId).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
-                        if (null != user)
-                            callbacks.onUserExists(user);
-                        else
-                            callbacks.onUserNotExists();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onUserNotExists();
-                    }
-                });
     }
 
 

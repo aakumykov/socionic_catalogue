@@ -37,15 +37,25 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
         checkConditionsList.add(new iCheckConditionCallback() {
             @Override
             public void doCheck() {
-                mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iUserExistenceCallbacks() {
+                mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iCheckExistanceCallbacks() {
                     @Override
-                    public void onUserExists(User user) {
+                    public void onCheckComplete() {
+
+                    }
+
+                    @Override
+                    public void onExists() {
                         DocumentReference userRef = mUsersSingleton.getUsersCollection().document(userId);
                         writeBatch.update(userRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
                     }
 
                     @Override
-                    public void onUserNotExists() {
+                    public void onNotExists() {
+
+                    }
+
+                    @Override
+                    public void onCheckFail(String errorMsg) {
 
                     }
                 });

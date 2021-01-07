@@ -215,9 +215,14 @@ public class ComplexSingleton {
             @Override
             public void run() {
                 String userId = card.getUserId();
-                mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iUserExistenceCallbacks() {
+                mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iCheckExistanceCallbacks() {
                     @Override
-                    public void onUserExists(User user) {
+                    public void onCheckComplete() {
+
+                    }
+
+                    @Override
+                    public void onExists() {
                         synchronized (checksMap) {
                             checksMap.put(userId, true);
                             writeBatch.update(cardAuthorRef,
@@ -226,10 +231,15 @@ public class ComplexSingleton {
                     }
 
                     @Override
-                    public void onUserNotExists() {
+                    public void onNotExists() {
                         synchronized (checksMap) {
                             checksMap.put(userId, false);
                         }
+                    }
+
+                    @Override
+                    public void onCheckFail(String errorMsg) {
+
                     }
                 });
             }
@@ -287,7 +297,7 @@ public class ComplexSingleton {
                             }
                         });
 
-                        writeBatch.commit()
+                        /*writeBatch.commit()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -303,7 +313,7 @@ public class ComplexSingleton {
                                         callbacks.onCardDeleteFailed(errorMsg);
                                         e.printStackTrace();
                                     }
-                                });
+                                });*/
                     }
 
                     @Override
