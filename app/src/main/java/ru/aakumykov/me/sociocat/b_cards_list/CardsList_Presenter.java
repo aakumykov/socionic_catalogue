@@ -42,6 +42,7 @@ import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -148,6 +149,13 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         return new CardsList_ItemsTextFilter();
     }
 
+    @Override
+    public void onSelectItemClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
+        if (!AuthSingleton.isLoggedIn())
+            return;
+
+        super.onSelectItemClicked(basicDataViewHolder);
+    }
 
     public void onCardEdited(@Nullable Card oldCard, @Nullable Card newCard) {
 
