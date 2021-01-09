@@ -43,7 +43,9 @@ public class CommentsList_Presenter
 //    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
 //    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private final boolean mInterruptFlag = false;
+    private String mUserId;
 
+    
     public CommentsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);
     }
@@ -64,12 +66,12 @@ public class CommentsList_Presenter
     private void makeStartDesision() {
         Intent inputIntent = mPageView.getInputIntent();
 
-        String userId = inputIntent.getStringExtra(Constants.USER_ID);
+        mUserId = inputIntent.getStringExtra(Constants.USER_ID);
 
-        if (null == userId)
+        if (null == mUserId)
             loadAllComments();
         else
-            loadCommentsOfUser(userId);
+            loadCommentsOfUser(mUserId);
 
     }
 
@@ -142,11 +144,15 @@ public class CommentsList_Presenter
 
     @Override
     public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
-        BasicMVPList_DataItem dataItem = mListView.getLastDataItem();
+        BasicMVPList_DataItem lastDataItem = mListView.getLastDataItem();
 
-        if (null != dataItem) {
+        if (null != lastDataItem) {
             mListView.showLoadmoreItem(R.string.no_more);
+            return;
         }
+
+        Comment lastComment = (Comment) lastDataItem.getPayload();
+
 
     }
 
