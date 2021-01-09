@@ -44,7 +44,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
 
     @Override
     protected void setActivityView() {
-        setContentView(R.layout.tags_activity);
+        setContentView(R.layout.tags_list_activity);
         ButterKnife.bind(this);
     }
 
