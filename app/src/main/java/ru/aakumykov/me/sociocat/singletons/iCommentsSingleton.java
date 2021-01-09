@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -16,12 +17,18 @@ public interface iCommentsSingleton {
         NO_RATING
     }
 
-    void loadList(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, ListCallbacks callbacks);
+    void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks);
+    void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks);
+    void loadCommentsForCard(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, ListCallbacks callbacks);
+
     void loadComment(String commentKey, LoadCommentCallbacks callbacks);
+
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
+
     void deleteCommentsForCard(String cardId) throws Exception;
+
     void changeCommentRating(CommentRatingAction commentRatingAction, Comment comment, String userId, ChangeRatingCallbacks callbacks);
 
 

@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.b_comments_list;
 
-import android.util.Log;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
@@ -18,12 +18,9 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
@@ -32,21 +29,19 @@ import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTex
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_comments_list.view_holders.CommentViewHolder;
 import ru.aakumykov.me.sociocat.constants.Constants;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
-import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsList_Presenter
         extends BasicMVPList_Presenter
         implements iCommentsList_ItemClickListener
 {
     private static final String TAG = CommentsList_Presenter.class.getSimpleName();
-    private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
-    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
-    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
+    private final CommentsSingleton mCommentsSingleton = CommentsSingleton.getInstance();
+//    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
+//    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private final boolean mInterruptFlag = false;
 
     public CommentsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -57,7 +52,47 @@ public class CommentsList_Presenter
     @Override
     protected void onColdStart() {
         super.onColdStart();
-        loadList();
+
+        mPageView.runDelayed(new Runnable() {
+            @Override
+            public void run() {
+                makeStartDesision();
+            }
+        }, 500);
+    }
+
+    private void makeStartDesision() {
+        Intent inputIntent = mPageView.getInputIntent();
+
+        String userId = inputIntent.getStringExtra(Constants.USER_ID);
+
+        if (null == userId)
+            loadAllComments();
+        else
+            loadSpecificComments(inputIntent);
+
+    }
+
+    private void loadAllComments() {
+
+        setRefreshingViewState();
+
+        mCommentsSingleton.loadComments(null, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                setNeutralViewState();
+                mListView.setList(incapsulate2dataListItems(list));
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+            }
+        });
+    }
+
+    private void loadSpecificComments(@NonNull Intent inputIntent) {
+
     }
 
     @Override
@@ -144,13 +179,13 @@ public class CommentsList_Presenter
 
         setRefreshingViewState();
 
-        mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
+        /*mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
             @Override
-            public void onTagsListSuccess(List<Tag> tagsList) {
+            public void onTagsListSuccess(List<Comment> commentsList) {
                 setNeutralViewState();
 
                 mListView.setList(
-                        incapsulate2dataListItems(tagsList)
+                        incapsulate2dataListItems(commentsList)
                 );
             }
 
@@ -158,18 +193,20 @@ public class CommentsList_Presenter
             public void onTagsListFail(String errorMsg) {
                 setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMsg);
             }
-        });
+        });*/
+
+//        mCommentsSingleton.load
     }
 
-    private List<BasicMVPList_ListItem> incapsulate2dataListItems(List<Tag> tagsList) {
+    private List<BasicMVPList_ListItem> incapsulate2dataListItems(List<Comment> commentsList) {
         List<BasicMVPList_ListItem> dataItemList = new ArrayList<>();
-        for (Tag tag : tagsList)
-            dataItemList.add(new CommentsList_Item(tag));
+        for (Comment comment : commentsList)
+            dataItemList.add(new CommentsList_Item(comment));
         return dataItemList;
     }
 
 
-    public void onDeleteMenuItemClicked() {
+    /*public void onDeleteMenuItemClicked() {
 
         int count = mListView.getSelectedItemsCount();
 
@@ -209,9 +246,9 @@ public class CommentsList_Presenter
                     }
                 }
         );
-    }
+    }*/
 
-    private void onTagsDeletionConfirmed() {
+    /*private void onTagsDeletionConfirmed() {
 
         if (!mUsersSingleton.currentUserIsAdmin()) {
             mPageView.showSnackbar(R.string.TAGS_LIST_you_cannot_delete_tags, R.string.SNACKBAR_got_it, 10000);
@@ -221,9 +258,9 @@ public class CommentsList_Presenter
         }
 
         deleteTagsFromList(mListView.getSelectedItems());
-    }
+    }*/
 
-    private void deleteTagsFromList(List<BasicMVPList_DataItem> itemsList) {
+    /*private void deleteTagsFromList(List<BasicMVPList_DataItem> itemsList) {
 
         if (hasInterruptFlag()) {
             mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
@@ -260,21 +297,22 @@ public class CommentsList_Presenter
                 Log.e(TAG, errorMsg);
             }
         });
-    }
+    }*/
 
 
-    public void onTagEdited(Tag oldTag, Tag newTag) {
-        if (null != oldTag && null != newTag)
+    // TODO: нужно ли?
+    public void onTagEdited(Comment oldComment, Comment newComment) {
+        if (null != oldComment && null != newComment)
         {
 //            int position = ((TagsList_DataAdapter) mListView).updateItemInList(oldTag, newTag);
 
-            CommentsList_Item newTagListItem = new CommentsList_Item(newTag);
+            CommentsList_Item newTagListItem = new CommentsList_Item(newComment);
 
             int position = mListView.findAndUpdateItem(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
                 public boolean onCompareWithListItemPayload(Object itemPayload) {
                     Tag tagFromList = (Tag) itemPayload;
-                    return tagFromList.getKey().equals(oldTag.getKey());
+                    return tagFromList.getKey().equals(oldComment.getKey());
                 }
             });
 
@@ -283,9 +321,9 @@ public class CommentsList_Presenter
         }
     }
 
-    public boolean canDeleteTag() {
+    /*public boolean canDeleteTag() {
         return mUsersSingleton.currentUserIsAdmin();
-    }
+    }*/
 }
 
 

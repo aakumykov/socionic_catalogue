@@ -67,7 +67,7 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
         mItemClickListener.onItemClicked(this);
     }
 
-    @OnLongClick(R.id.listItem)
+    @OnLongClick(R.id.elementView)
     void onItemLongClicked() {
         mItemClickListener.onItemLongClicked(this);
     }

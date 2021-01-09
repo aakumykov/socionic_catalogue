@@ -260,9 +260,8 @@ public class TagsSingleton implements iTagsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onTagExistsCheckFailed(
-                                ErrorUtils.getErrorFromException(e, "Unknown error checking tag existance")
-                        );
+                        callbacks.onTagExistsCheckFailed(ErrorUtils.getErrorFromException(e, "Unknown error checking tag existance"));
+                        e.printStackTrace();
                     }
                 });
     }

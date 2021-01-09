@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.b_comments_list.CommentsList_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
@@ -270,11 +271,10 @@ public class UserShow_View extends BaseView implements iUserShow.iView
 
     @Override
     public void goShowUserComments(@NonNull User user) {
-        /*Intent intent = new Intent(this, CommentsList_View.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(Constants.USER_ID, userKey);
-        startActivity(intent);*/
-        showToast(R.string.not_implemented_yet);
+        Intent intent = new Intent(this, CommentsList_View.class);
+//        intent.setAction(Intent.ACTION_VIEW);
+//        intent.putExtra(Constants.USER_ID, user.getKey());
+        startActivity(intent);
     }
 
 

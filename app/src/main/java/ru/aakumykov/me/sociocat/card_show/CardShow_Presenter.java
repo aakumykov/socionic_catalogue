@@ -461,7 +461,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         else
             dataAdapter.showCommentsThrobber2(insertPosition);
 
-        commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
+        commentsSingleton.loadCommentsForCard(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 if (null == insertPosition) {

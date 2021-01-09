@@ -27,27 +27,33 @@ import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.ErrorUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentsSingleton implements iCommentsSingleton {
 
     private final static String TAG = "CommentsSingleton";
 
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
-    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
+    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private final CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
+    private final CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private final CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
-    /* Одиночка */
-    private static volatile CommentsSingleton ourInstance;
-    public synchronized static CommentsSingleton getInstance() {
-        synchronized (CommentsSingleton.class) {
-            if (null == ourInstance) ourInstance = new CommentsSingleton();
-            return ourInstance;
+
+    public static iCommentsSingleton.CommentRatingAction determineRatingAction(@Nullable User user, String commentKey) {
+        if (null == user) {
+            return iCommentsSingleton.CommentRatingAction.NO_RATING;
+        }
+        else {
+            if (user.alreadyRateUpComment(commentKey)) {
+                return CommentRatingAction.RATE_UP;
+            } else if (user.alreadyRateDownComment(commentKey)) {
+                return CommentRatingAction.RATE_DOWN;
+            } else {
+                return CommentRatingAction.NO_RATING;
+            }
         }
     }
-    private CommentsSingleton() { }
-    /* Одиночка */
 
 
     @Override
@@ -153,7 +159,26 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void loadList(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endBeforeComment, ListCallbacks callbacks) {
+    public void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks) {
+        Query query = commentsCollection;
+
+        if (null != startingComment)
+            query = query.startAfter(startingComment.getKey());
+
+        query = query.orderBy(Comment.KEY_KEY, Query.Direction.DESCENDING);
+
+        query = query.limitToLast(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
+
+        executeQuery(query, callbacks);
+    }
+
+    @Override
+    public void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks) {
+
+    }
+
+    @Override
+    public void loadCommentsForCard(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endBeforeComment, ListCallbacks callbacks) {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_CREATED_AT)
@@ -283,21 +308,41 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
 
-    public static iCommentsSingleton.CommentRatingAction determineRatingAction(@Nullable User user, String commentKey) {
-        if (null == user) {
-            return iCommentsSingleton.CommentRatingAction.NO_RATING;
-        }
-        else {
-            if (user.alreadyRateUpComment(commentKey)) {
-                return CommentRatingAction.RATE_UP;
-            } else if (user.alreadyRateDownComment(commentKey)) {
-                return CommentRatingAction.RATE_DOWN;
-            } else {
-                return CommentRatingAction.NO_RATING;
-            }
-        }
+
+    private void executeQuery(@NonNull Query query, ListCallbacks callbacks) {
+        query
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        callbacks.onCommentsLoadSuccess(
+                                extractCommentsFromQuerySnapshot(queryDocumentSnapshots)
+                        );
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCommentsLoadError(ErrorUtils.getErrorFromException(e, "Unknown error loading comments"));
+                        e.printStackTrace();
+                    }
+                });
     }
 
+
+    private List<Comment> extractCommentsFromQuerySnapshot(@NonNull QuerySnapshot queryDocumentSnapshots) {
+        List<Comment> list = new ArrayList<>();
+        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+            try {
+                Comment comment = documentSnapshot.toObject(Comment.class);
+                list.add(comment);
+            } catch (Exception e) {
+                Log.e(TAG, ErrorUtils.getErrorFromException(e, "Error extracting Comment from DocumentSnapshot"));
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 
 
     public static class UnknownCommentRatingActionException extends IllegalArgumentException {
@@ -305,4 +350,17 @@ public class CommentsSingleton implements iCommentsSingleton {
             super(message);
         }
     }
+
+
+    // Одиночка
+    private static volatile CommentsSingleton ourInstance;
+    public synchronized static CommentsSingleton getInstance() {
+        synchronized (CommentsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CommentsSingleton();
+            return ourInstance;
+        }
+    }
+    private CommentsSingleton() { }
+    // Одиночка
+
 }

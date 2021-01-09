@@ -20,7 +20,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresente
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
@@ -80,13 +79,13 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         return true;
     }
 
-    @Override
+    /*@Override
     protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState viewState) {
         super.setSomeItemSelectedViewState(viewState);
 
         if (((CommentsList_Presenter) mPresenter).canDeleteTag())
             inflateMenu(R.menu.tags_list_delete);
-    }
+    }*/
 
     @Override
     protected BasicMVPList_Presenter preparePresenter() {
@@ -110,7 +109,7 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
 
     @Override
     public void setDefaultPageTitle() {
-        setPageTitle(R.string.TAGS_LIST_page_title);
+        setPageTitle(R.string.COMMENTS_LIST_page_title);
     }
 
     @Override
@@ -144,9 +143,9 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     @Override
     protected void processActivityResult() {
         switch (mActivityRequestCode) {
-            case Constants.CODE_EDIT_TAG:
+            /*case Constants.CODE_EDIT_TAG:
                 processTagEditionResult(mActivityResultCode, mActivityResultData);
-                break;
+                break;*/
             default:
                 super.processActivityResult();
                 break;
@@ -183,7 +182,7 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
                 .create();*/
     }
 
-    private void processTagEditionResult(int resultCode, @Nullable Intent data) {
+    /*private void processTagEditionResult(int resultCode, @Nullable Intent data) {
         if (RESULT_OK == resultCode) {
             if (null != data) {
                 Tag oldTag = data.getParcelableExtra(Constants.OLD_TAG);
@@ -192,6 +191,6 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
                 ((CommentsList_Presenter) mPresenter).onTagEdited(oldTag, newTag);
             }
         }
-    }
+    }*/
 
 }

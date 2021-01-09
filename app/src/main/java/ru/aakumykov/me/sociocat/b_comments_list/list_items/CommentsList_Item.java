@@ -19,7 +19,10 @@ public class CommentsList_Item extends BasicMVPList_DataItem {
     @NonNull
     @Override
     public String toString() {
-        return "Tag { " + getComment().getText().substring(0, 20) + " }";
+        String text = getComment().getText();
+        return "Comment { " +
+                getComment().getText().substring(Math.min(text.length(), 20)) +
+                " }";
     }
 
     private Comment getComment() {
