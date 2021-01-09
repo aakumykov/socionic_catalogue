@@ -175,6 +175,15 @@ public class CommentsSingleton implements iCommentsSingleton {
     @Override
     public void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks) {
 
+        Query query = commentsCollection;
+
+        query = query.orderBy(Comment.KEY_KEY);
+
+        query = query.whereEqualTo(Comment.KEY_USER_ID, userId);
+
+        query = query.limitToLast(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
+
+        executeQuery(query, callbacks);
     }
 
     @Override

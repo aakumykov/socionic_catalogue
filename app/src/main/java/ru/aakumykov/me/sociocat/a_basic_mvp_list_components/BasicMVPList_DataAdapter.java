@@ -309,7 +309,7 @@ public abstract class BasicMVPList_DataAdapter
     }
 
     @Override
-    public BasicMVPList_DataItem getTailDataItem() {
+    public BasicMVPList_DataItem getLastDataItem() {
         return mTailDataItem;
     }
 

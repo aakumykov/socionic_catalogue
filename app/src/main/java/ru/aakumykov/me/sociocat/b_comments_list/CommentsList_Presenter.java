@@ -69,7 +69,7 @@ public class CommentsList_Presenter
         if (null == userId)
             loadAllComments();
         else
-            loadSpecificComments(inputIntent);
+            loadCommentsOfUser(userId);
 
     }
 
@@ -91,8 +91,21 @@ public class CommentsList_Presenter
         });
     }
 
-    private void loadSpecificComments(@NonNull Intent inputIntent) {
+    private void loadCommentsOfUser(@NonNull String userId) {
+        setRefreshingViewState();
 
+        mCommentsSingleton.loadCommentsOfUser(userId, null, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                setNeutralViewState();
+                mListView.setList(incapsulate2dataListItems(list));
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+            }
+        });
     }
 
     @Override
@@ -129,6 +142,11 @@ public class CommentsList_Presenter
 
     @Override
     public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
+        BasicMVPList_DataItem dataItem = mListView.getLastDataItem();
+
+        if (null != dataItem) {
+//            mListView.showLoadmoreItem(R.string.);
+        }
 
     }
 

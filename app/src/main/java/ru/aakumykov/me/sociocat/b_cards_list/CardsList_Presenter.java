@@ -281,7 +281,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         showThrobberItem();
 
-        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getLastDataItem();
         if (null == tailDataItem) {
             showErrorLoadingMore();
             return;
@@ -359,7 +359,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         showThrobberItem();
 
-        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getLastDataItem();
         if (null == tailDataItem) {
             showErrorLoadingMore();
             return;
@@ -439,7 +439,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
         showThrobberItem();
 
-        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getLastDataItem();
         if (null == tailDataItem) {
             showErrorLoadingMore();
             return;
@@ -497,7 +497,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     private void refreshCardsList(@Nullable String tagFilter) {
 
-        BasicMVPList_DataItem tailDataItem = mListView.getTailDataItem();
+        BasicMVPList_DataItem tailDataItem = mListView.getLastDataItem();
 
         if (null == tailDataItem) {
             loadCards();
