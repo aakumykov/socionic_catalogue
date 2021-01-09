@@ -17,7 +17,7 @@ public class TagsList_ViewHolderCreator extends BasicMVPList_ViewHolderCreator {
 
     @Override
     public BasicMVPList_DataViewHolder createViewHolder4listMode(ViewGroup parent) {
-        return new TagViewHolder_List(inflateItemView(parent, R.layout.tags_item_list));
+        return new TagViewHolder_List(inflateItemView(parent, R.layout.tags_list_item));
     }
 
     @Override
