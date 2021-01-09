@@ -92,7 +92,7 @@ public class Comment implements
     // iSortableData
     @Override
     public String getName() {
-        return getCardTitle();
+        return getText();
     }
 
     @Override
