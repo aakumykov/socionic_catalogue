@@ -491,7 +491,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
     private void showNoMoreCards() {
         mListView.hideThrobberItem();
-        mListView.showLoadmoreItem(R.string.CARDS_LIST_no_more_cards_with_tag);
+        mListView.showLoadmoreItem(R.string.no_more);
     }
 
 

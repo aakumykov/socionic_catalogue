@@ -145,7 +145,7 @@ public class CommentsList_Presenter
         BasicMVPList_DataItem dataItem = mListView.getLastDataItem();
 
         if (null != dataItem) {
-//            mListView.showLoadmoreItem(R.string.);
+            mListView.showLoadmoreItem(R.string.no_more);
         }
 
     }
