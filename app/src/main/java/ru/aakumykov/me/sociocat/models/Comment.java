@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +102,7 @@ public class Comment implements
         return getCreatedAt();
     }
 
+    @NotNull
     @Override @Exclude
     public String toString() {
         StringBuilder sb = new StringBuilder();
