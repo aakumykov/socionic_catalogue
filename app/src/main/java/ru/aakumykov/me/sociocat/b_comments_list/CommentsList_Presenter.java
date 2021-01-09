@@ -27,7 +27,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorVie
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
-import ru.aakumykov.me.sociocat.b_comments_list.list_items.Comment_ListItem;
+import ru.aakumykov.me.sociocat.b_comments_list.list_items.CommentsList_Item;
 import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_comments_list.view_holders.CommentViewHolder;
@@ -84,7 +84,7 @@ public class CommentsList_Presenter
         BasicMVPList_DataItem basicDataItem = (BasicMVPList_DataItem) mListView.getItem(position);
         Tag tag = (Tag) basicDataItem.getPayload();
 
-        ((iCommentsList_View) mPageView).goShowCardsWithTag(tag);
+        ((iCommentsList_View) mPageView).goShowCommentedCard(tag);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class CommentsList_Presenter
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
 
         Map<iSortingMode,eSortingOrder> sortingOrderMap = new HashMap<>();
-        sortingOrderMap.put(eCommentsList_SortingMode.BY_CARDS_COUNT, eSortingOrder.REVERSE);
+        sortingOrderMap.put(eCommentsList_SortingMode.BY_DATE, eSortingOrder.REVERSE);
         sortingOrderMap.put(eBasicSortingMode.BY_NAME, eSortingOrder.DIRECT);
 
         if (sortingOrderMap.containsKey(sortingMode))
@@ -123,7 +123,7 @@ public class CommentsList_Presenter
 
 
     // iTagsList_ItemClickListener
-    @Override
+    /*@Override
     public void onEditTagClicked(CommentViewHolder commentViewHolder) {
         int adapterPosition = commentViewHolder.getAdapterPosition();
 
@@ -136,7 +136,7 @@ public class CommentsList_Presenter
         Tag tag = (Tag) dataItem.getPayload();
 
         ((iCommentsList_View) mPageView).goEditTag(tag);
-    }
+    }*/
 
 
     // Внутренние
@@ -164,7 +164,7 @@ public class CommentsList_Presenter
     private List<BasicMVPList_ListItem> incapsulate2dataListItems(List<Tag> tagsList) {
         List<BasicMVPList_ListItem> dataItemList = new ArrayList<>();
         for (Tag tag : tagsList)
-            dataItemList.add(new Comment_ListItem(tag));
+            dataItemList.add(new CommentsList_Item(tag));
         return dataItemList;
     }
 
@@ -268,7 +268,7 @@ public class CommentsList_Presenter
         {
 //            int position = ((TagsList_DataAdapter) mListView).updateItemInList(oldTag, newTag);
 
-            Comment_ListItem newTagListItem = new Comment_ListItem(newTag);
+            CommentsList_Item newTagListItem = new CommentsList_Item(newTag);
 
             int position = mListView.findAndUpdateItem(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override

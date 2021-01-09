@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.b_comments_list.view_holders;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,18 +15,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
-import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public class CommentViewHolder extends BasicMVPList_DataViewHolder {
 
-    @BindView(R.id.listItem) View listItem;
-    @BindView(R.id.checkMark) ImageView checkMark;
+    @BindView(R.id.elementView) View elementView;
     @BindView(R.id.titleView) TextView titleView;
-    @BindView(R.id.commentsCountView) TextView commentsCountView;
-    @BindView(R.id.tagEditButton) View tagEditButton;
+    @Nullable @BindView(R.id.selectingOverlay) View selectingOverlay;
     @Nullable @BindView(R.id.highlightingOverlay) View highlightingOverlay;
 
 
@@ -38,7 +32,7 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
 
     @Override
     public void displayIsChecked(boolean selected) {
-        ViewUtils.setVisibility(checkMark, selected);
+        ViewUtils.setVisibility(selectingOverlay, selected);
     }
 
     @Override
@@ -59,21 +53,16 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
     public void initialize(BasicMVPList_ListItem basicListItem) {
         BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) basicListItem;
 
-        Tag tag = (Tag) dataItem.getPayload();
+        Comment comment = (Comment) dataItem.getPayload();
 
-        titleView.setText(tag.getName());
-
-        commentsCountView.setText(String.valueOf(tag.getCardsCount()));
-
-        MyUtils.setVisibility(tagEditButton,
-                UsersSingleton.getInstance().currentUserIsAdmin());
-
+        displayText(comment);
         displayIsChecked(dataItem.isSelected());
         displayIsHighlighted(dataItem.isHighLighted());
     }
 
 
-    @OnClick(R.id.listItem)
+
+    @OnClick(R.id.elementView)
     void onItemClicked() {
         mItemClickListener.onItemClicked(this);
     }
@@ -83,8 +72,8 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
         mItemClickListener.onItemLongClicked(this);
     }
 
-    @OnClick(R.id.tagEditButton)
-    void onEditTagClicked() {
-        ((iCommentsList_ItemClickListener) mItemClickListener).onEditTagClicked(this);
+
+    private void displayText(@NonNull Comment comment) {
+        titleView.setText(comment.getName());
     }
 }

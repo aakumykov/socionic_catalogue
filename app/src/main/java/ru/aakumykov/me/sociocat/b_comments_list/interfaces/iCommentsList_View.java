@@ -7,6 +7,5 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public interface iCommentsList_View extends iBasicList_Page {
 
-    void goShowCardsWithTag(@NonNull Tag tag);
-    void goEditTag(@NonNull Tag tag);
+    void goShowCommentedCard(@NonNull Tag tag);
 }

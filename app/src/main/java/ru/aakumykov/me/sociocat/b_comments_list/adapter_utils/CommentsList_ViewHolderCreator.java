@@ -17,7 +17,7 @@ public class CommentsList_ViewHolderCreator extends BasicMVPList_ViewHolderCreat
 
     @Override
     public BasicMVPList_DataViewHolder createViewHolder4listMode(ViewGroup parent) {
-        return new CommentViewHolder_List(inflateItemView(parent, R.layout.tags_item_list));
+        return new CommentViewHolder_List(inflateItemView(parent, R.layout.comments_list_item));
     }
 
     @Override
