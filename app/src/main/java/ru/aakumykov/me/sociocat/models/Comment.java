@@ -102,20 +102,22 @@ public class Comment implements
 
     @Override @Exclude
     public String toString() {
-        return "Comment { "
-                +"key: "+key
-                +", text: "+text
-                +", cardId: "+cardId
-                +", cardTitle: "+cardTitle
-                +", parentId: "+parentId
-                +", parentText: "+parentText
-                +", userId: "+userId
-                +", userName: "+userName
-                +", userAvatarURL: "+ userAvatarURL
-                +", createdAt: "+createdAt
-                +", editedAt: "+editedAt
-                +", rating: "+rating
-            +" }";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Comment { ");
+        sb.append("text: "); sb.append(text);
+        sb.append(", key: "); sb.append(key);
+        sb.append(", cardId: "); sb.append(cardId);
+        sb.append(", cardTitle: "); sb.append(cardTitle);
+        sb.append(", parentId: "); sb.append(parentId);
+        sb.append(", parentText: "); sb.append(parentText);
+        sb.append(", userId: "); sb.append(userId);
+        sb.append(", userName: "); sb.append(userName);
+        sb.append(", userAvatarURL: "); sb.append( userAvatarURL);
+        sb.append(", createdAt: "); sb.append(createdAt);
+        sb.append(", editedAt: "); sb.append(editedAt);
+        sb.append(", rating: "); sb.append(rating);
+        sb.append(" }");
+        return sb.toString();
     }
 
     @Exclude
