@@ -6,8 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +31,7 @@ import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.ErrorUtils;
 import ru.aakumykov.me.sociocat.utils.FirebaseUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -269,27 +272,32 @@ public class CardsSingleton implements iCardsSingleton {
     public void loadCard(String cardKey, LoadCallbacks callbacks) {
 
         cardsCollection.document(cardKey).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        try {
-                            Card card = documentSnapshot.toObject(Card.class);
-                            callbacks.onCardLoadSuccess(card);
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                try {
+                                    Card card = documentSnapshot.toObject(Card.class);
+                                    callbacks.onCardLoadSuccess(card);
+                                }
+                                catch (Exception e) {
+                                    callbacks.onCardLoadFailed(e.getMessage());
+                                    MyUtils.printError(TAG, e);
+                                }
+                            }
+                            else {
+                                callbacks.onCardLoadFailed("Card with key "+cardKey+" does not exists");
+                            }
                         }
-                        catch (Exception e) {
-                            callbacks.onCardLoadFailed(e.getMessage());
-                            MyUtils.printError(TAG, e);
+                        else {
+                            Exception e = task.getException();
+                            callbacks.onCardLoadFailed(ErrorUtils.getErrorFromException(e, "Task of loading card is unsuccessful"));
+                            e.printStackTrace();
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardLoadFailed(e.getMessage());
-                        MyUtils.printError(TAG, e);
                     }
                 });
-
     }
 
     @Override
