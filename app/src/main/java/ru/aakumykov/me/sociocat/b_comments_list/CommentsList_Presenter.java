@@ -13,7 +13,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eSortingOrder;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iBasicList;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
@@ -33,7 +32,6 @@ import ru.aakumykov.me.sociocat.b_comments_list.view_holders.CommentViewHolder;
 import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CommentsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -64,12 +62,12 @@ public class CommentsList_Presenter
     protected void onColdStart() {
         super.onColdStart();
 
-        mPageView.runDelayed(this::makeStartDesision, 500);
+        mPageView.runDelayed(this::makeStartDecision, 500);
     }
 
     @Override
     protected void onRefreshRequested() {
-        makeStartDesision();
+        makeStartDecision();
     }
 
     @Override
@@ -155,32 +153,9 @@ public class CommentsList_Presenter
         return eSortingOrder.DIRECT;
     }
 
-    /*@Override
-    public void onInterruptRunningProcessClicked() {
-        super.onInterruptRunningProcessClicked();
-        mInterruptFlag = true;
-    }*/
-
-
-    // iTagsList_ItemClickListener
-    /*@Override
-    public void onEditTagClicked(CommentViewHolder commentViewHolder) {
-        int adapterPosition = commentViewHolder.getAdapterPosition();
-
-        if (!mUsersSingleton.currentUserIsAdmin()) {
-            mPageView.showToast(R.string.action_denied);
-            return;
-        }
-
-        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) mListView.getItem(adapterPosition);
-        Tag tag = (Tag) dataItem.getPayload();
-
-        ((iCommentsList_View) mPageView).goEditTag(tag);
-    }*/
-
 
     // Внутренние
-    private void makeStartDesision() {
+    private void makeStartDecision() {
         Intent inputIntent = mPageView.getInputIntent();
 
         mCommentsOwnerUser = inputIntent.getParcelableExtra(Constants.USER);
@@ -213,7 +188,6 @@ public class CommentsList_Presenter
 
     private void loadCommentsOfUser(@NonNull User user) {
         setRefreshingViewState();
-
         mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
@@ -277,121 +251,6 @@ public class CommentsList_Presenter
     private Comment getCommentForViewHolder(@NonNull BasicMVPList_DataViewHolder commentViewHolder) {
         int position = commentViewHolder.getAdapterPosition();
         return (Comment) ((Comment_ListItem) mListView.getItem(position)).getPayload();
-    }
-
-    /*public void onDeleteMenuItemClicked() {
-
-        int count = mListView.getSelectedItemsCount();
-
-        if (count > Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT) {
-            String msg = TextUtils.getPluralString(
-                    mPageView.getGlobalContext(),
-                    R.plurals.TAGS_LIST_cannot_delete_more_tags_at_once,
-                    Constants.MAX_TAGS_AT_ONCE_DELETE_COUNT
-            );
-            mPageView.showToast(msg);
-            return;
-        }
-
-        List<BasicMVPList_DataItem> selectedItems = mListView.getSelectedItems();
-        StringBuilder messageBuilder = new StringBuilder();
-        for (BasicMVPList_DataItem dataItem : selectedItems) {
-            Tag tag = (Tag) dataItem.getPayload();
-            messageBuilder.append(tag.getName());
-            messageBuilder.append("\n");
-        }
-
-        String title = TextUtils.getPluralString(
-                mPageView.getGlobalContext(),
-                R.plurals.TAGS_LIST_deleting_dialog_title,
-                count
-        );
-
-        SimpleYesNoDialog.show(
-                mPageView.getLocalContext(),
-                title,
-                messageBuilder.toString(),
-                new SimpleYesNoDialog.AbstractCallbacks() {
-                    @Override
-                    public void onYes() {
-                        super.onYes();
-                        onTagsDeletionConfirmed();
-                    }
-                }
-        );
-    }*/
-
-    /*private void onTagsDeletionConfirmed() {
-
-        if (!mUsersSingleton.currentUserIsAdmin()) {
-            mPageView.showSnackbar(R.string.TAGS_LIST_you_cannot_delete_tags, R.string.SNACKBAR_got_it, 10000);
-            mListView.clearSelection();
-            setNeutralViewState();
-            return;
-        }
-
-        deleteTagsFromList(mListView.getSelectedItems());
-    }*/
-
-    /*private void deleteTagsFromList(List<BasicMVPList_DataItem> itemsList) {
-
-        if (hasInterruptFlag()) {
-            mPageView.showToast(R.string.TAGS_LIST_deletion_process_interrupted);
-            mListView.clearSelection();
-            setNeutralViewState();
-            clearInterruptFlag();
-            return;
-        }
-
-        if (0 == itemsList.size()) {
-            mPageView.showStyledToast(R.string.TAGS_LIST_selected_tags_are_processed);
-            setNeutralViewState();
-            return;
-        }
-
-        BasicMVPList_DataItem dataItem = itemsList.get(0);
-        itemsList.remove(0);
-        Tag tag = (Tag) dataItem.getPayload();
-
-        String msg = TextUtils.getText(mPageView.getGlobalContext(), R.string.TAGS_LIST_deleting_tag, tag.getName());
-        setViewState(new CancelableProgressViewState(msg));
-
-        mComplexSingleton.deleteTag(tag, new ComplexSingleton.iComplexSingleton_TagDeletionCallbacks() {
-            @Override
-            public void onTagDeleteSuccess(@NonNull Tag tag) {
-                mListView.removeItem(dataItem);
-                deleteTagsFromList(itemsList);
-            }
-
-            @Override
-            public void onTagDeleteError(@NonNull String errorMsg) {
-                String msg = mPageView.getText(R.string.TAGS_LIST_error_deleting_tag, tag.getName());
-                setViewState(new ErrorViewState(msg, errorMsg));
-                Log.e(TAG, errorMsg);
-            }
-        });
-    }*/
-
-
-    // TODO: нужно ли?
-    public void onCommentEdited(Comment oldComment, Comment newComment) {
-        if (null != oldComment && null != newComment)
-        {
-//            int position = ((TagsList_DataAdapter) mListView).updateItemInList(oldTag, newTag);
-
-            Comment_ListItem newTagListItem = new Comment_ListItem(newComment);
-
-            int position = mListView.findAndUpdateItem(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
-                @Override
-                public boolean onCompareWithListItemPayload(Object itemPayload) {
-                    Tag tagFromList = (Tag) itemPayload;
-                    return tagFromList.getKey().equals(oldComment.getKey());
-                }
-            });
-
-            mPageView.scroll2position(position);
-            mListView.highlightItem(position);
-        }
     }
 
     public boolean canDeleteComments() {
@@ -471,9 +330,6 @@ public class CommentsList_Presenter
         });
     }
 
-    /*public boolean canDeleteComment() {
-        return mUsersSingleton.currentUserIsAdmin();
-    }*/
 }
 
 

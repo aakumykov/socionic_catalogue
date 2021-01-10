@@ -105,14 +105,6 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         return false;
     }
 
-    /*@Override
-    protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState viewState) {
-        super.setSomeItemSelectedViewState(viewState);
-
-        if (((CommentsList_Presenter) mPresenter).canDeleteTag())
-            inflateMenu(R.menu.tags_list_delete);
-    }*/
-
     @Override
     protected BasicMVPList_Presenter preparePresenter() {
         return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
