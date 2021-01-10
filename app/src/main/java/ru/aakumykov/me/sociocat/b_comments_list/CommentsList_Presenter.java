@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
@@ -33,9 +34,12 @@ import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.CommentsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentsList_Presenter
         extends BasicMVPList_Presenter
@@ -45,8 +49,8 @@ public class CommentsList_Presenter
     private final CommentsSingleton mCommentsSingleton = CommentsSingleton.getInstance();
 //    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
 //    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
-    private final boolean mInterruptFlag = false;
     private User mCommentsOwnerUser;
+    private iCommentsComplexSingleton mCommentsComplexSingleton = CommentsComplexSingleton.getInstance();
 
 
     public CommentsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
@@ -399,6 +403,54 @@ public class CommentsList_Presenter
 
     public boolean commentsCountIsDeletable(int selectedItemsCount) {
         return selectedItemsCount <= Constants.MAX_COMMENTS_AT_ONCE_DELETE_COUNT;
+    }
+
+    public void onDeleteCommentsClicked() {
+        List<BasicMVPList_DataItem> selectedItems = mListView.getSelectedItems();
+        deleteCommentFromList(selectedItems);
+    }
+
+    private void deleteCommentFromList(List<BasicMVPList_DataItem> inputList) {
+        if (hasInterruptFlag()) {
+            mPageView.showToast(R.string.deletion_process_is_interrupted);
+            setNeutralViewState();
+            return;
+        }
+
+        if (0 == inputList.size()) {
+            mPageView.showToast(R.string.deletion_process_is_finished);
+            setNeutralViewState();
+            return;
+        }
+
+        BasicMVPList_DataItem dataItem = inputList.get(0);
+        inputList.remove(0);
+
+        Comment comment = (Comment) dataItem.getPayload();
+
+        String commentText = MyUtils.cutToLength(comment.getText(), 20);
+        String msg = mPageView.getText(R.string.COMMENTS_LIST_deleting_comment, commentText);
+        setViewState(new ProgressViewState(msg));
+
+        mCommentsComplexSingleton.deleteComment(comment, new iCommentsComplexSingleton.CommentDeletionCallbacks() {
+            @Override
+            public void onCommentDeleteSuccess(@NonNull Comment comment) {
+                String toastMsg = mPageView.getText(R.string.COMMENTS_LIST_comment_has_been_deleted, commentText);
+                mPageView.showToast(toastMsg);
+
+                mListView.removeItem(dataItem);
+
+                deleteCommentFromList(inputList);
+            }
+
+            @Override
+            public void onCommentDeleteError(@NonNull String errorMsg) {
+                String toastMsg = mPageView.getText(R.string.COMMENTS_LIST_error_deleting_comment, commentText);
+                mPageView.showToast(toastMsg);
+
+                deleteCommentFromList(inputList);
+            }
+        });
     }
 
     /*public boolean canDeleteComment() {

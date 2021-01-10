@@ -47,7 +47,6 @@ public class TagsList_Presenter
     private final TagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
-    private final boolean mInterruptFlag = false;
 
     public TagsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);

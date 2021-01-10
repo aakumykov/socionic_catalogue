@@ -159,6 +159,11 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
+    public CollectionReference getCommentsCollection() {
+        return firebaseFirestore.collection(Constants.COMMENTS_PATH);
+    }
+
+    @Override
     public void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks) {
         Query query = commentsCollection;
 

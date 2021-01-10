@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.singletons;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.CollectionReference;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -16,6 +18,8 @@ public interface iCommentsSingleton {
         UNRATE_DOWN,
         NO_RATING
     }
+
+    CollectionReference getCommentsCollection();
 
     void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks);
     void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks);

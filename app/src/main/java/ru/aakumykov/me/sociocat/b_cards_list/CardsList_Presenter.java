@@ -647,7 +647,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private void deleteCards(List<BasicMVPList_DataItem> deletedItemsList) {
 
         if (hasInterruptFlag()) {
-            mPageView.showToast(R.string.CARDS_LIST_deletion_process_interrupted);
+            mPageView.showToast(R.string.deletion_process_is_interrupted);
             mListView.clearSelection();
             setNeutralViewState();
             clearInterruptFlag();

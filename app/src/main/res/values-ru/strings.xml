@@ -357,7 +357,7 @@
     <string name="LOGIN_password_hint">Пароль</string>
     <string name="RESET_PASSWORD1_email_hint">Адрес электронной почты</string>
     <string name="CARDS_LIST_you_cannot_delete_cards">Вы не можете удалять карточки</string>
-    <string name="CARDS_LIST_deletion_process_interrupted">Процесс удаления прерван</string>
+    <string name="deletion_process_is_interrupted">Процесс удаления прерван</string>
     <string name="CARDS_LIST_deleting_card">Удаляем карточку «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки «%1$s»</string>
     <string name="CARDS_LIST_selected_card_are_processed">Выбранные карточки обработаны</string>
@@ -374,6 +374,10 @@
     <string name="COMMENTS_LIST_card_title">К карточке:</string>
     <string name="menu_item_sorted_by_card">По карточке</string>
     <string name="unknown_user">НЕИЗВЕСТНЫЙ ПОЛЬЗОВАТЕЛЬ</string>
+    <string name="COMMENTS_LIST_deleting_comment">Удаляем комментарий «%1$s»</string>
+    <string name="COMMENTS_LIST_comment_has_been_deleted">Комментарий удалён: «%1$s»</string>
+    <string name="COMMENTS_LIST_error_deleting_comment">Ошибка удаления комментария «%1$s»</string>
+    <string name="deletion_process_is_finished">Процесс удаления завершён</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

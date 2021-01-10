@@ -361,7 +361,7 @@
     <string name="LOGIN_password_hint">Password</string>
     <string name="RESET_PASSWORD1_email_hint">Email</string>
     <string name="CARDS_LIST_you_cannot_delete_cards">You cannot delete cards</string>
-    <string name="CARDS_LIST_deletion_process_interrupted">Cards deleting is interrupted</string>
+    <string name="deletion_process_is_interrupted">Deletion process is interrupted</string>
     <string name="CARDS_LIST_deleting_card">Deleting card «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card «%1$s»</string>
     <string name="CARDS_LIST_selected_card_are_processed">Selected cards are processed</string>
@@ -378,6 +378,10 @@
     <string name="COMMENTS_LIST_card_title">To card:</string>
     <string name="menu_item_sorted_by_card">By card</string>
     <string name="unknown_user">UNKNOWN USER</string>
+    <string name="COMMENTS_LIST_deleting_comment">Deleting comment «%1$s»</string>
+    <string name="COMMENTS_LIST_comment_has_been_deleted">Comment deleted: «%1$s»</string>
+    <string name="COMMENTS_LIST_error_deleting_comment">Error deleting comment «%1$s»</string>
+    <string name="deletion_process_is_finished">Deletion process is finished</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

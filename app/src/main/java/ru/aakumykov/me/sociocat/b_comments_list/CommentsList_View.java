@@ -95,6 +95,9 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         else if (R.id.actionSortByAuthor == itemId) {
             mPresenter.onSortMenuItemClicked(eCommentsList_SortingMode.BY_AUTHOR);
         }
+        else if (R.id.actionDelete == itemId) {
+            ((CommentsList_Presenter) mPresenter).onDeleteCommentsClicked();
+        }
         else {
             return super.onOptionsItemSelected(item);
         }
