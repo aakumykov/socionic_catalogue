@@ -24,7 +24,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicView
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
-import ru.aakumykov.me.sociocat.b_comments_list.list_items.CommentsList_Item;
+import ru.aakumykov.me.sociocat.b_comments_list.list_items.Comment_ListItem;
 import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_comments_list.view_holders.CommentViewHolder;
@@ -65,56 +65,9 @@ public class CommentsList_Presenter
         }, 500);
     }
 
-    private void makeStartDesision() {
-        Intent inputIntent = mPageView.getInputIntent();
-
-        mCommentsOwnerUser = inputIntent.getParcelableExtra(Constants.USER);
-
-        if (null == mCommentsOwnerUser)
-            loadAllComments();
-        else
-            loadCommentsOfUser(mCommentsOwnerUser);
-
-    }
-
-    private void loadAllComments() {
-
-        setRefreshingViewState();
-
-        mCommentsSingleton.loadComments(null, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                setNeutralViewState();
-                mListView.setList(incapsulate2dataListItems(list));
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
-            }
-        });
-    }
-
-    private void loadCommentsOfUser(@NonNull User user) {
-        setRefreshingViewState();
-
-        mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                setViewState(new CommentsOfUser_ViewState(user.getName()));
-                mListView.setList(incapsulate2dataListItems(list));
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
-            }
-        });
-    }
-
     @Override
     protected void onRefreshRequested() {
-        loadList();
+
     }
 
     @Override
@@ -148,14 +101,21 @@ public class CommentsList_Presenter
     public void onLoadMoreClicked(BasicMVPList_ViewHolder basicViewHolder) {
         BasicMVPList_DataItem lastDataItem = mListView.getLastDataItem();
 
-        if (null != lastDataItem) {
+        if (null == lastDataItem) {
+            mListView.hideLoadmoreItem();
             mListView.showLoadmoreItem(R.string.no_more);
             return;
         }
 
         Comment lastComment = (Comment) lastDataItem.getPayload();
 
+        mListView.hideLoadmoreItem();
+        mListView.showThrobberItem();
 
+        if (null == mCommentsOwnerUser)
+            loadMoreComments(lastComment);
+        else
+            loadMoreCommentsOfUser(lastComment);
     }
 
     @Override
@@ -201,33 +161,97 @@ public class CommentsList_Presenter
 
 
     // Внутренние
-    private void loadList() {
+    private void makeStartDesision() {
+        Intent inputIntent = mPageView.getInputIntent();
+
+        mCommentsOwnerUser = inputIntent.getParcelableExtra(Constants.USER);
+
+        if (null == mCommentsOwnerUser)
+            loadComments();
+        else
+            loadCommentsOfUser(mCommentsOwnerUser);
+
+    }
+
+
+    private void loadComments() {
 
         setRefreshingViewState();
 
-        /*mTagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
+        mCommentsSingleton.loadComments(null, new iCommentsSingleton.ListCallbacks() {
             @Override
-            public void onTagsListSuccess(List<Comment> commentsList) {
+            public void onCommentsLoadSuccess(List<Comment> list) {
                 setNeutralViewState();
-
-                mListView.setList(
-                        incapsulate2dataListItems(commentsList)
-                );
+                mListView.setList(incapsulate2dataListItems(list));
             }
 
             @Override
-            public void onTagsListFail(String errorMsg) {
-                setErrorViewState(R.string.TAGS_LIST_error_loading_list, errorMsg);
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
             }
-        });*/
+        });
+    }
 
-//        mCommentsSingleton.load
+    private void loadCommentsOfUser(@NonNull User user) {
+        setRefreshingViewState();
+
+        mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                setCommentsOfUserViewState();
+                mListView.setList(incapsulate2dataListItems(list));
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+            }
+        });
+    }
+
+
+    private void loadMoreComments(@NonNull Comment lastComment) {
+
+        mCommentsSingleton.loadComments(lastComment, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                setNeutralViewState();
+                mListView.appendList(incapsulate2dataListItems(list));
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+            }
+        });
+    }
+
+    private void loadMoreCommentsOfUser(@NonNull Comment lastComment) {
+
+        mCommentsSingleton.loadCommentsOfUser(mCommentsOwnerUser.getKey(),
+                lastComment, new iCommentsSingleton.ListCallbacks() {
+                    @Override
+                    public void onCommentsLoadSuccess(List<Comment> list) {
+                        setCommentsOfUserViewState();
+                        mListView.appendList(incapsulate2dataListItems(list));
+                    }
+
+                    @Override
+                    public void onCommentsLoadError(String errorMessage) {
+                        setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+                    }
+                });
+    }
+
+
+    private void setCommentsOfUserViewState() {
+        setViewState(new CommentsOfUser_ViewState(mCommentsOwnerUser.getName()));
     }
 
     private List<BasicMVPList_ListItem> incapsulate2dataListItems(List<Comment> commentsList) {
         List<BasicMVPList_ListItem> dataItemList = new ArrayList<>();
         for (Comment comment : commentsList)
-            dataItemList.add(new CommentsList_Item(comment));
+            dataItemList.add(new Comment_ListItem(comment));
         return dataItemList;
     }
 
@@ -327,12 +351,12 @@ public class CommentsList_Presenter
 
 
     // TODO: нужно ли?
-    public void onTagEdited(Comment oldComment, Comment newComment) {
+    public void onCommentEdited(Comment oldComment, Comment newComment) {
         if (null != oldComment && null != newComment)
         {
 //            int position = ((TagsList_DataAdapter) mListView).updateItemInList(oldTag, newTag);
 
-            CommentsList_Item newTagListItem = new CommentsList_Item(newComment);
+            Comment_ListItem newTagListItem = new Comment_ListItem(newComment);
 
             int position = mListView.findAndUpdateItem(newTagListItem, new iBasicList.iFindItemComparisionCallback() {
                 @Override
@@ -347,7 +371,7 @@ public class CommentsList_Presenter
         }
     }
 
-    /*public boolean canDeleteTag() {
+    /*public boolean canDeleteComment() {
         return mUsersSingleton.currentUserIsAdmin();
     }*/
 }

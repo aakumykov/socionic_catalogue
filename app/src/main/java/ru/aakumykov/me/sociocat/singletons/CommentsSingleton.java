@@ -162,10 +162,12 @@ public class CommentsSingleton implements iCommentsSingleton {
     public void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks) {
         Query query = commentsCollection;
 
-        if (null != startingComment)
-            query = query.startAfter(startingComment.getKey());
-
         query = query.orderBy(Comment.KEY_KEY, Query.Direction.DESCENDING);
+
+        if (null != startingComment) {
+            String commentKey = startingComment.getKey();
+            query = query.startAfter(commentKey);
+        }
 
         query = query.limitToLast(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
 

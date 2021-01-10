@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class CommentsList_Item extends BasicMVPList_DataItem {
+public class Comment_ListItem extends BasicMVPList_DataItem {
 
-    public CommentsList_Item(Comment comment) {
+    public Comment_ListItem(Comment comment) {
         setPayload(comment);
     }
 
@@ -20,7 +20,8 @@ public class CommentsList_Item extends BasicMVPList_DataItem {
     @Override
     public String toString() {
         String text = getComment().getText();
-        return "Comment { " +
+        return Comment_ListItem.class.getSimpleName() +
+                " { " +
                 getComment().getText().substring(Math.min(text.length(), 20)) +
                 " }";
     }
