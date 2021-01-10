@@ -123,7 +123,7 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
                 R.string.COMMENTS_LIST_card_title);
 
         String cardTitle = comment.getCardTitle();
-        if (TextUtils.isEmpty(null))
+        if (TextUtils.isEmpty(cardTitle))
             cardTitle = String.valueOf(comment.getCardId());
 
         cardTitle = cardTitleLabel + " <b>" + cardTitle + "</b>";
