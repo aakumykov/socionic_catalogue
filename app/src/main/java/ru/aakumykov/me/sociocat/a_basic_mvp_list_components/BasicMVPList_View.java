@@ -634,14 +634,12 @@ public abstract class BasicMVPList_View
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        boolean isComplains = sortingMode instanceof eBasicSortingMode;
-                        return isComplains;
+                        return sortingMode instanceof eBasicSortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        boolean isActive = eBasicSortingMode.BY_DATE.equals(sortingMode);
-                        return isActive;
+                        return eBasicSortingMode.BY_DATE.equals(sortingMode);
                     }
                 })
                 .create();

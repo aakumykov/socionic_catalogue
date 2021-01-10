@@ -51,8 +51,6 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
 
     @Override
     public void assembleMenu() {
-//        addSearchView();
-//        addSortByNameMenu();
         addSortByDateMenu();
         addSortByAuthorMenu();
         addSortByCardMenuItem();
@@ -103,7 +101,7 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         return BasicMVPList_Utils.prepPresenter(mViewModel, new iPresenterPreparationCallback() {
             @Override
             public BasicMVPList_Presenter onPresenterPrepared() {
-                return new CommentsList_Presenter(new ListViewMode(), eBasicSortingMode.BY_NAME);
+                return new CommentsList_Presenter(new ListViewMode(), eBasicSortingMode.BY_DATE);
             }
         });
     }
@@ -193,6 +191,7 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     }
 
     private void addSortByAuthorMenu() {
+
         addSortingMenuRootIfNotExists();
 
         new SortingMenuItem.Builder()
@@ -205,14 +204,12 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        boolean isComplains = sortingMode instanceof eCommentsList_SortingMode;
-                        return isComplains;
+                        return sortingMode instanceof eCommentsList_SortingMode;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        boolean isActive = eCommentsList_SortingMode.BY_AUTHOR.equals(sortingMode);
-                        return isActive;
+                        return eCommentsList_SortingMode.BY_AUTHOR.equals(sortingMode);
                     }
                 })
                 .create();
