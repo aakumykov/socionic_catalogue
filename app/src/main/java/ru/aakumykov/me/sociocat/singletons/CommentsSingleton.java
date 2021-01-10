@@ -177,7 +177,8 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         Query query = commentsCollection;
 
-        query = query.whereEqualTo(Comment.KEY_USER_ID, userId);
+//        query = query.whereEqualTo(Comment.KEY_USER_ID, userId);
+        query = query.whereEqualTo(Comment.KEY_KEY, userId);
 
         query = query.orderBy(Comment.KEY_CREATED_AT, Query.Direction.DESCENDING);
 

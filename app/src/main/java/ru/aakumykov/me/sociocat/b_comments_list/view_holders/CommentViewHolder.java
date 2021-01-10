@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.b_comments_list.view_holders;
 
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.DateUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -20,7 +23,10 @@ import ru.aakumykov.me.sociocat.models.Comment;
 public class CommentViewHolder extends BasicMVPList_DataViewHolder {
 
     @BindView(R.id.elementView) View elementView;
-    @BindView(R.id.titleView) TextView titleView;
+    @BindView(R.id.commentTextView) TextView commentTextView;
+    @BindView(R.id.commentDateView) TextView commentDateView;
+    @BindView(R.id.cardTitleView) TextView cardTitleView;
+
     @Nullable @BindView(R.id.selectingOverlay) View selectingOverlay;
     @Nullable @BindView(R.id.highlightingOverlay) View highlightingOverlay;
 
@@ -28,6 +34,18 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
     public CommentViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+    }
+
+    @Override
+    public void initialize(BasicMVPList_ListItem basicListItem) {
+        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) basicListItem;
+
+        Comment comment = (Comment) dataItem.getPayload();
+
+        displayComment(comment);
+
+        displayIsChecked(dataItem.isSelected());
+        displayIsHighlighted(dataItem.isHighLighted());
     }
 
     @Override
@@ -49,17 +67,6 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
         }
     }
 
-    @Override
-    public void initialize(BasicMVPList_ListItem basicListItem) {
-        BasicMVPList_DataItem dataItem = (BasicMVPList_DataItem) basicListItem;
-
-        Comment comment = (Comment) dataItem.getPayload();
-
-        displayText(comment);
-        displayIsChecked(dataItem.isSelected());
-        displayIsHighlighted(dataItem.isHighLighted());
-    }
-
 
 
     @OnClick(R.id.elementView)
@@ -73,7 +80,30 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
     }
 
 
-    private void displayText(@NonNull Comment comment) {
-        titleView.setText(comment.getName());
+    private void displayComment(@NonNull Comment comment) {
+        displayCommentText(comment);
+        displayCommentDate(comment);
+        displayCardTitle(comment);
+    }
+
+    private void displayCommentText(@NonNull Comment comment) {
+        commentTextView.setText(comment.getName());
+    }
+
+    private void displayCommentDate(@NonNull Comment comment) {
+        commentDateView.setText(DateUtils.long2date(comment.getDate()));
+    }
+
+    private void displayCardTitle(@NonNull Comment comment) {
+        String cardTitleLabel = cardTitleView.getResources().getString(
+                R.string.COMMENTS_LIST_card_title);
+
+        String cardTitle = comment.getCardTitle();
+        if (TextUtils.isEmpty(null))
+            cardTitle = String.valueOf(comment.getCardId());
+
+        cardTitle = cardTitleLabel + " <b>" + cardTitle + "</b>";
+
+        cardTitleView.setText(Html.fromHtml(cardTitle));
     }
 }

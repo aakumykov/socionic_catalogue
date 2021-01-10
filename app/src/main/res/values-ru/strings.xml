@@ -371,6 +371,7 @@
     <string name="COMMENTS_LIST_error_loading_comments">Ошибка загрузки комментариев</string>
     <string name="COMMENTS_LIST_page_title">Комментарии</string>
     <string name="COMMENTS_LIST_comments_of_user_page_title">Комментарии пользователя «%1$s»</string>
+    <string name="COMMENTS_LIST_card_title">К карточке:</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->
