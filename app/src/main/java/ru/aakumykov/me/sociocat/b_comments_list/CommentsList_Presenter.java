@@ -62,17 +62,12 @@ public class CommentsList_Presenter
     protected void onColdStart() {
         super.onColdStart();
 
-        mPageView.runDelayed(new Runnable() {
-            @Override
-            public void run() {
-                makeStartDesision();
-            }
-        }, 500);
+        mPageView.runDelayed(this::makeStartDesision, 500);
     }
 
     @Override
     protected void onRefreshRequested() {
-
+        makeStartDesision();
     }
 
     @Override
