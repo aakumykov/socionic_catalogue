@@ -162,14 +162,12 @@ public class CommentsSingleton implements iCommentsSingleton {
     public void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks) {
         Query query = commentsCollection;
 
-        query = query.orderBy(Comment.KEY_KEY, Query.Direction.DESCENDING);
+        query = query.orderBy(Comment.KEY_CREATED_AT, Query.Direction.DESCENDING);
 
-        if (null != startingComment) {
-            String commentKey = startingComment.getKey();
-            query = query.startAfter(commentKey);
-        }
+        if (null != startingComment)
+            query = query.startAfter(startingComment.getCreatedAt());
 
-        query = query.limitToLast(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
+        query = query.limitToLast(3);
 
         executeQuery(query, callbacks);
     }
@@ -179,11 +177,14 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         Query query = commentsCollection;
 
-        query = query.orderBy(Comment.KEY_KEY);
-
         query = query.whereEqualTo(Comment.KEY_USER_ID, userId);
 
-        query = query.limitToLast(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
+        query = query.orderBy(Comment.KEY_CREATED_AT, Query.Direction.DESCENDING);
+
+        if (null != startingComment)
+            query = query.startAfter(startingComment.getCreatedAt());
+
+        query = query.limitToLast(3);
 
         executeQuery(query, callbacks);
     }
