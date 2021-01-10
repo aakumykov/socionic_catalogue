@@ -129,7 +129,7 @@ public abstract class BasicMVPList_ItemsComparator implements iItemsComparator {
             return name2.compareTo(name1);
     }
 
-    private int sortByDate(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
+    protected int sortByDate(BasicMVPList_ListItem o1, BasicMVPList_ListItem o2) {
         BasicMVPList_DataItem dataItem1 = (BasicMVPList_DataItem) o1;
         BasicMVPList_DataItem dataItem2 = (BasicMVPList_DataItem) o2;
 

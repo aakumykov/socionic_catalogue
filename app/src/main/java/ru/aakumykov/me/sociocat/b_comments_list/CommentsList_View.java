@@ -72,17 +72,20 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        /*int itemId = item.getItemId();
+        int itemId = item.getItemId();
 
-        if (R.id.actionSortByCardsCount == itemId) {
-            mPresenter.onSortMenuItemClicked(eCommentsList_SortingMode.BY_CARDS_COUNT);
+        if (R.id.actionSortByCard == itemId) {
+            mPresenter.onSortMenuItemClicked(eCommentsList_SortingMode.BY_CARD);
         }
-        else if (R.id.actionDelete == itemId) {
-            ((CommentsList_Presenter) mPresenter).onDeleteMenuItemClicked();
+        else if (R.id.actionSortByDate == itemId) {
+            mPresenter.onSortMenuItemClicked(eBasicSortingMode.BY_DATE);
+        }
+        else if (R.id.actionSortByAuthor == itemId) {
+            mPresenter.onSortMenuItemClicked(eCommentsList_SortingMode.BY_AUTHOR);
         }
         else {
             return super.onOptionsItemSelected(item);
-        }*/
+        }
 
         return false;
     }
@@ -202,12 +205,14 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
-                        return sortingMode instanceof eCommentsList_SortingMode;
+                        boolean isComplains = sortingMode instanceof eCommentsList_SortingMode;
+                        return isComplains;
                     }
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCommentsList_SortingMode.BY_AUTHOR.equals(sortingMode);
+                        boolean isActive = eCommentsList_SortingMode.BY_AUTHOR.equals(sortingMode);
+                        return isActive;
                     }
                 })
                 .create();

@@ -137,8 +137,9 @@ public class CommentsList_Presenter
     protected eSortingOrder getDefaultSortingOrderForSortingMode(iSortingMode sortingMode) {
 
         Map<iSortingMode,eSortingOrder> sortingOrderMap = new HashMap<>();
-        sortingOrderMap.put(eCommentsList_SortingMode.BY_DATE, eSortingOrder.REVERSE);
-        sortingOrderMap.put(eBasicSortingMode.BY_NAME, eSortingOrder.DIRECT);
+        sortingOrderMap.put(eBasicSortingMode.BY_DATE, eSortingOrder.REVERSE);
+        sortingOrderMap.put(eCommentsList_SortingMode.BY_AUTHOR, eSortingOrder.DIRECT);
+        sortingOrderMap.put(eCommentsList_SortingMode.BY_CARD, eSortingOrder.DIRECT);
 
         if (sortingOrderMap.containsKey(sortingMode))
             return sortingOrderMap.get(sortingMode);
