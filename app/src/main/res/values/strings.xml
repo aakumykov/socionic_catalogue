@@ -382,6 +382,7 @@
     <string name="COMMENTS_LIST_comment_has_been_deleted">Comment deleted: «%1$s»</string>
     <string name="COMMENTS_LIST_error_deleting_comment">Error deleting comment «%1$s»</string>
     <string name="deletion_process_is_finished">Deletion process is finished</string>
+    <string name="COMMENTS_LIST_delete_selected_comments">Delete selected comments?</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

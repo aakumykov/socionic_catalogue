@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <plurals name="TAGS_LIST_deleting_dialog_title">
         <item quantity="one">Удалить %1$d выбранную метку?</item>
@@ -45,4 +45,9 @@
         <item quantity="many">%1$d отфильтровано</item>
     </plurals>
 
+    <plurals name="comment">
+        <item quantity="one" tools:ignore="ImpliedQuantity">комментарий</item>
+        <item quantity="few">комментария</item>
+        <item quantity="many">комментариев</item>
+    </plurals>
 </resources>

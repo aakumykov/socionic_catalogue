@@ -53,6 +53,8 @@ public class CommentsComplexSingleton implements iCommentsComplexSingleton {
             return;
         }
 
+        // TODO: проверять пользователя!
+
         mCardsSingleton.checkCardExists(cardKey, new iCardsSingleton.CardCheckExistingCallbacks() {
             @Override
             public void onCardExists(@NonNull String cardKey) {

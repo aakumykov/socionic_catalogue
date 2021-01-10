@@ -18,10 +18,11 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingM
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_DataItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_utils.BasicMVPList_ItemsTextFilter;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_ViewHolder;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.CancelableProgressViewState;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
@@ -40,6 +41,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.SimpleYesNoDialog;
 
 public class CommentsList_Presenter
         extends BasicMVPList_Presenter
@@ -401,8 +403,29 @@ public class CommentsList_Presenter
     }
 
     public void onDeleteCommentsClicked() {
-        List<BasicMVPList_DataItem> selectedItems = mListView.getSelectedItems();
-        deleteCommentFromList(selectedItems);
+        int count = mListView.getSelectedItemsCount();
+
+        String commentPluralWord = TextUtils.getPluralString(mPageView.getLocalContext(),
+                R.plurals.comment, count);
+
+        String message = count + " " + commentPluralWord;
+
+        SimpleYesNoDialog.show(
+                mPageView.getLocalContext(),
+                R.string.COMMENTS_LIST_delete_selected_comments,
+                message,
+                new SimpleYesNoDialog.AbstractCallbacks() {
+                    @Override
+                    public void onYes() {
+                        onDeleteCommentsConfirmed();
+                    }
+                }
+        );
+    }
+
+    private void onDeleteCommentsConfirmed() {
+        List<BasicMVPList_DataItem> list = mListView.getSelectedItems();
+        deleteCommentFromList(list);
     }
 
     private void deleteCommentFromList(List<BasicMVPList_DataItem> inputList) {
@@ -425,7 +448,7 @@ public class CommentsList_Presenter
 
         String commentText = MyUtils.cutToLength(comment.getText(), 20);
         String msg = mPageView.getText(R.string.COMMENTS_LIST_deleting_comment, commentText);
-        setViewState(new ProgressViewState(msg));
+        setViewState(new CancelableProgressViewState(msg));
 
         mCommentsComplexSingleton.deleteComment(comment, new iCommentsComplexSingleton.CommentDeletionCallbacks() {
             @Override

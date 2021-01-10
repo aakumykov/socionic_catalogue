@@ -37,4 +37,8 @@
         <item quantity="other">%1$d are filtered out</item>
     </plurals>
 
+    <plurals name="comment">
+        <item quantity="one">comment</item>
+        <item quantity="other">comments</item>
+    </plurals>
 </resources>
