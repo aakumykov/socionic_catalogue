@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewS
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 
 public class CommentsList_View extends BasicMVPList_View implements iCommentsList_View {
 
@@ -156,6 +157,13 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         Intent intent = new Intent(this, CardShow_View.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Constants.CARD_KEY, comment.getCardId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void goShowUserProfile(@NonNull String userId) {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);
     }
 

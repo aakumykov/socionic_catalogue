@@ -25,6 +25,7 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
 
     @BindView(R.id.elementView) View elementView;
     @BindView(R.id.commentTextView) TextView commentTextView;
+    @BindView(R.id.commentAuthorView) TextView commentAuthorView;
     @BindView(R.id.commentDateView) TextView commentDateView;
     @BindView(R.id.cardTitleView) TextView cardTitleView;
 
@@ -85,15 +86,25 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
         ((iCommentsList_ItemClickListener) mItemClickListener).onCardTitleClicked(this);
     }
 
+    @OnClick(R.id.commentAuthorView)
+    void onCardAuthorClicked() {
+        ((iCommentsList_ItemClickListener) mItemClickListener).onCardAuthorClicked(this);
+    }
+
 
     private void displayComment(@NonNull Comment comment) {
         displayCommentText(comment);
+        displayCardAuthor(comment);
         displayCommentDate(comment);
         displayCardTitle(comment);
     }
 
     private void displayCommentText(@NonNull Comment comment) {
         commentTextView.setText(comment.getName());
+    }
+
+    private void displayCardAuthor(@NonNull Comment comment) {
+        commentAuthorView.setText(comment.getUserName());
     }
 
     private void displayCommentDate(@NonNull Comment comment) {

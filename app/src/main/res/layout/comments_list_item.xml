@@ -25,14 +25,29 @@
         tools:text="Комментарий о том-то, дополняющий особенности того-то." />
 
     <TextView
-        android:id="@+id/commentDateView"
+        android:id="@+id/commentAuthorView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:padding="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textStyle="bold"
+        android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commentTextView"
+        tools:text="Пользователь с очень, очень, очень, очень длинным именем" />
+
+    <TextView
+        android:id="@+id/commentDateView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textSize="12sp"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/commentAuthorView"
+        app:layout_constraintTop_toBottomOf="@+id/commentAuthorView"
         tools:text="31 декабря 2020" />
 
     <TextView
@@ -44,9 +59,10 @@
         android:padding="6dp"
         android:textSize="16sp"
         android:textStyle="italic"
+        android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/commentDateView"
+        app:layout_constraintStart_toStartOf="@+id/commentAuthorView"
         app:layout_constraintTop_toBottomOf="@+id/commentDateView"
         tools:text="К карточке: Название карточки" />
 

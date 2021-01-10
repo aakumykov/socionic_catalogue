@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
+import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.list_items.Comment_ListItem;
 import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
@@ -84,16 +85,26 @@ public class CommentsList_Presenter
             return;
         }
 
-        int position = commentViewHolder.getAdapterPosition();
-        BasicMVPList_DataItem basicDataItem = (BasicMVPList_DataItem) mListView.getItem(position);
-        Tag tag = (Tag) basicDataItem.getPayload();
+        Comment comment = getCommentForViewHolder(basicDataViewHolder);
 
-//        ((iCommentsList_View) mPageView).goShowCommentedCard(tag);
+        ((iCommentsList_View) mPageView).goShowCommentUnderCard(comment);
     }
 
     @Override
     public void onItemLongClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
         onSelectItemClicked(basicDataViewHolder);
+    }
+
+    @Override
+    public void onCardTitleClicked(@NonNull CommentViewHolder commentViewHolder) {
+        Comment comment = getCommentForViewHolder(commentViewHolder);
+        ((CommentsList_View) mPageView).goShowCommentedCard(comment);
+    }
+
+    @Override
+    public void onCardAuthorClicked(@NonNull CommentViewHolder commentViewHolder) {
+        Comment comment = getCommentForViewHolder(commentViewHolder);
+        ((CommentsList_View) mPageView).goShowUserProfile(comment.getUserId());
     }
 
     @Override
@@ -254,6 +265,10 @@ public class CommentsList_Presenter
         return dataItemList;
     }
 
+    private Comment getCommentForViewHolder(@NonNull BasicMVPList_DataViewHolder commentViewHolder) {
+        int position = commentViewHolder.getAdapterPosition();
+        return (Comment) ((Comment_ListItem) mListView.getItem(position)).getPayload();
+    }
 
     /*public void onDeleteMenuItemClicked() {
 
@@ -368,13 +383,6 @@ public class CommentsList_Presenter
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
-    }
-
-    @Override
-    public void onCardTitleClicked(CommentViewHolder commentViewHolder) {
-        int position = commentViewHolder.getAdapterPosition();
-        Comment comment = (Comment) ((Comment_ListItem) mListView.getItem(position)).getPayload();
-        ((CommentsList_View) mPageView).goShowCommentedCard(comment);
     }
 
     /*public boolean canDeleteComment() {
