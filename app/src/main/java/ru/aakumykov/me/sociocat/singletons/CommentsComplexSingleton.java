@@ -9,9 +9,16 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.ErrorUtils;
+import ru.aakumykov.me.sociocat.z_rules_test.SleepingThread;
 
 public class CommentsComplexSingleton implements iCommentsComplexSingleton {
 
@@ -40,34 +47,100 @@ public class CommentsComplexSingleton implements iCommentsComplexSingleton {
             return;
         }
 
-        WriteBatch writeBatch = mFirebaseFirestore.batch();
-
-        DocumentReference commentDocumentRef = mCommentsSingleton.getCommentsCollection()
-                .document(comment.getKey());
-
-        writeBatch.delete(commentDocumentRef);
-
-        String cardKey = comment.getCardId();
-        if (null == cardKey) {
-            executeWriteBatch(writeBatch, comment, callbacks);
+        String commentKey = comment.getKey();
+        if (null == comment) {
+            callbacks.onCommentDeleteError("Comment key cannot be null");
             return;
         }
 
-        // TODO: проверять пользователя!
+        WriteBatch writeBatch = mFirebaseFirestore.batch();
 
-        mCardsSingleton.checkCardExists(cardKey, new iCardsSingleton.CardCheckExistingCallbacks() {
+        DocumentReference commentDocumentRef = mCommentsSingleton.getCommentsCollection().document(commentKey);
+        writeBatch.delete(commentDocumentRef);
+
+        List<Runnable> checksList = new ArrayList<>();
+        Map<String,Boolean> checksMap = new HashMap<>();
+        SleepingThread sleepingThread = new SleepingThread(30, new SleepingThread.iSleepingThreadCallbacks() {
             @Override
-            public void onCardExists(@NonNull String cardKey) {
-                DocumentReference cardRef = mCardsSingleton.getCardsCollection().document(cardKey);
-                writeBatch.update(cardRef, Card.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(comment.getKey()));
+            public void onSleepingStart() {
+
+            }
+
+            @Override
+            public void onSleepingTick(int secondsToWakeUp) {
+
+            }
+
+            @Override
+            public void onSleepingEnd() {
                 executeWriteBatch(writeBatch, comment, callbacks);
+            }
+
+            @Override
+            public boolean isReadyToWakeUpNow() {
+                List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+                return checkResults.size() == checksList.size();
+            }
+
+            @Override
+            public void onSleepingError(@NonNull String errorMsg) {
+                callbacks.onCommentDeleteError(errorMsg);
+            }
+        });
+
+        String cardKey = comment.getCardId();
+        checksList.add(() -> mCardsSingleton.checkCardExists(cardKey, new iCardsSingleton.CardCheckExistingCallbacks() {
+            @Override
+            public void onCardExists(@NonNull String cardKey1) {
+                synchronized (checksMap) {
+                    checksMap.put("card", true);
+                }
+                DocumentReference cardRef = mCardsSingleton.getCardsCollection().document(cardKey1);
+                writeBatch.update(cardRef, Card.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(comment.getKey()));
             }
 
             @Override
             public void onCardNotExists(@NonNull String notExistingCardKey) {
-                executeWriteBatch(writeBatch, comment, callbacks);
+                synchronized (checksMap) {
+                    checksMap.put("card", false);
+                }
             }
-        });
+        }));
+
+        String userId = comment.getUserId();
+        checksList.add(() -> mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iCheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+
+            }
+
+            @Override
+            public void onExists() {
+                synchronized (checksMap) {
+                    checksMap.put("user", true);
+                }
+                DocumentReference userRef = mUsersSingleton.getUsersCollection().document(userId);
+                writeBatch.update(userRef, User.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+            }
+
+            @Override
+            public void onNotExists() {
+                synchronized (checksMap) {
+                    checksMap.put("user", false);
+                }
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                sleepingThread.interrupt();
+                callbacks.onCommentDeleteError(errorMsg);
+            }
+        }));
+
+        sleepingThread.start();
+
+        for (Runnable checkRunnable : checksList)
+            checkRunnable.run();
     }
 
     private void executeWriteBatch(@NonNull WriteBatch writeBatch, @NonNull Comment comment, @NonNull CommentDeletionCallbacks callbacks) {
