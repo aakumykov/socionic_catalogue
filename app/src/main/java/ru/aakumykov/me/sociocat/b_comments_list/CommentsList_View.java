@@ -17,11 +17,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
+import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
 
@@ -45,10 +47,10 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
 
     @Override
     public void assembleMenu() {
-        addSearchView();
-        addSortByNameMenu();
-        addSortByCardsCountMenuItem();
-        makeSortingMenuVisible();
+//        addSearchView();
+//        addSortByNameMenu();
+//        addSortByCardsCountMenuItem();
+//        makeSortingMenuVisible();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
             return super.onOptionsItemSelected(item);
         }*/
 
-        return true;
+        return false;
     }
 
     /*@Override
@@ -110,6 +112,14 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     @Override
     public void setDefaultPageTitle() {
         setPageTitle(R.string.COMMENTS_LIST_page_title);
+    }
+
+    @Override
+    public void setViewState(iViewState viewState) {
+        if (viewState instanceof CommentsOfUser_ViewState)
+            setCommentsOfUserViewState(viewState);
+        else
+            super.setViewState(viewState);
     }
 
     @Override
@@ -193,4 +203,10 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         }
     }*/
 
+    private void setCommentsOfUserViewState(iViewState viewState) {
+        CommentsOfUser_ViewState commentsOfUserViewState = (CommentsOfUser_ViewState) viewState;
+        setNeutralViewState();
+        setPageTitle(R.string.COMMENTS_LIST_comments_of_user_page_title,
+                commentsOfUserViewState.getUserName());
+    }
 }

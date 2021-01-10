@@ -374,6 +374,7 @@
     <string name="USER_SHOW_user_id">User id</string>
     <string name="COMMENTS_LIST_error_loading_comments">Error loading comments</string>
     <string name="COMMENTS_LIST_page_title">Comments</string>
+    <string name="COMMENTS_LIST_comments_of_user_page_title">Комментарии пользователя «%1$s»</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

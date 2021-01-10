@@ -28,9 +28,11 @@ import ru.aakumykov.me.sociocat.b_comments_list.list_items.CommentsList_Item;
 import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
 import ru.aakumykov.me.sociocat.b_comments_list.view_holders.CommentViewHolder;
+import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
@@ -43,9 +45,9 @@ public class CommentsList_Presenter
 //    private final UsersSingleton mUsersSingleton = UsersSingleton.getInstance();
 //    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private final boolean mInterruptFlag = false;
-    private String mUserId;
+    private User mCommentsOwnerUser;
 
-    
+
     public CommentsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);
     }
@@ -66,12 +68,12 @@ public class CommentsList_Presenter
     private void makeStartDesision() {
         Intent inputIntent = mPageView.getInputIntent();
 
-        mUserId = inputIntent.getStringExtra(Constants.USER_ID);
+        mCommentsOwnerUser = inputIntent.getParcelableExtra(Constants.USER);
 
-        if (null == mUserId)
+        if (null == mCommentsOwnerUser)
             loadAllComments();
         else
-            loadCommentsOfUser(mUserId);
+            loadCommentsOfUser(mCommentsOwnerUser);
 
     }
 
@@ -93,13 +95,13 @@ public class CommentsList_Presenter
         });
     }
 
-    private void loadCommentsOfUser(@NonNull String userId) {
+    private void loadCommentsOfUser(@NonNull User user) {
         setRefreshingViewState();
 
-        mCommentsSingleton.loadCommentsOfUser(userId, null, new iCommentsSingleton.ListCallbacks() {
+        mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                setNeutralViewState();
+                setViewState(new CommentsOfUser_ViewState(user.getName()));
                 mListView.setList(incapsulate2dataListItems(list));
             }
 

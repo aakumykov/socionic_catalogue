@@ -272,7 +272,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView
     @Override
     public void goShowUserComments(@NonNull User user) {
         Intent intent = new Intent(this, CommentsList_View.class);
-        intent.putExtra(Constants.USER_ID, user.getKey());
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
     }
 
