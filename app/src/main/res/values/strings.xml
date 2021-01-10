@@ -377,6 +377,7 @@
     <string name="COMMENTS_LIST_comments_of_user_page_title">Comments of user «%1$s»</string>
     <string name="COMMENTS_LIST_card_title">To card:</string>
     <string name="menu_item_sorted_by_card">By card</string>
+    <string name="unknown_user">UNKNOWN USER</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

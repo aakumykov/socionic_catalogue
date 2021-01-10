@@ -104,7 +104,14 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
     }
 
     private void displayCardAuthor(@NonNull Comment comment) {
-        commentAuthorView.setText(comment.getUserName());
+        String userName = comment.getUserName();
+
+        if (TextUtils.isEmpty(userName))
+            userName = ru.aakumykov.me.sociocat.a_basic_mvp_list_components
+                    .utils.TextUtils
+                    .getText(commentAuthorView.getContext(), R.string.unknown_user);
+
+        commentAuthorView.setText(userName);
     }
 
     private void displayCommentDate(@NonNull Comment comment) {
