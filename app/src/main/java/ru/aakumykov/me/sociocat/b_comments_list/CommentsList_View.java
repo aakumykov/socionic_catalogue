@@ -17,10 +17,13 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.BasicMVPList_View;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
@@ -50,8 +53,10 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     public void assembleMenu() {
 //        addSearchView();
 //        addSortByNameMenu();
-//        addSortByCardsCountMenuItem();
-//        makeSortingMenuVisible();
+        addSortByDateMenu();
+        addSortByAuthorMenu();
+        addSortByCardMenuItem();
+        makeSortingMenuVisible();
     }
 
     @Override
@@ -184,17 +189,16 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
         makeMenuItemVisible(R.id.actionSort, R.drawable.ic_sort_visible);
     }
 
-    private void addSortByCardsCountMenuItem() {
-
-        /*addSortingMenuRootIfNotExists();
+    private void addSortByAuthorMenu() {
+        addSortingMenuRootIfNotExists();
 
         new SortingMenuItem.Builder()
                 .addSortingMode(mPresenter.getCurrentSortingMode())
                 .addSortingOrder(mPresenter.getCurrentSortingOrder())
                 .addMenuInflater(mMenuInflater)
                 .addRootMenu(mSortingSubmenu)
-                .addInflatedMenuResource(R.menu.sort_by_cards_count)
-                .addInflatedMenuItemId(R.id.actionSortByCardsCount)
+                .addInflatedMenuResource(R.menu.sort_by_author)
+                .addInflatedMenuItemId(R.id.actionSortByAuthor)
                 .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
                     @Override
                     public boolean isSortingModeComplains(iSortingMode sortingMode) {
@@ -203,22 +207,37 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
 
                     @Override
                     public boolean isSortingModeActive(iSortingMode sortingMode) {
-                        return eCommentsList_SortingMode.BY_CARDS_COUNT.equals(sortingMode);
+                        return eCommentsList_SortingMode.BY_AUTHOR.equals(sortingMode);
                     }
                 })
-                .create();*/
+                .create();
     }
 
-    /*private void processTagEditionResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK == resultCode) {
-            if (null != data) {
-                Tag oldTag = data.getParcelableExtra(Constants.OLD_TAG);
-                Tag newTag = data.getParcelableExtra(Constants.NEW_TAG);
+    private void addSortByCardMenuItem() {
 
-                ((CommentsList_Presenter) mPresenter).onTagEdited(oldTag, newTag);
-            }
-        }
-    }*/
+        addSortingMenuRootIfNotExists();
+
+        new SortingMenuItem.Builder()
+                .addSortingMode(mPresenter.getCurrentSortingMode())
+                .addSortingOrder(mPresenter.getCurrentSortingOrder())
+                .addMenuInflater(mMenuInflater)
+                .addRootMenu(mSortingSubmenu)
+                .addInflatedMenuResource(R.menu.sort_by_card)
+                .addInflatedMenuItemId(R.id.actionSortByCard)
+                .addSortingModeParamsCallback(new SortingMenuItem.iSortingModeParamsCallback() {
+                    @Override
+                    public boolean isSortingModeComplains(iSortingMode sortingMode) {
+                        return sortingMode instanceof eCommentsList_SortingMode;
+                    }
+
+                    @Override
+                    public boolean isSortingModeActive(iSortingMode sortingMode) {
+                        return eCommentsList_SortingMode.BY_CARD.equals(sortingMode);
+                    }
+                })
+                .create();
+    }
+
 
     private void setCommentsOfUserViewState(iViewState viewState) {
         CommentsOfUser_ViewState commentsOfUserViewState = (CommentsOfUser_ViewState) viewState;
