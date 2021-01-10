@@ -148,4 +148,5 @@ public final class Constants
 
     public static final int MAX_TAGS_AT_ONCE_DELETE_COUNT = 20;
     public static final int MAX_CARDS_AT_ONCE_DELETE_COUNT = 20;
+    public static final int MAX_COMMENTS_AT_ONCE_DELETE_COUNT = 50;
 }

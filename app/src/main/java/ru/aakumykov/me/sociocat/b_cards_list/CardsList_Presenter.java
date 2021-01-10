@@ -576,6 +576,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         return isAdmin();
     }
 
+    public boolean commentsCountIsDeletable(int selectedItemsCount) {
+        return selectedItemsCount <= Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT;
+    }
+
     private boolean isAdmin() {
         return UsersSingleton.getInstance().currentUserIsAdmin();
     }
@@ -692,4 +696,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             mListView.showLoadmoreItem();
         }, 500);
     }
+
+
 }

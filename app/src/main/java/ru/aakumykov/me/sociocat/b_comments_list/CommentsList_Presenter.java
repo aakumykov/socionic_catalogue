@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsList_Presenter
@@ -131,6 +132,12 @@ public class CommentsList_Presenter
     @Override
     protected BasicMVPList_ItemsTextFilter getItemsTextFilter() {
         return new CommentsList_ItemsTextFilter();
+    }
+
+    @Override
+    public void onSelectItemClicked(BasicMVPList_DataViewHolder basicDataViewHolder) {
+        if (UsersSingleton.getInstance().currentUserIsAdmin())
+            super.onSelectItemClicked(basicDataViewHolder);
     }
 
     @Override
@@ -384,6 +391,14 @@ public class CommentsList_Presenter
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
+    }
+
+    public boolean canDeleteComments() {
+        return UsersSingleton.getInstance().currentUserIsAdmin();
+    }
+
+    public boolean commentsCountIsDeletable(int selectedItemsCount) {
+        return selectedItemsCount <= Constants.MAX_COMMENTS_AT_ONCE_DELETE_COUNT;
     }
 
     /*public boolean canDeleteComment() {

@@ -332,7 +332,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         boolean canDeleteCard = ((CardsList_Presenter) mPresenter).canDeleteCard();
         boolean cardsAreSelected = selectionViewState.getSelectedItemsCount() > 0;
         boolean singleCardSelected = 1 == selectionViewState.getSelectedItemsCount();
-        boolean cardsCountIsDeletable = selectionViewState.getSelectedItemsCount() <= Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT;
+        boolean cardsCountIsDeletable = ((CardsList_Presenter) mPresenter).commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
 
         if (canEditCard || canDeleteCard) {
 

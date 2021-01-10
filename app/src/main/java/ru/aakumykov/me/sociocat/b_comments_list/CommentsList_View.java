@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_U
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
+import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
@@ -65,6 +66,19 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     @Override
     protected RecyclerView getRecyclerView() {
         return mRecyclerView;
+    }
+
+    @Override
+    protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState selectionViewState) {
+        super.setSomeItemSelectedViewState(selectionViewState);
+
+        boolean canDeleteComments = ((CommentsList_Presenter) mPresenter).canDeleteComments();
+        boolean commentsCountIsDeletable = ((CommentsList_Presenter) mPresenter).commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
+
+        if (canDeleteComments && commentsCountIsDeletable) {
+            inflateMenu(R.menu.delete);
+            makeMenuItemVisible(R.id.actionDelete, R.drawable.ic_delete);
+        }
     }
 
     @Override
