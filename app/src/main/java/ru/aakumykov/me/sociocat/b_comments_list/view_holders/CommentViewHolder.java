@@ -18,6 +18,7 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPL
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.DateUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMVPList_DataViewHolder;
+import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class CommentViewHolder extends BasicMVPList_DataViewHolder {
@@ -77,6 +78,11 @@ public class CommentViewHolder extends BasicMVPList_DataViewHolder {
     @OnLongClick(R.id.elementView)
     void onItemLongClicked() {
         mItemClickListener.onItemLongClicked(this);
+    }
+
+    @OnClick(R.id.cardTitleView)
+    void onCardTitleClicked() {
+        ((iCommentsList_ItemClickListener) mItemClickListener).onCardTitleClicked(this);
     }
 
 

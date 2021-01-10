@@ -21,11 +21,11 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewStat
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
-import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.view_states.CommentsOfUser_ViewState;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
-import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public class CommentsList_View extends BasicMVPList_View implements iCommentsList_View {
 
@@ -143,10 +143,19 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     }
 
     @Override
-    public void goShowCommentedCard(@NonNull Tag tag) {
-        Intent intent = new Intent(this, CardsList_View.class);
+    public void goShowCommentUnderCard(@NonNull Comment comment) {
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(Constants.TAG_NAME, tag.getName());
+        intent.putExtra(Constants.CARD_KEY, comment.getCardId());
+        intent.putExtra(Constants.COMMENT_KEY, comment.getKey());
+        startActivity(intent);
+    }
+
+    @Override
+    public void goShowCommentedCard(@NonNull Comment comment) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra(Constants.CARD_KEY, comment.getCardId());
         startActivity(intent);
     }
 

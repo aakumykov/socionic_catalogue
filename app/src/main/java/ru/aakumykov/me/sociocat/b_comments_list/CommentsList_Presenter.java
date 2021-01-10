@@ -23,7 +23,6 @@ import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_holders.BasicMV
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
 import ru.aakumykov.me.sociocat.b_comments_list.enums.eCommentsList_SortingMode;
 import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_ItemClickListener;
-import ru.aakumykov.me.sociocat.b_comments_list.interfaces.iCommentsList_View;
 import ru.aakumykov.me.sociocat.b_comments_list.list_items.Comment_ListItem;
 import ru.aakumykov.me.sociocat.b_comments_list.list_utils.CommentsList_ItemsTextFilter;
 import ru.aakumykov.me.sociocat.b_comments_list.stubs.CommentsList_ViewStub;
@@ -89,7 +88,7 @@ public class CommentsList_Presenter
         BasicMVPList_DataItem basicDataItem = (BasicMVPList_DataItem) mListView.getItem(position);
         Tag tag = (Tag) basicDataItem.getPayload();
 
-        ((iCommentsList_View) mPageView).goShowCommentedCard(tag);
+//        ((iCommentsList_View) mPageView).goShowCommentedCard(tag);
     }
 
     @Override
@@ -369,6 +368,13 @@ public class CommentsList_Presenter
             mPageView.scroll2position(position);
             mListView.highlightItem(position);
         }
+    }
+
+    @Override
+    public void onCardTitleClicked(CommentViewHolder commentViewHolder) {
+        int position = commentViewHolder.getAdapterPosition();
+        Comment comment = (Comment) ((Comment_ListItem) mListView.getItem(position)).getPayload();
+        ((CommentsList_View) mPageView).goShowCommentedCard(comment);
     }
 
     /*public boolean canDeleteComment() {
