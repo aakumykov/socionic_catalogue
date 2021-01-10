@@ -8,8 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -322,11 +324,31 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override
     public void checkUserExists(@Nullable String userId, iCheckExistanceCallbacks callbacks) {
+
         if (null == userId) {
             callbacks.onNotExists();
             return;
         }
-        checkUserWithAttributeExists(Constants.USER_NAME_KEY, userId, callbacks);
+
+        usersCollection
+                .document(userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            callbacks.onCheckFail("Task of checking user existance is unsuccessfull");
+                            return;
+                        }
+
+                        DocumentSnapshot documentSnapshot = task.getResult();
+
+                        if (documentSnapshot.exists())
+                            callbacks.onExists();
+                        else
+                            callbacks.onNotExists();
+                    }
+                });
     }
 
 
