@@ -379,6 +379,7 @@
     <string name="COMMENTS_LIST_error_deleting_comment">Ошибка удаления комментария «%1$s»</string>
     <string name="deletion_process_is_finished">Процесс удаления завершён</string>
     <string name="COMMENTS_LIST_delete_selected_comments">Удалить выбранные комментарии?</string>
+    <string name="MENU_comments">Комментарии</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

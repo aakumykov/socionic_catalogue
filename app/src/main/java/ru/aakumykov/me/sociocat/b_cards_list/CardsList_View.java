@@ -45,6 +45,7 @@ import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsOfUser_View
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCardsWithTag_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.LoadingCards_ViewState;
 import ru.aakumykov.me.sociocat.b_cards_list.view_states.SimpleCardsList_ViewState;
+import ru.aakumykov.me.sociocat.b_comments_list.CommentsList_View;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
@@ -100,6 +101,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+        if (R.id.actionComments == id) {
+            getCardsListPresenter().onCommentsMenuItemClicked();
+            return true;
+        }
+        
         if (R.id.actionSortByComments == id) {
             mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_COMMENTS);
         }
@@ -110,10 +116,10 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_RATING);
         }
         else if (R.id.actionEdit == id) {
-            ((CardsList_Presenter) mPresenter).onEditCardClicked();
+            getCardsListPresenter().onEditCardClicked();
         }
         else if (R.id.actionDelete == id) {
-            ((CardsList_Presenter) mPresenter).onDeleteMenuItemClicked();
+            getCardsListPresenter().onDeleteMenuItemClicked();
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -129,6 +135,9 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         addSearchView();
 
         addSingleItemMenu(R.menu.tags, R.id.actionTags, MenuItem.SHOW_AS_ACTION_NEVER);
+
+        if (getCardsListPresenter().shouldShowCommentsMenu("comments"))
+            addSingleItemMenu(R.menu.comments, R.id.actionComments, MenuItem.SHOW_AS_ACTION_NEVER);
 
         addSortByNameMenu();
         addSortByDateMenu();
@@ -273,6 +282,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
 
+
+    private CardsList_Presenter getCardsListPresenter() {
+        return ((CardsList_Presenter) mPresenter);
+    }
+
     private void setLoadingCardsViewState(LoadingCards_ViewState loadingCardsWithoutTagViewState) {
 
         setRefreshingViewState();
@@ -328,11 +342,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState selectionViewState) {
         super.setSomeItemSelectedViewState(selectionViewState);
 
-        boolean canEditCard = ((CardsList_Presenter) mPresenter).canEditCard();
-        boolean canDeleteCard = ((CardsList_Presenter) mPresenter).canDeleteCard();
+        boolean canEditCard = getCardsListPresenter().canEditCard();
+        boolean canDeleteCard = getCardsListPresenter().canDeleteCard();
         boolean cardsAreSelected = selectionViewState.getSelectedItemsCount() > 0;
         boolean singleCardSelected = 1 == selectionViewState.getSelectedItemsCount();
-        boolean cardsCountIsDeletable = ((CardsList_Presenter) mPresenter).commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
+        boolean cardsCountIsDeletable = getCardsListPresenter().commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
 
         if (canEditCard || canDeleteCard) {
 
@@ -445,7 +459,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
                     @NotNull MenuItem menuItem,
                     @Nullable Object o
             ) {
-                ((CardsList_Presenter) mPresenter).onAddNewCardClicked(menuItem.getItemId());
+                getCardsListPresenter().onAddNewCardClicked(menuItem.getItemId());
             }
 
             @Override
@@ -459,7 +473,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CardsList_Presenter) mPresenter).onCloseTagFilterClicked();
+                getCardsListPresenter().onCloseTagFilterClicked();
             }
         });
     }
@@ -469,7 +483,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             if (null != mActivityResultData) {
                 Card newCard = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-                ((CardsList_Presenter) mPresenter).onCardCreated(newCard);
+                getCardsListPresenter().onCardCreated(newCard);
             }
         }
     }
@@ -504,13 +518,13 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
         Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
 
-        ((CardsList_Presenter) mPresenter).onCardEdited(oldCard, newCard);
+        getCardsListPresenter().onCardEdited(oldCard, newCard);
     }
 
     private void processCardDeletion() {
         Card card = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-        ((CardsList_Presenter) mPresenter).onCardDeleted(card);
+        getCardsListPresenter().onCardDeleted(card);
     }
 
     private void showTagFilter(String tagName) {
@@ -526,7 +540,10 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
-        ((CardsList_Presenter) mPresenter).onFABClicked();
+        getCardsListPresenter().onFABClicked();
     }
 
+    public void goCommentsList() {
+        startActivity(new Intent(this, CommentsList_View.class));
+    }
 }

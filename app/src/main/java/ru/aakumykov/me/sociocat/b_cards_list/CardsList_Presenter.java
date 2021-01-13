@@ -580,9 +580,11 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         return selectedItemsCount <= Constants.MAX_CARDS_AT_ONCE_DELETE_COUNT;
     }
 
-    private boolean isAdmin() {
+
+    public boolean shouldShowCommentsMenu(@NonNull String menuName) {
         return UsersSingleton.getInstance().currentUserIsAdmin();
     }
+
 
     public void onDeleteMenuItemClicked() {
 
@@ -630,6 +632,15 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
                     }
                 }
         );
+    }
+
+    public void onCommentsMenuItemClicked() {
+        ((CardsList_View) mPageView).goCommentsList();
+    }
+
+
+    private boolean isAdmin() {
+        return UsersSingleton.getInstance().currentUserIsAdmin();
     }
 
     private void onDeleteCardsConfirmed() {
@@ -696,6 +707,4 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             mListView.showLoadmoreItem();
         }, 500);
     }
-
-
 }
