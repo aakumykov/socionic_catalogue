@@ -55,6 +55,7 @@
                 android:inputType="textPassword"
                 android:selectAllOnFocus="false"
                 android:singleLine="true"
+                android:imeOptions="actionGo"
                 android:hint="@string/LOGIN_password_hint" />
 
             <Button

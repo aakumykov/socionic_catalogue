@@ -3,9 +3,11 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,6 +85,27 @@ public class Login_View extends BaseView implements
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        passwordInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean isActionDone = EditorInfo.IME_ACTION_DONE == actionId;
+                boolean isActionSearch = EditorInfo.IME_ACTION_SEARCH == actionId;
+                boolean isActionGo = EditorInfo.IME_ACTION_GO == actionId;
+
+                boolean isKeyEnter = null != event
+                        && KeyEvent.KEYCODE_ENTER == event.getKeyCode()
+                        && !event.isShiftPressed();
+
+                boolean onKeyDown = null != event && KeyEvent.ACTION_DOWN == event.getAction();
+
+                if (isActionDone || isActionSearch || isActionGo || (onKeyDown && isKeyEnter)) {
+                    validator.validate();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
