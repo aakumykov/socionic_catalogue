@@ -22,7 +22,7 @@ public class Comment_ListItem extends BasicMVPList_DataItem {
         String text = getComment().getText();
         return Comment_ListItem.class.getSimpleName() +
                 " { " +
-                getComment().getText().substring(Math.min(text.length(), 20)) +
+                getComment().getText().substring(0, Math.min(text.length(), 20)) +
                 " }";
     }
 

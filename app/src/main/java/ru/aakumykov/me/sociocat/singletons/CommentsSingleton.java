@@ -169,10 +169,12 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         query = query.orderBy(Comment.KEY_CREATED_AT, Query.Direction.DESCENDING);
 
-        if (null != startingComment)
-            query = query.startAfter(startingComment.getCreatedAt());
+        if (null != startingComment) {
+//            query = query.startAfter(startingComment.getCreatedAt());
+            query.startAfter(startingComment.getCreatedAt());
+        }
 
-//        query = query.limitToLast(3);
+        query = query.limit(3);
 
         executeQuery(query, callbacks);
     }
