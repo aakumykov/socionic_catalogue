@@ -346,7 +346,7 @@
     <string name="CARDS_LIST_error_loading_list">Error loading list</string>
     <string name="CARDS_LIST_cards_with_tag">Cards with tag «%1$s»</string>
     <string name="CARDS_LIST_add_card_button_description">Add new card</string>
-    <string name="no_more">No more cards</string>
+    <string name="no_more">No more</string>
     <string name="CARDS_LIST_error_tag_name_missing">Tag name missing</string>
     <string name="SNACKBAR_got_it">Got it</string>
     <string name="TAGS_LIST_you_cannot_delete_tags">You cannot delete tags</string>
