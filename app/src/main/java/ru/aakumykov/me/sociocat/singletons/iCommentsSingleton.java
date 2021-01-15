@@ -21,9 +21,9 @@ public interface iCommentsSingleton {
 
     CollectionReference getCommentsCollection();
 
-    void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks);
-    void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks);
-    void loadCommentsForCard(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, ListCallbacks callbacks);
+    void loadComments(@Nullable Comment startingComment, LoadListCallbacks callbacks);
+    void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, LoadListCallbacks callbacks);
+    void loadCommentsForCard(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, LoadListCallbacks callbacks);
 
     void loadComment(String commentKey, LoadCommentCallbacks callbacks);
 
@@ -36,7 +36,7 @@ public interface iCommentsSingleton {
     void changeCommentRating(CommentRatingAction commentRatingAction, Comment comment, String userId, ChangeRatingCallbacks callbacks);
 
 
-    interface ListCallbacks {
+    interface LoadListCallbacks {
         void onCommentsLoadSuccess(List<Comment> list);
         void onCommentsLoadError(String errorMessage);
     }

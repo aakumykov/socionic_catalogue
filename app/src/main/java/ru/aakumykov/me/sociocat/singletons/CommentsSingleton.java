@@ -164,7 +164,7 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void loadComments(@Nullable Comment startingComment, ListCallbacks callbacks) {
+    public void loadComments(@Nullable Comment startingComment, LoadListCallbacks callbacks) {
         Query query = commentsCollection;
 
         query = query.orderBy(Comment.KEY_CREATED_AT, Query.Direction.DESCENDING);
@@ -172,13 +172,13 @@ public class CommentsSingleton implements iCommentsSingleton {
         if (null != startingComment)
             query = query.startAfter(startingComment.getCreatedAt());
 
-        query = query.limit(3);
+        query = query.limit(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
 
         executeQuery(query, callbacks);
     }
 
     @Override
-    public void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, ListCallbacks callbacks) {
+    public void loadCommentsOfUser(@NonNull String userId, @Nullable Comment startingComment, LoadListCallbacks callbacks) {
 
         Query query = commentsCollection;
 
@@ -189,13 +189,13 @@ public class CommentsSingleton implements iCommentsSingleton {
         if (null != startingComment)
             query = query.startAfter(startingComment.getCreatedAt());
 
-//        query = query.limitToLast(3);
+        query = query.limit(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
 
         executeQuery(query, callbacks);
     }
 
     @Override
-    public void loadCommentsForCard(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endBeforeComment, ListCallbacks callbacks) {
+    public void loadCommentsForCard(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endBeforeComment, LoadListCallbacks callbacks) {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_CREATED_AT)
@@ -326,7 +326,7 @@ public class CommentsSingleton implements iCommentsSingleton {
 
 
 
-    private void executeQuery(@NonNull Query query, ListCallbacks callbacks) {
+    private void executeQuery(@NonNull Query query, LoadListCallbacks callbacks) {
         query
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

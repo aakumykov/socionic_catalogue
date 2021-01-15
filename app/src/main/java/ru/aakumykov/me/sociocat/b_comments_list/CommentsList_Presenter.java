@@ -51,10 +51,24 @@ public class CommentsList_Presenter
 //    private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
     private User mCommentsOwnerUser;
     private iCommentsComplexSingleton mCommentsComplexSingleton = CommentsComplexSingleton.getInstance();
+    private iCommentsSingleton.LoadListCallbacks mLoadListCallbacks;
 
 
     public CommentsList_Presenter(BasicViewMode defaultViewMode, iSortingMode defaultSortingMode) {
         super(defaultViewMode, defaultSortingMode);
+
+        mLoadListCallbacks = new iCommentsSingleton.LoadListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                setNeutralViewState();
+                mListView.setList(incapsulate2dataListItems(list));
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
+            }
+        };
     }
 
 
@@ -169,47 +183,29 @@ public class CommentsList_Presenter
 
 
     private void loadComments() {
-
         setRefreshingViewState();
-
-        mCommentsSingleton.loadComments(null, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                setNeutralViewState();
-                mListView.setList(incapsulate2dataListItems(list));
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
-            }
-        });
+        mCommentsSingleton.loadComments(null, mLoadListCallbacks);
     }
 
     private void loadCommentsOfUser(@NonNull User user) {
         setRefreshingViewState();
-        mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                setCommentsOfUserViewState();
-                mListView.setList(incapsulate2dataListItems(list));
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                setErrorViewState(R.string.COMMENTS_LIST_error_loading_comments, errorMessage);
-            }
-        });
+        mCommentsSingleton.loadCommentsOfUser(user.getKey(), null, mLoadListCallbacks);
     }
 
 
     private void loadMoreComments(@NonNull Comment lastComment) {
 
-        mCommentsSingleton.loadComments(lastComment, new iCommentsSingleton.ListCallbacks() {
+        mCommentsSingleton.loadComments(lastComment, new iCommentsSingleton.LoadListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 setNeutralViewState();
+
                 mListView.appendList(incapsulate2dataListItems(list));
+
+                if (0 == list.size()) {
+                    mListView.hideLoadmoreItem();
+                    mListView.showLoadmoreItem(R.string.no_more);
+                }
             }
 
             @Override
@@ -222,11 +218,17 @@ public class CommentsList_Presenter
     private void loadMoreCommentsOfUser(@NonNull Comment lastComment) {
 
         mCommentsSingleton.loadCommentsOfUser(mCommentsOwnerUser.getKey(),
-                lastComment, new iCommentsSingleton.ListCallbacks() {
+                lastComment, new iCommentsSingleton.LoadListCallbacks() {
                     @Override
                     public void onCommentsLoadSuccess(List<Comment> list) {
                         setCommentsOfUserViewState();
+
                         mListView.appendList(incapsulate2dataListItems(list));
+
+                        if (0 == list.size()) {
+                            mListView.hideLoadmoreItem();
+                            mListView.showLoadmoreItem(R.string.no_more);
+                        }
                     }
 
                     @Override
@@ -235,7 +237,6 @@ public class CommentsList_Presenter
                     }
                 });
     }
-
 
     private void setCommentsOfUserViewState() {
         setViewState(new CommentsOfUser_ViewState(mCommentsOwnerUser.getName()));
