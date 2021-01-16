@@ -41,8 +41,7 @@ public class FCMService extends FirebaseMessagingService {
 
         Map<String, String> data = remoteMessage.getData();
 
-        logDataToFile(data);
-
+        //logDataToFile(data);
 
         if (data.containsKey("isCardNotification")) {
             processNewCardNotification(data);
