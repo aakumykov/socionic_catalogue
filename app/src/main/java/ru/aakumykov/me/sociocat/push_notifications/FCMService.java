@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.push_notifications;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,9 @@ import androidx.preference.PreferenceManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
@@ -36,6 +40,9 @@ public class FCMService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Map<String, String> data = remoteMessage.getData();
+
+        logDataToFile(data);
+
 
         if (data.containsKey("isCardNotification")) {
             processNewCardNotification(data);
@@ -101,4 +108,17 @@ public class FCMService extends FirebaseMessagingService {
                 this, newCommentEvent, mCurrentUserId);
     }
 
+    private void logDataToFile(Map<String, String> data) {
+
+        String filename = "FCMService-debug.log";
+        String fileContents = data.toString();
+
+        try (FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE)) {
+            fos.write(fileContents.getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
