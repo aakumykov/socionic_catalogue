@@ -17,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -86,8 +87,8 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.timecodeControlsContainer) LinearLayout timecodeControlsContainer;
     @BindView(R.id.timecodeInput) EditText timecodeInput;
-    @BindView(R.id.getTimecodeButton) Button getTimecodeButton;
-    @BindView(R.id.setTimecodeButton) Button setTimecodeButton;
+    @BindView(R.id.getTimecodeButton) ImageButton getTimecodeButton;
+    @BindView(R.id.setTimecodeButton) ImageButton setTimecodeButton;
 
     @BindView(R.id.canonicalTagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;

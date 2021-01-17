@@ -154,13 +154,13 @@
                     android:visibility="gone"
                     tools:visibility="visible">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/getTimecodeButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:enabled="false"
-                        android:text="⤷"
+                        android:src="@drawable/ic_timecode_get"
                         android:textSize="36sp" />
 
                     <EditText
@@ -174,13 +174,13 @@
                         android:text="00:00:00"
                         android:textAlignment="center" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/setTimecodeButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:enabled="false"
-                        android:text="⤴"
+                        android:src="@drawable/ic_timecode_set"
                         android:textSize="36sp" />
 
                 </LinearLayout>
