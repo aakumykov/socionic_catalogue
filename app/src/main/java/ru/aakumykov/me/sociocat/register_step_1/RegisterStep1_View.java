@@ -114,6 +114,11 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
             @Override
             public void onYesInDialog() {
                 goMainPage();
+
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                Uri data = Uri.parse("mailto:recipient@example.com?subject=" + Uri.encode("subject") + "&body=" + Uri.encode("body"));
+//                intent.setData(data);
+//                startActivity(intent);
             }
         });
     }
