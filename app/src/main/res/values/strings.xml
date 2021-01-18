@@ -102,8 +102,8 @@
     <string name="REGISTER1_page_title">Sign up, first step</string>
     <string name="REGISTER1_error_sending_email">Email sending error</string>
     <string name="REGISTER1_ok">OK</string>
-    <string name="REGISTER1_complete_dialog_title">Next step</string>
-    <string name="REGISTER1_complete_dialog_message">Check your mailbox to complete registration</string>
+    <string name="REGISTER1_complete_dialog_title">Check your mailbox</string>
+    <string name="REGISTER1_complete_dialog_message">Registration complete email is sent to address %1$s</string>
     <string name="REGISTER1_sending_email">Sending email</string>
     <string name="REGISTER1_incorrect_email">Incorrect email</string>
     <string name="REGISTER2_save">Save</string>

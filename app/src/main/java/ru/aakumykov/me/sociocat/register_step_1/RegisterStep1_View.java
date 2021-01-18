@@ -93,7 +93,9 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
     @Override
     public void showSuccessDialog() {
-        MyDialogs.registrationCompleteDialog(this, new iMyDialogs.StandardCallbacks() {
+        String email = emailInput.getText().toString();
+
+        MyDialogs.registrationCompleteDialog(this, email, new iMyDialogs.StandardCallbacks() {
             @Override
             public void onCancelInDialog() {
                 goMainPage();

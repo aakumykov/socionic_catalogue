@@ -2,14 +2,16 @@ package ru.aakumykov.me.sociocat.utils.my_dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -398,9 +400,12 @@ public class MyDialogs {
     }
 
     // Сообщение о завершении регистрации
-    public static void registrationCompleteDialog(Activity activity, final iMyDialogs.StandardCallbacks callbacks) {
-        String title = activity.getResources().getString(R.string.REGISTER1_complete_dialog_title);
-        String message = activity.getResources().getString(R.string.REGISTER1_complete_dialog_message);
+    public static void registrationCompleteDialog(Activity activity, String email, final iMyDialogs.StandardCallbacks callbacks) {
+        Resources resources = activity.getResources();
+
+        String title = resources.getString(R.string.REGISTER1_complete_dialog_title);
+        String message = resources.getString(R.string.REGISTER1_complete_dialog_message, email);
+
         AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
