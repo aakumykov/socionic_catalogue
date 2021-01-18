@@ -252,9 +252,8 @@ public class CardEdit_Presenter implements
     @Override
     public void saveCard(boolean alreadyValidated) throws Exception {
 
-        updateCurrentCardFromView();
-
         if (!alreadyValidated) {
+            updateCurrentCardFromView();
             processBeforeSave();
             if (!formIsValid())
                 return;
@@ -279,16 +278,12 @@ public class CardEdit_Presenter implements
             });
         }
         else {
-            // TODO: нужна проверка на авторизованность!
-            currentCard.setUserId(AuthSingleton.currentUserId());
-            currentCard.setUserName(usersSingleton.currentUserName());
-            currentCard.setUserAvatarURL(usersSingleton.getCurrentUser().getAvatarURL());
-
-            // Время создания/правки
             Long currentTime = new Date().getTime();
             if (isNewCard) {
+                setAuthorInfo();
                 currentCard.setCTime(currentTime);
             }
+
             currentCard.setMTime(currentTime);
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
@@ -296,7 +291,6 @@ public class CardEdit_Presenter implements
             cardsSingleton.saveCard(currentCard, oldCard, this);
         }
     }
-
 
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
@@ -479,6 +473,12 @@ public class CardEdit_Presenter implements
             String longTag = view.getString(R.string.TAG_long_text);
             currentCard.addTag(longTag);
         }
+    }
+
+    private void setAuthorInfo() {
+        currentCard.setUserId(AuthSingleton.currentUserId());
+        currentCard.setUserName(usersSingleton.currentUserName());
+        currentCard.setUserAvatarURL(usersSingleton.getCurrentUser().getAvatarURL());
     }
 
     private boolean formIsValid() {
