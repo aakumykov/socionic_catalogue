@@ -3,12 +3,14 @@ package ru.aakumykov.me.sociocat.b_cards_list.view_holders;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
 
 import butterknife.BindView;
+import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
@@ -19,6 +21,8 @@ public class CardViewHolder_List extends CardViewHolder {
 
     @BindView(R.id.mediaView) ImageView cardTypeImageView;
     @BindView(R.id.canonicalTagsContainer) LinearLayout canonicalTagsContainer;
+    @BindView(R.id.cardKeyView) TextView cardKeyView;
+
 
     private final static int ASPECT_ICON_SIZE = 24;
     private CanonicalTagsHelper mCanonicalTagsHelper;
@@ -41,6 +45,7 @@ public class CardViewHolder_List extends CardViewHolder {
         displayCommonParts(card);
 //        displayCardIcons(card);
         displayCardType(card);
+        displayCardKey(card);
     }
 
     @Override
@@ -65,6 +70,12 @@ public class CardViewHolder_List extends CardViewHolder {
             default:
                 break;
         }
+    }
+
+    private void displayCardKey(Card card) {
+        if (BuildConfig.DEBUG)
+            cardKeyView.setText(card.getKey());
+        ViewUtils.setVisibility(cardKeyView, BuildConfig.DEBUG);
     }
 
     private void displayCardIcons(@NonNull Card card) {
