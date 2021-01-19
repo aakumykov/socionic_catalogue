@@ -43,9 +43,11 @@ import ru.aakumykov.me.sociocat.eCardType;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.ComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsComplexSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -56,6 +58,8 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
     private static final String TAG = CardsList_Presenter.class.getSimpleName();
     private final CardsSingleton mCardsSingleton = CardsSingleton.getInstance();
     private final ComplexSingleton mComplexSingleton = ComplexSingleton.getInstance();
+    private iCardsComplexSingleton mCardsComplexSingleton = CardsComplexSingleton.getInstance();
+
     private String mTagFilter;
     private User mUserFilter;
     private boolean mHasParent;
@@ -677,7 +681,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         String msg = TextUtils.getText(mPageView.getLocalContext(), R.string.CARDS_LIST_deleting_card, card.getName());
         setViewState(new CancelableProgressViewState(msg));
 
-        mComplexSingleton.deleteCardWithChecks(card, new ComplexSingleton.iComplexSingleton_CardDeletionCallbacks() {
+        mCardsComplexSingleton.deleteCardWithChecks(card, new iCardsComplexSingleton.iDeleteCardCallbacks() {
             @Override
             public void onCardDeleteSuccess(@NonNull Card card) {
                 runFromBackground( () -> {

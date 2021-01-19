@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.singletons;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -10,11 +12,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.z_rules_test.SleepingThread;
 
 public class CardsComplexSingleton implements iCardsComplexSingleton {
 
@@ -22,21 +27,32 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
     private iTagsSingleton mTagsSingleton = TagsSingleton.getInstance();
     private iCardsSingleton mCardsSingleton = CardsSingleton.getInstance();
 
-    @Override
-    public void deleteCardWithTagAndUserChecks(@NonNull Card card, iDeleteCardCallbacks cardCallbacks) {
 
-        WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
+    @Override
+    public void deleteCardWithChecks(@Nullable Card card, iDeleteCardCallbacks callbacks) {
+
+        if (null == card) {
+            callbacks.onCardDeleteFailed("Card cannot be null");
+            return;
+        }
+
+        List<Runnable> checksList = new ArrayList<>();
+        Map<String,Boolean> checksMap = new HashMap<>();
 
         String cardKey = card.getKey();
-        String userId = card.getUserId();
-        List<String> tagsList = card.getTags();
+        String userKey = card.getUserId();
 
-        List<iCheckConditionCallback> checkConditionsList = new ArrayList<>();
+        DocumentReference cardRef = mCardsSingleton.getCardsCollection().document(cardKey);
+        DocumentReference cardAuthorRef = mUsersSingleton.getUsersCollection().document(userKey);
+
+        WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
+        writeBatch.delete(cardRef);
 
         // Проверка существования пользователя
-        checkConditionsList.add(new iCheckConditionCallback() {
+        checksList.add(new Runnable() {
             @Override
-            public void doCheck() {
+            public void run() {
+                String userId = card.getUserId();
                 mUsersSingleton.checkUserExists(userId, new iUsersSingleton.iCheckExistanceCallbacks() {
                     @Override
                     public void onCheckComplete() {
@@ -45,39 +61,53 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
 
                     @Override
                     public void onExists() {
-                        DocumentReference userRef = mUsersSingleton.getUsersCollection().document(userId);
-                        writeBatch.update(userRef, User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
+                        synchronized (checksMap) {
+                            checksMap.put(userId, true);
+                            writeBatch.update(cardAuthorRef,
+                                    User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
+                        }
                     }
 
                     @Override
                     public void onNotExists() {
-
+                        synchronized (checksMap) {
+                            checksMap.put(userId, false);
+                        }
                     }
 
                     @Override
                     public void onCheckFail(String errorMsg) {
-
+                        // TODO: сделать адекватную реакцию
                     }
                 });
             }
         });
 
         // Проверка существования меток
-        for (String tagName : tagsList) {
-            checkConditionsList.add(new iCheckConditionCallback() {
+        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
+
+        for (String tagName : card.getTags()) {
+            checksList.add(new Runnable() {
                 @Override
-                public void doCheck() {
+                public void run() {
                     mTagsSingleton.checkTagExists(tagName, new iTagsSingleton.ExistanceCallbacks() {
                         @Override
                         public void onTagExists(@NonNull String tagName) {
-                            CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
-                            DocumentReference tagRef = tagsCollection.document(tagName);
-                            writeBatch.update(tagRef, Tag.KEY_CARDS, FieldValue.arrayRemove(cardKey));
+                            synchronized (checksMap) {
+                                checksMap.put(tagName, true);
+                                writeBatch.update(
+                                        tagsCollection.document(tagName),
+                                        Constants.CARDS_IN_TAG_PATH,
+                                        FieldValue.arrayRemove(card.getKey())
+                                );
+                            }
                         }
 
                         @Override
                         public void onTagNotExists(@Nullable String tagName) {
-
+                            synchronized (checksMap) {
+                                checksMap.put(tagName, false);
+                            }
                         }
 
                         @Override
@@ -89,30 +119,68 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
             });
         }
 
-        /*CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
-        DocumentReference cardRef = cardsCollection.document(cardKey);
-        writeBatch.delete(cardRef).commit()
+        // Ожидание завершения проверок
+        new SleepingThread(
+                30,
+                new SleepingThread.iSleepingThreadCallbacks() {
+                    @Override
+                    public void onSleepingStart() {
+
+                    }
+
+                    @Override
+                    public void onSleepingTick(int secondsToWakeUp) {
+
+                    }
+
+                    @Override
+                    public void onSleepingEnd() {
+                        executeCardDeletion(card, writeBatch, callbacks);
+                    }
+
+                    @Override
+                    public boolean isReadyToWakeUpNow() {
+                        List<Boolean> checkResults = new ArrayList<>(checksMap.values());
+                        return checkResults.size() == checksList.size();
+                    }
+
+                    @Override
+                    public void onSleepingError(@NonNull String errorMsg) {
+                        callbacks.onCardDeleteFailed(errorMsg);
+                    }
+                }
+        ).start();
+
+        // Запуск проверок на исполнение
+        for (Runnable aCheck : checksList)
+            aCheck.run();
+    }
+
+
+    @Override
+    public void updateCardWithUserCheck(@NonNull Card card, @NonNull iUpdateCardCallbacks callbacks) {
+
+    }
+
+
+    private void executeCardDeletion(@NonNull Card card, @NonNull WriteBatch writeBatch, @NonNull iDeleteCardCallbacks callbacks) {
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        callbacks.onCardDeleteSuccess(card);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        String errorMsg = e.getMessage();
+                        if (null == errorMsg)
+                            errorMsg = "Unknown error";
+                        callbacks.onCardDeleteFailed(errorMsg);
+                        e.printStackTrace();
                     }
-                });*/
-
-        for (iCheckConditionCallback condition : checkConditionsList) {
-            condition.doCheck();
-        }
-    }
-
-    @Override
-    public void updateCardWithUserCheck(@NonNull Card card, @NonNull iUpdateCardCallbacks callbacks) {
-
+                });
     }
 
 

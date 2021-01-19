@@ -1,23 +1,20 @@
 package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsComplexSingleton {
 
-    void deleteCardWithTagAndUserChecks(@NonNull Card card, iDeleteCardCallbacks cardCallbacks);
+    void deleteCardWithChecks(@Nullable Card card, iDeleteCardCallbacks callbacks);
 
     void updateCardWithUserCheck(@NonNull Card card, @NonNull iUpdateCardCallbacks callbacks);
 
 
-    interface iCheckConditionCallback {
-        void doCheck();
-    }
-
     interface iDeleteCardCallbacks {
         void onCardDeleteSuccess(@NonNull Card card);
-        void onCardDeleteError(@NonNull String errorMsg);
+        void onCardDeleteFailed(@NonNull String errorMsg);
     }
 
     interface iUpdateCardCallbacks {
