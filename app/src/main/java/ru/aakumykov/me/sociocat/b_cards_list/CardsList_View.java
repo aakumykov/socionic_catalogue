@@ -102,7 +102,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         int id = item.getItemId();
 
         if (R.id.actionComments == id) {
-            getCardsListPresenter().onCommentsMenuItemClicked();
+            getPresenter().onCommentsMenuItemClicked();
             return true;
         }
         
@@ -116,10 +116,10 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             mPresenter.onSortMenuItemClicked(eCardsList_SortingMode.BY_RATING);
         }
         else if (R.id.actionEdit == id) {
-            getCardsListPresenter().onEditCardClicked();
+            getPresenter().onEditCardClicked();
         }
         else if (R.id.actionDelete == id) {
-            getCardsListPresenter().onDeleteMenuItemClicked();
+            getPresenter().onDeleteMenuItemClicked();
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -136,7 +136,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
         addSingleItemMenu(R.menu.tags, R.id.actionTags, MenuItem.SHOW_AS_ACTION_NEVER);
 
-        if (getCardsListPresenter().shouldShowCommentsMenu("comments"))
+        if (getPresenter().shouldShowCommentsMenu("comments"))
             addSingleItemMenu(R.menu.comments, R.id.actionComments, MenuItem.SHOW_AS_ACTION_NEVER);
 
         addSortByNameMenu();
@@ -283,7 +283,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
 
 
-    private CardsList_Presenter getCardsListPresenter() {
+    private CardsList_Presenter getPresenter() {
         return ((CardsList_Presenter) mPresenter);
     }
 
@@ -342,11 +342,11 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     protected void setSomeItemSelectedViewState(SomeItemsSelectedViewState selectionViewState) {
         super.setSomeItemSelectedViewState(selectionViewState);
 
-        boolean canEditCard = getCardsListPresenter().canEditCard();
-        boolean canDeleteCard = getCardsListPresenter().canDeleteCard();
+        boolean canEditCard = getPresenter().canEditCard();
+        boolean canDeleteCard = getPresenter().canDeleteCard();
         boolean cardsAreSelected = selectionViewState.getSelectedItemsCount() > 0;
         boolean singleCardSelected = 1 == selectionViewState.getSelectedItemsCount();
-        boolean cardsCountIsDeletable = getCardsListPresenter().commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
+        boolean cardsCountIsDeletable = getPresenter().commentsCountIsDeletable(selectionViewState.getSelectedItemsCount());
 
         if (canEditCard || canDeleteCard) {
 
@@ -459,7 +459,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
                     @NotNull MenuItem menuItem,
                     @Nullable Object o
             ) {
-                getCardsListPresenter().onAddNewCardClicked(menuItem.getItemId());
+                getPresenter().onAddNewCardClicked(menuItem.getItemId());
             }
 
             @Override
@@ -473,7 +473,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         tagFilterChip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCardsListPresenter().onCloseTagFilterClicked();
+                getPresenter().onCloseTagFilterClicked();
             }
         });
     }
@@ -483,7 +483,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
             if (null != mActivityResultData) {
                 Card newCard = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-                getCardsListPresenter().onCardCreated(newCard);
+                getPresenter().onCardCreated(newCard);
             }
         }
     }
@@ -518,13 +518,13 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         Card oldCard = mActivityResultData.getParcelableExtra(Constants.OLD_CARD);
         Card newCard = mActivityResultData.getParcelableExtra(Constants.NEW_CARD);
 
-        getCardsListPresenter().onCardEdited(oldCard, newCard);
+        getPresenter().onCardEdited(oldCard, newCard);
     }
 
     private void processCardDeletion() {
         Card card = mActivityResultData.getParcelableExtra(Constants.CARD);
 
-        getCardsListPresenter().onCardDeleted(card);
+        getPresenter().onCardDeleted(card);
     }
 
     private void showTagFilter(String tagName) {
@@ -540,7 +540,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
 
     @OnClick(R.id.floatingActionButton)
     void onFABClicked() {
-        getCardsListPresenter().onFABClicked();
+        getPresenter().onFABClicked();
     }
 
     public void goCommentsList() {
