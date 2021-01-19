@@ -110,6 +110,11 @@ public class CardsComplexSingleton implements iCardsComplexSingleton {
         }
     }
 
+    @Override
+    public void updateCardWithUserCheck(@NonNull Card card, @NonNull iUpdateCardCallbacks callbacks) {
+
+    }
+
 
     // Одиночка
     private static volatile CardsComplexSingleton sInstance;

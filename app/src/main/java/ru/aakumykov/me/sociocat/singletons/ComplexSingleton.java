@@ -292,15 +292,6 @@ public class ComplexSingleton {
 
                     @Override
                     public void onSleepingEnd() {
-                        /*List<Boolean> checkResults = new ArrayList<>(checksMap.values());
-
-                        boolean allChecksAreOk = checkResults.stream().allMatch(new Predicate<Boolean>() {
-                            @Override
-                            public boolean test(Boolean aBoolean) {
-                                return aBoolean;
-                            }
-                        });*/
-
                         executeCardDeletion(card, writeBatch, callbacks);
                     }
 

@@ -263,7 +263,6 @@ public class CardEdit_Presenter implements
 
         // Сохраняю картинку, если этого ещё не сделано
         if (null != mImageBitmap && null != mImageType) {
-
             uploadImage(new iStorageSingleton.ImageUploadCallbacks() {
                 @Override
                 public void onImageUploaded() {

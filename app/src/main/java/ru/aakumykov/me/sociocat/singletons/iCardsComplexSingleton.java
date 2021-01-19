@@ -2,30 +2,26 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.firestore.WriteBatch;
-
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsComplexSingleton {
 
     void deleteCardWithTagAndUserChecks(@NonNull Card card, iDeleteCardCallbacks cardCallbacks);
 
-    interface iCheckCallbacks {
-        void onProduceCheck();
-        void onCheckPositiveResult(WriteBatch writeBatch);
-        void onCheckNegativeResult(WriteBatch writeBatch);
-    }
+    void updateCardWithUserCheck(@NonNull Card card, @NonNull iUpdateCardCallbacks callbacks);
+
 
     interface iCheckConditionCallback {
         void doCheck();
     }
 
-    interface iCheckFinishCallback {
-        void onCheckFinished();
-    }
-
     interface iDeleteCardCallbacks {
         void onCardDeleteSuccess(@NonNull Card card);
         void onCardDeleteError(@NonNull String errorMsg);
+    }
+
+    interface iUpdateCardCallbacks {
+        void onCardUpdateSuccess(@NonNull Card card);
+        void onCardUpdateError(@NonNull String errorMsg);
     }
 }
