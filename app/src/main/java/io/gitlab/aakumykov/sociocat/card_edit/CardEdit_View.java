@@ -42,7 +42,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
-import io.gitlab.aakumykov.insertable_yotube_player.InsertableYoutubePlayer;
 import io.gitlab.aakumykov.sociocat.R;
 import io.gitlab.aakumykov.sociocat.card_edit.view_model.CardEdit_ViewModel;
 import io.gitlab.aakumykov.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
@@ -56,6 +55,7 @@ import io.gitlab.aakumykov.sociocat.utils.MyUtils;
 import io.gitlab.aakumykov.sociocat.utils.my_dialogs.MyDialogs;
 import io.gitlab.aakumykov.sociocat.utils.my_dialogs.iMyDialogs;
 import io.gitlab.aakumykov.sociocat.z_base_view.BaseView;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 
 //@RuntimePermissions
 public class CardEdit_View extends BaseView implements

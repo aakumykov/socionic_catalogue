@@ -34,13 +34,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
-import io.gitlab.aakumykov.insertable_yotube_player.InsertableYoutubePlayer;
 import io.gitlab.aakumykov.sociocat.R;
 import io.gitlab.aakumykov.sociocat.card_show.iCardShow;
 import io.gitlab.aakumykov.sociocat.card_show.list_items.iList_Item;
 import io.gitlab.aakumykov.sociocat.models.Card;
 import io.gitlab.aakumykov.sociocat.utils.AnimationUtils;
 import io.gitlab.aakumykov.sociocat.utils.MyUtils;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
         iCard_ViewHolder,
