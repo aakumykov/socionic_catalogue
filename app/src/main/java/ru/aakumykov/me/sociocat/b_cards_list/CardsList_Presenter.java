@@ -652,10 +652,10 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             return;
         }
 
-        deleteCards(mListView.getSelectedItems());
+        deleteCardsReal(mListView.getSelectedItems());
     }
 
-    private void deleteCards(List<BasicMVPList_DataItem> deletedItemsList) {
+    private void deleteCardsReal(List<BasicMVPList_DataItem> deletedItemsList) {
 
         if (hasInterruptFlag()) {
             mPageView.showToast(R.string.deletion_process_is_interrupted);
@@ -687,7 +687,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
 
                 mListView.removeItem(dataItem);
 
-                deleteCards(deletedItemsList);
+                deleteCardsReal(deletedItemsList);
             }
 
             @Override
