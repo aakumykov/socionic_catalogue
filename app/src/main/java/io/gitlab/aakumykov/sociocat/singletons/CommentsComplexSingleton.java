@@ -18,7 +18,7 @@ import io.gitlab.aakumykov.sociocat.models.Card;
 import io.gitlab.aakumykov.sociocat.models.Comment;
 import io.gitlab.aakumykov.sociocat.models.User;
 import io.gitlab.aakumykov.sociocat.utils.ErrorUtils;
-import io.gitlab.aakumykov.sociocat.z_rules_test.SleepingThread;
+import io.gitlab.aakumykov.sociocat.utils.SleepingThread;
 
 public class CommentsComplexSingleton implements iCommentsComplexSingleton {
 
