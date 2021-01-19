@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -23,22 +22,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".b_cards_list.CardsList_View" android:exported="true">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        <activity android:name=".b_cards_list.CardsList_View" />
 
-        <activity android:name=".c_tags_list.TagsList_View" android:exported="true">
-
-        </activity>
+        <activity android:name=".c_tags_list.TagsList_View" />
 
         <activity
             android:name=".template_of_page.Page_View"
@@ -46,7 +37,9 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".user_show.UserShow_View" />
+
         <activity android:name=".d_backup_job.BackupActivity" />
+
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
@@ -54,17 +47,19 @@
         <activity
             android:name=".register_step_1.RegisterStep1_View"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".register_step_2.RegisterStep2_View"
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".reset_password_step1.ResetPasswordStep1_View"
             android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
 
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -123,18 +118,23 @@
         <activity
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".d_backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
+
         <activity
             android:name=".card_show.CardShow_View"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
+
         <activity
             android:name=".user_edit.UserEdit_View"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".user_edit_email.UserEditEmail_View"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".deep_links_receiver.DeepLinksReceiver"
             android:launchMode="singleTask">
@@ -152,53 +152,25 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".user_change_password.UserChangePassword_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".tag_edit.TagEdit_View" />
 
-        <activity android:name=".preferences.PreferencesActivity" android:exported="true" />
-        <activity android:name=".z_rules_test.RulesTestActivity" android:exported="true"/>
+        <activity android:name=".preferences.PreferencesActivity" />
+
         <activity android:name=".b_comments_list.CommentsList_View"
-            android:parentActivityName=".user_show.UserShow_View"
-            android:exported="true"/>
+            android:parentActivityName=".user_show.UserShow_View" />
 
-        <!--
-<activity
-            android:name=".dynamic_link_processor.DLP_View"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="sociocat.example.org"
-                    android:scheme="https" />
-                <data
-                    android:host="sociocat.page.link"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        -->
-        <!-- android:windowSoftInputMode="stateHidden" -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification_default" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/white" />
-        <!--
-<service
-            android:name=".firebase_cloud_messaging.FCMService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        -->
 
         <service
             android:name=".push_notifications.FCMService"
@@ -216,6 +188,24 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name=".d_backup_job.BackupService" />
+
+        <!--<activity
+                    android:name=".dynamic_link_processor.DLP_View"
+                    android:noHistory="true">
+                    <intent-filter>
+                        <action android:name="android.intent.action.VIEW" />
+
+                        <category android:name="android.intent.category.DEFAULT" />
+                        <category android:name="android.intent.category.BROWSABLE" />
+
+                        <data
+                            android:host="sociocat.example.org"
+                            android:scheme="https" />
+                        <data
+                            android:host="sociocat.page.link"
+                            android:scheme="https" />
+                    </intent-filter>
+                </activity>-->
 
     </application>
 
