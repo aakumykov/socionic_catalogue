@@ -681,7 +681,7 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
             @Override
             public void onCardDeleteSuccess(@NonNull Card card) {
                 runFromBackground( () -> {
-                    mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
+                    //mPageView.showStyledToast( mPageView.getText(R.string.card_has_been_deleted, card.getTitle()) );
                 });
 
                 mListView.removeItem(dataItem);
