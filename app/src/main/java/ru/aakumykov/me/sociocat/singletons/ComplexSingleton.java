@@ -281,7 +281,7 @@ public class ComplexSingleton {
 
         // Ожидание завершения проверок
         new SleepingThread(
-                10,
+                30,
                 new SleepingThread.iSleepingThreadCallbacks() {
                     @Override
                     public void onSleepingStart() {
