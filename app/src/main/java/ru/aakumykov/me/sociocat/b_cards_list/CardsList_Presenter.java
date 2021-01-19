@@ -666,7 +666,6 @@ public class CardsList_Presenter extends BasicMVPList_Presenter implements iCard
         }
 
         if (0 == deletedItemsList.size()) {
-//            mPageView.showToast(R.string.CARDS_LIST_selected_card_are_processed);
             setNeutralViewState();
             return;
         }
