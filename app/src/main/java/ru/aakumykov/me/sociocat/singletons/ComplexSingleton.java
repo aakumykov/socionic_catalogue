@@ -210,6 +210,7 @@ public class ComplexSingleton {
         WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
         writeBatch.delete(cardRef);
 
+        // Проверка существования пользователя
         checksList.add(new Runnable() {
             @Override
             public void run() {
@@ -238,12 +239,13 @@ public class ComplexSingleton {
 
                     @Override
                     public void onCheckFail(String errorMsg) {
-
+                        // TODO: сделать адекватную реакцию
                     }
                 });
             }
         });
 
+        // Проверка существования меток
         for (String tagName : card.getTags()) {
             checksList.add(new Runnable() {
                 @Override
@@ -277,6 +279,7 @@ public class ComplexSingleton {
             });
         }
 
+        // Ожидание завершения проверок
         new SleepingThread(
                 10,
                 new SleepingThread.iSleepingThreadCallbacks() {
@@ -308,6 +311,7 @@ public class ComplexSingleton {
                 }
         ).start();
 
+        // Запуск проверок на исполнение
         for (Runnable aCheck : checksList)
             aCheck.run();
     }
