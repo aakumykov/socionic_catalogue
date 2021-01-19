@@ -200,12 +200,8 @@ public class ComplexSingleton {
         String cardKey = card.getKey();
         String userKey = card.getUserId();
 
-        CollectionReference cardsCollection = mCardsSingleton.getCardsCollection();
-        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
-        CollectionReference usersCollection = mUsersSingleton.getUsersCollection();
-
-        DocumentReference cardRef = cardsCollection.document(cardKey);
-        DocumentReference cardAuthorRef = usersCollection.document(userKey);
+        DocumentReference cardRef = mCardsSingleton.getCardsCollection().document(cardKey);
+        DocumentReference cardAuthorRef = mUsersSingleton.getUsersCollection().document(userKey);
 
         WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
         writeBatch.delete(cardRef);
@@ -246,6 +242,8 @@ public class ComplexSingleton {
         });
 
         // Проверка существования меток
+        CollectionReference tagsCollection = mTagsSingleton.getTagsCollection();
+
         for (String tagName : card.getTags()) {
             checksList.add(new Runnable() {
                 @Override
