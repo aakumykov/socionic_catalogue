@@ -34,7 +34,7 @@ import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils.builders.SortingMenuItem;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_modes.BasicViewMode;
-import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_modes.ListViewMode;
+import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_modes.FeedViewMode;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_states.SomeItemsSelectedViewState;
 import io.gitlab.aakumykov.sociocat.b_cards_list.enums.eCardsList_SortingMode;
@@ -54,7 +54,7 @@ import io.gitlab.aakumykov.sociocat.models.Card;
 
 public class CardsList_View extends BasicMVPList_View implements iCardsList_View {
 
-    private static final BasicViewMode DEFAULT_VIEW_MODE = new ListViewMode();
+    private static final BasicViewMode DEFAULT_VIEW_MODE = new FeedViewMode();
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.tagFilter) Chip tagFilterChip;
