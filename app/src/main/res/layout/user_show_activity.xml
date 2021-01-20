@@ -71,6 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:singleLine="false"
@@ -78,7 +79,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel"
-                tools:text="Имя, длинной имя пользователя программы Соционический каталог" />
+                tools:text="Имя, длинной в имя пользователя" />
 
             <TextView
                 android:id="@+id/emailLabel"
@@ -87,10 +88,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+
                 android:text="@string/USER_SHOW_email"
                 android:textColor="@color/colorPrimary"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/emailView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/nameView"
@@ -101,14 +102,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:singleLine="false"
                 android:textSize="16sp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/emailLabel"
                 tools:text="user@mail.ru"
                 tools:visibility="visible" />
 
@@ -130,7 +132,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:singleLine="false"
@@ -158,18 +160,70 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/changePasswordWidget"
+            android:id="@+id/userIdLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/USER_SHOW_user_id"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userIdView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:textIsSelectable="true"
+            android:singleLine="false"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/nameLabel"
+            tools:text="id пользователя" />
+
+        <TextView
+            android:id="@+id/changePasswordWidget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginTop="12dp"
             android:text="@string/USER_EDIT_change_password"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:visibility="gone"
             tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/showUserCardsButton"
+            style="@style/user_show_outlined_button"
+            android:text="@string/USER_SHOW_cards_of_user"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/showUserCommentsButton"
+            style="@style/user_show_outlined_button"
+            android:text="@string/USER_SHOW_comments_of_user"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!--<Button
+            android:width=""
+            android:id="@+id/showUserCardsButton"
+            android:text="@string/USER_SHOW_cards_of_user" />-->
+
+        <!--<Button
+            android:width=""
+            android:id="@+id/showUserCommentsButton"
+            android:text="@string/USER_SHOW_comments_of_user" />-->
 
     </LinearLayout>
 

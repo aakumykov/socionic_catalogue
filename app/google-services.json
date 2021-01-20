@@ -10,10 +10,27 @@
       "client_info": {
         "mobilesdk_app_id": "1:161012924326:android:f686e13ed5c8c979015967",
         "android_client_info": {
-          "package_name": "ru.aakumykov.me.sociocat"
+          "package_name": "io.gitlab.aakumykov.sociocat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "161012924326-8rcje2k2goua03bt263ju5ervavenool.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.gitlab.aakumykov.sociocat",
+            "certificate_hash": "7bf6ef2dcd007b4cb62c6510a2968711e5385c68"
+          }
+        },
+        {
+          "client_id": "161012924326-n49jr74at739s7j3aj8upjtaojkmm752.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.gitlab.aakumykov.sociocat",
+            "certificate_hash": "395d24fc2afcb52a63aca23d480a40b427c103e6"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDeNAPnWmoVx4fE9WzLRT60MFoapfTA2Fg"

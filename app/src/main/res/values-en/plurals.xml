@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <plurals name="cards_count">
-        <item quantity="one">%1$d card</item>
-        <item quantity="other">%1$d cardsList</item>
-    </plurals>
-</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/elementView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/commentTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_comments_list_item_comment_text_background"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/titleTextColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Комментарий о том-то, дополняющий особенности того-то." />
+
+    <TextView
+        android:id="@+id/commentAuthorView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:textAlignment="textEnd"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/commentDateView"
+        app:layout_constraintStart_toStartOf="@+id/cardTitleView"
+        app:layout_constraintTop_toBottomOf="@+id/cardTitleView"
+        tools:text="Пользователь с очень, очень, очень, очень длинным именем" />
+
+    <TextView
+        android:id="@+id/commentDateView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardTitleView"
+        tools:text="31 декабря 2020" />
+
+    <TextView
+        android:id="@+id/cardTitleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:padding="6dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentTextView"
+        tools:text="К карточке: Название карточки" />
+
+    <View
+        android:id="@+id/selectingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/basic_checking_overlay"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <View
+        android:id="@+id/highlightingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/basic_highlighting_overlay"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

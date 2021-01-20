@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="PREFERENCES_ACTIVITY_page_title">Настройки приложения</string>
+
+    <string name="PREFERENCES_category_name_notifications">Уведомления</string>
+    <string name="PREFERENCES_category_name_backup">Резервное копирование</string>
+
+    <string name="PREFERENCES_notify_on_new_cards_title">Новые карточки</string>
+    <string name="PREFERENCES_notify_on_new_cards_description">Уведомлять о новых карточках</string>
+
+    <string name="PREFERENCES_notify_on_new_comments_title">Комментарии</string>
+    <string name="PREFERENCES_notify_on_new_comments_description">Уведомлять о комментариях</string>
+
+    <string name="PREFERENCES_perform_backup_title">База данных</string>
+    <string name="PREFERENCES_perform_backup_description">Выполнять рез. копирование базы данных силами телефона</string>
+
+    <string name="PREFERENCES_dropbox_access_token_title">Ключ доступа Dropbox</string>
+    <string name="PREFERENCES_dropbox_access_token_description">Необходим для резервного копирования</string>
+
+
+    <string name="PREFERENCES_subscription_on_new_cards_success">Вы подписаны на карточки</string>
+    <string name="PREFERENCES_subscription_on_new_cards_failed">Ошибка подписки на карточки</string>
+    <string name="PREFERENCES_subscription_on_new_comments_success">Вы подписаны на комментарии</string>
+    <string name="PREFERENCES_subscription_on_new_comments_failed">Ошибка подписки на комментарии</string>
+
+    <string name="PREFERENCES_unsubscribe_from_new_cards_success">Вы отписаны от карточек</string>
+    <string name="PREFERENCES_unsubscribe_from_new_cards_failed">Ошибка отписки от карточек</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_success">Вы отписаны от комментариев</string>
+    <string name="PREFERENCES_unsubscribe_from_new_comments_failed">Ошибка отписки от комментариев</string>
+
+    <string name="PREFERENCES_error_changing_preference">Ошибка изменения настройки</string>
+
+</resources>

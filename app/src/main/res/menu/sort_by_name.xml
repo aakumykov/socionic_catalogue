@@ -4,7 +4,8 @@
 
     <item
         android:id="@+id/actionSortByName"
-        android:icon="@drawable/ic_sort_by_name_down"
-        android:title="@string/MENU_sort_by_name"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_menu_sort_by_name"
+        android:title="@string/menu_item_sorted_by_name"
+        app:showAsAction="never" />
+
 </menu>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +22,6 @@
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:hint="@string/REGISTER1_email_input_hint"
-            android:text="@string/test_new_user_email"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

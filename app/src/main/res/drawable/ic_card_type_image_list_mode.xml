@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M2.6989,1.0881L21.3011,1.0881A1.6108,1.4752 0,0 1,22.9119 2.5633L22.9119,21.4367A1.6108,1.4752 0,0 1,21.3011 22.9119L2.6989,22.9119A1.6108,1.4752 0,0 1,1.0881 21.4367L1.0881,2.5633A1.6108,1.4752 0,0 1,2.6989 1.0881z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="2.1762054"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/card_type_icon_image"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M7.8745,7.5362m-2.7961,0a2.7961,2.7961 0,1 1,5.5922 0a2.7961,2.7961 0,1 1,-5.5922 0"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="3.89365125"
+      android:fillColor="@color/card_type_icon_image"
+      android:strokeColor="#00000000"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="m4.6875,18.875v-2.25c0,0 1.7665,-1.9786 2.2824,-2.0006 0.4948,-0.0212 2.2372,2.0163 2.2372,2.0163 0,0 5.4633,-5.83 5.9811,-5.7981 0.486,0.0299 4.5189,4.2981 4.5189,4.2981L19.6875,18.875Z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="1"
+      android:fillColor="@color/card_type_icon_image"
+      android:strokeColor="#00000000"
+      android:strokeLineCap="butt"/>
+</vector>

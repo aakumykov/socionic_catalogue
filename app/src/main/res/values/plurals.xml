@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <plurals name="cards_count">
-        <item quantity="zero">%1$d карточек</item>
-        <item quantity="one">%1$d карточка</item>
-        <item quantity="two">%1$d карточки</item>
-        <item quantity="few">%1$d карточек</item>
-        <item quantity="many">%1$d карточек</item>
-        <item quantity="other">%1$d карточек</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <plurals name="TAGS_LIST_deleting_dialog_title">
+        <item quantity="one">Delete %1$d selected tag?</item>
+        <item quantity="other">Delete %1$d selected tags?</item>
+    </plurals>
+
+    <plurals name="TAGS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Cannot delete more then %1$d tag at once</item>
+        <item quantity="other">Cannot delete more then %1$d tags at once</item>
+    </plurals>
+
+    <plurals name="CARDS_LIST_deleting_dialog_title">
+        <item quantity="one">Delete %1$d selected card?</item>
+        <item quantity="other">Delete %1$d selected cards?</item>
+    </plurals>
+
+    <plurals name="CARDS_LIST_cannot_delete_more_tags_at_once">
+        <item quantity="one">Cannot delete more then %1$d card at once</item>
+        <item quantity="other">Cannot delete more then %1$d cards at once</item>
+    </plurals>
+
+    <plurals name="comments_count" tools:ignore="UnusedQuantity">
+        <item quantity="zero">no comments</item>
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
+    </plurals>
+
+    <plurals name="cards_are_added">
+        <item quantity="one">%1$d card is added</item>
+        <item quantity="other">%1$d cards are added</item>
+    </plurals>
+
+    <plurals name="cards_are_filtered_out">
+        <item quantity="one">%1$d is filtered out</item>
+        <item quantity="other">%1$d are filtered out</item>
+    </plurals>
+
+    <plurals name="comment">
+        <item quantity="one">comment</item>
+        <item quantity="other">comments</item>
     </plurals>
 </resources>

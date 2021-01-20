@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/elementView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/titleTextColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/canonicalTagsContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Название элемента" />
+
+    <TextView
+        android:id="@+id/cardKeyView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:textIsSelectable="true"
+        app:layout_constraintEnd_toEndOf="@+id/titleView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleView"
+        tools:text="cardKey"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/canonicalTagsContainer"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFF9C4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mediaView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"/>
+
+    <ImageView
+        android:id="@+id/mediaView"
+        android:layout_width="25dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_card_type_image_list_mode" />
+
+    <View
+        android:id="@+id/checkingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/basic_checking_overlay"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <View
+        android:id="@+id/highlightingOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/basic_highlighting_overlay"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

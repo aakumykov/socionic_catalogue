@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/elementView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardElevation="3dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="14dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/titleTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Название элемента" />
+
+        <TextView
+            android:id="@+id/quoteView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:textColor="@color/quoteTextColor"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleView"
+            tools:text="«Если вы ищете истину, вы можете в конце концов найти успокоение; если вы ищете успокоение, вы не найдёте ни успокоение, ни истины – вы лишь начнёте с мягкого мыла и выдачи желаемого за действительное, а закончите отчаянием»" />
+
+        <ImageView
+            android:id="@+id/mediaView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/quoteView"
+            tools:srcCompat="@drawable/ic_image_placeholder_smaller"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/videoThrobber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_youtube_video_placeholder"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaView"
+            tools:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/audioVideoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoThrobber"
+            tools:visibility="visible">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/authorView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="18dp"
+            android:textSize="16sp"
+            android:textColor="@color/cards_feed_author_text_color"
+            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audioVideoContainer"
+            tools:text="Имя Автора" />
+
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/authorView"
+            android:paddingTop="6dp"
+            tools:text="5 мая 2020" />
+
+        <TextView
+            android:id="@+id/commentsCountView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="18dp"
+            android:textSize="16sp"
+            android:textColor="@color/cards_feed_comments_count_text_color"
+            app:layout_constraintBottom_toBottomOf="@+id/authorView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaView"
+            tools:text="10 комментариев" />
+
+        <TextView
+            android:id="@+id/ratingView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/authorView"
+            app:layout_constraintTop_toBottomOf="@id/commentsCountView"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="6dp"
+            tools:text="Рейтинг: 5" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateView" />
+
+        <View
+            android:id="@+id/checkingOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/basic_checking_overlay"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+        <View
+            android:id="@+id/highlightingOverlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/basic_highlighting_overlay"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

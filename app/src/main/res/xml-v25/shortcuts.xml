@@ -11,8 +11,8 @@
 
         <intent
             android:action="SHORTCUT_CREATE_TEXT_CARD"
-            android:targetPackage="ru.aakumykov.me.sociocat"
-            android:targetClass="ru.aakumykov.me.sociocat.shortcuts_processor.ShortcutsProcessor" />
+            android:targetPackage="io.gitlab.aakumykov.sociocat"
+            android:targetClass="io.gitlab.aakumykov.sociocat.start_page.StartPage" />
     </shortcut>
 
     <shortcut
@@ -25,8 +25,8 @@
 
         <intent
             android:action="SHORTCUT_CREATE_IMAGE_CARD"
-            android:targetPackage="ru.aakumykov.me.sociocat"
-            android:targetClass="ru.aakumykov.me.sociocat.shortcuts_processor.ShortcutsProcessor" />
+            android:targetPackage="io.gitlab.aakumykov.sociocat"
+            android:targetClass="io.gitlab.aakumykov.sociocat.start_page.StartPage" />
     </shortcut>
 
     <shortcut
@@ -39,8 +39,8 @@
 
         <intent
             android:action="SHORTCUT_CREATE_VIDEO_CARD"
-            android:targetPackage="ru.aakumykov.me.sociocat"
-            android:targetClass="ru.aakumykov.me.sociocat.shortcuts_processor.ShortcutsProcessor" />
+            android:targetPackage="io.gitlab.aakumykov.sociocat"
+            android:targetClass="io.gitlab.aakumykov.sociocat.start_page.StartPage" />
     </shortcut>
 
     <shortcut
@@ -53,8 +53,8 @@
 
         <intent
             android:action="SHORTCUT_CREATE_AUDIO_CARD"
-            android:targetPackage="ru.aakumykov.me.sociocat"
-            android:targetClass="ru.aakumykov.me.sociocat.shortcuts_processor.ShortcutsProcessor" />
+            android:targetPackage="io.gitlab.aakumykov.sociocat"
+            android:targetClass="io.gitlab.aakumykov.sociocat.start_page.StartPage" />
     </shortcut>
 
 </shortcuts>
