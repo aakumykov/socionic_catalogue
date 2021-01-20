@@ -43,7 +43,7 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     }
 
     @Override
-    protected void setActivityView() {
+    protected void setOwnContentView() {
         setContentView(R.layout.tags_list_activity);
         ButterKnife.bind(this);
     }
@@ -115,16 +115,6 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     @Override
     public void setDefaultPageTitle() {
         setPageTitle(R.string.TAGS_LIST_page_title);
-    }
-
-    @Override
-    public int getListScrollOffset() {
-        return mRecyclerView.computeVerticalScrollOffset();
-    }
-
-    @Override
-    public void setListScrollOffset(int verticalOffset) {
-        mRecyclerView.scrollBy(0, verticalOffset);
     }
 
     @Override

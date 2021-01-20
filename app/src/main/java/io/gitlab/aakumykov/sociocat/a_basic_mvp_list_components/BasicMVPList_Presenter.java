@@ -273,6 +273,6 @@ public abstract class BasicMVPList_Presenter
 
         mCurrentViewMode = viewMode;
         mListView.setViewMode(viewMode);
-        mPageView.reconfigureRecyclerView();
+        mPageView.reConfigureRecyclerView();
     }
 }

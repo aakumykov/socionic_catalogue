@@ -73,7 +73,7 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     @Override
-    protected void setActivityView() {
+    protected void setOwnContentView() {
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
     }
@@ -263,16 +263,6 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
         else {
             super.setViewState(viewState);
         }
-    }
-
-    @Override
-    public int getListScrollOffset() {
-        return mRecyclerView.computeVerticalScrollOffset();
-    }
-
-    @Override
-    public void setListScrollOffset(int verticalOffset) {
-        mRecyclerView.scrollBy(0, verticalOffset);
     }
 
     @Override

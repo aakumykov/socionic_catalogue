@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAdapter;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
+import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.iBasicMVPList_ViewModel;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
-import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_model.BasicMVPList_ViewModel;
 
 public class BasicMVPList_Utils {
 
@@ -28,7 +28,7 @@ public class BasicMVPList_Utils {
             recyclerView.addItemDecoration(itemDecoration);
     }
 
-    public static BasicMVPList_Presenter prepPresenter(BasicMVPList_ViewModel viewModel, iPresenterPreparationCallback callback) {
+    public static BasicMVPList_Presenter prepPresenter(iBasicMVPList_ViewModel viewModel, iPresenterPreparationCallback callback) {
         if (viewModel.hasPresenter()) {
             return (BasicMVPList_Presenter) viewModel.getPresenter();
         }
@@ -39,7 +39,7 @@ public class BasicMVPList_Utils {
         }
     }
 
-    public static BasicMVPList_DataAdapter prepDataAdapter(BasicMVPList_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
+    public static BasicMVPList_DataAdapter prepDataAdapter(iBasicMVPList_ViewModel viewModel, iDataAdapterPreparationCallback callback) {
         if (viewModel.hasDataAdapter()) {
             return (BasicMVPList_DataAdapter) viewModel.getDataAdapter();
         }

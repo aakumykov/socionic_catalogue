@@ -125,17 +125,7 @@ public class BasicMVPList_ViewStub implements iBasicList_Page {
     }
 
     @Override
-    public void reconfigureRecyclerView() {
-
-    }
-
-    @Override
-    public int getListScrollOffset() {
-        return 0;
-    }
-
-    @Override
-    public void setListScrollOffset(int offset) {
+    public void reConfigureRecyclerView() {
 
     }
 

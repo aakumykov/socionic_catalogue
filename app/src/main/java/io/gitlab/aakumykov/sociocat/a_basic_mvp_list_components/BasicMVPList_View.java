@@ -74,7 +74,7 @@ public abstract class BasicMVPList_View
 
     private static final String TAG = BasicMVPList_View.class.getSimpleName();
 
-    protected BasicMVPList_ViewModel mViewModel;
+    protected iBasicMVPList_ViewModel mViewModel;
     protected BasicMVPList_Presenter mPresenter;
     protected BasicMVPList_DataAdapter mDataAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
@@ -90,24 +90,32 @@ public abstract class BasicMVPList_View
 
     private SearchView mSearchView;
 
-    // Абстрактные методы
-    protected abstract void setActivityView();
-    protected abstract BasicMVPList_Presenter preparePresenter();
-    protected abstract BasicMVPList_DataAdapter prepareDataAdapter();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActivityView();
+        setOwnContentView();
 
         mViewModel = prepareViewModel();
         mPresenter = preparePresenter();
         mDataAdapter = prepareDataAdapter();
 
-        reconfigureRecyclerView();
+        reConfigureRecyclerView();
         configureSwipeRefresh();
     }
+
+    protected abstract void setOwnContentView();
+
+
+    protected iBasicMVPList_ViewModel prepareViewModel() {
+        return new ViewModelProvider(this, new BasicMVPList_ViewModelFactory())
+                .get(BasicMVPList_ViewModel.class);
+    }
+
+    protected abstract BasicMVPList_Presenter preparePresenter();
+
+    protected abstract BasicMVPList_DataAdapter prepareDataAdapter();
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -117,6 +125,22 @@ public abstract class BasicMVPList_View
         mActivityResultData = data;
     }
 
+    protected void processActivityResult() {
+
+        switch (mActivityRequestCode) {
+            case Constants.CODE_LOGIN:
+                processLoginResult();
+                break;
+
+            default:
+                Log.w(TAG, "Unknown request code: "+mActivityRequestCode);
+                break;
+        }
+    }
+
+
+    // Lifecycle не используется, потому что View связан с Presenter-ом рядом
+    // других вызовов из "системных событий". Единообразие здесь удобнее.
     @Override
     protected void onStart() {
         super.onStart();
@@ -136,9 +160,37 @@ public abstract class BasicMVPList_View
     @Override
     protected void onStop() {
         super.onStop();
-        if (null != mPresenter)
-            mPresenter.onStop();
+        mPresenter.onStop();
     }
+
+
+    @Override
+    public void reConfigureRecyclerView() {
+
+        mLayoutManager = prepareLayoutManager(mPresenter.getCurrentViewMode());
+
+        mItemDecoration = prepareItemDecoration(mPresenter.getCurrentViewMode());
+
+        BasicMVPList_Utils.configureRecyclerview(
+                getRecyclerView(),
+                mDataAdapter,
+                mLayoutManager,
+                mItemDecoration
+        );
+    }
+
+    protected abstract RecyclerView getRecyclerView();
+
+    public abstract RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode);
+
+    @Override
+    public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
+        if (viewMode instanceof ListViewMode)
+            return RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
+        return null;
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,26 +257,20 @@ public abstract class BasicMVPList_View
         return true;
     }
 
+
     @Override
     public void onBackPressed() {
         if (!mPresenter.onBackPressed())
             super.onBackPressed();
     }
 
+
     @Override
     public abstract void setDefaultPageTitle();
 
     @Override
-    public RecyclerView.ItemDecoration createItemDecoration(BasicViewMode viewMode) {
-        if (viewMode instanceof ListViewMode)
-            return RecyclerViewUtils.createSimpleDividerItemDecoration(this, R.drawable.simple_list_item_divider);
-        return null;
-    }
-
-    @Override
     public void setPageTitle(int titleId) {
-        String title = getString(titleId);
-        setPageTitle(title);
+        setPageTitle(getString(titleId));
     }
 
     @Override
@@ -240,12 +286,124 @@ public abstract class BasicMVPList_View
             actionBar.setTitle(title);
     }
 
+
     @Override
     public void activateUpButton() {
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar)
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+
+    @Override
+    public void showToast(int messageId) {
+        showToast(getString(messageId));
+    }
+
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showStyledToast(int messageId) {
+        MyUtils.showCustomToast(this, messageId);
+    }
+
+    @Override
+    public void showStyledToast(String text) {
+        MyUtils.showCustomToast(this, text);
+    }
+
+
+
+    @Override
+    public Context getGlobalContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public Context getLocalContext() {
+        return this;
+    }
+
+    @Override
+    public Intent getInputIntent() {
+        return getIntent();
+    }
+
+    @Override
+    public void restoreSearchView(String filterText) {
+//        invalidateOptionsMenu();
+
+        if (null != mSearchView) {
+            mSearchView.setQuery(filterText, false);
+            mSearchView.setIconified(false);
+            mSearchView.clearFocus();
+        }
+    }
+
+    @Override
+    public String getText(int stringResourceId, Object... formatArgs) {
+        return TextUtils.getText(this, stringResourceId, formatArgs);
+    }
+
+
+    @Override
+    public void scroll2position(int position) {
+        if (mLayoutManager instanceof LinearLayoutManager)
+            ((LinearLayoutManager) mLayoutManager).scrollToPositionWithOffset(position, 0);
+        else
+            mLayoutManager.scrollToPosition(position);
+    }
+
+
+    @Override
+    public void runDelayed(@NonNull Runnable runnable, long delay) {
+        findViewById(android.R.id.content)
+                .postDelayed(runnable, delay);
+    }
+
+
+    public abstract void assembleMenu();
+
+    @Override
+    public void refreshMenu() {
+        invalidateOptionsMenu();
+    }
+
+
+
+    public void hideProgressMessage() {
+        hideProgressBar();
+        hideMessage();
+    }
+
+    public void hideMessage() {
+        ViewUtils.hide(messageView);
+    }
+
+    public void hideProgressBar() {
+        ViewUtils.hide(progressBar);
+    }
+
+
+    protected RecyclerView.LayoutManager createGridModeLayoutManager() {
+        int colsCount = getColumnsCountForGridLayout(MyUtils.getOrientation(this));
+
+        return new StaggeredGridLayoutManager(colsCount, StaggeredGridLayoutManager.VERTICAL);
+    }
+
+    protected int getColumnsCountForGridLayout(int orientation) {
+        return (Configuration.ORIENTATION_PORTRAIT == orientation) ?
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT :
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+    }
+
+    protected RecyclerView.LayoutManager createLinearModeLayoutManager() {
+        return new LinearLayoutManager(this);
+    }
+
 
     @Override
     public void setViewState(iViewState viewState) {
@@ -280,141 +438,6 @@ public abstract class BasicMVPList_View
         }
         else
             throw new RuntimeException("Unknown view state: "+viewState);
-    }
-
-    private void setListFilteredViewState(ListFilteredViewState listFilteredViewState) {
-//        setNeutralViewState();
-        restoreSearchView(listFilteredViewState.getFilterText());
-    }
-
-    @Override
-    public void showToast(int messageId) {
-        showToast(getString(messageId));
-    }
-
-    @Override
-    public void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public Intent getInputIntent() {
-        return getIntent();
-    }
-
-    @Override
-    public void refreshMenu() {
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public void restoreSearchView(String filterText) {
-//        invalidateOptionsMenu();
-
-        if (null != mSearchView) {
-            mSearchView.setQuery(filterText, false);
-            mSearchView.setIconified(false);
-            mSearchView.clearFocus();
-        }
-    }
-
-    @Override
-    public void scroll2position(int position) {
-        if (mLayoutManager instanceof LinearLayoutManager)
-            ((LinearLayoutManager) mLayoutManager).scrollToPositionWithOffset(position, 0);
-        else
-            mLayoutManager.scrollToPosition(position);
-    }
-
-    @Override
-    public Context getGlobalContext() {
-        return getApplicationContext();
-    }
-
-    @Override
-    public Context getLocalContext() {
-        return this;
-    }
-
-    @Override
-    public String getText(int stringResourceId, Object... formatArgs) {
-        return TextUtils.getText(this, stringResourceId, formatArgs);
-    }
-
-    @Override
-    public void reconfigureRecyclerView() {
-
-        mLayoutManager = prepareLayoutManager(mPresenter.getCurrentViewMode());
-
-        mItemDecoration = prepareItemDecoration(mPresenter.getCurrentViewMode());
-
-        BasicMVPList_Utils.configureRecyclerview(
-                getRecyclerView(),
-                mDataAdapter,
-                mLayoutManager,
-                mItemDecoration
-        );
-    }
-
-    @Override
-    public abstract int getListScrollOffset();
-
-    @Override
-    public abstract void setListScrollOffset(int offset);
-
-    @Override
-    public void showStyledToast(int messageId) {
-        MyUtils.showCustomToast(this, messageId);
-    }
-
-    @Override
-    public void showStyledToast(String text) {
-        MyUtils.showCustomToast(this, text);
-    }
-
-    @Override
-    public void runDelayed(@NonNull Runnable runnable, long delay) {
-        findViewById(android.R.id.content)
-                .postDelayed(runnable, delay);
-    }
-
-
-    public abstract void assembleMenu();
-
-    public abstract RecyclerView.ItemDecoration prepareItemDecoration(BasicViewMode viewMode);
-
-
-    public void hideProgressMessage() {
-        hideProgressBar();
-        hideMessage();
-    }
-
-    public void hideMessage() {
-        ViewUtils.hide(messageView);
-    }
-
-    public void hideProgressBar() {
-        ViewUtils.hide(progressBar);
-    }
-
-
-
-    protected abstract RecyclerView getRecyclerView();
-
-    protected RecyclerView.LayoutManager createGridModeLayoutManager() {
-        int colsCount = getColumnsCountForGridLayout(MyUtils.getOrientation(this));
-
-        return new StaggeredGridLayoutManager(colsCount, StaggeredGridLayoutManager.VERTICAL);
-    }
-
-    protected int getColumnsCountForGridLayout(int orientation) {
-        return (Configuration.ORIENTATION_PORTRAIT == orientation) ?
-                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT :
-                AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
-    }
-
-    protected RecyclerView.LayoutManager createLinearModeLayoutManager() {
-        return new LinearLayoutManager(this);
     }
 
     protected void setNeutralViewState() {
@@ -464,26 +487,13 @@ public abstract class BasicMVPList_View
         assembleMenu();
     }
 
-    protected void processActivityResult() {
-        switch (mActivityRequestCode) {
-            case Constants.CODE_LOGIN:
-                processLoginResult();
-                break;
-
-            default:
-                Log.w(TAG, "Unknown request code: "+mActivityRequestCode);
-                break;
-        }
+    private void setListFilteredViewState(ListFilteredViewState listFilteredViewState) {
+//        setNeutralViewState();
+        restoreSearchView(listFilteredViewState.getFilterText());
     }
-
 
 
     // Внутренние
-    private BasicMVPList_ViewModel prepareViewModel() {
-        return new ViewModelProvider(this, new BasicMVPList_ViewModelFactory())
-                .get(BasicMVPList_ViewModel.class);
-    }
-
     private void configureSwipeRefresh() {
         if (null == swipeRefreshLayout)
             return;
@@ -746,8 +756,6 @@ public abstract class BasicMVPList_View
         mActivityResultCode = Integer.MAX_VALUE;
         mActivityResultData = null;
     }
-
-
 
 
     @SuppressLint("RestrictedApi")
