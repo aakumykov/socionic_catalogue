@@ -15,6 +15,7 @@ import io.gitlab.aakumykov.sociocat.R;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import io.gitlab.aakumykov.sociocat.models.Card;
+import io.gitlab.aakumykov.sociocat.singletons.UsersSingleton;
 import io.gitlab.aakumykov.sociocat.utils.CanonicalTagsHelper;
 
 public class CardViewHolder_List extends CardViewHolder {
@@ -73,9 +74,16 @@ public class CardViewHolder_List extends CardViewHolder {
     }
 
     private void displayCardKey(Card card) {
-        if (BuildConfig.DEBUG)
+        boolean isAadmin = UsersSingleton.getInstance().currentUserIsAdmin();
+        boolean isDebug = BuildConfig.DEBUG;
+
+        if (isDebug && isAadmin) {
             cardKeyView.setText(card.getKey());
-        ViewUtils.setVisibility(cardKeyView, BuildConfig.DEBUG);
+            ViewUtils.show(cardKeyView);
+        }
+        else {
+            ViewUtils.hide(cardKeyView);
+        }
     }
 
     private void displayCardIcons(@NonNull Card card) {
