@@ -1,12 +1,11 @@
 package io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils;
 
-
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.BasicMVPList_DataAdapter;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.BasicMVPList_Presenter;
-import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.iBasicMVPList_ViewModel;
+import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVPList_ViewModel;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iDataAdapterPreparationCallback;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iPresenterPreparationCallback;
 

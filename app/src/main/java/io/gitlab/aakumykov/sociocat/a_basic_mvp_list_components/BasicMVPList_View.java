@@ -37,6 +37,7 @@ import io.gitlab.aakumykov.sociocat.R;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.enums.eBasicSortingMode;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.exceptions.UnknownViewModeException;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iBasicList_Page;
+import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVPList_ViewModel;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iSortingMode;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.utils.BasicMVPList_Utils;

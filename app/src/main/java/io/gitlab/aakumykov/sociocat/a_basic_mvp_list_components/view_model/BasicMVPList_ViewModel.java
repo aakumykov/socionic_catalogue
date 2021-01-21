@@ -3,7 +3,7 @@ package io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_model;
 
 import androidx.lifecycle.ViewModel;
 
-import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.iBasicMVPList_ViewModel;
+import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.interfaces.iBasicMVPList_ViewModel;
 
 public class BasicMVPList_ViewModel extends ViewModel implements iBasicMVPList_ViewModel
 {
