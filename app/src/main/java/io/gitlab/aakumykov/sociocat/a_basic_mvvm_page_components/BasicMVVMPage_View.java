@@ -20,12 +20,12 @@ import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_state.Neut
 import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_state.ProgressPageState;
 import io.gitlab.aakumykov.sociocat.z_base_view.BaseView;
 
-public abstract class BasicMVVM_PageView extends BaseView {
+public abstract class BasicMVVMPage_View extends BaseView {
 
     @BindView(R.id.messageView)
     TextView messageView;
 
-    private static final String TAG = BasicMVVM_PageView.class.getSimpleName();
+    private static final String TAG = BasicMVVMPage_View.class.getSimpleName();
 
     protected BasicMVVMPage_ViewModel mPageViewModel;
 
