@@ -166,7 +166,7 @@
 
         <activity android:name=".d_login_or_register.LoginOrRegister_View" android:exported="true" />
 
-        <activity android:name=".d_login2.Login2_View" />
+        <activity android:name=".d_login2.Login2_View" android:exported="true"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

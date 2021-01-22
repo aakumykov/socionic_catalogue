@@ -148,7 +148,7 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
         ViewUtils.hide(loginButton);
         ViewUtils.hide(registerButton);
 
-        showInfoMsg(R.string.LOGIN_OR_REGISTER_you_already_logged_in);
+        showInfoMsg(R.string.you_already_logged_in);
         ViewUtils.show(logoutButton);
     }
 

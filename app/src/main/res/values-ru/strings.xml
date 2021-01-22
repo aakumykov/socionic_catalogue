@@ -383,7 +383,7 @@
     <string name="LOGIN_OR_REGISTER_page_title">Вход / регистрация</string>
     <string name="LOGIN_login_and_password">Логин, пароль</string>
     <string name="LOGIN_vkontakte">Вконтакте</string>
-    <string name="LOGIN_OR_REGISTER_you_already_logged_in">Вы уже вошли в программу</string>
+    <string name="you_already_logged_in">Вы уже вошли в программу</string>
     <string name="LOGIN_logout">Выйти</string>
 
 </resources>
