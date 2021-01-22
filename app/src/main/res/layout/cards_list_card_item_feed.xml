@@ -17,15 +17,41 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="14dp"
-            android:paddingVertical="14dp"
+            android:paddingTop="14dp"
             android:textAlignment="viewStart"
             android:textColor="@color/titleTextColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Название элемента" />
+
+        <TextView
+            android:id="@+id/authorView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="4dp"
+            android:paddingTop="8dp"
+            android:textAlignment="viewEnd"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleView"
+            tools:text="Автор" />
+
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="12dp"
+            android:textAlignment="viewEnd"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authorView"
+            tools:text="Дата" />
 
         <TextView
             android:id="@+id/quoteView"
@@ -33,13 +59,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="serif"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
+            android:paddingBottom="6dp"
             android:textColor="@color/quoteTextColor"
             android:textSize="18sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleView"
+            app:layout_constraintTop_toBottomOf="@+id/dateView"
             tools:text="«Если вы ищете истину, вы можете в конце концов найти успокоение; если вы ищете успокоение, вы не найдёте ни успокоение, ни истины – вы лишь начнёте с мягкого мыла и выдачи желаемого за действительное, а закончите отчаянием»" />
 
         <ImageView
@@ -80,39 +107,14 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/authorView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
-            android:paddingTop="18dp"
-            android:textSize="16sp"
-            android:textColor="@color/cards_feed_author_text_color"
-            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/audioVideoContainer"
-            tools:text="Имя Автора" />
-
-        <TextView
-            android:id="@+id/dateView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/commentsCountView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/authorView"
-            android:paddingTop="6dp"
-            tools:text="5 мая 2020" />
-
-        <TextView
             android:id="@+id/commentsCountView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
-            android:paddingTop="18dp"
-            android:textSize="16sp"
-            android:textColor="@color/cards_feed_comments_count_text_color"
-            app:layout_constraintBottom_toBottomOf="@+id/authorView"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/space"
+            app:layout_constraintEnd_toStartOf="@+id/ratingView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mediaView"
             tools:text="10 комментариев" />
 
@@ -120,21 +122,22 @@
             android:id="@+id/ratingView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/authorView"
-            app:layout_constraintTop_toBottomOf="@id/commentsCountView"
             android:paddingHorizontal="12dp"
-            android:paddingTop="6dp"
-            tools:text="Рейтинг: 5" />
+            android:paddingTop="16dp"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toTopOf="@+id/space"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaView"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="Оценка: 5" />
 
         <Space
+            android:id="@+id/space"
             android:layout_width="0dp"
             android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <View
             android:id="@+id/checkingOverlay"
