@@ -98,12 +98,12 @@ public abstract class BasicMVVMPage_View extends BaseView {
     }
 
     protected void setNeutralPageState() {
-        hideMessage();
+        hideProgressMessage();
     }
 
     protected void setProgressPageState(@NonNull ProgressPageState progressPageState) {
         hideMessage();
-        showProgressMessage(progressPageState.getMessage());
+        showProgressMessage(progressPageState.getMessage(this));
     }
 
     protected void setErrorPageState(@NonNull ErrorPageState errorPageState) {

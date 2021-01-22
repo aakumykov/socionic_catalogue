@@ -14,10 +14,12 @@ import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_event.Basi
 import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_state.BasicPageState;
 import io.gitlab.aakumykov.sociocat.constants.Constants;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.AlreadyLoggedInEvent;
+import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginSuccessPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithEmailAndPasswordEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithGoogleEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithVKEvent;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
+import io.gitlab.aakumykov.sociocat.utils.auth.GoogleAuthHelper;
 
 public class Login2_View extends BasicMVVMPage_View {
 
@@ -43,6 +45,17 @@ public class Login2_View extends BasicMVVMPage_View {
         super.onCreate(savedInstanceState);
         activateUpButton();
         setPageTitle(R.string.LOGIN_page_title);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case Constants.CODE_GOOGLE_LOGIN:
+                processGoogleLoginResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -81,44 +94,82 @@ public class Login2_View extends BasicMVVMPage_View {
     }
 
 
+    // Реакция на новые состояния
     @Override
     protected void processPageState(@NonNull BasicPageState pageState) {
         super.processPageState(pageState);
     }
 
+
+    // Реакции на события
     @Override
     protected void processPageEvent(@NonNull BasicPageEvent pageEvent) {
         if (pageEvent instanceof AlreadyLoggedInEvent) {
-            showToast(R.string.you_already_logged_in);
             pageEvent.consume();
-            closePage();
+            onAlreadyLoggenInEvent();
         }
         else if (pageEvent instanceof LoginWithEmailAndPasswordEvent) {
-            proceedLoginWithEmailAndPassword();
             pageEvent.consume();
+            onLoginWithEmailAndPasswordEvent();
         }
         else if (pageEvent instanceof LoginWithGoogleEvent) {
-            processLoginViaGoogle();
             pageEvent.consume();
+            onLoginWithGoogleEvent();
         }
         else if (pageEvent instanceof LoginWithVKEvent) {
-            showToast(R.string.not_implemented_yet);
             pageEvent.consume();
+            onLoginWithVKEvent();
+        }
+        else if (pageEvent instanceof LoginSuccessPageEvent) {
+            onLoginSuccessPageEvent((LoginSuccessPageEvent) pageEvent);
         }
         else {
             super.processPageEvent(pageEvent);
         }
     }
 
+    private void onAlreadyLoggenInEvent() {
+        showToast(R.string.you_already_logged_in);
+        closePage();
+    }
 
-    private void proceedLoginWithEmailAndPassword() {
+    private void onLoginWithEmailAndPasswordEvent() {
         Intent intent = new Intent(this, Login_View.class);
         intent.setAction(Constants.ACTION_LOGIN);
         startActivityForResult(intent, Constants.CODE_LOGIN);
     }
 
-    private void processLoginViaGoogle() {
+    private void onLoginWithGoogleEvent() {
+        startLoginWithGoogle();
+    }
 
+    private void onLoginWithVKEvent() {
+        showToast(R.string.not_implemented_yet);
+    }
+
+    private void onLoginSuccessPageEvent(LoginSuccessPageEvent loginSuccessPageEvent) {
+        showToast(loginSuccessPageEvent.getMessage(this));
+        closePage();
+    }
+
+
+    // TODO: вынести обработку Google-логина в отдельный объект
+    private void startLoginWithGoogle() {
+        Intent signInIntent = GoogleAuthHelper.getSignInIntent(this);
+        startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
+    }
+
+    private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                getViewModel().onLoginWithGoogleOk(data);
+                break;
+            case RESULT_CANCELED:
+                getViewModel().onLoginWithGoogleCancelled();
+                break;
+            default:
+                getViewModel().onLoginWithGoogleUnknown(resultCode, data);
+        }
     }
 
 

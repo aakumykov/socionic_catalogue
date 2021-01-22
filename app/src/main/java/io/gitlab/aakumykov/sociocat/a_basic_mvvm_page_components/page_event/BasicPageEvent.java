@@ -4,7 +4,6 @@ public abstract class BasicPageEvent {
 
     private boolean mIsConsumed = false;
 
-
     public void consume() {
         mIsConsumed = true;
     }

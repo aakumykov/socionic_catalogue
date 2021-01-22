@@ -390,6 +390,7 @@
     <string name="LOGIN_vkontakte">Vkontakte</string>
     <string name="you_already_logged_in">You already logged in</string>
     <string name="LOGIN_logout">Sign Out</string>
+    <string name="LOGIN_login_has_been_cancelled">Login has been cancelled</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

@@ -115,8 +115,8 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
     }
 
     private void processLoginClickedEvent(BasicPageEvent pageEvent) {
-        startActivity(new Intent(this, Login2_View.class));
         pageEvent.consume();
+        startActivity(new Intent(this, Login2_View.class));
     }
 
     private void processLogoutClickedEvent(BasicPageEvent pageEvent) {
