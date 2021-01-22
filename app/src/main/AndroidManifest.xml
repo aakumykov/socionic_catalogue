@@ -164,9 +164,13 @@
         <activity android:name="io.gitlab.aakumykov.sociocat.b_comments_list.CommentsList_View"
             android:parentActivityName="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
 
-        <activity android:name=".d_login_or_register.LoginOrRegister_View" android:exported="true" />
+        <activity
+            android:name=".d_login_or_register.LoginOrRegister_View"
+            android:noHistory="true" />
 
-        <activity android:name=".d_login2.Login2_View" android:exported="true"/>
+        <activity
+            android:name=".d_login2.Login2_View"
+            android:noHistory="true" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
