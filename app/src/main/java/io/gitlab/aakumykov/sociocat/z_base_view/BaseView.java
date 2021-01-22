@@ -47,6 +47,7 @@ import io.gitlab.aakumykov.sociocat.card_edit.CardEdit_View;
 import io.gitlab.aakumykov.sociocat.constants.Constants;
 import io.gitlab.aakumykov.sociocat.constants.PreferencesConstants;
 import io.gitlab.aakumykov.sociocat.d_backup_job.BackupService;
+import io.gitlab.aakumykov.sociocat.d_login_or_register.LoginOrRegister_View;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserAuthorizedEvent;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
@@ -608,7 +609,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         // AuthStateListener
         if (!AuthSingleton.isLoggedIn()) {
             //Log.d(TAG, "doLogin()");
-            Intent intent = new Intent(this, Login_View.class);
+            Intent intent = new Intent(this, LoginOrRegister_View.class);
             intent.setAction(Constants.ACTION_LOGIN);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }

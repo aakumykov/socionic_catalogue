@@ -6,13 +6,16 @@ import io.gitlab.aakumykov.sociocat.d_login_or_register.page_events.LogoutClicke
 import io.gitlab.aakumykov.sociocat.d_login_or_register.page_events.RegisterClikcedPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login_or_register.page_states.LoggedInPageState;
 import io.gitlab.aakumykov.sociocat.d_login_or_register.page_states.LoggedOutPageState;
+import io.gitlab.aakumykov.sociocat.singletons.AuthSingleton;
 
 public class LoginOrRegister_ViewModel extends BasicMVVMPage_ViewModel {
 
     @Override
     protected void onColdStart() {
-        // Аутентификацию здесь проверять не нужно, так как она обрабатывается
-        // методами onUserGloballyLoggedIn(), onUserGloballyLoggedOut()
+        if (AuthSingleton.isLoggedIn())
+            setLoggedInPageState();
+        else
+            setLoggedOutPageState();
     }
 
 
