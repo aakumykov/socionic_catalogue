@@ -388,6 +388,8 @@
     <string name="LOGIN_login_and_password">Login, password</string>
     <string name="LOGIN_google" translatable="false">Google</string>
     <string name="LOGIN_vkontakte">Vkontakte</string>
+    <string name="LOGIN_OR_REGISTER_you_already_logged_in">You already logged in</string>
+    <string name="LOGIN_logout">Sign Out</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->
