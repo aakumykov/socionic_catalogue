@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +73,11 @@ public abstract class BasicMVVMPage_View extends BaseView {
     protected abstract BasicMVVMPage_ViewModel createPageViewModel();
     protected abstract void onNewPageState(@NonNull BasicPageState pageState);
     protected abstract void onNewPageEvent(@NonNull BasicPageEvent pageEvent);
+
+
+    protected ViewModelProvider getViewModelProvider(ViewModelStoreOwner viewModelStoreOwner) {
+        return new ViewModelProvider(viewModelStoreOwner, new ViewModelProvider.NewInstanceFactory());
+    }
 
 
     // Обработка состояния страницы
