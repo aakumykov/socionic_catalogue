@@ -12,12 +12,15 @@ import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_V
 import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewModel;
 import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_event.BasicPageEvent;
 import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_state.BasicPageState;
+import io.gitlab.aakumykov.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;
 import io.gitlab.aakumykov.sociocat.constants.Constants;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.AlreadyLoggedInEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginSuccessPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithEmailAndPasswordEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithGoogleEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithVKEvent;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.ErrorLoadingUserPageState;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.UserNotExistsPageState;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
 import io.gitlab.aakumykov.sociocat.utils.auth.GoogleAuthHelper;
 
@@ -97,7 +100,19 @@ public class Login2_View extends BasicMVVMPage_View {
     // Реакция на новые состояния
     @Override
     protected void processPageState(@NonNull BasicPageState pageState) {
-        super.processPageState(pageState);
+        if (pageState instanceof UserNotExistsPageState) {
+            setLoginErrorPageState((UserNotExistsPageState) pageState);
+        }
+        else if (pageState instanceof ErrorLoadingUserPageState)
+            setLoginErrorPageState((ErrorLoadingUserPageState) pageState);
+        else {
+            super.processPageState(pageState);
+        }
+    }
+
+    private void setLoginErrorPageState(ErrorPageState errorPageState) {
+        setErrorPageState(errorPageState);
+        logout();
     }
 
 

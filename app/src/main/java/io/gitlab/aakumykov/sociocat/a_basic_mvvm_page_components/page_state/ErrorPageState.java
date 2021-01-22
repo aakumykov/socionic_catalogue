@@ -27,10 +27,10 @@ public class ErrorPageState extends BasicPageState{
     }
 
     public int getUserMessageId() {
-        return 0;
+        return mUserMessageId;
     }
 
     public String getDebugMessage() {
-        return null;
+        return mDebugMessage;
     }
 }

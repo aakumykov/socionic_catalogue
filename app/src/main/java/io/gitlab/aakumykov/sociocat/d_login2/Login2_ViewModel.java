@@ -18,6 +18,9 @@ import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginSuccessPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithEmailAndPasswordEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithGoogleEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithVKEvent;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.ErrorLoadingUserPageState;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.UserNotExistsPageState;
+import io.gitlab.aakumykov.sociocat.models.User;
 import io.gitlab.aakumykov.sociocat.singletons.AuthSingleton;
 import io.gitlab.aakumykov.sociocat.singletons.UsersSingleton;
 import io.gitlab.aakumykov.sociocat.singletons.iAuthSingleton;
@@ -83,25 +86,23 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
             @Override
             public void onLoginSuccess(String userId) {
 
-                risePageEvent(new LoginSuccessPageEvent(googleSignInAccount.getDisplayName() + " вошёл через Google"));
-
-                /*loadUserFromServer(userId, new iLoadUserCallbacks() {
+                mUsersSingleton.refreshUserFromServer(userId, new iUsersSingleton.iRefreshCallbacks() {
                     @Override
-                    public void onUserLoadSuccess(User user) {
-                        view.finishLogin(false, mTransitIntent);
+                    public void onUserRefreshSuccess(@NonNull User user) {
+                        mUsersSingleton.storeCurrentUser(user);
+                        risePageEvent(new LoginSuccessPageEvent(user.getName() + " вошёл через Google"));
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        createUserFromGoogleAccount(userId, googleSignInAccount);
+                        setPageState(new UserNotExistsPageState(TAG, R.string.LOGIN_error_user_not_found, ""));
                     }
 
                     @Override
-                    public void onUserLoadError(String errorMsg) {
-                        onLoadUserFromServerError(errorMsg);
+                    public void onUserRefreshFail(String errorMsg) {
+                        setPageState(new ErrorLoadingUserPageState(TAG, R.string.LOGIN_error_loading_user_info, ""));
                     }
-                });*/
-
+                });
             }
 
             @Override
@@ -120,25 +121,4 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
             }
         });
     }
-
-    /*private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
-
-        mUsersSingleton.refreshUserFromServer(userId, new iUsersSingleton.iRefreshCallbacks() {
-            @Override
-            public void onUserRefreshSuccess(@NonNull User user) {
-                mUsersSingleton.storeCurrentUser(user);
-                callbacks.onUserLoadSuccess(user);
-            }
-
-            @Override
-            public void onUserNotExists() {
-                callbacks.onUserNotExists();
-            }
-
-            @Override
-            public void onUserRefreshFail(String errorMsg) {
-                callbacks.onUserLoadError(errorMsg);
-            }
-        });
-    }*/
 }
