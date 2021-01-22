@@ -39,6 +39,7 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
     }
 
 
+    // События пользовательского ввода
     public void onLoginWithEmailAndPasswordClicked() {
         risePageEvent(new LoginWithEmailAndPasswordEvent());
     }
@@ -53,7 +54,8 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
     }
 
 
-    public void onLoginWithGoogleOk(@Nullable Intent data) {
+    // События аутентификации Google
+    public void onLoginWithGoogleConfirmed(@Nullable Intent data) {
 
         GoogleAuthHelper.processGoogleLoginResult(data, new GoogleAuthHelper.iGoogleLoginCallbacks() {
             @Override
@@ -78,6 +80,7 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
     }
 
 
+    // Внутренние методы
     private void loginWithGoogleAccount(GoogleSignInAccount googleSignInAccount) {
 
         setPageState(new ProgressPageState(R.string.LOGIN_logging_in));

@@ -177,7 +177,7 @@ public class Login2_View extends BasicMVVMPage_View {
     private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                getViewModel().onLoginWithGoogleOk(data);
+                getViewModel().onLoginWithGoogleConfirmed(data);
                 break;
             case RESULT_CANCELED:
                 getViewModel().onLoginWithGoogleCancelled();
