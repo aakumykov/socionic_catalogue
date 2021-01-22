@@ -1,4 +1,4 @@
-package io.gitlab.aakumykov.sociocat.d_login2.page_states;
+package io.gitlab.aakumykov.sociocat.d_login_or_register.page_states;
 
 import androidx.annotation.NonNull;
 

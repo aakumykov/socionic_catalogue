@@ -385,9 +385,9 @@
     <string name="COMMENTS_LIST_delete_selected_comments">Delete selected comments?</string>
     <string name="MENU_comments">Comments</string>
     <string name="LOGIN_OR_REGISTER_page_title">Login / Register</string>
-    <string name="LOGIN_login_and_password">Login, password</string>
-    <string name="LOGIN_google" translatable="false">Google</string>
-    <string name="LOGIN_vkontakte">Vkontakte</string>
+    <string name="LOGIN_login_and_password">Login with email and password</string>
+    <string name="LOGIN_google">Login with Google</string>
+    <string name="LOGIN_vkontakte">With VK</string>
     <string name="you_already_logged_in">You already logged in</string>
     <string name="LOGIN_logout">Sign Out</string>
     <string name="LOGIN_login_has_been_cancelled">Login has been cancelled</string>

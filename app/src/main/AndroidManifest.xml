@@ -31,11 +31,6 @@
 
         <activity android:name="io.gitlab.aakumykov.sociocat.c_tags_list.TagsList_View" />
 
-        <activity
-            android:name="io.gitlab.aakumykov.sociocat.template_of_page.Page_View"
-            android:exported="true"
-            android:windowSoftInputMode="stateHidden" />
-
         <activity android:name="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
 
         <activity android:name="io.gitlab.aakumykov.sociocat.d_backup_job.BackupActivity" />
@@ -166,10 +161,7 @@
 
         <activity
             android:name=".d_login_or_register.LoginOrRegister_View"
-            android:noHistory="true" />
-
-        <activity
-            android:name=".d_login2.Login2_View"
+            android:exported="true"
             android:noHistory="true" />
 
         <meta-data

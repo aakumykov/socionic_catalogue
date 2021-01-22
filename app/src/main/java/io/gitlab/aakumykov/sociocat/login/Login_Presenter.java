@@ -433,7 +433,7 @@ public class Login_Presenter implements
                         @Override
                         public void onCreateOrUpdateExternalUser_Success(User user) {
                             view.hideProgressMessage();
-                            view.showToast(R.string.LOGIN_login_success);
+                            view.showToast(R.string.LOGIN_welcome_to_socionic_catalogue);
 
                             try {
                                 usersSingleton.storeCurrentUser(user);
