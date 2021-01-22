@@ -107,12 +107,12 @@ public class UserChangePassword_View extends BaseView implements
 
     // BaseView
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
         presenter.onUserLoggedOut();
     }
 

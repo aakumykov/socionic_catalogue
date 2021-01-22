@@ -47,6 +47,7 @@ import io.gitlab.aakumykov.sociocat.card_edit.CardEdit_View;
 import io.gitlab.aakumykov.sociocat.constants.Constants;
 import io.gitlab.aakumykov.sociocat.constants.PreferencesConstants;
 import io.gitlab.aakumykov.sociocat.d_backup_job.BackupService;
+import io.gitlab.aakumykov.sociocat.d_login_or_register.LoginOrRegister_View;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserAuthorizedEvent;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
@@ -67,22 +68,31 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private Menu mMenu;
     private MenuInflater mMenuInflater;
 
-    // Абстрактные методы
-    public abstract void onUserLogin();
-    public abstract void onUserLogout();
+    /**
+     * Вызывается при изменении статуса аутентификации
+     * на "аутентифицирован".
+     */
+    public abstract void onUserGloballyLoggedIn();
+
+    /**
+     * Вызывается при изменении статуса аутентификации
+     * на "деаутентифицирован".
+     */
+    public abstract void onUserGloballyLoggedOut();
+
 
     // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
 
-        onUserLogin();
+        onUserGloballyLoggedIn();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         invalidateOptionsMenu();
 
-        onUserLogout();
+        onUserGloballyLoggedOut();
 
         GoogleAuthHelper.logout(this);
     }
@@ -538,6 +548,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         setMenuItemEnabled(itemId, false);
     }
 
+    protected void logout() {
+        AuthSingleton.logout();
+    }
+
 
     // Внутренние методы
     private void showErrorMsg(String errorMsg, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
@@ -595,14 +609,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         // AuthStateListener
         if (!AuthSingleton.isLoggedIn()) {
             //Log.d(TAG, "doLogin()");
-            Intent intent = new Intent(this, Login_View.class);
+            Intent intent = new Intent(this, LoginOrRegister_View.class);
             intent.setAction(Constants.ACTION_LOGIN);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }
-    }
-
-    private void logout() {
-        AuthSingleton.logout();
     }
 
     private void openPreferences() {

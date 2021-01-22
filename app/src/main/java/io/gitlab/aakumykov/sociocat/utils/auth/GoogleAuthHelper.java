@@ -26,6 +26,7 @@ public final class GoogleAuthHelper {
     }
 
     public static void processGoogleLoginResult(@Nullable Intent data, iGoogleLoginCallbacks callbacks) {
+
         if (null == data) {
             callbacks.onGoogleLoginError("Intent is null");
             return;

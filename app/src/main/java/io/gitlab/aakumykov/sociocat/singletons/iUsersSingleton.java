@@ -18,6 +18,7 @@ import io.gitlab.aakumykov.sociocat.models.User;
 public interface iUsersSingleton {
 
     void createUser(String userId, String userName, String email, iCreateCallbacks callbacks);
+    void createUser(@NonNull User user, iCreateCallbacks callbacks);
 
     void getUserById(String userId, iReadCallbacks callbacks);
     void getUserByEmail(String email, iReadCallbacks callbacks);

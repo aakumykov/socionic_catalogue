@@ -27,12 +27,12 @@ public class PreferencesActivity extends BaseView {
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
         mPreferencesFragment.assemblePreferences();
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
         mPreferencesFragment.assemblePreferences();
     }
 }

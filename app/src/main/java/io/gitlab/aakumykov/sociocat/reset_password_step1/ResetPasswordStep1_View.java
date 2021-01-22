@@ -66,10 +66,10 @@ public class ResetPasswordStep1_View extends BaseView implements
         validator.setValidationListener(this);
     }
 
-    @Override public void onUserLogin() {
+    @Override public void onUserGloballyLoggedIn() {
 
     }
-    @Override public void onUserLogout() {
+    @Override public void onUserGloballyLoggedOut() {
 
     }
 

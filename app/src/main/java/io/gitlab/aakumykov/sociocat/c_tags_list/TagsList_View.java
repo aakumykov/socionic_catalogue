@@ -118,12 +118,12 @@ public class TagsList_View extends BasicMVPList_View implements iTagsList_View {
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
 
     }
 

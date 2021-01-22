@@ -40,6 +40,7 @@ public class User implements Parcelable, iSortableData {
     private String avatarFileName;
     private String avatarURL;
     private boolean emailVerified = false;
+    private boolean isExternal = false;
 
     private final List<String> cardsKeys = new ArrayList<>();
     private final List<String> commentsKeys = new ArrayList<>();
@@ -69,6 +70,7 @@ public class User implements Parcelable, iSortableData {
                 ", avatarFileName: "+avatarFileName+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
+                ", isExternal: "+isExternal+
                 ", cardsKeys: "+ cardsKeys +
                 ", commentsKeys: "+ commentsKeys +
                 ", unsubscribedCards: "+ unsubscribedCards +
@@ -90,6 +92,7 @@ public class User implements Parcelable, iSortableData {
         map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
+        map.put("isExternal", isExternal);
         map.put(KEY_CARDS_KEYS, cardsKeys);
         map.put(KEY_COMMENTS_KEYS, commentsKeys);
         map.put("unsubscribedCards", unsubscribedCards);
@@ -130,6 +133,7 @@ public class User implements Parcelable, iSortableData {
         dest.writeString(avatarFileName);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
+        dest.writeInt(isExternal ? 1 : 0);
         dest.writeList(this.cardsKeys);
         dest.writeList(this.commentsKeys);
         dest.writeList(this.unsubscribedCards);
@@ -149,6 +153,7 @@ public class User implements Parcelable, iSortableData {
         avatarFileName = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
+        isExternal = 1 == in.readInt();
         in.readList(this.cardsKeys, ArrayList.class.getClassLoader());
         in.readList(this.commentsKeys, ArrayList.class.getClassLoader());
         in.readList(this.unsubscribedCards, ArrayList.class.getClassLoader());
@@ -351,5 +356,12 @@ public class User implements Parcelable, iSortableData {
     }
     public void setRatedDownCommentKeys(List<String> ratedDownCommentKeys) {
         this.ratedDownCommentKeys = ratedDownCommentKeys;
+    }
+
+    @Exclude public boolean isExternal() {
+        return isExternal;
+    }
+    public void setIsExternal(boolean isExternal) {
+        this.isExternal = isExternal;
     }
 }

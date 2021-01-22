@@ -83,14 +83,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/LOGIN_register"
-                android:textSize="@dimen/major_button_font_size" />
+                android:textSize="@dimen/major_button_font_size"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/LOGIN_cancel" />
+                android:text="@string/LOGIN_cancel"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -100,11 +102,13 @@
                 android:text="@string/LOGIN_login_via"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/googleLoginButton"

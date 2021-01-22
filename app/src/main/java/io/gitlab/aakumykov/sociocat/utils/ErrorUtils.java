@@ -1,13 +1,18 @@
 package io.gitlab.aakumykov.sociocat.utils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ErrorUtils {
 
-    public static String getErrorFromException(@NonNull Exception e, @NonNull String fallbackErrorMsg) {
-        String errorMsg = e.getMessage();
-        if (null == errorMsg)
-            errorMsg = fallbackErrorMsg;
-        return errorMsg;
+    public static String getErrorFromException(@Nullable Exception e, @NonNull String fallbackErrorMsg) {
+
+        if (null != e) {
+            String errorMsg = e.getMessage();
+            if (null != errorMsg)
+                return errorMsg;
+        }
+
+        return fallbackErrorMsg;
     }
 }

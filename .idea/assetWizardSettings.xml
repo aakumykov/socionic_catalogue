@@ -308,27 +308,12 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../../AndroidSdk/icons/material/materialicons/reply/baseline_reply_24.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="cccccc" />
-                            <entry key="outputName" value="ic_image_remove2" />
-                            <entry key="sourceFile" value="C:\Users\Andrey\Pictures\иконки для программы\ic_image_remove2.svg" />
+                            <entry key="outputName" value="ic_sign_out" />
+                            <entry key="sourceFile" value="$USER_HOME$/Изображения/ic_sign_out.svg" />
                           </map>
                         </option>
                       </PersistentState>

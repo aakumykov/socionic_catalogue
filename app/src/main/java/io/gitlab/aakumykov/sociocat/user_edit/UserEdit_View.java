@@ -159,12 +159,12 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
 
     // BaseView
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
         presenter.onUserLoggedOut();
     }
 

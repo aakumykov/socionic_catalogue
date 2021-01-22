@@ -142,12 +142,12 @@ public class UserShow_View extends BaseView implements iUserShow.iView
 
     // BaseView
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
         presenter.onUserLoggedIn();
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
         presenter.onUserLoggedOut();
     }
 
