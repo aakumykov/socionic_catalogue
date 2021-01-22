@@ -29,7 +29,7 @@
 
         <activity android:name="io.gitlab.aakumykov.sociocat.b_cards_list.CardsList_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.c_tags_list.TagsList_View" />
+        <activity android:name="io.gitlab.aakumykov.sociocat.b_tags_list.TagsList_View" />
 
         <activity android:name="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
 
@@ -160,7 +160,7 @@
             android:parentActivityName="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
 
         <activity
-            android:name=".d_login_or_register.LoginOrRegister_View"
+            android:name=".c_login_or_register.LoginOrRegister_View"
             android:exported="true"
             android:noHistory="true" />
 

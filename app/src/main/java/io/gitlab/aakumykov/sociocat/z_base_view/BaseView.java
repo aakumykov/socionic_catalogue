@@ -42,12 +42,12 @@ import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_states.Neut
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_states.ProgressViewState;
 import io.gitlab.aakumykov.sociocat.a_basic_mvp_list_components.view_states.RefreshingViewState;
 import io.gitlab.aakumykov.sociocat.b_cards_list.CardsList_View;
-import io.gitlab.aakumykov.sociocat.c_tags_list.TagsList_View;
+import io.gitlab.aakumykov.sociocat.b_tags_list.TagsList_View;
+import io.gitlab.aakumykov.sociocat.c_login_or_register.LoginOrRegister_View;
 import io.gitlab.aakumykov.sociocat.card_edit.CardEdit_View;
 import io.gitlab.aakumykov.sociocat.constants.Constants;
 import io.gitlab.aakumykov.sociocat.constants.PreferencesConstants;
 import io.gitlab.aakumykov.sociocat.d_backup_job.BackupService;
-import io.gitlab.aakumykov.sociocat.d_login_or_register.LoginOrRegister_View;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserAuthorizedEvent;
 import io.gitlab.aakumykov.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
