@@ -547,6 +547,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         setMenuItemEnabled(itemId, false);
     }
 
+    protected void logout() {
+        AuthSingleton.logout();
+    }
+
 
     // Внутренние методы
     private void showErrorMsg(String errorMsg, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
@@ -608,10 +612,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             intent.setAction(Constants.ACTION_LOGIN);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }
-    }
-
-    private void logout() {
-        AuthSingleton.logout();
     }
 
     private void openPreferences() {
