@@ -109,6 +109,31 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
+    public void createUser(@NonNull User user, iCreateCallbacks callbacks) {
+        if (null == user) {
+            callbacks.onUserCreateFail("User cannot be null");
+            return;
+        }
+
+        usersCollection
+                .document(user.getKey())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserCreateSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUserCreateFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
     public void getUserById(String userId, iReadCallbacks callbacks) {
         usersCollection.document(userId).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
