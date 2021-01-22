@@ -19,8 +19,7 @@ import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginSuccessPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithEmailAndPasswordEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithGoogleEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithVKEvent;
-import io.gitlab.aakumykov.sociocat.d_login2.page_states.ErrorLoadingUserPageState;
-import io.gitlab.aakumykov.sociocat.d_login2.page_states.UserNotExistsPageState;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.LoginErrorPageState;
 import io.gitlab.aakumykov.sociocat.login.Login_View;
 import io.gitlab.aakumykov.sociocat.utils.auth.GoogleAuthHelper;
 
@@ -100,11 +99,8 @@ public class Login2_View extends BasicMVVMPage_View {
     // Реакция на новые состояния
     @Override
     protected void processPageState(@NonNull BasicPageState pageState) {
-        if (pageState instanceof UserNotExistsPageState) {
-            setLoginErrorPageState((UserNotExistsPageState) pageState);
-        }
-        else if (pageState instanceof ErrorLoadingUserPageState)
-            setLoginErrorPageState((ErrorLoadingUserPageState) pageState);
+        if (pageState instanceof LoginErrorPageState)
+            setLoginErrorPageState((LoginErrorPageState) pageState);
         else {
             super.processPageState(pageState);
         }
@@ -163,7 +159,7 @@ public class Login2_View extends BasicMVVMPage_View {
     }
 
     private void onLoginSuccessPageEvent(LoginSuccessPageEvent loginSuccessPageEvent) {
-        showToast(loginSuccessPageEvent.getMessage(this));
+        showToast(R.string.LOGIN_welcome_to_socionic_catalogue);
         closePage();
     }
 

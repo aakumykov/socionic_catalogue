@@ -18,8 +18,7 @@ import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginSuccessPageEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithEmailAndPasswordEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithGoogleEvent;
 import io.gitlab.aakumykov.sociocat.d_login2.page_events.LoginWithVKEvent;
-import io.gitlab.aakumykov.sociocat.d_login2.page_states.ErrorLoadingUserPageState;
-import io.gitlab.aakumykov.sociocat.d_login2.page_states.UserNotExistsPageState;
+import io.gitlab.aakumykov.sociocat.d_login2.page_states.LoginErrorPageState;
 import io.gitlab.aakumykov.sociocat.models.User;
 import io.gitlab.aakumykov.sociocat.singletons.AuthSingleton;
 import io.gitlab.aakumykov.sociocat.singletons.UsersSingleton;
@@ -81,7 +80,7 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
 
 
     // Внутренние методы
-    private void loginWithGoogleAccount(GoogleSignInAccount googleSignInAccount) {
+    private void loginWithGoogleAccount(@NonNull GoogleSignInAccount googleSignInAccount) {
 
         setPageState(new ProgressPageState(R.string.LOGIN_logging_in));
 
@@ -93,35 +92,63 @@ public class Login2_ViewModel extends BasicMVVMPage_ViewModel {
                     @Override
                     public void onUserRefreshSuccess(@NonNull User user) {
                         mUsersSingleton.storeCurrentUser(user);
-                        risePageEvent(new LoginSuccessPageEvent(user.getName() + " вошёл через Google"));
+                        finishLoginWithSuccess();
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        setPageState(new UserNotExistsPageState(TAG, R.string.LOGIN_error_user_not_found, ""));
+                        createNewUserFromGoogleAccount(googleSignInAccount);
                     }
 
                     @Override
                     public void onUserRefreshFail(String errorMsg) {
-                        setPageState(new ErrorLoadingUserPageState(TAG, R.string.LOGIN_error_loading_user_info, ""));
+                        setPageState(new LoginErrorPageState(TAG, R.string.LOGIN_error_loading_user_info, errorMsg));
                     }
                 });
             }
 
             @Override
             public void onLoginError(String errorMsg) {
-                setPageState(new ErrorPageState(TAG, R.string.LOGIN_login_error, errorMsg));
+                setPageState(new LoginErrorPageState(TAG, R.string.LOGIN_login_error, errorMsg));
             }
 
             @Override
             public void onWrongCredentialsError() {
-                setPageState(new ErrorPageState(TAG, R.string.LOGIN_bad_credentials, ""));
+                setPageState(new LoginErrorPageState(TAG, R.string.LOGIN_bad_credentials, ""));
             }
 
             @Override
             public void onTooManyLoginAttempts() {
-                setPageState(new ErrorPageState(TAG, R.string.LOGIN_too_many_login_attempts, ""));
+                setPageState(new LoginErrorPageState(TAG, R.string.LOGIN_too_many_login_attempts, ""));
             }
         });
+    }
+
+    private void createNewUserFromGoogleAccount(@NonNull GoogleSignInAccount googleSignInAccount) {
+
+        setPageState(new ProgressPageState(R.string.LOGIN_creating_new_user));
+
+        User user = new User();
+        user.setKey(AuthSingleton.currentUserId());
+        user.setName(googleSignInAccount.getDisplayName());
+        user.setEmail(googleSignInAccount.getEmail());
+        user.setEmailVerified(true);
+        user.setIsExternal(true);
+
+        mUsersSingleton.createUser(user, new iUsersSingleton.iCreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                finishLoginWithSuccess();
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                setPageState(new LoginErrorPageState(TAG, R.string.LOGIN_error_creating_user, errorMsg));
+            }
+        });
+    }
+
+    private void finishLoginWithSuccess() {
+        risePageEvent(new LoginSuccessPageEvent());
     }
 }

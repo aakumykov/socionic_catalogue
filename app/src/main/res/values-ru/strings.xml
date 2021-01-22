@@ -386,6 +386,9 @@
     <string name="you_already_logged_in">Вы уже вошли в программу</string>
     <string name="LOGIN_logout">Выйти</string>
     <string name="LOGIN_login_has_been_cancelled">Вход отменён</string>
+    <string name="LOGIN_creating_new_user">Создаём нового пользователя</string>
+    <string name="LOGIN_welcome_to_socionic_catalogue">Добро пожаловать в Соционический каталог</string>
+    <string name="LOGIN_error_creating_user">Ошибка создания пользователя</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

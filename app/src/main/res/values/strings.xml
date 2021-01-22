@@ -391,6 +391,9 @@
     <string name="you_already_logged_in">You already logged in</string>
     <string name="LOGIN_logout">Sign Out</string>
     <string name="LOGIN_login_has_been_cancelled">Login has been cancelled</string>
+    <string name="LOGIN_creating_new_user">Creating new user</string>
+    <string name="LOGIN_welcome_to_socionic_catalogue">Wellcome to Socionic catalogue</string>
+    <string name="LOGIN_error_creating_user">Error creating user</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->
