@@ -380,6 +380,9 @@
     <string name="deletion_process_is_finished">Процесс удаления завершён</string>
     <string name="COMMENTS_LIST_delete_selected_comments">Удалить выбранные комментарии?</string>
     <string name="MENU_comments">Комментарии</string>
+    <string name="LOGIN_OR_REGISTER_page_title">Вход / регистрация</string>
+    <string name="LOGIN_login_and_password">Логин, пароль</string>
+    <string name="LOGIN_vkontakte">Вконтакте</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

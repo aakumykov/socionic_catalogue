@@ -34,8 +34,8 @@
     <string name="LOGIN_login_success">Login success</string>
     <string name="LOGIN_cancel">Cancel</string>
     <string name="LOGIN_logging_in">Logging in</string>
-    <string name="LOGIN_login">Log in</string>
-    <string name="LOGIN_register">SignUp</string>
+    <string name="LOGIN_login">Sign In</string>
+    <string name="LOGIN_register">Sign Up</string>
     <string name="USER_SHOW_simple_page_title">User\'s profile</string>
     <string name="CARD_EDIT_error_saving_card">Error saving card</string>
     <string name="CARD_SHOW_error_displaying_card">Error displaying card</string>
@@ -384,6 +384,10 @@
     <string name="deletion_process_is_finished">Deletion process is finished</string>
     <string name="COMMENTS_LIST_delete_selected_comments">Delete selected comments?</string>
     <string name="MENU_comments">Comments</string>
+    <string name="LOGIN_OR_REGISTER_page_title">Login / Register</string>
+    <string name="LOGIN_login_and_password">Login, password</string>
+    <string name="LOGIN_google" translatable="false">Google</string>
+    <string name="LOGIN_vkontakte">Vkontakte</string>
 
 </resources>
 <!-- «%1$s» «%2$s» -->

@@ -21,8 +21,8 @@ public class StartPage extends BaseView {
     private static final String TAG = "StartPage";
     private boolean dryRun = true;
 
-    @Override public void onUserLogin() {}
-    @Override public void onUserLogout() {}
+    @Override public void onUserGloballyLoggedIn() {}
+    @Override public void onUserGloballyLoggedOut() {}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

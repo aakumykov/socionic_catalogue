@@ -67,22 +67,31 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private Menu mMenu;
     private MenuInflater mMenuInflater;
 
-    // Абстрактные методы
-    public abstract void onUserLogin();
-    public abstract void onUserLogout();
+    /**
+     * Вызывается при изменении статуса аутентификации
+     * на "аутентифицирован".
+     */
+    public abstract void onUserGloballyLoggedIn();
+
+    /**
+     * Вызывается при изменении статуса аутентификации
+     * на "деаутентифицирован".
+     */
+    public abstract void onUserGloballyLoggedOut();
+
 
     // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
 
-        onUserLogin();
+        onUserGloballyLoggedIn();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         invalidateOptionsMenu();
 
-        onUserLogout();
+        onUserGloballyLoggedOut();
 
         GoogleAuthHelper.logout(this);
     }

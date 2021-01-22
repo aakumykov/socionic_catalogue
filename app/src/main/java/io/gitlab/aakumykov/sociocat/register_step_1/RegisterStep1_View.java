@@ -70,12 +70,12 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
 
     }
 

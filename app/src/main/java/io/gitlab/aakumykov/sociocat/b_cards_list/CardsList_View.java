@@ -194,12 +194,12 @@ public class CardsList_View extends BasicMVPList_View implements iCardsList_View
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
 
     }
 

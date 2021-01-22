@@ -139,12 +139,12 @@ public class CommentsList_View extends BasicMVPList_View implements iCommentsLis
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
 
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
 
     }
 

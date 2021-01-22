@@ -74,10 +74,10 @@ public class DeepLinksReceiver extends BaseView {
 
 
     // BaseView
-    @Override public void onUserLogin() {
+    @Override public void onUserGloballyLoggedIn() {
 
     }
-    @Override public void onUserLogout() {
+    @Override public void onUserGloballyLoggedOut() {
 
     }
 

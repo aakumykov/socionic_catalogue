@@ -61,11 +61,11 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     @Override
-    public void onUserLogin() {
+    public void onUserGloballyLoggedIn() {
     }
 
     @Override
-    public void onUserLogout() {
+    public void onUserGloballyLoggedOut() {
     }
 
 
