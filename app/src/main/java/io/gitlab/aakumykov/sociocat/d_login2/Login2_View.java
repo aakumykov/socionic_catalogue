@@ -22,17 +22,17 @@ public class Login2_View extends BasicMVVMPage_View {
 
     @Override
     protected BasicMVVMPage_ViewModel createPageViewModel() {
-        return null;
+        return getViewModelProvider(this).get(Login2_ViewModel.class);
     }
 
     @Override
     protected void onNewPageState(@NonNull BasicPageState pageState) {
-
+        processPageState(pageState);
     }
 
     @Override
     protected void onNewPageEvent(@NonNull BasicPageEvent pageEvent) {
-
+        processPageEvent(pageEvent);
     }
 
     @Override
@@ -43,5 +43,15 @@ public class Login2_View extends BasicMVVMPage_View {
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    protected void processPageState(@NonNull BasicPageState pageState) {
+        super.processPageState(pageState);
+    }
+
+    @Override
+    protected void processPageEvent(@NonNull BasicPageEvent pageEvent) {
+        super.processPageEvent(pageEvent);
     }
 }
