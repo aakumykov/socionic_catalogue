@@ -12,7 +12,7 @@
 /.idea/caches/
 /.idea/misc.xml
 /app/release/
+/app/debug/
 /app/src/main/res/values/credentials.xml
-
 .idea/misc.xml
 *.log
