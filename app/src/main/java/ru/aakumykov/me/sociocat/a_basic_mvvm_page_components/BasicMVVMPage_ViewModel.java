@@ -15,9 +15,9 @@ public abstract class BasicMVVMPage_ViewModel
         extends ViewModel
         implements LifecycleObserver
 {
+    private static final String TAG = BasicMVVMPage_ViewModel.class.getSimpleName();
     protected MutableLiveData<BasicPageState> mPageStateLiveData;
     protected MutableLiveData<BasicPageEvent> mPageEventLiveData;
-    private BasicPageState mCurrentPageState;
 
 
     public BasicMVVMPage_ViewModel() {
@@ -36,15 +36,16 @@ public abstract class BasicMVVMPage_ViewModel
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onStart() {
-        if (null == mCurrentPageState)
+        if (null == mPageStateLiveData.getValue())
             onColdStart();
+//        else
+//            Log.d(TAG, "Тёплый старт");
     }
 
     protected abstract void onColdStart();
 
     protected void setPageState(BasicPageState pageState) {
-        mCurrentPageState = pageState;
-        mPageStateLiveData.setValue(mCurrentPageState);
+        mPageStateLiveData.setValue(pageState);
     }
 
     protected void risePageEvent(BasicPageEvent pageEvent) {
