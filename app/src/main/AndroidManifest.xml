@@ -161,8 +161,7 @@
 
         <activity
             android:name=".c_login_or_register.LoginOrRegister_View"
-            android:exported="true"
-            android:noHistory="true" />
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
