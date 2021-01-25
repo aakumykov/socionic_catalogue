@@ -87,7 +87,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Загрузки/sweater.svg" />
+                                                <entry key="imagePath" value="$USER_HOME$/Изображения/Соционический каталог/1-cropped.png" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -121,7 +121,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
+                                      <entry key="backgroundColor" value="f9f9f9" />
                                     </map>
                                   </option>
                                 </PersistentState>
