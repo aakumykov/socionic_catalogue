@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp"
-            tools:context="io.gitlab.aakumykov.sociocat.login.Login_View">
+            tools:context="ru.aakumykov.me.sociocat.login.Login_View">
 
             <TextView
                 android:id="@+id/tryNewPasswordMessageView"

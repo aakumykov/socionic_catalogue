@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.gitlab.aakumykov.sociocat">
+    package="io.aakumykov.me.sociocat">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name="io.gitlab.aakumykov.sociocat.SocioCatApp"
+        android:name="ru.aakumykov.me.sociocat.SocioCatApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.start_page.StartPage">
+        <activity android:name="ru.aakumykov.me.sociocat.start_page.StartPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,34 +27,34 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.b_cards_list.CardsList_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.b_cards_list.CardsList_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.b_tags_list.TagsList_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.b_tags_list.TagsList_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.user_show.UserShow_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.d_backup_job.BackupActivity" />
+        <activity android:name="ru.aakumykov.me.sociocat.d_backup_job.BackupActivity" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.login.Login_View"
+            android:name="ru.aakumykov.me.sociocat.login.Login_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.register_step_1.RegisterStep1_View"
+            android:name="ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.register_step_2.RegisterStep2_View"
+            android:name="ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View"
             android:noHistory="true"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.reset_password_step1.ResetPasswordStep1_View"
+            android:name="ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View"
             android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.reset_password_step_2.ResetPasswordStep2_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.reset_password_step_2.ResetPasswordStep2_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.external_data_receiver.ExternalDataReceiver">
+        <activity android:name="ru.aakumykov.me.sociocat.external_data_receiver.ExternalDataReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -111,27 +111,27 @@
         </activity>
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.card_edit.CardEdit_View"
+            android:name="ru.aakumykov.me.sociocat.card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.d_backup_job.BackupStatus_Activity"
+            android:name="ru.aakumykov.me.sociocat.d_backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.card_show.CardShow_View"
+            android:name="ru.aakumykov.me.sociocat.card_show.CardShow_View"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.user_edit.UserEdit_View"
+            android:name="ru.aakumykov.me.sociocat.user_edit.UserEdit_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.user_edit_email.UserEditEmail_View"
+            android:name="ru.aakumykov.me.sociocat.user_edit_email.UserEditEmail_View"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.deep_links_receiver.DeepLinksReceiver"
+            android:name="ru.aakumykov.me.sociocat.deep_links_receiver.DeepLinksReceiver"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -149,18 +149,18 @@
         </activity>
 
         <activity
-            android:name="io.gitlab.aakumykov.sociocat.user_change_password.UserChangePassword_View"
+            android:name="ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View"
             android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.tag_edit.TagEdit_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.tag_edit.TagEdit_View" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.preferences.PreferencesActivity" />
+        <activity android:name="ru.aakumykov.me.sociocat.preferences.PreferencesActivity" />
 
-        <activity android:name="io.gitlab.aakumykov.sociocat.b_comments_list.CommentsList_View"
-            android:parentActivityName="io.gitlab.aakumykov.sociocat.user_show.UserShow_View" />
+        <activity android:name="ru.aakumykov.me.sociocat.b_comments_list.CommentsList_View"
+            android:parentActivityName="ru.aakumykov.me.sociocat.user_show.UserShow_View" />
 
         <activity
-            android:name=".c_login_or_register.LoginOrRegister_View"
+            android:name="ru.aakumykov.me.sociocat.c_login_or_register.LoginOrRegister_View"
             android:exported="true" />
 
         <meta-data
@@ -172,7 +172,7 @@
             android:resource="@color/white" />
 
         <service
-            android:name="io.gitlab.aakumykov.sociocat.push_notifications.FCMService"
+            android:name="ru.aakumykov.me.sociocat.push_notifications.FCMService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -181,12 +181,12 @@
         </service>
 
         <service
-            android:name="io.gitlab.aakumykov.sociocat.d_backup_job.Backup_JobService"
+            android:name="ru.aakumykov.me.sociocat.d_backup_job.Backup_JobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <service android:name="io.gitlab.aakumykov.sociocat.d_backup_job.BackupService" />
+        <service android:name="ru.aakumykov.me.sociocat.d_backup_job.BackupService" />
 
         <!--<activity
                     android:name=".dynamic_link_processor.DLP_View"
