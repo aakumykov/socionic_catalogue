@@ -62,7 +62,7 @@ public final class GoogleAuthHelper {
     private static GoogleSignInOptions googleSignInOptions =
             new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
-                    .requestProfile()
+                    //.requestProfile()
                     .requestEmail()
                     .build();
 
