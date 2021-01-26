@@ -44,7 +44,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 

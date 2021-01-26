@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_View;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewModel;

@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.utils;
 
 import android.util.Log;
 
-import io.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.BuildConfig;
 
 public class LogUtils {
 

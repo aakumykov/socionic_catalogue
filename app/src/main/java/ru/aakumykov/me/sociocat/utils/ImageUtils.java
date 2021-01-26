@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 
 public class ImageUtils {
 

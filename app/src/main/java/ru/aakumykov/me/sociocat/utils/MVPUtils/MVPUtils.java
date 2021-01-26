@@ -27,8 +27,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;

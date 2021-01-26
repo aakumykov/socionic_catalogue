@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.gson.Gson;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;

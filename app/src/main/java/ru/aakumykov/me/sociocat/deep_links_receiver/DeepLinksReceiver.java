@@ -12,8 +12,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import io.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.b_cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.login.Login_View;

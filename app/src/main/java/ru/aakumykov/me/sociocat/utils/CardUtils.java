@@ -8,7 +8,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 
 public final class CardUtils {
 

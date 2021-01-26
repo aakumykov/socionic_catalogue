@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModel;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;

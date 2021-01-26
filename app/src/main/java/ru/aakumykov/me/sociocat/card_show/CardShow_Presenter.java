@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show.stubs.CardShow_ViewStub;
 import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;

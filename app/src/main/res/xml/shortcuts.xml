@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_shortcut_text">
         <intent
             android:action="SHORTCUT_CREATE_TEXT_CARD"
-            android:targetPackage="io.aakumykov.me.sociocat"
+            android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.start_page.StartPage" />
     </shortcut>
     
@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_shortcut_image">
         <intent
             android:action="SHORTCUT_CREATE_IMAGE_CARD"
-            android:targetPackage="io.aakumykov.me.sociocat"
+            android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.start_page.StartPage" />
     </shortcut>
 
@@ -24,7 +24,7 @@
         android:icon="@drawable/ic_shortcut_video">
         <intent
             android:action="SHORTCUT_CREATE_VIDEO_CARD"
-            android:targetPackage="io.aakumykov.me.sociocat"
+            android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.start_page.StartPage" />
     </shortcut>
 
@@ -33,7 +33,7 @@
         android:icon="@drawable/ic_shortcut_audio">
         <intent
             android:action="SHORTCUT_CREATE_AUDIO_CARD"
-            android:targetPackage="io.aakumykov.me.sociocat"
+            android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.start_page.StartPage" />
     </shortcut>
 

@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewModel;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.ToastPageEvent;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;

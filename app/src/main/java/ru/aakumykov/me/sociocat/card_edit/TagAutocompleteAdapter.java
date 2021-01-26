@@ -16,7 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 
 public class TagAutocompleteAdapter extends ArrayAdapter<String> {
 

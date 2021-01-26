@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;

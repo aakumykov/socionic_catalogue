@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import butterknife.BindView;
-import io.aakumykov.me.sociocat.BuildConfig;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;
 import ru.aakumykov.me.sociocat.models.Card;

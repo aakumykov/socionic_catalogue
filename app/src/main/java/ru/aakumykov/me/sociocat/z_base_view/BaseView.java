@@ -33,9 +33,9 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.aakumykov.me.sociocat.BuildConfig;
-import io.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.interfaces.iViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.ErrorViewState;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.view_states.NeutralViewState;

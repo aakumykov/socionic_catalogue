@@ -13,7 +13,7 @@ import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Backup_JobService extends JobService {

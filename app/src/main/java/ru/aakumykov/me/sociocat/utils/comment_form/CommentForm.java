@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import io.aakumykov.me.sociocat.BuildConfig;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentForm implements

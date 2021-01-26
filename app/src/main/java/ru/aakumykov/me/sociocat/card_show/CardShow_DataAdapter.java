@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.list_items.CardThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.Card_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.Comment_Item;

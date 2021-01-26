@@ -31,7 +31,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.list_items.BasicMVPList_ListItem;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.TextUtils;
 import ru.aakumykov.me.sociocat.a_basic_mvp_list_components.utils.ViewUtils;

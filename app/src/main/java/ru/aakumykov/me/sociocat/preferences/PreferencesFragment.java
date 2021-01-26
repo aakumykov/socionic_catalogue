@@ -10,7 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.constants.NotificationConstants;
 import ru.aakumykov.me.sociocat.constants.PreferencesConstants;
 import ru.aakumykov.me.sociocat.push_notifications.PUSHSubscriptionHelper;

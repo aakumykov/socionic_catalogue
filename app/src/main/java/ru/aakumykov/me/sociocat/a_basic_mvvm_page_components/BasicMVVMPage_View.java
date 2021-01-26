@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.live_data_observers.PageEventObserver;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.live_data_observers.PageStateObserver;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.BasicPageEvent;
