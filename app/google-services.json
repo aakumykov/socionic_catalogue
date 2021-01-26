@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:161012924326:android:f686e13ed5c8c979015967",
+        "mobilesdk_app_id": "1:161012924326:android:59ad3475d5bfcee0015967",
         "android_client_info": {
           "package_name": "ru.aakumykov.me.sociocat"
         }
@@ -38,12 +38,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "161012924326-vjltklgj50uhkb942ro0nmst7pujf5ov.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
