@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "161012924326-0npetou5essh5nh27vhluclscr5ie7m1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.aakumykov.me.sociocat",
+            "certificate_hash": "0470def49c855974ccd3c12d38cad40be0b86d94"
+          }
+        },
+        {
           "client_id": "161012924326-fomvhhejlq6dsqj8no6lne4u7tg5a7mu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
