@@ -38,9 +38,10 @@ public final class GoogleAuthHelper {
 
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         if (!task.isSuccessful()) {
-            Exception e = task.getException();
-            String errorMsg = e.getMessage();
-            Log.e(TAG, errorMsg, e);
+            ApiException apiException = (ApiException) task.getException();
+            String errorMsg = (null != apiException) ?
+                    "code "+apiException.getStatusCode() : "Unknown auth error";
+            Log.e(TAG, errorMsg, apiException);
 
             callbacks.onGoogleLoginError(errorMsg);
             return;
