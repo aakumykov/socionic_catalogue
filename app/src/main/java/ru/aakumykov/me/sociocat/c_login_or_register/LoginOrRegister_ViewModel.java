@@ -9,9 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewModel;
-import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.ToastPageEvent;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;
-import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.NeutralPageState;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ProgressPageState;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LogoutClickedEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.RegisterClikcedPageEvent;
@@ -92,9 +90,21 @@ public class LoginOrRegister_ViewModel extends BasicMVVMPage_ViewModel {
         });
     }
 
-    public void onLoginWithGoogleCancelled() {
-        risePageEvent(new ToastPageEvent(R.string.LOGIN_login_has_been_cancelled));
-        setPageState(new NeutralPageState());
+    public void onLoginWithGoogleCancelled(@Nullable Intent data) {
+//        risePageEvent(new ToastPageEvent(R.string.LOGIN_login_has_been_cancelled));
+//        setPageState(new NeutralPageState());
+
+        GoogleAuthHelper.processGoogleLoginResult(data, new GoogleAuthHelper.iGoogleLoginCallbacks() {
+            @Override
+            public void onGoogleLoginSuccess(@NonNull GoogleSignInAccount googleSignInAccount) {
+                loginWithGoogleAccount(googleSignInAccount);
+            }
+
+            @Override
+            public void onGoogleLoginError(String errorMsg) {
+                setPageState(new ErrorPageState(TAG, R.string.LOGIN_login_error, errorMsg));
+            }
+        });
     }
 
     public void onLoginWithGoogleUnknown(int resultCode, @Nullable Intent data) {

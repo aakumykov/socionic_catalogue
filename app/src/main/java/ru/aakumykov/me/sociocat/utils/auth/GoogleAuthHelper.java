@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.utils.auth;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,11 +11,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import ru.aakumykov.me.sociocat.AuthConfig;
 
 public final class GoogleAuthHelper {
+
+    private static final String TAG = GoogleAuthHelper.class.getSimpleName();
 
     // Внешние методы
     public static Intent getSignInIntent(Context context) {
@@ -38,13 +42,14 @@ public final class GoogleAuthHelper {
             return;
         }
 
-        GoogleSignInAccount googleSignInAccount = task.getResult();
-        if (null == googleSignInAccount) {
-            callbacks.onGoogleLoginError("Google sign in account is null");
-            return;
+        try {
+            GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class);
+            callbacks.onGoogleLoginSuccess(googleSignInAccount);
         }
-
-        callbacks.onGoogleLoginSuccess(googleSignInAccount);
+        catch (ApiException apiException) {
+            callbacks.onGoogleLoginError(apiException.getMessage());
+            Log.e(TAG, apiException.getMessage(), apiException);
+        }
     }
 
     // Внутренние методы

@@ -237,7 +237,7 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
                 getViewModel().onLoginWithGoogleConfirmed(data);
                 break;
             case RESULT_CANCELED:
-                getViewModel().onLoginWithGoogleCancelled();
+                getViewModel().onLoginWithGoogleCancelled(data);
                 break;
             default:
                 getViewModel().onLoginWithGoogleUnknown(resultCode, data);
