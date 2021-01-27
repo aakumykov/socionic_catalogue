@@ -38,7 +38,11 @@ public final class GoogleAuthHelper {
 
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         if (!task.isSuccessful()) {
-            callbacks.onGoogleLoginError("Google auth is not successful");
+            Exception e = task.getException();
+            String errorMsg = e.getMessage();
+            Log.e(TAG, errorMsg, e);
+
+            callbacks.onGoogleLoginError(errorMsg);
             return;
         }
 
