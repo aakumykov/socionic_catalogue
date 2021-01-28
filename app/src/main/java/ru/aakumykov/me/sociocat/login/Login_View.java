@@ -220,19 +220,17 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void finishLogin(boolean isCancelled, Intent transitIntent) {
+    public void finishLogin(boolean isCancelled, @Nullable Intent transitIntent) {
         int resultCode = (isCancelled) ? RESULT_CANCELED : RESULT_OK;
 
-        Intent resultsIntent = null;
-
         if (null != transitIntent) {
-            resultsIntent = transitIntent;
-        }
-
-        if (null != resultsIntent)
+            Intent resultsIntent = new Intent();
+            resultsIntent.putExtra(Constants.TRANSIT_INTENT, transitIntent);
             setResult(resultCode, resultsIntent);
-        else
+        }
+        else {
             setResult(resultCode);
+        }
 
         finish();
     }

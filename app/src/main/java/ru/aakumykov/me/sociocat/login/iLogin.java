@@ -22,7 +22,7 @@ public interface iLogin {
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         void startLoginWithGoogle();
-        void finishLogin(boolean isCancelled, Intent transitIntent);
+        void finishLogin(boolean isCancelled, @Nullable Intent transitIntent);
 
         String getEmail();
         String getPassword();
