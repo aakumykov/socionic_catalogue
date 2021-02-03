@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.a_basic_mvvm_page_components;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -45,6 +46,13 @@ public abstract class BasicMVVMPage_View extends BaseView {
         configurePageViewModel();
 
         configureLifecycleObserver();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        refreshMenu();
     }
 
     @Override

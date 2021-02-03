@@ -121,9 +121,12 @@ public abstract class BasicMVPList_View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         mActivityRequestCode = requestCode;
         mActivityResultCode = resultCode;
         mActivityResultData = data;
+
+        refreshMenu();
     }
 
     protected void processActivityResult() {
