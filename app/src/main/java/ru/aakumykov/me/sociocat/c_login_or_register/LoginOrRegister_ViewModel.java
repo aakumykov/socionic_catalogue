@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewModel;
+import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.ToastPageEvent;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ProgressPageState;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LogoutClickedEvent;
@@ -189,8 +190,29 @@ public class LoginOrRegister_ViewModel extends BasicMVVMPage_ViewModel {
         });
     }
 
+    public void onLoginResultOk(@Nullable Intent data) {
+        finishLoginWithSuccess();
+    }
+
+    public void onLoginResultCancelled() {
+        finishLoginWithCancelled();
+    }
+
+    public void onLoginResultUnknown(int resultCode) {
+        finishLoginWithError(R.string.LOGIN_login_error, "Unknown login result: "+resultCode);
+    }
+
+
     private void finishLoginWithSuccess() {
         risePageEvent(new LoginSuccessPageEvent());
     }
 
+    private void finishLoginWithCancelled() {
+        risePageEvent(new ToastPageEvent(R.string.LOGIN_login_has_been_cancelled));
+    }
+
+    private void finishLoginWithError(int erorrMessageId, String debugMessage) {
+        setPageState(new ErrorPageState(TAG, erorrMessageId, debugMessage));
+        AuthSingleton.logout();
+    }
 }

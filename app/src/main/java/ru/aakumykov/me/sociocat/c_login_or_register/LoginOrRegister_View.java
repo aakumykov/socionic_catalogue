@@ -48,6 +48,8 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (Constants.CODE_GOOGLE_LOGIN == requestCode)
             processGoogleLoginResult(resultCode, data);
+        else if (Constants.CODE_LOGIN == requestCode || Constants.CODE_LOGIN_REQUEST == requestCode)
+            processLoginResult(resultCode, data);
         else
             super.onActivityResult(requestCode, resultCode, data);
     }
@@ -244,4 +246,17 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
         }
     }
 
+    private void processLoginResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                getViewModel().onLoginResultOk(data);
+                break;
+            case RESULT_CANCELED:
+                getViewModel().onLoginResultCancelled();
+                break;
+            default:
+                getViewModel().onLoginResultUnknown(resultCode);
+                break;
+        }
+    }
 }
