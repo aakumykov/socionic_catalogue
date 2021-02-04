@@ -78,12 +78,11 @@ public class ExternalDataReceiver extends BaseView {
 
     // Внутренние методы
     private void processInputIntent(@Nullable Intent intent) {
+
         if (null == intent) {
             showLongToast(R.string.EXTERNAL_DATA_RECIEVER_no_input_data);
             return;
         }
-
-        String action = (null != intent) ? intent.getAction() : null;
 
         ContentType intentDataType = IntentUtils.detectContentType(intent);
 
@@ -94,23 +93,18 @@ public class ExternalDataReceiver extends BaseView {
                 cardType = eCardType.TEXT_CARD;
                 break;
 
-            case IMAGE:
-                cardType = eCardType.IMAGE_CARD;
-                break;
-
             case YOUTUBE_VIDEO:
                 cardType = eCardType.VIDEO_CARD;
                 break;
 
-            case OTHER:
-                showLongToast(R.string.EXTERNAL_DATA_RECIEVER_unsupported_data_type);
-                finish();
-                return;
-
             default:
-                showLongToast(R.string.EXTERNAL_DATA_RECIEVER_unknown_data_type);
-                finish();
-                return;
+                /* Некоторые программы просмотра изображений, например «Галерея»
+                * Meizu M6 Note, при отправке картинки в Соционический каталог
+                * создаёт Intent с contentType='✱/✱', что не позволяет определить
+                * содержимое как изображение. Что ж, методом исключения считаем,
+                * что неизвестный тип данных - это картинка. */
+                cardType = eCardType.IMAGE_CARD;
+                break;
         }
 
         go2createCard(cardType, intent);
