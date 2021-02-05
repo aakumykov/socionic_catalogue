@@ -3,9 +3,6 @@
     <string name="NOTIFICATIONS_new_cards_channel_title">New cards</string>
     <string name="NOTIFICATIONS_new_cards_channel_description">Notifications about new cards</string>
 
-    <string name="NOTIFICATIONS_new_comments_channel_title">Comments</string>
-    <string name="NOTIFICATIONS_new_comments_channel_description">Notifications about comments</string>
-
     <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
 

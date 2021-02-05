@@ -184,7 +184,6 @@
     <string name="COMMENT_error_adding_comment">Ошибка добавления комментария</string>
     <string name="LOGIN_data_error">Ошибка данных</string>
     <string name="CARD_SHOW_login_required_to_comment">Авторизуйтесь, чтобы комментировать</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unsupported_data_type">Тип данных не поддерживается</string>
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Создание карточки отменено</string>
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Ошибка обработки ярлыка</string>
     <string name="SHORTCUT_PROCESSOR_unknown_result_code">Неизвестный результат</string>
@@ -229,8 +228,6 @@
     <string name="BACKUP_SERVICE_backup_impossible">Резервное копирование невозможно</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Отсутствует Dropbox AccessToken</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Сохранение аватара прервано</string>
-    <string name="PAGE_TEMPLATE_button_clicked">Нажата кнопка</string>
-    <string name="PAGE_TEMPLATE_page_title">Шаблон страницы</string>
     <string name="USER_EDIT_remove_avatar_question">Удалить аватар?</string>
     <string name="USER_EDIT_cancel_edition_question">Прервать редактирование?</string>
     <string name="USER_EDIT_cancel_edition_dialog_description">Сделанные изменения будут потеряны</string>
@@ -238,7 +235,6 @@
     <string name="USER_EDIT_error_deleting_avatar_file">Ошибка удаления аватара</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Неизвестный тип карточки</string>
     <string name="EXTERNAL_DATA_RECIEVER_no_input_data">Нет входящих данных</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unknown_data_type">Неизвестный тип данных</string>
     <string name="USER_EDIT_your_current_password">Ваш текущий пароль</string>
     <string name="VALIDATION_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_wrong_password">Неверный пароль</string>
@@ -277,7 +273,6 @@
     <string name="USER_CHANGE_PASSWORD_new_password">Новый пароль</string>
     <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Подтверждение нового пароля</string>
     <string name="USER_CHANGE_PASSWORD_page_title">Изменение пароля</string>
-    <string name="PAGE_TEMPLATE_text_input_hint">Напишите что-нибудь</string>
     <string name="USER_CHANGE_PASSWORD_passwords_mismatch">Пароли не совпадают</string>
     <string name="USER_CHANGE_PASSWORD_error_wrong_current_password">Неверный текущий пароль</string>
     <string name="USER_CHANGE_PASSWORD_saving_new_password">Сохраняем новый пароль</string>
@@ -360,8 +355,6 @@
     <string name="deletion_process_is_interrupted">Процесс удаления прерван</string>
     <string name="CARDS_LIST_deleting_card">Удаляем карточку «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки «%1$s»</string>
-    <string name="CARDS_LIST_selected_card_are_processed">Выбранные карточки обработаны</string>
-    <string name="card_has_been_deleted">Карточка «%1$s» удалена</string>
     <string name="USER_SHOW_cards_of_user">Карточки пользователя (%1$d)</string>
     <string name="USER_SHOW_comments_of_user">Комментарии пользователя (%1$d)</string>
     <string name="CARDS_LIST_error_user_key_missing">Неизвестный пользователь</string>

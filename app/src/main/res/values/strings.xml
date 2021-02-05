@@ -185,7 +185,6 @@
     <string name="COMMENT_error_adding_comment">Error adding comment</string>
     <string name="LOGIN_data_error">Data error</string>
     <string name="CARD_SHOW_login_required_to_comment">Login required for comment</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unsupported_data_type">Unsupported data imageType</string>
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Card creation cencelled</string>
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Error processing shortcut</string>
     <string name="SHORTCUT_PROCESSOR_unknown_result_code">Unknown result</string>
@@ -229,8 +228,6 @@
     <string name="BACKUP_SERVICE_backup_impossible">Backup impossible</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Dropbox AccessToken is missing</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Avatar uploading cancelled</string>
-    <string name="PAGE_TEMPLATE_button_clicked">Button clicked</string>
-    <string name="PAGE_TEMPLATE_page_title">Page templte</string>
     <string name="USER_EDIT_remove_avatar_question">Really delete avatar?</string>
     <string name="USER_EDIT_cancel_edition_question">Abandon changes?</string>
     <string name="USER_EDIT_cancel_edition_dialog_description">Changes made will be lost</string>
@@ -238,7 +235,6 @@
     <string name="USER_EDIT_error_deleting_avatar_file">Error deleting avatar</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Unknown card type</string>
     <string name="EXTERNAL_DATA_RECIEVER_no_input_data">No input data</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unknown_data_type">Unknown data type</string>
     <string name="USER_EDIT_your_current_password">Your current password</string>
     <string name="VALIDATION_wrong_password">Wrong password</string>
     <string name="USER_EDIT_wrong_password">Wrong password</string>
@@ -277,7 +273,6 @@
     <string name="USER_CHANGE_PASSWORD_new_password">New password</string>
     <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Confirm new password</string>
     <string name="USER_CHANGE_PASSWORD_page_title">Change password</string>
-    <string name="PAGE_TEMPLATE_text_input_hint">Enter some text</string>
     <string name="USER_CHANGE_PASSWORD_passwords_mismatch">Passwords mismatch</string>
     <string name="USER_CHANGE_PASSWORD_error_wrong_current_password">Wrong current password</string>
     <string name="USER_CHANGE_PASSWORD_saving_new_password">Saving new password</string>
@@ -364,8 +359,6 @@
     <string name="deletion_process_is_interrupted">Deletion process is interrupted</string>
     <string name="CARDS_LIST_deleting_card">Deleting card «%1$s»</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card «%1$s»</string>
-    <string name="CARDS_LIST_selected_card_are_processed">Selected cards are processed</string>
-    <string name="card_has_been_deleted">Card «%1$s» has been deleted</string>
     <string name="USER_SHOW_cards_of_user">Cards of user (%1$d)</string>
     <string name="USER_SHOW_comments_of_user">Comments of user (%1$d)</string>
     <string name="CARDS_LIST_error_user_key_missing">Unknown user</string>

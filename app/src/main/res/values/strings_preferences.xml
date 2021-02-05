@@ -36,6 +36,4 @@
 
 
     <!-- К удалению-->
-    <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
-    <string name="PREFERENCES_category_backup_key" translatable="false">category_backup</string>
 </resources>
