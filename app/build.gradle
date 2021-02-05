@@ -12,13 +12,13 @@ android {
         applicationId "ru.aakumykov.me.sociocat"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 18
-        versionName "0.18"
+        versionCode 19
+        versionName "0.19"
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
