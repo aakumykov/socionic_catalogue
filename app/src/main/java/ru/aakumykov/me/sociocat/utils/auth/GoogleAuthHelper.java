@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -39,8 +40,17 @@ public final class GoogleAuthHelper {
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         if (!task.isSuccessful()) {
             ApiException apiException = (ApiException) task.getException();
-            String errorMsg = (null != apiException) ?
-                    "code "+apiException.getStatusCode() : "Unknown auth error";
+
+            String errorMsg;
+            if (null != apiException) {
+                int errorCode = apiException.getStatusCode();
+                String errorCodeDescription = GoogleSignInStatusCodes.getStatusCodeString(errorCode);
+                errorMsg = errorCode + " (" + errorCodeDescription + ")";
+            }
+            else {
+                errorMsg = "Unknown auth error";
+            }
+
             Log.e(TAG, errorMsg, apiException);
 
             callbacks.onGoogleLoginError(errorMsg);
