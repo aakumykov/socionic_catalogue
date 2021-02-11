@@ -12,15 +12,16 @@ import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewM
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.ToastPageEvent;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ProgressPageState;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginCancelledByUserEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginSuccessPageEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithEmailAndPasswordEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithGoogleEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithVKEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LogoutClickedEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.RegisterClikcedPageEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoggedInPageState;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoggedOutPageState;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginErrorPageState;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginSuccessPageEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithEmailAndPasswordEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithGoogleEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithVKEvent;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -39,6 +40,16 @@ public class LoginOrRegister_ViewModel extends BasicMVVMPage_ViewModel {
             setLoggedInPageState();
         else
             setLoggedOutPageState();
+    }
+
+    public void onBackPressed() {
+        if (isLoggingInWithGoogle())
+            risePageEvent(new LoginCancelledByUserEvent());
+    }
+
+    private boolean isLoggingInWithGoogle() {
+        return (mPageEventLiveData.getValue() instanceof LoginWithGoogleEvent) &&
+                (mPageStateLiveData.getValue() instanceof ProgressPageState);
     }
 
 
@@ -215,4 +226,6 @@ public class LoginOrRegister_ViewModel extends BasicMVVMPage_ViewModel {
         setPageState(new ErrorPageState(TAG, erorrMessageId, debugMessage));
         AuthSingleton.logout();
     }
+
+
 }

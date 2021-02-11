@@ -16,14 +16,15 @@ import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.BasicMVVMPage_ViewM
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_event.BasicPageEvent;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.BasicPageState;
 import ru.aakumykov.me.sociocat.a_basic_mvvm_page_components.page_state.ErrorPageState;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginCancelledByUserEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginSuccessPageEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithEmailAndPasswordEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithGoogleEvent;
+import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LoginWithVKEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.LogoutClickedEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_events.RegisterClikcedPageEvent;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoggedInPageState;
 import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoggedOutPageState;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginSuccessPageEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithEmailAndPasswordEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithGoogleEvent;
-import ru.aakumykov.me.sociocat.c_login_or_register.page_states.LoginWithVKEvent;
 import ru.aakumykov.me.sociocat.constants.Constants;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
@@ -53,6 +54,13 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
         else
             super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getViewModel().onBackPressed();
+    }
+
 
     @Override
     protected void setView() {
@@ -147,6 +155,10 @@ public class LoginOrRegister_View extends BasicMVVMPage_View {
         else if (pageEvent instanceof LoginSuccessPageEvent) {
             pageEvent.consume();
             onLoginSuccessPageEvent((LoginSuccessPageEvent) pageEvent);
+        }
+        else if (pageEvent instanceof LoginCancelledByUserEvent) {
+            pageEvent.consume();
+            showToast(R.string.LOGIN_login_has_been_cancelled);
         }
         else {
             super.processPageEvent(pageEvent);
